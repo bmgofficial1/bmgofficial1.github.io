@@ -6,7 +6,9 @@
     <title>BMG Official - eFootball Community</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- Firebase CDNs (ImgBB ব্যবহার করায় স্টোরেজ বাদ দেওয়া হয়েছে) -->
+    <!-- FontAwesome Icons for Footer -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -44,6 +46,32 @@
         .submit-btn { background: #10b981; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .link-text { color: #3b82f6; font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: bold; text-decoration: underline; }
 
+        /* BMG PREMIUM FOOTER STYLING */
+        .bmg-footer {
+            background: linear-gradient(180deg, #12182b 0%, #070b19 100%);
+            border-top: 1px solid #1f2940;
+            border-radius: 25px 25px 0 0;
+            padding: 40px 20px 30px 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        .footer-logo { width: 75px; margin-bottom: 12px; }
+        .footer-title { font-size: 18px; letter-spacing: 2px; font-weight: 700; color: #ffffff; text-transform: uppercase; margin-bottom: 2px; }
+        .footer-subtitle { font-size: 10px; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 10px; }
+        .footer-tagline { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
+        .footer-divider { border: none; border-top: 1px solid #1f2940; margin: 25px 0; }
+        .footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
+        .f-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; cursor: pointer; transition: 0.3s; font-weight: 600; }
+        .f-nav-item i { font-size: 18px; margin-bottom: 6px; color: var(--text-main); }
+        .f-nav-item:hover { color: var(--gold); }
+        .f-nav-item:hover i { color: var(--gold); }
+        .footer-socials { display: flex; justify-content: center; gap: 15px; }
+        .social-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #1f2940; display: flex; justify-content: center; align-items: center; background: #16203a; color: var(--text-main); font-size: 16px; text-decoration: none; transition: 0.3s; }
+        .social-circle:hover { background: var(--gold); color: #000; border-color: var(--gold); transform: translateY(-3px); }
+        .footer-contact { font-size: 12px; color: var(--text-main); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; }
+        .footer-contact i { color: var(--gold); font-size: 14px; }
+        .footer-copy { margin-top: 15px; font-size: 11px; color: var(--text-muted); }
+
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1f2940; z-index: 1000; }
         .nav-item { color: var(--text-muted); text-align: center; font-size: 12px; cursor: pointer; display: block; font-weight: 600; padding: 5px; } 
         .nav-admin { display: none; color: #ef4444; } 
@@ -62,7 +90,6 @@
 
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
-        
         <div class="card" id="loginBox" style="border: 1px solid #3b82f6; text-align: center; margin-top: 20px;">
             <h2 style="color: #3b82f6; margin-bottom: 15px;">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
@@ -73,18 +100,14 @@
 
         <div class="card" id="signupBox" style="border: 1px solid var(--gold); text-align: center; margin-top: 20px; display: none;">
             <h2 style="color: var(--gold); margin-bottom: 15px;">Create Account</h2>
-            
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name (Must)">
-            
             <label style="color: var(--text-muted); font-size: 11px; text-align: left; display: block; margin: 10px 0 5px;">Upload Avatar (Auto Compressed):</label>
             <input type="file" id="regAvatarFile" accept="image/*">
-            
             <input type="text" id="regPhone" placeholder="Mobile Number (Optional)">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
-            
             <button id="regBtn" class="submit-btn" style="background: var(--gold); color: #000;" onclick="signUpWithEmail()">Sign Up</button>
             <p class="link-text" onclick="toggleAuth('login')">Already have an account? Log In</p>
         </div>
@@ -97,6 +120,53 @@
         
         <div class="section-title">Latest Matches</div>
         <div class="card" id="matchesList"><p style="text-align:center; color:gray; font-size:12px;">Loading Results...</p></div>
+
+        <!-- BMG PREMIUM FOOTER -->
+        <div class="bmg-footer">
+            <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="footer-logo">
+            <h2 class="footer-title">BMG OFFICIAL</h2>
+            <p class="footer-subtitle">EFOOTBALL COMMUNITY</p>
+            <div class="footer-tagline">HOME OF SOLO TOURNAMENTS</div>
+            
+            <hr class="footer-divider">
+            
+            <div class="footer-nav">
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
+                    <i class="fas fa-home"></i> Home
+                </div>
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
+                    <i class="fas fa-medal"></i> Tournaments
+                </div>
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
+                    <i class="far fa-calendar-alt"></i> Matches
+                </div>
+                <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[1])">
+                    <i class="fas fa-chart-bar"></i> Ranking
+                </div>
+                <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[2])">
+                    <i class="far fa-user"></i> Profile
+                </div>
+            </div>
+            
+            <hr class="footer-divider">
+            
+            <div class="footer-socials">
+                <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
+            </div>
+            
+            <hr class="footer-divider">
+            
+            <div class="footer-contact">
+                <i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com
+            </div>
+            <div class="footer-copy">
+                &copy; 2026 BMG Official. All Rights Reserved. v1.0.0
+            </div>
+        </div>
     </div>
 
     <!-- 2. LEADERBOARD PAGE -->
@@ -112,12 +182,10 @@
             <img id="userPic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width: 90px; height: 90px; border-radius: 50%; display: none; margin: 0 auto; border: 3px solid var(--gold); object-fit: cover;">
             <h3 id="userName" style="margin-top: 15px; font-size: 20px;">Please Login</h3>
             <p id="userEmail" style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;"></p>
-            
             <div style="background: #16203a; border-radius: 8px; padding: 10px; text-align: center; margin-top: 15px;">
                 <p id="profileKonami" style="color: var(--gold); font-size: 14px; font-weight: bold;">Konami UID: N/A</p>
                 <p id="profileDevice" style="color: #10b981; font-size: 13px; margin-top: 3px;">Device: N/A</p>
             </div>
-            
             <button onclick="logOut()" style="background: #ef4444; color: white; border: none; padding: 8px 20px; border-radius: 5px; margin-top: 20px; cursor: pointer; font-weight: bold;">Logout</button>
         </div>
     </div>
@@ -125,7 +193,6 @@
     <!-- 4. ADMIN PANEL -->
     <div id="admin" class="page-section">
         <div class="section-title" style="color: #ef4444;">Admin Dashboard</div>
-        
         <div class="card" style="border: 1px solid #3b82f6;">
             <h3 style="color: #3b82f6; font-size: 16px;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
@@ -139,7 +206,6 @@
             <input type="text" id="tImage" placeholder="Thumbnail Image URL (Link)">
             <button class="submit-btn" style="background: #3b82f6;" onclick="createTournament()">Publish Tournament</button>
         </div>
-
         <div class="card" style="border: 1px solid var(--gold);">
             <h3 style="color: var(--gold); font-size: 16px;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
@@ -147,7 +213,6 @@
             <input type="text" id="lbWinRate" placeholder="Win Rate (e.g. 75%)">
             <button class="submit-btn" style="background: var(--gold); color: #000;" onclick="updateLeaderboard()">Update Player</button>
         </div>
-
         <div class="card">
             <h3 style="font-size: 16px;">Add Match Result</h3>
             <input type="text" id="player1" placeholder="Player 1 Name">
@@ -166,7 +231,6 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // 🛑 ফায়ারবেস কনফিগ (আপনার দেওয়া কোড) 🛑
         const firebaseConfig = {
             apiKey: "AIzaSyDsnRIuo614UKEoNwBJxSdQvkJzUHL-sE0",
             authDomain: "bmg-official-c0d9a.firebaseapp.com",
@@ -177,10 +241,7 @@
             measurementId: "G-4MYGG5J7P2"
         };
         
-        // 🛑 আপনার এডমিন জিমেইলটি এখানে দিন (এই ইমেইলটি অবশ্যই পরিবর্তন করবেন) 🛑
-        const adminEmail = "mynewff123@gmail.com"; 
-
-        // 🛑 আপনার দেওয়া ImgBB API Key 🛑
+        const adminEmail = "your-email@gmail.com"; 
         const imgbbAPIKey = "b7e891cd42aad3a93253595e33590ac1"; 
 
         firebase.initializeApp(firebaseConfig);
@@ -197,7 +258,6 @@
             }
         }
 
-        // ছবি অটোমেটিক ছোট (Compress) করার ফাংশন
         function compressImage(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -208,10 +268,8 @@
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         let width = img.width; let height = img.height; const max_size = 500;
-
                         if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } } 
                         else { if (height > max_size) { width *= max_size / height; height = max_size; } }
-                        
                         canvas.width = width; canvas.height = height;
                         const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
                         canvas.toBlob((blob) => { resolve(blob); }, 'image/jpeg', 0.7);
@@ -220,11 +278,9 @@
             });
         }
 
-        // ImgBB সার্ভারে ছবি আপলোড ফাংশন
         async function uploadToImgBB(blob) {
             const formData = new FormData();
             formData.append('image', blob, 'avatar.jpg');
-            
             const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, {
                 method: 'POST',
                 body: formData
@@ -233,7 +289,6 @@
             return data.data.url; 
         }
 
-        // সাইন-আপ সিস্টেম (ImgBB আপলোডসহ)
         async function signUpWithEmail() {
             const name = document.getElementById('regName').value; 
             const konami = document.getElementById('regKonami').value;
@@ -253,28 +308,18 @@
             btn.disabled = true;
 
             try {
-                // ১. ছবি কম্প্রেস করা
                 const compressedImage = await compressImage(avatarFile);
-
-                // ২. ImgBB সার্ভারে আপলোড করে লিংক সংগ্রহ করা
                 const photoURL = await uploadToImgBB(compressedImage);
-
                 btn.innerText = "Creating Account...";
-
-                // ৩. ইউজার একাউন্ট তৈরি
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
-
-                // ৪. প্রোফাইল ও ডাটাবেজে তথ্য সেভ করা
                 await user.updateProfile({ displayName: name, photoURL: photoURL });
                 await db.collection("users").doc(user.uid).set({
                     name: name, konamiUid: konami, device: device, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
-
                 alert("Account Created Successfully!");
                 document.getElementById('signupBox').querySelectorAll('input').forEach(input => input.value = '');
                 switchTab('home', document.querySelectorAll('.nav-item')[0]);
-
             } catch (error) {
                 alert("Error: " + error.message);
             } finally {
@@ -283,7 +328,6 @@
             }
         }
 
-        // লগ-ইন সিস্টেম
         function loginWithEmail() {
             const email = document.getElementById('loginEmail').value; 
             const password = document.getElementById('loginPassword').value;
@@ -298,7 +342,6 @@
 
         function logOut() { auth.signOut().then(() => switchTab('home', document.querySelectorAll('.nav-item')[0])); }
 
-        // ইউজার স্ট্যাটাস চেকার
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('loginBtn').style.display = 'none';
@@ -326,7 +369,6 @@
             }
         });
 
-        // টুর্নামেন্ট তৈরি (Admin)
         function createTournament() {
             const name = document.getElementById('tName').value; const format = document.getElementById('tFormat').value; const slots = document.getElementById('tSlots').value; const fee = document.getElementById('tFee').value;
             let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
@@ -337,7 +379,6 @@
             } else { alert("Fill all fields!"); }
         }
 
-        // টুর্নামেন্ট লোড করা
         db.collection("tournaments").orderBy("time", "desc").onSnapshot(snapshot => {
             const tList = document.getElementById('tournamentsList'); tList.innerHTML = ""; 
             snapshot.forEach(doc => {
@@ -347,7 +388,6 @@
             if(tList.innerHTML === "") tList.innerHTML = "<p>No active tournaments.</p>";
         });
 
-        // লিডারবোর্ড আপডেট (Admin)
         function updateLeaderboard() {
             const name = document.getElementById('lbPlayerName').value; const points = parseInt(document.getElementById('lbPoints').value); const winRate = document.getElementById('lbWinRate').value;
             if(name && !isNaN(points)) {
@@ -356,7 +396,6 @@
             } else { alert("Enter valid Name and Points!"); }
         }
 
-        // লিডারবোর্ড লোড করা
         db.collection("leaderboard").orderBy("points", "desc").onSnapshot(snapshot => {
             const lbList = document.getElementById('leaderboardList'); lbList.innerHTML = ""; let rank = 1;
             snapshot.forEach(doc => {
@@ -368,7 +407,6 @@
             if(lbList.innerHTML === "") lbList.innerHTML = "<p>Leaderboard is empty.</p>";
         });
 
-        // ম্যাচ সাবমিট (Admin)
         function submitMatch() {
             const p1 = document.getElementById('player1').value; const p2 = document.getElementById('player2').value; const score = document.getElementById('score').value;
             if(p1 && p2 && score) {
@@ -377,7 +415,6 @@
             }
         }
 
-        // ম্যাচ লোড করা
         db.collection("matches").orderBy("time", "desc").onSnapshot(snapshot => {
             const matchesList = document.getElementById('matchesList'); matchesList.innerHTML = ""; 
             snapshot.forEach(doc => {
@@ -387,7 +424,6 @@
             if(matchesList.innerHTML === "") matchesList.innerHTML = "<p>No matches yet.</p>";
         });
 
-        // ট্যাব পরিবর্তন সিস্টেম
         function switchTab(tabId, element) {
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
@@ -399,4 +435,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
