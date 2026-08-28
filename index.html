@@ -28,31 +28,22 @@
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- NEW ANIMATED HERO SLIDER --- */
+        /* --- NEW FADE HERO SLIDER & FIXED IMAGE --- */
         .hero-banner-slider { position: relative; width: 100%; height: 180px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; border: 1px solid #1f2940; }
-        .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
+        
+        /* Fade animation for slides */
+        .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
         
-        .hero-content { z-index: 3; width: 62%; opacity: 0; }
-        .hero-slide.active .hero-content { animation: slideInLeft 0.8s ease-out forwards 0.2s; }
-        
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        .hero-content { z-index: 3; width: 55%; }
         
         .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
         .hero-title { font-size: 21px; font-weight: 800; line-height: 1.1; margin-bottom: 6px; text-transform: uppercase; }
         .hero-desc { font-size: 9px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.4; }
         .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; }
         
-        /* Image Floating Animation */
-        .hero-img { position: absolute; right: -5px; bottom: 0; height: 165px; z-index: 2; filter: drop-shadow(-8px 5px 10px rgba(0,0,0,0.6)); animation: floatImg 3s ease-in-out infinite; object-fit: contain; }
-        @keyframes floatImg {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
+        /* Fixed Image Fit */
+        .hero-img { position: absolute; right: 10px; bottom: 0; max-height: 95%; max-width: 45%; object-fit: contain; z-index: 2; filter: drop-shadow(-5px 5px 8px rgba(0,0,0,0.5)); }
 
         /* --- SECTION HEADERS --- */
         .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
@@ -172,7 +163,7 @@
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
         
-        <!-- Animated Hero Slider (With your 2 Images) -->
+        <!-- Fading Hero Slider (With your 2 Images) -->
         <div class="hero-banner-slider">
             
             <!-- Slide 1 -->
@@ -194,8 +185,7 @@
                     <p class="hero-desc">Compete with top players and dominate the global rankings.</p>
                     <button class="hero-btn" style="background:var(--gold); color:#000;" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fas fa-chevron-right"></i></button>
                 </div>
-                <!-- Image height adjusted slightly for perfect positioning -->
-                <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img" style="height: 145px; right: 0;">
+                <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
             </div>
 
         </div>
@@ -345,14 +335,17 @@
             measurementId: "G-4MYGG5J7P2"
         };
         
+        // 🛑 আপনার জিমেইল বসাবেন 🛑
         const adminEmail = "your-email@gmail.com"; 
+        
+        // 🛑 ImgBB API Key বসাবেন 🛑
         const imgbbAPIKey = "b7e891cd42aad3a93253595e33590ac1"; 
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        /* --- HERO SLIDER JS --- */
+        /* --- FADING HERO SLIDER JS --- */
         setInterval(() => {
             const slides = document.querySelectorAll('.hero-slide');
             if(slides.length === 0) return;
@@ -361,7 +354,7 @@
             slides[activeIdx].classList.remove('active');
             let nextIdx = (activeIdx + 1) % slides.length;
             slides[nextIdx].classList.add('active');
-        }, 4000); // 4 seconds per slide
+        }, 4000); // 4 seconds fade interval
 
         function toggleAuth(type) {
             if(type === 'signup') {
