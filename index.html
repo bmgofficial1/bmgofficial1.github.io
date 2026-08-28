@@ -6,7 +6,7 @@
     <title>BMG Official - eFootball Community</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome Icons for Footer -->
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -14,7 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
-        :root { --bg-dark: #070b19; --card-bg: #12182b; --gold: #ffd700; --text-main: #ffffff; --text-muted: #8a94b5; --nav-bg: #16203a; }
+        :root { --bg-dark: #070b19; --card-bg: #12182b; --gold: #ffd700; --accent: #10b981; --text-main: #ffffff; --text-muted: #8a94b5; --nav-bg: #16203a; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 80px; }
         
@@ -30,31 +30,56 @@
         .section-title { font-size: 14px; text-transform: uppercase; margin: 20px 0 10px; font-weight: 700; color: var(--gold); }
         .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #1f2940; }
         
+        /* Tournament & Leaderboard */
         .tournament-card { background: linear-gradient(to right, #0f172a, #1e3a8a); border-radius: 10px; margin-bottom: 15px; overflow: hidden; border: 1px solid #1f2940; }
         .t-banner { height: 130px; background-size: cover; background-position: center; border-bottom: 3px solid var(--gold); }
         .badge { background: #dc2626; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
         .format-badge { background: #a3e635; color: #000; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-left: 5px; }
-
         .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #1f2940; padding-bottom: 10px; }
         .rank { color: var(--gold); font-weight: bold; width: 25px; font-size: 18px;}
         .player-info { flex: 1; margin-left: 10px; }
         .player-name { font-weight: 600; font-size: 14px; }
         .points { font-size: 12px; color: var(--text-muted); }
-        .win-rate { font-size: 14px; font-weight: bold; color: #10b981; }
+        .win-rate { font-size: 14px; font-weight: bold; color: var(--accent); }
 
         input, select { width: 100%; margin: 8px 0; padding: 10px; border-radius: 5px; border: none; background: #1f2940; color: white; font-size: 13px; }
-        .submit-btn { background: #10b981; color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .submit-btn { background: var(--accent); color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
         .link-text { color: #3b82f6; font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: bold; text-decoration: underline; }
 
-        /* BMG PREMIUM FOOTER STYLING */
-        .bmg-footer {
-            background: linear-gradient(180deg, #12182b 0%, #070b19 100%);
-            border-top: 1px solid #1f2940;
-            border-radius: 25px 25px 0 0;
-            padding: 40px 20px 30px 20px;
-            text-align: center;
-            margin-top: 40px;
-        }
+        /* --- NEW PREMIUM PROFILE UI --- */
+        .prof-top-title { text-align: center; color: var(--text-muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        .prof-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .prof-avatar { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid #1f2940; }
+        .prof-details { margin-left: 15px; flex: 1; }
+        .prof-name { font-size: 18px; font-weight: 700; line-height: 1.2; margin-bottom: 3px; }
+        .prof-country { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+        .prof-rank-row { display: flex; gap: 20px; font-size: 10px; color: var(--text-muted); font-weight: 600; }
+        .prof-val { display: block; font-size: 15px; font-weight: 700; color: var(--text-main); margin-top: 2px; }
+        .prof-val.green { color: var(--accent); }
+
+        .prof-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--card-bg); border-radius: 12px; border: 1px solid #1f2940; padding: 15px 10px; margin-bottom: 15px; }
+        .prof-stat-box { text-align: center; border-right: 1px solid #1f2940; }
+        .prof-stat-box:last-child { border-right: none; }
+        .prof-stat-box h3 { font-size: 18px; margin-bottom: 2px; }
+        .prof-stat-box p { font-size: 9px; color: var(--text-muted); font-weight: 600; }
+
+        .prof-tabs { display: flex; justify-content: space-between; background: var(--card-bg); border-radius: 10px; padding: 5px; margin-bottom: 15px; border: 1px solid #1f2940;}
+        .p-tab { flex: 1; text-align: center; padding: 8px 0; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: 0.3s; }
+        .p-tab.active { background: var(--accent); color: #000; }
+
+        .prof-info-card { background: var(--card-bg); border-radius: 12px; padding: 15px; border: 1px solid #1f2940; margin-bottom: 15px; }
+        .prof-info-title { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
+        .prof-info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1f2940; font-size: 13px; }
+        .prof-info-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .prof-info-label { color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .prof-info-val { font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 5px;}
+        .copy-icon { color: var(--text-muted); cursor: pointer; font-size: 14px; }
+        .copy-icon:hover { color: var(--accent); }
+        .prof-social-link { color: var(--gold); text-decoration: none; }
+        .prof-footer-note { font-size: 10px; color: var(--text-muted); text-align: center; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+        /* Footer */
+        .bmg-footer { background: linear-gradient(180deg, #12182b 0%, #070b19 100%); border-top: 1px solid #1f2940; border-radius: 25px 25px 0 0; padding: 40px 20px 30px 20px; text-align: center; margin-top: 40px; }
         .footer-logo { width: 75px; margin-bottom: 12px; }
         .footer-title { font-size: 18px; letter-spacing: 2px; font-weight: 700; color: #ffffff; text-transform: uppercase; margin-bottom: 2px; }
         .footer-subtitle { font-size: 10px; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 10px; }
@@ -63,8 +88,7 @@
         .footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
         .f-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; cursor: pointer; transition: 0.3s; font-weight: 600; }
         .f-nav-item i { font-size: 18px; margin-bottom: 6px; color: var(--text-main); }
-        .f-nav-item:hover { color: var(--gold); }
-        .f-nav-item:hover i { color: var(--gold); }
+        .f-nav-item:hover, .f-nav-item:hover i { color: var(--gold); }
         .footer-socials { display: flex; justify-content: center; gap: 15px; }
         .social-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #1f2940; display: flex; justify-content: center; align-items: center; background: #16203a; color: var(--text-main); font-size: 16px; text-decoration: none; transition: 0.3s; }
         .social-circle:hover { background: var(--gold); color: #000; border-color: var(--gold); transform: translateY(-3px); }
@@ -77,7 +101,6 @@
         .nav-admin { display: none; color: #ef4444; } 
         .nav-admin.show { display: block; }
         .nav-item.active { color: var(--gold); }
-        
         input[type="file"] { padding: 5px; font-size: 11px; }
     </style>
 </head>
@@ -103,9 +126,10 @@
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name (Must)">
+            <input type="url" id="regFacebook" placeholder="Facebook Profile Link (Optional)">
             <label style="color: var(--text-muted); font-size: 11px; text-align: left; display: block; margin: 10px 0 5px;">Upload Avatar (Auto Compressed):</label>
             <input type="file" id="regAvatarFile" accept="image/*">
-            <input type="text" id="regPhone" placeholder="Mobile Number (Optional)">
+            <input type="text" id="regPhone" placeholder="Mobile/WhatsApp Number (Optional)">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
             <button id="regBtn" class="submit-btn" style="background: var(--gold); color: #000;" onclick="signUpWithEmail()">Sign Up</button>
@@ -127,29 +151,15 @@
             <h2 class="footer-title">BMG OFFICIAL</h2>
             <p class="footer-subtitle">EFOOTBALL COMMUNITY</p>
             <div class="footer-tagline">HOME OF SOLO TOURNAMENTS</div>
-            
             <hr class="footer-divider">
-            
             <div class="footer-nav">
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
-                    <i class="fas fa-home"></i> Home
-                </div>
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
-                    <i class="fas fa-medal"></i> Tournaments
-                </div>
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
-                    <i class="far fa-calendar-alt"></i> Matches
-                </div>
-                <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[1])">
-                    <i class="fas fa-chart-bar"></i> Ranking
-                </div>
-                <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[2])">
-                    <i class="far fa-user"></i> Profile
-                </div>
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])"><i class="fas fa-home"></i> Home</div>
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])"><i class="fas fa-medal"></i> Tournaments</div>
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])"><i class="far fa-calendar-alt"></i> Matches</div>
+                <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-chart-bar"></i> Ranking</div>
+                <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[2])"><i class="far fa-user"></i> Profile</div>
             </div>
-            
             <hr class="footer-divider">
-            
             <div class="footer-socials">
                 <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
@@ -157,15 +167,9 @@
                 <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
             </div>
-            
             <hr class="footer-divider">
-            
-            <div class="footer-contact">
-                <i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com
-            </div>
-            <div class="footer-copy">
-                &copy; 2026 BMG Official. All Rights Reserved. v1.0.0
-            </div>
+            <div class="footer-contact"><i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com</div>
+            <div class="footer-copy">&copy; 2026 BMG Official. All Rights Reserved. v1.0.0</div>
         </div>
     </div>
 
@@ -175,18 +179,70 @@
         <div class="card" id="leaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading Leaderboard...</p></div>
     </div>
 
-    <!-- 3. PROFILE PAGE -->
+    <!-- 3. PREMIUM PROFILE PAGE -->
     <div id="profile" class="page-section">
-        <div class="section-title">My Profile</div>
-        <div class="card" style="text-align: center; position: relative;">
-            <img id="userPic" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width: 90px; height: 90px; border-radius: 50%; display: none; margin: 0 auto; border: 3px solid var(--gold); object-fit: cover;">
-            <h3 id="userName" style="margin-top: 15px; font-size: 20px;">Please Login</h3>
-            <p id="userEmail" style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;"></p>
-            <div style="background: #16203a; border-radius: 8px; padding: 10px; text-align: center; margin-top: 15px;">
-                <p id="profileKonami" style="color: var(--gold); font-size: 14px; font-weight: bold;">Konami UID: N/A</p>
-                <p id="profileDevice" style="color: #10b981; font-size: 13px; margin-top: 3px;">Device: N/A</p>
+        <div class="prof-top-title">Player Overview</div>
+        
+        <div class="prof-header" id="profileHeader" style="display:none;">
+            <img id="profAvatar" src="" class="prof-avatar">
+            <div class="prof-details">
+                <div class="prof-name" id="profName">Player Name</div>
+                <div class="prof-country">🇧🇩 Bangladesh</div>
+                <div class="prof-rank-row">
+                    <div>CURRENT RANK<span class="prof-val green">Unranked</span></div>
+                    <div>TROPHIES WON<span class="prof-val">🏆 0</span></div>
+                </div>
             </div>
-            <button onclick="logOut()" style="background: #ef4444; color: white; border: none; padding: 8px 20px; border-radius: 5px; margin-top: 20px; cursor: pointer; font-weight: bold;">Logout</button>
+        </div>
+
+        <div class="prof-stats-grid">
+            <div class="prof-stat-box"><h3 id="statMatches">0</h3><p>MATCHES</p></div>
+            <div class="prof-stat-box"><h3 id="statWins">0</h3><p>WINS</p></div>
+            <div class="prof-stat-box"><h3 id="statGoals">0</h3><p>GOALS</p></div>
+            <div class="prof-stat-box"><h3><span id="statWinRate">0</span>%</h3><p>WIN RATE</p></div>
+        </div>
+
+        <div class="prof-tabs">
+            <div class="p-tab active">Info</div>
+            <div class="p-tab">Stats</div>
+            <div class="p-tab">Form</div>
+            <div class="p-tab">Trophy</div>
+        </div>
+
+        <div class="prof-info-card">
+            <div class="prof-info-title">Player Information</div>
+            <div class="prof-info-row">
+                <span class="prof-info-label">eFootball UID</span>
+                <span class="prof-info-val">
+                    <span id="profKonamiTxt">N/A</span> 
+                    <i class="far fa-copy copy-icon" onclick="copyUID()"></i>
+                </span>
+            </div>
+            <div class="prof-info-row">
+                <span class="prof-info-label">Device Model</span>
+                <span class="prof-info-val" id="profDeviceTxt">N/A</span>
+            </div>
+        </div>
+
+        <div class="prof-info-card">
+            <div class="prof-info-title">Social</div>
+            <div class="prof-info-row">
+                <span class="prof-info-label"><i class="fab fa-facebook" style="color:#1877f2; font-size:18px;"></i> Facebook</span>
+                <a href="#" id="profFacebookBtn" target="_blank" class="prof-social-link">View Profile ></a>
+            </div>
+            <div class="prof-info-row">
+                <span class="prof-info-label"><i class="fab fa-whatsapp" style="color:#25d366; font-size:18px;"></i> WhatsApp</span>
+                <span class="prof-info-val" style="color:var(--accent);" id="profPhoneTxt">N/A ></span>
+            </div>
+        </div>
+
+        <div class="prof-footer-note">
+            <i class="fas fa-shield-alt"></i> All player information is verified and secured.
+        </div>
+
+        <div style="text-align: center; margin-top: 25px;">
+            <p id="profEmailTxt" style="color: var(--text-muted); font-size: 11px; margin-bottom: 10px;"></p>
+            <button onclick="logOut()" style="background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 8px 25px; border-radius: 5px; cursor: pointer; font-weight: bold;">Logout Account</button>
         </div>
     </div>
 
@@ -210,7 +266,7 @@
             <h3 style="color: var(--gold); font-size: 16px;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
             <input type="number" id="lbPoints" placeholder="Total Points">
-            <input type="text" id="lbWinRate" placeholder="Win Rate (e.g. 75%)">
+            <input type="text" id="lbWinRate" placeholder="Win Rate (e.g. 75)">
             <button class="submit-btn" style="background: var(--gold); color: #000;" onclick="updateLeaderboard()">Update Player</button>
         </div>
         <div class="card">
@@ -258,6 +314,15 @@
             }
         }
 
+        // Copy UID Function
+        function copyUID() {
+            const uidText = document.getElementById("profKonamiTxt").innerText;
+            if(uidText !== "N/A") {
+                navigator.clipboard.writeText(uidText);
+                alert("Konami UID Copied: " + uidText);
+            }
+        }
+
         function compressImage(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
@@ -289,10 +354,12 @@
             return data.data.url; 
         }
 
+        // Updated Sign Up with Facebook
         async function signUpWithEmail() {
             const name = document.getElementById('regName').value; 
             const konami = document.getElementById('regKonami').value;
             const device = document.getElementById('regDevice').value; 
+            const facebook = document.getElementById('regFacebook').value; 
             const avatarFile = document.getElementById('regAvatarFile').files[0];
             const phone = document.getElementById('regPhone').value; 
             const email = document.getElementById('regEmail').value;
@@ -313,10 +380,14 @@
                 btn.innerText = "Creating Account...";
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
+                
                 await user.updateProfile({ displayName: name, photoURL: photoURL });
+                
+                // Save Facebook Link in DB
                 await db.collection("users").doc(user.uid).set({
-                    name: name, konamiUid: konami, device: device, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    name: name, konamiUid: konami, device: device, facebook: facebook, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
+                
                 alert("Account Created Successfully!");
                 document.getElementById('signupBox').querySelectorAll('input').forEach(input => input.value = '');
                 switchTab('home', document.querySelectorAll('.nav-item')[0]);
@@ -342,37 +413,52 @@
 
         function logOut() { auth.signOut().then(() => switchTab('home', document.querySelectorAll('.nav-item')[0])); }
 
+        // Updated Profile State Checker
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('loginBtn').style.display = 'none';
-                document.getElementById('userName').innerText = user.displayName || "Player";
-                document.getElementById('userEmail').innerText = user.email;
-                document.getElementById('userPic').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-                document.getElementById('userPic').style.display = 'block';
+                
+                // Update Profile UI
+                document.getElementById('profileHeader').style.display = 'flex';
+                document.getElementById('profName').innerText = user.displayName || "Player";
+                document.getElementById('profEmailTxt').innerText = "Logged in as: " + user.email;
+                document.getElementById('profAvatar').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
                 db.collection("users").doc(user.uid).get().then(doc => {
                     if (doc.exists) {
-                        document.getElementById('profileKonami').innerText = "Konami UID: " + doc.data().konamiUid;
-                        document.getElementById('profileDevice').innerText = "Device: " + doc.data().device;
+                        const data = doc.data();
+                        document.getElementById('profKonamiTxt').innerText = data.konamiUid || "N/A";
+                        document.getElementById('profDeviceTxt').innerText = data.device || "N/A";
+                        document.getElementById('profPhoneTxt').innerText = data.phone ? data.phone + " >" : "N/A >";
+                        
+                        const fbBtn = document.getElementById('profFacebookBtn');
+                        if(data.facebook) {
+                            fbBtn.href = data.facebook;
+                            fbBtn.innerText = "View Profile >";
+                            fbBtn.style.color = "var(--gold)";
+                        } else {
+                            fbBtn.href = "#";
+                            fbBtn.innerText = "Not Added";
+                            fbBtn.style.color = "var(--text-muted)";
+                        }
                     }
                 });
+                
+                // Set Admin Tab
                 if(user.email === adminEmail) document.getElementById('navAdmin').classList.add('show');
                 else document.getElementById('navAdmin').classList.remove('show');
             } else {
                 document.getElementById('loginBtn').style.display = 'block';
-                document.getElementById('userName').innerText = "Please Login First";
-                document.getElementById('userEmail').innerText = "";
-                document.getElementById('userPic').style.display = 'none';
-                document.getElementById('profileKonami').innerText = "Konami UID: N/A";
-                document.getElementById('profileDevice').innerText = "Device: N/A";
+                document.getElementById('profileHeader').style.display = 'none';
+                document.getElementById('profEmailTxt').innerText = "Please login to view details.";
                 document.getElementById('navAdmin').classList.remove('show');
             }
         });
 
+        // Admin & App Logic
         function createTournament() {
             const name = document.getElementById('tName').value; const format = document.getElementById('tFormat').value; const slots = document.getElementById('tSlots').value; const fee = document.getElementById('tFee').value;
             let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
-
             if(name && slots && fee) {
                 db.collection("tournaments").add({ name: name, format: format, slots: slots, fee: fee, image: image, time: firebase.firestore.FieldValue.serverTimestamp() })
                 .then(() => { alert("Tournament Created!"); document.getElementById('tName').value = ""; document.getElementById('tImage').value = ""; });
@@ -401,7 +487,7 @@
             snapshot.forEach(doc => {
                 const p = doc.data();
                 let rankIcon = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
-                lbList.innerHTML += `<div class="leaderboard-row"><div class="rank">${rankIcon}</div><div class="player-info"><div class="player-name">${p.name}</div><div class="points">★ ${p.points} Points</div></div><div class="win-rate">${p.winRate || "0%"}</div></div>`;
+                lbList.innerHTML += `<div class="leaderboard-row"><div class="rank">${rankIcon}</div><div class="player-info"><div class="player-name">${p.name}</div><div class="points">★ ${p.points} Points</div></div><div class="win-rate">${p.winRate || "0"}%</div></div>`;
                 rank++;
             });
             if(lbList.innerHTML === "") lbList.innerHTML = "<p>Leaderboard is empty.</p>";
