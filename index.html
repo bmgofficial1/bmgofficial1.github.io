@@ -4,80 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BMG Official - eFootball Community</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
-        :root { --bg-dark: #070b19; --card-bg: #12182b; --gold: #ffd700; --accent: #10b981; --text-main: #ffffff; --text-muted: #8a94b5; --nav-bg: #16203a; }
+        :root { --bg-dark: #070b19; --card-bg: #12182b; --gold: #ffd700; --accent: #a3e635; --text-main: #ffffff; --text-muted: #8a94b5; --nav-bg: #16203a; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 80px; }
         
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1f2940; }
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1f2940; background: var(--bg-dark); position: sticky; top: 0; z-index: 100;}
         .header h2 { font-size: 18px; letter-spacing: 2px; }
         .header span { color: #3b82f6; }
-        .login-btn { background: #3b82f6; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .login-btn { background: transparent; color: var(--text-muted); border: 1px solid #1f2940; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 18px; }
         
         .page-section { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .section-title { font-size: 14px; text-transform: uppercase; margin: 20px 0 10px; font-weight: 700; color: var(--gold); }
-        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #1f2940; }
+        /* --- NEW ANIMATED HERO SLIDER --- */
+        .hero-banner-slider { position: relative; width: 100%; height: 180px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; border: 1px solid #1f2940; }
+        .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; }
+        .hero-slide.active { opacity: 1; z-index: 2; }
         
-        /* Tournament & Leaderboard */
-        .tournament-card { background: linear-gradient(to right, #0f172a, #1e3a8a); border-radius: 10px; margin-bottom: 15px; overflow: hidden; border: 1px solid #1f2940; }
-        .t-banner { height: 130px; background-size: cover; background-position: center; border-bottom: 3px solid var(--gold); }
-        .badge { background: #dc2626; color: white; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
-        .format-badge { background: #a3e635; color: #000; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-left: 5px; }
+        .hero-content { z-index: 3; width: 62%; opacity: 0; }
+        .hero-slide.active .hero-content { animation: slideInLeft 0.8s ease-out forwards 0.2s; }
+        
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
+        .hero-title { font-size: 21px; font-weight: 800; line-height: 1.1; margin-bottom: 6px; text-transform: uppercase; }
+        .hero-desc { font-size: 9px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.4; }
+        .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        
+        /* Image Floating Animation */
+        .hero-img { position: absolute; right: -5px; bottom: 0; height: 165px; z-index: 2; filter: drop-shadow(-8px 5px 10px rgba(0,0,0,0.6)); animation: floatImg 3s ease-in-out infinite; object-fit: contain; }
+        @keyframes floatImg {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* --- SECTION HEADERS --- */
+        .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
+        .sec-title { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sec-link { font-size: 11px; color: var(--gold); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 3px; }
+        .sec-badge { background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 10px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 700;}
+
+        /* --- TOURNAMENT SLIDER --- */
+        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
+        .t-slider::-webkit-scrollbar { display: none; }
+        .t-card { min-width: 90%; scroll-snap-align: center; background: var(--card-bg); border-radius: 14px; border: 1px solid #1f2940; overflow: hidden; }
+        .t-card-img { height: 140px; background-size: cover; background-position: center; position: relative; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; }
+        .t-card-img::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.2)); }
+        .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 4px;}
+        .t-status::before { content:''; width: 6px; height: 6px; background: #000; border-radius: 50%; }
+        .t-card-titles { position: relative; z-index: 2; }
+        .t-prize { color: var(--gold); font-size: 12px; font-weight: 800; }
+        .t-name { font-size: 16px; font-weight: 700; text-transform: uppercase; line-height: 1.2; }
+        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #0b1120; border-top: 1px solid #1f2940;}
+        .t-stat { text-align: center; }
+        .t-stat span { display: block; font-size: 9px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px;}
+        .t-stat strong { font-size: 13px; font-weight: 700; }
+        .t-reg-btn { background: linear-gradient(90deg, #f97316, #ef4444); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+        /* --- EXPERT PLAYBOOK --- */
+        .playbook-card { background: linear-gradient(180deg, #12182b, #070b19); border: 1px solid #14532d; border-radius: 14px; padding: 15px; position: relative; margin-bottom: 25px;}
+        .pb-badge { background: #064e3b; color: var(--accent); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 12px; border: 1px solid #14532d; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 15px; }
+        .pb-content { display: flex; align-items: center; justify-content: space-between; }
+        .pb-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #1f2940; }
+        .pb-details { flex: 1; margin-left: 12px; }
+        .pb-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 5px; margin-bottom: 2px;}
+        .pb-verified { color: var(--accent); font-size: 12px; }
+        .pb-rank { background: #78350f; color: var(--gold); font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 700; }
+        .pb-style { font-size: 10px; color: var(--text-muted); }
+        .pb-stats { display: flex; gap: 15px; text-align: center; }
+        .pb-stat-val { font-size: 14px; font-weight: 700; display: block; }
+        .pb-stat-label { font-size: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;}
+        .pb-link { text-align: right; margin-top: 10px; font-size: 11px; color: var(--accent); font-weight: 600; }
+
+        /* --- LEADERBOARD & OTHERS --- */
         .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #1f2940; padding-bottom: 10px; }
-        .rank { color: var(--gold); font-weight: bold; width: 25px; font-size: 18px;}
-        .player-info { flex: 1; margin-left: 10px; }
-        .player-name { font-weight: 600; font-size: 14px; }
-        .points { font-size: 12px; color: var(--text-muted); }
-        .win-rate { font-size: 14px; font-weight: bold; color: var(--accent); }
+        .rank { color: var(--gold); font-weight: bold; width: 25px; font-size: 18px; text-align: center;}
+        .rank-badge { background: #d97706; width: 25px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 4px; color: white; font-weight: bold; position: relative;}
+        .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 12.5px solid transparent; border-right: 12.5px solid transparent; border-top: 5px solid #d97706;}
+        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 10px; border: 1px solid var(--gold);}
+        .player-info { flex: 1; }
+        .player-name { font-weight: 600; font-size: 14px; margin-bottom: 2px;}
+        .points { font-size: 11px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 4px;}
+        .win-rate-box { text-align: right; }
+        .win-rate-val { font-size: 15px; font-weight: 700; color: var(--accent); }
+        .win-rate-lbl { font-size: 10px; color: var(--text-muted); }
 
+        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #1f2940; }
         input, select { width: 100%; margin: 8px 0; padding: 10px; border-radius: 5px; border: none; background: #1f2940; color: white; font-size: 13px; }
-        .submit-btn { background: var(--accent); color: white; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .link-text { color: #3b82f6; font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: bold; text-decoration: underline; }
+        .submit-btn { background: var(--accent); color: #000; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .link-text { color: #3b82f6; font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: bold; text-decoration: underline; text-align: center; }
 
-        /* --- NEW PREMIUM PROFILE UI --- */
+        /* Profile Details */
         .prof-top-title { text-align: center; color: var(--text-muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
         .prof-header { display: flex; align-items: center; margin-bottom: 20px; }
         .prof-avatar { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid #1f2940; }
         .prof-details { margin-left: 15px; flex: 1; }
         .prof-name { font-size: 18px; font-weight: 700; line-height: 1.2; margin-bottom: 3px; }
         .prof-country { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
-        .prof-rank-row { display: flex; gap: 20px; font-size: 10px; color: var(--text-muted); font-weight: 600; }
-        .prof-val { display: block; font-size: 15px; font-weight: 700; color: var(--text-main); margin-top: 2px; }
-        .prof-val.green { color: var(--accent); }
-
-        .prof-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--card-bg); border-radius: 12px; border: 1px solid #1f2940; padding: 15px 10px; margin-bottom: 15px; }
-        .prof-stat-box { text-align: center; border-right: 1px solid #1f2940; }
-        .prof-stat-box:last-child { border-right: none; }
-        .prof-stat-box h3 { font-size: 18px; margin-bottom: 2px; }
-        .prof-stat-box p { font-size: 9px; color: var(--text-muted); font-weight: 600; }
-
-        .prof-tabs { display: flex; justify-content: space-between; background: var(--card-bg); border-radius: 10px; padding: 5px; margin-bottom: 15px; border: 1px solid #1f2940;}
-        .p-tab { flex: 1; text-align: center; padding: 8px 0; font-size: 12px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-radius: 8px; transition: 0.3s; }
-        .p-tab.active { background: var(--accent); color: #000; }
-
-        .prof-info-card { background: var(--card-bg); border-radius: 12px; padding: 15px; border: 1px solid #1f2940; margin-bottom: 15px; }
-        .prof-info-title { color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
-        .prof-info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1f2940; font-size: 13px; }
-        .prof-info-row:last-child { border-bottom: none; padding-bottom: 0; }
-        .prof-info-label { color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .prof-info-val { font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 5px;}
-        .copy-icon { color: var(--text-muted); cursor: pointer; font-size: 14px; }
-        .copy-icon:hover { color: var(--accent); }
-        .prof-social-link { color: var(--gold); text-decoration: none; }
-        .prof-footer-note { font-size: 10px; color: var(--text-muted); text-align: center; margin-top: 15px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-
+        
         /* Footer */
         .bmg-footer { background: linear-gradient(180deg, #12182b 0%, #070b19 100%); border-top: 1px solid #1f2940; border-radius: 25px 25px 0 0; padding: 40px 20px 30px 20px; text-align: center; margin-top: 40px; }
         .footer-logo { width: 75px; margin-bottom: 12px; }
@@ -85,43 +125,35 @@
         .footer-subtitle { font-size: 10px; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 10px; }
         .footer-tagline { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
         .footer-divider { border: none; border-top: 1px solid #1f2940; margin: 25px 0; }
-        .footer-nav { display: flex; justify-content: space-between; align-items: center; padding: 0 10px; }
-        .f-nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; cursor: pointer; transition: 0.3s; font-weight: 600; }
-        .f-nav-item i { font-size: 18px; margin-bottom: 6px; color: var(--text-main); }
-        .f-nav-item:hover, .f-nav-item:hover i { color: var(--gold); }
         .footer-socials { display: flex; justify-content: center; gap: 15px; }
-        .social-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #1f2940; display: flex; justify-content: center; align-items: center; background: #16203a; color: var(--text-main); font-size: 16px; text-decoration: none; transition: 0.3s; }
-        .social-circle:hover { background: var(--gold); color: #000; border-color: var(--gold); transform: translateY(-3px); }
-        .footer-contact { font-size: 12px; color: var(--text-main); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; }
-        .footer-contact i { color: var(--gold); font-size: 14px; }
-        .footer-copy { margin-top: 15px; font-size: 11px; color: var(--text-muted); }
-
+        .social-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #1f2940; display: flex; justify-content: center; align-items: center; background: #16203a; color: var(--text-main); font-size: 16px; text-decoration: none; }
+        .footer-contact { font-size: 12px; color: var(--text-main); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; margin-top: 20px;}
+        
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1f2940; z-index: 1000; }
         .nav-item { color: var(--text-muted); text-align: center; font-size: 12px; cursor: pointer; display: block; font-weight: 600; padding: 5px; } 
         .nav-admin { display: none; color: #ef4444; } 
         .nav-admin.show { display: block; }
         .nav-item.active { color: var(--gold); }
-        input[type="file"] { padding: 5px; font-size: 11px; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h2>BMG <span>OFFICIAL</span></h2>
-        <button id="loginBtn" class="login-btn" onclick="switchTab('authPage', this)">Login</button>
+        <button id="loginBtn" class="login-btn" onclick="switchTab('authPage', this)"><i class="far fa-user"></i></button>
     </div>
 
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
-        <div class="card" id="loginBox" style="border: 1px solid #3b82f6; text-align: center; margin-top: 20px;">
+        <div class="card" id="loginBox" style="text-align: center; margin-top: 20px;">
             <h2 style="color: #3b82f6; margin-bottom: 15px;">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
             <input type="password" id="loginPassword" placeholder="Password">
-            <button class="submit-btn" style="background: #3b82f6;" onclick="loginWithEmail()">Log In</button>
+            <button class="submit-btn" style="background: #3b82f6; color:white;" onclick="loginWithEmail()">Log In</button>
             <p class="link-text" onclick="toggleAuth('signup')">Don't have an account? Sign Up</p>
         </div>
 
-        <div class="card" id="signupBox" style="border: 1px solid var(--gold); text-align: center; margin-top: 20px; display: none;">
+        <div class="card" id="signupBox" style="text-align: center; margin-top: 20px; display: none;">
             <h2 style="color: var(--gold); margin-bottom: 15px;">Create Account</h2>
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
@@ -129,163 +161,179 @@
             <input type="url" id="regFacebook" placeholder="Facebook Profile Link (Optional)">
             <label style="color: var(--text-muted); font-size: 11px; text-align: left; display: block; margin: 10px 0 5px;">Upload Avatar (Auto Compressed):</label>
             <input type="file" id="regAvatarFile" accept="image/*">
-            <input type="text" id="regPhone" placeholder="Mobile/WhatsApp Number (Optional)">
+            <input type="text" id="regPhone" placeholder="WhatsApp Number (Optional)">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
-            <button id="regBtn" class="submit-btn" style="background: var(--gold); color: #000;" onclick="signUpWithEmail()">Sign Up</button>
+            <button id="regBtn" class="submit-btn" style="background: var(--gold);" onclick="signUpWithEmail()">Sign Up</button>
             <p class="link-text" onclick="toggleAuth('login')">Already have an account? Log In</p>
         </div>
     </div>
 
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
-        <div class="section-title">Featured Tournaments</div>
-        <div id="tournamentsList"><p style="text-align:center; color:gray; font-size:12px;">Loading Tournaments...</p></div>
         
-        <div class="section-title">Latest Matches</div>
-        <div class="card" id="matchesList"><p style="text-align:center; color:gray; font-size:12px;">Loading Results...</p></div>
+        <!-- Animated Hero Slider (With your 2 Images) -->
+        <div class="hero-banner-slider">
+            
+            <!-- Slide 1 -->
+            <div class="hero-slide active" style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);">
+                <div class="hero-content">
+                    <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.2); border-color: var(--accent);">SEASON 1</span>
+                    <h1 class="hero-title">NEW ERA<br><span style="color:var(--accent)">OF GREATNESS</span></h1>
+                    <p class="hero-desc">Introducing the highest individual honours in our community.</p>
+                    <button class="hero-btn" style="background:var(--accent); color:#000;" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
+                </div>
+                <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
+            </div>
 
-        <!-- BMG PREMIUM FOOTER -->
+            <!-- Slide 2 -->
+            <div class="hero-slide" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);">
+                <div class="hero-content">
+                    <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.1); border-color: var(--gold);">ELITE</span>
+                    <h1 class="hero-title">BECOME A<br><span style="color:var(--gold)">LEGEND</span></h1>
+                    <p class="hero-desc">Compete with top players and dominate the global rankings.</p>
+                    <button class="hero-btn" style="background:var(--gold); color:#000;" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fas fa-chevron-right"></i></button>
+                </div>
+                <!-- Image height adjusted slightly for perfect positioning -->
+                <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img" style="height: 145px; right: 0;">
+            </div>
+
+        </div>
+
+        <!-- Featured Tournaments -->
+        <div class="sec-head">
+            <div class="sec-title">Featured Tournaments</div>
+            <div class="sec-link" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">View All <i class="fas fa-chevron-right"></i></div>
+        </div>
+        <div class="t-slider" id="homeTournamentsList">
+            <p style="font-size:12px; color:gray; padding: 10px;">Loading...</p>
+        </div>
+
+        <!-- Expert Playbook -->
+        <div class="sec-head" style="margin-top: 10px;">
+            <div class="sec-title">Expert Playbook</div>
+            <div class="sec-badge">Updated Weekly</div>
+        </div>
+        <div class="playbook-card">
+            <div class="pb-badge"><i class="fas fa-trophy"></i> This Week's Top Player</div>
+            <div class="pb-content">
+                <img src="https://img.freepik.com/premium-photo/portrait-handsome-young-man-soccer-player-confident_758367-17562.jpg" class="pb-avatar">
+                <div class="pb-details">
+                    <div class="pb-name">Abdul Ohab <i class="fas fa-check-circle pb-verified"></i> <span class="pb-rank">#1</span></div>
+                    <div class="pb-style">4-2-1-3 • Long Ball Counter</div>
+                </div>
+                <div class="pb-stats">
+                    <div>
+                        <span class="pb-stat-val" style="color:var(--accent);">100%</span>
+                        <span class="pb-stat-label">WIN RATE</span>
+                    </div>
+                    <div>
+                        <span class="pb-stat-val">4</span>
+                        <span class="pb-stat-label">MATCHES</span>
+                    </div>
+                </div>
+            </div>
+            <div class="pb-link">Watch Gameplay <i class="fas fa-chevron-right"></i></div>
+        </div>
+
+        <!-- Top Players Preview -->
+        <div class="sec-head">
+            <div class="sec-title">Top Players</div>
+            <div class="sec-badge" style="color: var(--gold); background: rgba(255, 215, 0, 0.1); border-color: rgba(255, 215, 0, 0.3);">🔴 Live Leaderboard</div>
+        </div>
+        <div class="card" style="padding: 10px; border-radius: 16px;">
+            <div id="homeLeaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
+        </div>
+
+        <!-- Footer -->
         <div class="bmg-footer">
             <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="footer-logo">
             <h2 class="footer-title">BMG OFFICIAL</h2>
             <p class="footer-subtitle">EFOOTBALL COMMUNITY</p>
             <div class="footer-tagline">HOME OF SOLO TOURNAMENTS</div>
             <hr class="footer-divider">
-            <div class="footer-nav">
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])"><i class="fas fa-home"></i> Home</div>
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])"><i class="fas fa-medal"></i> Tournaments</div>
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])"><i class="far fa-calendar-alt"></i> Matches</div>
-                <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[1])"><i class="fas fa-chart-bar"></i> Ranking</div>
-                <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[2])"><i class="far fa-user"></i> Profile</div>
-            </div>
-            <hr class="footer-divider">
             <div class="footer-socials">
                 <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
             </div>
-            <hr class="footer-divider">
             <div class="footer-contact"><i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com</div>
-            <div class="footer-copy">&copy; 2026 BMG Official. All Rights Reserved. v1.0.0</div>
         </div>
     </div>
 
-    <!-- 2. LEADERBOARD PAGE -->
+    <!-- 2. TOURNAMENTS -->
+    <div id="tournamentsTab" class="page-section">
+        <div class="section-title">All Tournaments</div>
+        <div id="allTournamentsList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
+    </div>
+
+    <!-- 3. LEADERBOARD -->
     <div id="leaderboard" class="page-section">
-        <div class="section-title">Top Players</div>
+        <div class="section-title">Global Ranking</div>
         <div class="card" id="leaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading Leaderboard...</p></div>
     </div>
 
-    <!-- 3. PREMIUM PROFILE PAGE -->
+    <!-- 4. PROFILE -->
     <div id="profile" class="page-section">
         <div class="prof-top-title">Player Overview</div>
-        
         <div class="prof-header" id="profileHeader" style="display:none;">
             <img id="profAvatar" src="" class="prof-avatar">
             <div class="prof-details">
                 <div class="prof-name" id="profName">Player Name</div>
                 <div class="prof-country">🇧🇩 Bangladesh</div>
-                <div class="prof-rank-row">
-                    <div>CURRENT RANK<span class="prof-val green">Unranked</span></div>
-                    <div>TROPHIES WON<span class="prof-val">🏆 0</span></div>
-                </div>
+                <p id="profEmailTxt" style="color: var(--accent); font-size: 10px; margin-top: 5px;"></p>
             </div>
         </div>
-
-        <div class="prof-stats-grid">
-            <div class="prof-stat-box"><h3 id="statMatches">0</h3><p>MATCHES</p></div>
-            <div class="prof-stat-box"><h3 id="statWins">0</h3><p>WINS</p></div>
-            <div class="prof-stat-box"><h3 id="statGoals">0</h3><p>GOALS</p></div>
-            <div class="prof-stat-box"><h3><span id="statWinRate">0</span>%</h3><p>WIN RATE</p></div>
-        </div>
-
-        <div class="prof-tabs">
-            <div class="p-tab active">Info</div>
-            <div class="p-tab">Stats</div>
-            <div class="p-tab">Form</div>
-            <div class="p-tab">Trophy</div>
-        </div>
-
-        <div class="prof-info-card">
-            <div class="prof-info-title">Player Information</div>
-            <div class="prof-info-row">
-                <span class="prof-info-label">eFootball UID</span>
-                <span class="prof-info-val">
-                    <span id="profKonamiTxt">N/A</span> 
-                    <i class="far fa-copy copy-icon" onclick="copyUID()"></i>
-                </span>
+        <div class="card" style="margin-top: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1f2940; margin-bottom:10px;">
+                <span style="color: var(--text-muted); font-size: 12px;">eFootball UID</span>
+                <strong style="color: white; font-size: 13px;" id="profKonamiTxt">N/A</strong>
             </div>
-            <div class="prof-info-row">
-                <span class="prof-info-label">Device Model</span>
-                <span class="prof-info-val" id="profDeviceTxt">N/A</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
+                <span style="color: var(--text-muted); font-size: 12px;">Device Model</span>
+                <strong style="color: white; font-size: 13px;" id="profDeviceTxt">N/A</strong>
             </div>
         </div>
-
-        <div class="prof-info-card">
-            <div class="prof-info-title">Social</div>
-            <div class="prof-info-row">
-                <span class="prof-info-label"><i class="fab fa-facebook" style="color:#1877f2; font-size:18px;"></i> Facebook</span>
-                <a href="#" id="profFacebookBtn" target="_blank" class="prof-social-link">View Profile ></a>
-            </div>
-            <div class="prof-info-row">
-                <span class="prof-info-label"><i class="fab fa-whatsapp" style="color:#25d366; font-size:18px;"></i> WhatsApp</span>
-                <span class="prof-info-val" style="color:var(--accent);" id="profPhoneTxt">N/A ></span>
-            </div>
-        </div>
-
-        <div class="prof-footer-note">
-            <i class="fas fa-shield-alt"></i> All player information is verified and secured.
-        </div>
-
         <div style="text-align: center; margin-top: 25px;">
-            <p id="profEmailTxt" style="color: var(--text-muted); font-size: 11px; margin-bottom: 10px;"></p>
             <button onclick="logOut()" style="background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 8px 25px; border-radius: 5px; cursor: pointer; font-weight: bold;">Logout Account</button>
         </div>
     </div>
 
-    <!-- 4. ADMIN PANEL -->
+    <!-- 5. ADMIN -->
     <div id="admin" class="page-section">
         <div class="section-title" style="color: #ef4444;">Admin Dashboard</div>
         <div class="card" style="border: 1px solid #3b82f6;">
             <h3 style="color: #3b82f6; font-size: 16px;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
             <select id="tFormat">
-                <option value="Knockout">Knockout</option>
-                <option value="League">League</option>
-                <option value="Group Stage">Group Stage</option>
+                <option value="Upcoming">Upcoming</option>
+                <option value="Live">Live</option>
             </select>
-            <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32)">
-            <input type="text" id="tFee" placeholder="Entry Fee">
-            <input type="text" id="tImage" placeholder="Thumbnail Image URL (Link)">
-            <button class="submit-btn" style="background: #3b82f6;" onclick="createTournament()">Publish Tournament</button>
+            <input type="text" id="tSlots" placeholder="Total Slots (e.g. 96)">
+            <input type="text" id="tFee" placeholder="Entry Fee (e.g. Free or 50 BDT)">
+            <input type="text" id="tImage" placeholder="Banner Image URL">
+            <button class="submit-btn" style="background: #3b82f6; color:white;" onclick="createTournament()">Publish Tournament</button>
         </div>
         <div class="card" style="border: 1px solid var(--gold);">
             <h3 style="color: var(--gold); font-size: 16px;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
+            <input type="text" id="lbAvatar" placeholder="Player Avatar URL (Optional)">
             <input type="number" id="lbPoints" placeholder="Total Points">
-            <input type="text" id="lbWinRate" placeholder="Win Rate (e.g. 75)">
-            <button class="submit-btn" style="background: var(--gold); color: #000;" onclick="updateLeaderboard()">Update Player</button>
-        </div>
-        <div class="card">
-            <h3 style="font-size: 16px;">Add Match Result</h3>
-            <input type="text" id="player1" placeholder="Player 1 Name">
-            <input type="text" id="player2" placeholder="Player 2 Name">
-            <input type="text" id="score" placeholder="Score (e.g. 2 - 1)">
-            <button class="submit-btn" onclick="submitMatch()">Submit Result</button>
+            <input type="text" id="lbWinRate" placeholder="Win Rate (e.g. 78.8)">
+            <button class="submit-btn" style="background: var(--gold);" onclick="updateLeaderboard()">Update Player</button>
         </div>
     </div>
 
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)">Home</div>
-        <div class="nav-item" onclick="switchTab('leaderboard', this)">Ranking</div>
-        <div class="nav-item" onclick="switchTab('profile', this)">Profile</div>
-        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)">Admin</div>
+        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home" style="font-size: 16px; margin-bottom: 3px;"></i><br>Home</div>
+        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class="fas fa-trophy" style="font-size: 16px; margin-bottom: 3px;"></i><br>Events</div>
+        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class="fas fa-chart-bar" style="font-size: 16px; margin-bottom: 3px;"></i><br>Ranking</div>
+        <div class="nav-item" onclick="switchTab('profile', this)"><i class="far fa-user" style="font-size: 16px; margin-bottom: 3px;"></i><br>Profile</div>
+        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class="fas fa-cog" style="font-size: 16px; margin-bottom: 3px;"></i><br>Admin</div>
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
+    <!-- JAVASCRIPT -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDsnRIuo614UKEoNwBJxSdQvkJzUHL-sE0",
@@ -304,6 +352,17 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        /* --- HERO SLIDER JS --- */
+        setInterval(() => {
+            const slides = document.querySelectorAll('.hero-slide');
+            if(slides.length === 0) return;
+            let activeIdx = 0;
+            slides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
+            slides[activeIdx].classList.remove('active');
+            let nextIdx = (activeIdx + 1) % slides.length;
+            slides[nextIdx].classList.add('active');
+        }, 4000); // 4 seconds per slide
+
         function toggleAuth(type) {
             if(type === 'signup') {
                 document.getElementById('loginBox').style.display = 'none'; 
@@ -314,29 +373,15 @@
             }
         }
 
-        // Copy UID Function
-        function copyUID() {
-            const uidText = document.getElementById("profKonamiTxt").innerText;
-            if(uidText !== "N/A") {
-                navigator.clipboard.writeText(uidText);
-                alert("Konami UID Copied: " + uidText);
-            }
-        }
-
         function compressImage(file) {
             return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
+                const reader = new FileReader(); reader.readAsDataURL(file);
                 reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
+                    const img = new Image(); img.src = event.target.result;
                     img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width; let height = img.height; const max_size = 500;
-                        if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } } 
-                        else { if (height > max_size) { width *= max_size / height; height = max_size; } }
-                        canvas.width = width; canvas.height = height;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                        const canvas = document.createElement('canvas'); let width = img.width; let height = img.height; const max_size = 500;
+                        if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } } else { if (height > max_size) { width *= max_size / height; height = max_size; } }
+                        canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
                         canvas.toBlob((blob) => { resolve(blob); }, 'image/jpeg', 0.7);
                     };
                 };
@@ -344,35 +389,16 @@
         }
 
         async function uploadToImgBB(blob) {
-            const formData = new FormData();
-            formData.append('image', blob, 'avatar.jpg');
-            const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-            return data.data.url; 
+            const formData = new FormData(); formData.append('image', blob, 'avatar.jpg');
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, { method: 'POST', body: formData });
+            const data = await response.json(); return data.data.url; 
         }
 
-        // Updated Sign Up with Facebook
         async function signUpWithEmail() {
-            const name = document.getElementById('regName').value; 
-            const konami = document.getElementById('regKonami').value;
-            const device = document.getElementById('regDevice').value; 
-            const facebook = document.getElementById('regFacebook').value; 
-            const avatarFile = document.getElementById('regAvatarFile').files[0];
-            const phone = document.getElementById('regPhone').value; 
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            
+            const name = document.getElementById('regName').value; const konami = document.getElementById('regKonami').value; const device = document.getElementById('regDevice').value; const facebook = document.getElementById('regFacebook').value; const avatarFile = document.getElementById('regAvatarFile').files[0]; const phone = document.getElementById('regPhone').value; const email = document.getElementById('regEmail').value; const password = document.getElementById('regPassword').value;
             if(!avatarFile) { alert("Please select an avatar image!"); return; }
-            if(!name || !konami || !device || !email || password.length < 6) { 
-                alert("Please fill all required fields (Min password 6 chars)."); return; 
-            }
-
-            const btn = document.getElementById('regBtn');
-            btn.innerText = "Uploading Image... Please wait";
-            btn.disabled = true;
+            if(!name || !konami || !device || !email || password.length < 6) { alert("Please fill all required fields (Min password 6 chars)."); return; }
+            const btn = document.getElementById('regBtn'); btn.innerText = "Uploading Image..."; btn.disabled = true;
 
             try {
                 const compressedImage = await compressImage(avatarFile);
@@ -380,73 +406,42 @@
                 btn.innerText = "Creating Account...";
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
-                
                 await user.updateProfile({ displayName: name, photoURL: photoURL });
-                
-                // Save Facebook Link in DB
-                await db.collection("users").doc(user.uid).set({
-                    name: name, konamiUid: konami, device: device, facebook: facebook, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
+                await db.collection("users").doc(user.uid).set({ name: name, konamiUid: konami, device: device, facebook: facebook, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp() });
                 
                 alert("Account Created Successfully!");
                 document.getElementById('signupBox').querySelectorAll('input').forEach(input => input.value = '');
                 switchTab('home', document.querySelectorAll('.nav-item')[0]);
-            } catch (error) {
-                alert("Error: " + error.message);
-            } finally {
-                btn.innerText = "Sign Up";
-                btn.disabled = false;
-            }
+            } catch (error) { alert("Error: " + error.message); } finally { btn.innerText = "Sign Up"; btn.disabled = false; }
         }
 
         function loginWithEmail() {
-            const email = document.getElementById('loginEmail').value; 
-            const password = document.getElementById('loginPassword').value;
+            const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value;
             if(email && password) {
                 auth.signInWithEmailAndPassword(email, password).then(() => {
-                    alert("Logged In Successfully!");
-                    document.getElementById('loginEmail').value = ""; document.getElementById('loginPassword').value = "";
-                    switchTab('home', document.querySelectorAll('.nav-item')[0]);
+                    alert("Logged In Successfully!"); document.getElementById('loginEmail').value = ""; document.getElementById('loginPassword').value = ""; switchTab('home', document.querySelectorAll('.nav-item')[0]);
                 }).catch((error) => alert(error.message));
-            } else { alert("Please enter email and password."); }
+            }
         }
 
         function logOut() { auth.signOut().then(() => switchTab('home', document.querySelectorAll('.nav-item')[0])); }
 
-        // Updated Profile State Checker
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('loginBtn').style.display = 'none';
-                
-                // Update Profile UI
                 document.getElementById('profileHeader').style.display = 'flex';
                 document.getElementById('profName').innerText = user.displayName || "Player";
-                document.getElementById('profEmailTxt').innerText = "Logged in as: " + user.email;
+                document.getElementById('profEmailTxt').innerText = user.email;
                 document.getElementById('profAvatar').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
                 db.collection("users").doc(user.uid).get().then(doc => {
                     if (doc.exists) {
-                        const data = doc.data();
-                        document.getElementById('profKonamiTxt').innerText = data.konamiUid || "N/A";
-                        document.getElementById('profDeviceTxt').innerText = data.device || "N/A";
-                        document.getElementById('profPhoneTxt').innerText = data.phone ? data.phone + " >" : "N/A >";
-                        
-                        const fbBtn = document.getElementById('profFacebookBtn');
-                        if(data.facebook) {
-                            fbBtn.href = data.facebook;
-                            fbBtn.innerText = "View Profile >";
-                            fbBtn.style.color = "var(--gold)";
-                        } else {
-                            fbBtn.href = "#";
-                            fbBtn.innerText = "Not Added";
-                            fbBtn.style.color = "var(--text-muted)";
-                        }
+                        document.getElementById('profKonamiTxt').innerText = doc.data().konamiUid || "N/A";
+                        document.getElementById('profDeviceTxt').innerText = doc.data().device || "N/A";
                     }
                 });
                 
-                // Set Admin Tab
-                if(user.email === adminEmail) document.getElementById('navAdmin').classList.add('show');
-                else document.getElementById('navAdmin').classList.remove('show');
+                if(user.email === adminEmail) document.getElementById('navAdmin').classList.add('show'); else document.getElementById('navAdmin').classList.remove('show');
             } else {
                 document.getElementById('loginBtn').style.display = 'block';
                 document.getElementById('profileHeader').style.display = 'none';
@@ -455,59 +450,78 @@
             }
         });
 
-        // Admin & App Logic
         function createTournament() {
-            const name = document.getElementById('tName').value; const format = document.getElementById('tFormat').value; const slots = document.getElementById('tSlots').value; const fee = document.getElementById('tFee').value;
-            let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
+            const name = document.getElementById('tName').value; const format = document.getElementById('tFormat').value; const slots = document.getElementById('tSlots').value; const fee = document.getElementById('tFee').value; let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
             if(name && slots && fee) {
-                db.collection("tournaments").add({ name: name, format: format, slots: slots, fee: fee, image: image, time: firebase.firestore.FieldValue.serverTimestamp() })
+                db.collection("tournaments").add({ name: name, status: format, slots: slots, fee: fee, image: image, time: firebase.firestore.FieldValue.serverTimestamp() })
                 .then(() => { alert("Tournament Created!"); document.getElementById('tName').value = ""; document.getElementById('tImage').value = ""; });
-            } else { alert("Fill all fields!"); }
-        }
-
-        db.collection("tournaments").orderBy("time", "desc").onSnapshot(snapshot => {
-            const tList = document.getElementById('tournamentsList'); tList.innerHTML = ""; 
-            snapshot.forEach(doc => {
-                const t = doc.data();
-                tList.innerHTML += `<div class="tournament-card"><div class="t-banner" style="background-image: url('${t.image}');"></div><div style="padding: 15px;"><span class="badge">LIVE</span><span class="format-badge">${t.format}</span><h3 style="margin-top: 10px; font-size: 18px;">${t.name}</h3><div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px;"><div><span style="color: var(--text-muted);">Slots:</span> ${t.slots}</div><div><span style="color: var(--text-muted);">Entry:</span> ${t.fee}</div><button style="background: #ef4444; color: white; border: none; padding: 5px 12px; border-radius: 4px; font-weight: bold;">JOIN NOW</button></div></div></div>`;
-            });
-            if(tList.innerHTML === "") tList.innerHTML = "<p>No active tournaments.</p>";
-        });
-
-        function updateLeaderboard() {
-            const name = document.getElementById('lbPlayerName').value; const points = parseInt(document.getElementById('lbPoints').value); const winRate = document.getElementById('lbWinRate').value;
-            if(name && !isNaN(points)) {
-                db.collection("leaderboard").doc(name).set({ name: name, points: points, winRate: winRate, time: firebase.firestore.FieldValue.serverTimestamp() })
-                .then(() => { alert("Player Updated!"); document.getElementById('lbPlayerName').value = ""; document.getElementById('lbPoints').value = ""; document.getElementById('lbWinRate').value = ""; });
-            } else { alert("Enter valid Name and Points!"); }
-        }
-
-        db.collection("leaderboard").orderBy("points", "desc").onSnapshot(snapshot => {
-            const lbList = document.getElementById('leaderboardList'); lbList.innerHTML = ""; let rank = 1;
-            snapshot.forEach(doc => {
-                const p = doc.data();
-                let rankIcon = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
-                lbList.innerHTML += `<div class="leaderboard-row"><div class="rank">${rankIcon}</div><div class="player-info"><div class="player-name">${p.name}</div><div class="points">★ ${p.points} Points</div></div><div class="win-rate">${p.winRate || "0"}%</div></div>`;
-                rank++;
-            });
-            if(lbList.innerHTML === "") lbList.innerHTML = "<p>Leaderboard is empty.</p>";
-        });
-
-        function submitMatch() {
-            const p1 = document.getElementById('player1').value; const p2 = document.getElementById('player2').value; const score = document.getElementById('score').value;
-            if(p1 && p2 && score) {
-                db.collection("matches").add({ player1: p1, player2: p2, score: score, time: firebase.firestore.FieldValue.serverTimestamp() })
-                .then(() => { alert("Match result added!"); document.getElementById('player1').value = ""; document.getElementById('player2').value = ""; document.getElementById('score').value = ""; });
             }
         }
 
-        db.collection("matches").orderBy("time", "desc").onSnapshot(snapshot => {
-            const matchesList = document.getElementById('matchesList'); matchesList.innerHTML = ""; 
+        function renderTournaments(snapshot, elementId) {
+            const tList = document.getElementById(elementId); tList.innerHTML = ""; 
             snapshot.forEach(doc => {
-                const match = doc.data();
-                matchesList.innerHTML += `<div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1f2940;"><span style="font-weight: bold; font-size: 13px; width: 40%; text-align: left;">${match.player1}</span><span style="color: #10b981; font-weight: bold;">${match.score}</span><span style="font-weight: bold; font-size: 13px; width: 40%; text-align: right;">${match.player2}</span></div>`;
+                const t = doc.data();
+                tList.innerHTML += `
+                <div class="t-card">
+                    <div class="t-card-img" style="background-image: url('${t.image}');">
+                        <span class="t-status" style="${t.status === 'Live' ? 'background:#ef4444; color:white;' : ''}">${t.status}</span>
+                        <div class="t-card-titles">
+                            <div class="t-prize">PRIZE POOL: SPECIAL</div>
+                            <div class="t-name">${t.name}</div>
+                        </div>
+                    </div>
+                    <div class="t-card-info">
+                        <div class="t-stat"><span>SLOTS</span><strong>${t.slots}</strong></div>
+                        <div class="t-stat"><span>ENTRY FEE</span><strong style="color: var(--gold);">${t.fee}</strong></div>
+                        <div class="t-stat"><span>START DATE</span><strong>TBA</strong></div>
+                        <button class="t-reg-btn">REGISTER <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>`;
             });
-            if(matchesList.innerHTML === "") matchesList.innerHTML = "<p>No matches yet.</p>";
+            if(tList.innerHTML === "") tList.innerHTML = "<p style='color:gray; padding: 10px;'>No tournaments available.</p>";
+        }
+
+        db.collection("tournaments").orderBy("time", "desc").onSnapshot(snapshot => {
+            renderTournaments(snapshot, 'homeTournamentsList');
+            renderTournaments(snapshot, 'allTournamentsList');
+        });
+
+        function updateLeaderboard() {
+            const name = document.getElementById('lbPlayerName').value; const points = parseInt(document.getElementById('lbPoints').value); const winRate = document.getElementById('lbWinRate').value; const avatar = document.getElementById('lbAvatar').value || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+            if(name && !isNaN(points)) {
+                db.collection("leaderboard").doc(name).set({ name: name, points: points, winRate: winRate, avatar: avatar, time: firebase.firestore.FieldValue.serverTimestamp() })
+                .then(() => { alert("Player Updated!"); document.getElementById('lbPlayerName').value = ""; document.getElementById('lbPoints').value = ""; document.getElementById('lbWinRate').value = ""; });
+            }
+        }
+
+        function renderLeaderboard(snapshot, elementId, limit) {
+            const lbList = document.getElementById(elementId); lbList.innerHTML = ""; let rank = 1;
+            snapshot.forEach(doc => {
+                if(limit && rank > limit) return;
+                const p = doc.data();
+                let rankHTML = rank === 1 ? `<div class="rank-badge">1</div>` : `<div class="rank">#${rank}</div>`;
+                lbList.innerHTML += `
+                <div class="leaderboard-row">
+                    ${rankHTML}
+                    <img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="lb-avatar">
+                    <div class="player-info">
+                        <div class="player-name">${p.name}</div>
+                        <div class="points"><i class="fas fa-star" style="font-size:10px;"></i> ${p.points} Points</div>
+                    </div>
+                    <div class="win-rate-box">
+                        <div class="win-rate-val">${p.winRate || "0"}%</div>
+                        <div class="win-rate-lbl">Win Rate</div>
+                    </div>
+                </div>`;
+                rank++;
+            });
+            if(lbList.innerHTML === "") lbList.innerHTML = "<p style='color:gray;'>Leaderboard is empty.</p>";
+        }
+
+        db.collection("leaderboard").orderBy("points", "desc").onSnapshot(snapshot => {
+            renderLeaderboard(snapshot, 'homeLeaderboardList', 3); 
+            renderLeaderboard(snapshot, 'leaderboardList', false); 
         });
 
         function switchTab(tabId, element) {
