@@ -28,22 +28,33 @@
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- NEW FADE HERO SLIDER & FIXED IMAGE --- */
+        /* --- FIXED ANIMATED HERO SLIDER --- */
         .hero-banner-slider { position: relative; width: 100%; height: 180px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; border: 1px solid #1f2940; }
         
-        /* Fade animation for slides */
-        .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
+        /* Fade animation */
+        .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; padding: 20px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
         
-        .hero-content { z-index: 3; width: 55%; }
-        
+        .hero-content { z-index: 3; width: 65%; position: relative; }
         .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
         .hero-title { font-size: 21px; font-weight: 800; line-height: 1.1; margin-bottom: 6px; text-transform: uppercase; }
         .hero-desc { font-size: 9px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.4; }
-        .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; width: fit-content; }
         
-        /* Fixed Image Fit */
-        .hero-img { position: absolute; right: 10px; bottom: 0; max-height: 95%; max-width: 45%; object-fit: contain; z-index: 2; filter: drop-shadow(-5px 5px 8px rgba(0,0,0,0.5)); }
+        /* Premium Gradient Mask for Images */
+        .hero-img { 
+            position: absolute; 
+            right: 0; 
+            top: 0; 
+            height: 100%; 
+            width: 65%; /* Takes right side */
+            object-fit: cover; 
+            z-index: 1; 
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
+            mask-image: linear-gradient(to right, transparent 0%, black 40%);
+            border-top-right-radius: 16px;
+            border-bottom-right-radius: 16px;
+        }
 
         /* --- SECTION HEADERS --- */
         .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
@@ -163,29 +174,29 @@
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
         
-        <!-- Fading Hero Slider (With your 2 Images) -->
+        <!-- Blended Hero Slider (With your 2 Images) -->
         <div class="hero-banner-slider">
             
             <!-- Slide 1 -->
             <div class="hero-slide active" style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);">
+                <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-content">
                     <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.2); border-color: var(--accent);">SEASON 1</span>
                     <h1 class="hero-title">NEW ERA<br><span style="color:var(--accent)">OF GREATNESS</span></h1>
                     <p class="hero-desc">Introducing the highest individual honours in our community.</p>
                     <button class="hero-btn" style="background:var(--accent); color:#000;" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
                 </div>
-                <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
             </div>
 
             <!-- Slide 2 -->
             <div class="hero-slide" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);">
+                <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
                 <div class="hero-content">
                     <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.1); border-color: var(--gold);">ELITE</span>
                     <h1 class="hero-title">BECOME A<br><span style="color:var(--gold)">LEGEND</span></h1>
                     <p class="hero-desc">Compete with top players and dominate the global rankings.</p>
                     <button class="hero-btn" style="background:var(--gold); color:#000;" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fas fa-chevron-right"></i></button>
                 </div>
-                <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
             </div>
 
         </div>
@@ -529,3 +540,5 @@
     </script>
 </body>
 </html>
+here
+
