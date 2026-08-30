@@ -28,33 +28,16 @@
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- FIXED ANIMATED HERO SLIDER --- */
+        /* --- HERO SLIDER --- */
         .hero-banner-slider { position: relative; width: 100%; height: 180px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; border: 1px solid #1f2940; }
-        
-        /* Fade animation */
         .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; padding: 20px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
-        
         .hero-content { z-index: 3; width: 65%; position: relative; }
         .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
         .hero-title { font-size: 21px; font-weight: 800; line-height: 1.1; margin-bottom: 6px; text-transform: uppercase; }
         .hero-desc { font-size: 9px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.4; }
         .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; width: fit-content; }
-        
-        /* Premium Gradient Mask for Images */
-        .hero-img { 
-            position: absolute; 
-            right: 0; 
-            top: 0; 
-            height: 100%; 
-            width: 65%; /* Takes right side */
-            object-fit: cover; 
-            z-index: 1; 
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%);
-            mask-image: linear-gradient(to right, transparent 0%, black 40%);
-            border-top-right-radius: 16px;
-            border-bottom-right-radius: 16px;
-        }
+        .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 65%; object-fit: cover; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%); border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
 
         /* --- SECTION HEADERS --- */
         .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
@@ -120,16 +103,88 @@
         .prof-name { font-size: 18px; font-weight: 700; line-height: 1.2; margin-bottom: 3px; }
         .prof-country { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
         
-        /* Footer */
-        .bmg-footer { background: linear-gradient(180deg, #12182b 0%, #070b19 100%); border-top: 1px solid #1f2940; border-radius: 25px 25px 0 0; padding: 40px 20px 30px 20px; text-align: center; margin-top: 40px; }
-        .footer-logo { width: 75px; margin-bottom: 12px; }
-        .footer-title { font-size: 18px; letter-spacing: 2px; font-weight: 700; color: #ffffff; text-transform: uppercase; margin-bottom: 2px; }
-        .footer-subtitle { font-size: 10px; letter-spacing: 3px; color: var(--text-muted); margin-bottom: 10px; }
-        .footer-tagline { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
-        .footer-divider { border: none; border-top: 1px solid #1f2940; margin: 25px 0; }
-        .footer-socials { display: flex; justify-content: center; gap: 15px; }
-        .social-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #1f2940; display: flex; justify-content: center; align-items: center; background: #16203a; color: var(--text-main); font-size: 16px; text-decoration: none; }
-        .footer-contact { font-size: 12px; color: var(--text-main); display: flex; justify-content: center; align-items: center; gap: 8px; font-weight: 600; margin-top: 20px;}
+        /* --- PREMIUM UPDATED FOOTER --- */
+        .bmg-footer { 
+            background: #0a0f1d; 
+            border-top: 1px solid #1f2940; 
+            border-radius: 35px 35px 0 0; 
+            padding: 50px 20px 40px 20px; 
+            text-align: center; 
+            margin-top: 40px; 
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.4); 
+        }
+        .footer-logo { 
+            width: 90px; 
+            margin-bottom: 20px; 
+            filter: drop-shadow(0 0 15px rgba(59,130,246,0.2)); 
+        }
+        .footer-title { 
+            font-size: 22px; 
+            letter-spacing: 3px; 
+            font-weight: 800; 
+            color: #ffffff; 
+            text-transform: uppercase; 
+            margin-bottom: 5px; 
+        }
+        .footer-subtitle { 
+            font-size: 10px; 
+            letter-spacing: 4px; 
+            color: #8a94b5; 
+            margin-bottom: 15px; 
+            font-weight: 500; 
+            text-transform: uppercase; 
+        }
+        .footer-tagline { 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #ffd700; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+        }
+        .footer-divider { 
+            border: none; 
+            border-top: 1px solid #1f2940; 
+            margin: 30px auto; 
+            width: 85%; 
+        }
+        .footer-socials { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+        }
+        .social-circle { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 50%; 
+            background: #16203a; 
+            color: #ffffff; 
+            font-size: 18px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            text-decoration: none; 
+            transition: 0.3s; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
+        }
+        .social-circle:hover { 
+            background: #3b82f6; 
+            transform: translateY(-3px); 
+        }
+        .footer-contact { 
+            font-size: 13px; 
+            color: #ffffff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px; 
+            font-weight: 600; 
+            margin-top: 25px; 
+            letter-spacing: 0.5px; 
+        }
+        .footer-contact i { 
+            font-size: 16px; 
+            color: #ffffff; 
+        }
         
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1f2940; z-index: 1000; }
         .nav-item { color: var(--text-muted); text-align: center; font-size: 12px; cursor: pointer; display: block; font-weight: 600; padding: 5px; } 
@@ -174,10 +229,8 @@
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
         
-        <!-- Blended Hero Slider (With your 2 Images) -->
+        <!-- Blended Hero Slider -->
         <div class="hero-banner-slider">
-            
-            <!-- Slide 1 -->
             <div class="hero-slide active" style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);">
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-content">
@@ -187,8 +240,6 @@
                     <button class="hero-btn" style="background:var(--accent); color:#000;" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
-
-            <!-- Slide 2 -->
             <div class="hero-slide" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);">
                 <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
                 <div class="hero-content">
@@ -198,7 +249,6 @@
                     <button class="hero-btn" style="background:var(--gold); color:#000;" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
-
         </div>
 
         <!-- Featured Tournaments -->
@@ -246,19 +296,24 @@
             <div id="homeLeaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
         </div>
 
-        <!-- Footer -->
+        <!-- UPDATED PREMIUM FOOTER -->
         <div class="bmg-footer">
             <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="footer-logo">
-            <h2 class="footer-title">BMG OFFICIAL</h2>
-            <p class="footer-subtitle">EFOOTBALL COMMUNITY</p>
+            <div class="footer-title">BMG OFFICIAL</div>
+            <div class="footer-subtitle">EFOOTBALL COMMUNITY</div>
             <div class="footer-tagline">HOME OF SOLO TOURNAMENTS</div>
+            
             <hr class="footer-divider">
+            
             <div class="footer-socials">
                 <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
             </div>
-            <div class="footer-contact"><i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com</div>
+            
+            <div class="footer-contact">
+                <i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com
+            </div>
         </div>
     </div>
 
