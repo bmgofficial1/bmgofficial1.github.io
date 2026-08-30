@@ -6,7 +6,6 @@
     <title>BMG Official - eFootball Community</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
-
     <!-- STABLE FontAwesome v5.15.4 (100% Working) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -17,14 +16,11 @@
 
     <style>
         :root {
-            /* Base surfaces (background kept exactly as-is) */
             --bg-dark: #050814;
             --card-bg: #10162a;
             --card-bg-soft: #0c1120;
             --card-border: rgba(148, 163, 184, 0.10);
             --nav-bg: #0a0e1c;
-
-            /* Brand accents (matched to the logo) */
             --gold: #ffd700;
             --gold-deep: #c9970a;
             --accent: #a3e635;
@@ -32,19 +28,12 @@
             --logo-blue: #38bdf8;
             --logo-blue-deep: #0284c7;
             --danger: #ef4444;
-
-            /* Text */
             --text-main: #ffffff;
             --text-muted: #8a94b5;
             --text-dim: #576088;
-
-            /* Signature tri-accent line — the thread that ties logo + palette together */
             --signature: linear-gradient(90deg, var(--logo-blue), var(--gold) 50%, var(--accent));
-
-            /* Glass surfaces for the modern chrome (header / bottom nav) */
             --glass-bg: rgba(8, 12, 26, 0.72);
             --glass-border: rgba(255, 255, 255, 0.06);
-
             --font-body: 'Poppins', sans-serif;
             --font-display: 'Orbitron', sans-serif;
         }
@@ -53,28 +42,20 @@
         body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 92px; }
 
         ::selection { background: var(--logo-blue); color: #000; }
-        ::-webkit-scrollbar { width: 0; height: 0; }
+        ::-webkit-scrollbar { width: 4px; height: 0; }
+        ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
 
         /* Admin Action Visibility Control */
         body:not(.is-admin) .admin-controls { display: none !important; }
         body.is-admin .admin-controls { display: flex !important; }
 
         /* --- PRELOADER --- */
-        #preloader {
-            position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            background: radial-gradient(120% 140% at 50% 32%, #0e1c3d 0%, #081128 48%, #050814 100%);
-            transition: opacity 0.55s ease, visibility 0.55s ease;
-        }
+        #preloader { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(120% 140% at 50% 32%, #0e1c3d 0%, #081128 48%, #050814 100%); transition: opacity 0.55s ease, visibility 0.55s ease; }
         #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
         .preloader-ring-wrap { position: relative; width: 118px; height: 118px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
         .preloader-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(56,189,248,0.12); border-top-color: var(--logo-blue); border-right-color: var(--gold); animation: preloaderSpin 1s linear infinite; }
         .preloader-ring::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(56,189,248,0.15); }
-        .preloader-logo-badge {
-            width: 86px; height: 86px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at 35% 30%, rgba(56,189,248,0.28), rgba(5,8,20,0.5));
-            border: 1px solid rgba(56,189,248,0.4); box-shadow: 0 0 34px rgba(56,189,248,0.4);
-        }
+        .preloader-logo-badge { width: 86px; height: 86px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 35% 30%, rgba(56,189,248,0.28), rgba(5,8,20,0.5)); border: 1px solid rgba(56,189,248,0.4); box-shadow: 0 0 34px rgba(56,189,248,0.4); }
         .preloader-logo { width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(56,189,248,0.6)); animation: preloaderPulse 1.8s ease-in-out infinite; }
         .preloader-title { font-family: var(--font-display); font-size: 19px; letter-spacing: 4px; font-weight: 800; margin-top: 22px; color: #fff; }
         .preloader-title span { background: linear-gradient(90deg, var(--logo-blue), #7dd3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -84,31 +65,15 @@
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
         @keyframes preloaderPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.07); opacity: 0.85; } }
 
-        /* --- HEADER (glass chrome) --- */
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 15px; background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease;
-        }
-        .header::after {
-            content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
-            background: var(--signature); opacity: 0.55;
-        }
+        /* --- HEADER --- */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 15px; background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease; }
+        .header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--signature); opacity: 0.55; }
         .header.scrolled { background: rgba(6, 9, 20, 0.92); box-shadow: 0 12px 30px -18px rgba(0,0,0,0.85); }
         .header-brand { display: flex; align-items: center; gap: 9px; }
-        .header-mark {
-            width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.35), rgba(56,189,248,0.05));
-            border: 1px solid rgba(56,189,248,0.35); color: var(--logo-blue); font-size: 13px;
-            box-shadow: 0 0 14px rgba(56,189,248,0.35);
-        }
+        .header-mark { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.35), rgba(56,189,248,0.05)); border: 1px solid rgba(56,189,248,0.35); color: var(--logo-blue); font-size: 13px; box-shadow: 0 0 14px rgba(56,189,248,0.35); }
         .header h2 { font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 2.5px; }
         .header span { color: var(--logo-blue); }
-        .login-btn {
-            background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border);
-            width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 15px; transition: 0.25s;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .login-btn { background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 15px; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
         .login-btn:hover { background: rgba(56,189,248,0.12); color: var(--logo-blue); border-color: rgba(56,189,248,0.4); }
 
         .page-section { display: none; padding: 16px 15px 0; animation: fadeIn 0.35s ease; }
@@ -133,7 +98,6 @@
         .hero-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
         .hero-dots .dot.active { width: 18px; border-radius: 4px; background: var(--logo-blue); box-shadow: 0 0 8px rgba(56,189,248,0.7); }
 
-        /* --- SECTION HEADERS --- */
         .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
         .sec-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding-left: 11px; position: relative; }
         .sec-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
@@ -146,13 +110,7 @@
         /* --- TOURNAMENT SLIDER --- */
         .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 6px; scrollbar-width: none; }
         .t-slider::-webkit-scrollbar { display: none; }
-        .t-card {
-            min-width: 90%; scroll-snap-align: center; border-radius: 18px; overflow: hidden;
-            box-shadow: 0 14px 30px -14px rgba(0,0,0,0.7); transition: transform 0.2s ease;
-            border: 1px solid transparent;
-            background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
-                        linear-gradient(135deg, rgba(56,189,248,0.35), rgba(255,215,0,0.12) 55%, rgba(163,230,53,0.25)) border-box;
-        }
+        .t-card { min-width: 90%; scroll-snap-align: center; border-radius: 18px; overflow: hidden; box-shadow: 0 14px 30px -14px rgba(0,0,0,0.7); transition: transform 0.2s ease; border: 1px solid transparent; background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box, linear-gradient(135deg, rgba(56,189,248,0.35), rgba(255,215,0,0.12) 55%, rgba(163,230,53,0.25)) border-box; }
         .t-card:active { transform: scale(0.985); }
         .t-card-img { height: 148px; background-size: cover; background-position: center; position: relative; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
         .t-card-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,6,15,0.95), rgba(3,6,15,0.15) 60%); }
@@ -169,12 +127,7 @@
         .t-reg-btn:active { transform: scale(0.95); }
 
         /* --- EXPERT PLAYBOOK --- */
-        .playbook-card {
-            border-radius: 18px; padding: 16px; position: relative; margin-bottom: 26px; overflow: hidden;
-            box-shadow: 0 14px 30px -16px rgba(0,0,0,0.75); border: 1px solid transparent;
-            background: linear-gradient(165deg, #101d18 0%, #070b19 65%) padding-box,
-                        linear-gradient(165deg, rgba(163,230,53,0.5), rgba(20,83,45,0.2) 70%) border-box;
-        }
+        .playbook-card { border-radius: 18px; padding: 16px; position: relative; margin-bottom: 26px; overflow: hidden; box-shadow: 0 14px 30px -16px rgba(0,0,0,0.75); border: 1px solid transparent; background: linear-gradient(165deg, #101d18 0%, #070b19 65%) padding-box, linear-gradient(165deg, rgba(163,230,53,0.5), rgba(20,83,45,0.2) 70%) border-box; }
         .playbook-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, rgba(163,230,53,0.18), transparent 70%); }
         .pb-badge { background: #06301f; color: var(--accent); font-size: 10px; font-weight: 700; padding: 5px 11px; border-radius: 12px; border: 1px solid rgba(20,83,45,0.8); display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px; letter-spacing: 0.3px; position: relative; z-index: 2; }
         .pb-content { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; }
@@ -195,7 +148,7 @@
         .leaderboard-row:nth-child(2) { border-left-color: #cbd5e1; background: linear-gradient(90deg, rgba(203,213,225,0.05), transparent 60%); }
         .leaderboard-row:nth-child(3) { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205,127,50,0.06), transparent 60%); }
         .rank { color: var(--gold); font-family: var(--font-display); font-weight: 700; width: 26px; font-size: 15px; text-align: center;}
-        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px -3px rgba(255,215,0,0.55);}
+        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px -3px rgba(255,215,0,0.55);}
         .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 13px solid transparent; border-right: 13px solid transparent; border-top: 5px solid var(--gold-deep);}
         .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 11px; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,215,0,0.5); }
         .player-info { flex: 1; }
@@ -220,84 +173,32 @@
         .prof-country { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
 
         /* --- ULTRA PREMIUM FOOTER --- */
-        .bmg-footer {
-            position: relative;
-            background: radial-gradient(120% 140% at 50% -10%, #0d1730 0%, #070b19 55%, #05070f 100%);
-            border-radius: 34px 34px 0 0;
-            padding: 46px 22px 34px;
-            text-align: center;
-            margin-top: 42px;
-            overflow: hidden;
-            box-shadow: 0 -18px 45px -20px rgba(0,0,0,0.75);
-        }
-        .bmg-footer::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
-            background: var(--signature); border-radius: 34px 34px 0 0;
-        }
-        .footer-glow {
-            position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
-            width: 280px; height: 280px; border-radius: 50%; pointer-events: none;
-            background: radial-gradient(circle, rgba(56,189,248,0.16), transparent 65%);
-        }
+        .bmg-footer { position: relative; background: radial-gradient(120% 140% at 50% -10%, #0d1730 0%, #070b19 55%, #05070f 100%); border-radius: 34px 34px 0 0; padding: 46px 22px 34px; text-align: center; margin-top: 42px; overflow: hidden; box-shadow: 0 -18px 45px -20px rgba(0,0,0,0.75); }
+        .bmg-footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--signature); border-radius: 34px 34px 0 0; }
+        .footer-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 280px; height: 280px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(56,189,248,0.16), transparent 65%); }
         .footer-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
-
-        .footer-logo-badge {
-            width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at 35% 30%, rgba(56,189,248,0.18), rgba(5,8,20,0.4));
-            border: 1px solid rgba(56,189,248,0.35);
-            box-shadow: 0 0 0 6px rgba(56,189,248,0.05), 0 0 28px rgba(56,189,248,0.3);
-            margin-bottom: 16px;
-        }
+        .footer-logo-badge { width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 35% 30%, rgba(56,189,248,0.18), rgba(5,8,20,0.4)); border: 1px solid rgba(56,189,248,0.35); box-shadow: 0 0 0 6px rgba(56,189,248,0.05), 0 0 28px rgba(56,189,248,0.3); margin-bottom: 16px; }
         .footer-logo { width: 52px; height: 52px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5)); }
-
         .footer-title { font-family: var(--font-display); font-size: 21px; letter-spacing: 4px; font-weight: 800; color: #ffffff; text-transform: uppercase; margin-bottom: 6px; }
         .footer-title span { background: linear-gradient(90deg, var(--logo-blue), #7dd3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .footer-subtitle { font-size: 9px; letter-spacing: 4.5px; color: #8b9bc4; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; }
-        .footer-tagline-pill {
-            display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; color: var(--gold);
-            border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.06); padding: 7px 16px; border-radius: 20px;
-            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 30px;
-        }
-
+        .footer-tagline-pill { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; color: var(--gold); border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.06); padding: 7px 16px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 30px; }
         .footer-nav-row { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; max-width: 340px; margin-bottom: 8px; gap: 2px; }
-        .f-nav-item {
-            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px;
-            color: #cbd5e1; font-size: 9px; cursor: pointer; transition: 0.25s; font-weight: 600; letter-spacing: 0.2px;
-        }
-        .f-nav-item .f-icon-circle {
-            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); color: #ffffff; font-size: 12.5px; transition: 0.25s;
-        }
+        .f-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; color: #cbd5e1; font-size: 9px; cursor: pointer; transition: 0.25s; font-weight: 600; letter-spacing: 0.2px; }
+        .f-nav-item .f-icon-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); color: #ffffff; font-size: 12.5px; transition: 0.25s; }
         .f-nav-item:hover .f-icon-circle { border-color: rgba(56,189,248,0.5); background: rgba(56,189,248,0.12); color: var(--logo-blue); box-shadow: 0 0 14px rgba(56,189,248,0.35); }
         .f-nav-item:hover { color: var(--logo-blue); }
-
         .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 28px 0 22px; width: 100%; }
-
         .footer-group-label { font-size: 9px; letter-spacing: 2.5px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 14px; }
         .footer-socials { display: flex; justify-content: center; gap: 13px; margin-bottom: 26px; }
-        .social-circle {
-            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.03); color: #e2e8f0;
-            font-size: 16px; display: flex; justify-content: center; align-items: center; text-decoration: none;
-            transition: 0.25s; border: 1px solid var(--card-border);
-        }
+        .social-circle { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.03); color: #e2e8f0; font-size: 16px; display: flex; justify-content: center; align-items: center; text-decoration: none; transition: 0.25s; border: 1px solid var(--card-border); }
         .social-circle:hover { background: var(--logo-blue); color: #04101c; border-color: var(--logo-blue); transform: translateY(-3px); box-shadow: 0 8px 18px -6px rgba(56,189,248,0.55); }
-
-        .footer-contact {
-            font-size: 11.5px; color: #cbd5e1; display: inline-flex; justify-content: center; align-items: center;
-            gap: 8px; font-weight: 500; padding: 9px 18px; border-radius: 20px; background: rgba(255,255,255,0.03);
-            border: 1px solid var(--card-border);
-        }
+        .footer-contact { font-size: 11.5px; color: #cbd5e1; display: inline-flex; justify-content: center; align-items: center; gap: 8px; font-weight: 500; padding: 9px 18px; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); }
         .footer-bottom-bar { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 22px; font-size: 9.5px; color: rgba(255,255,255,0.32); letter-spacing: 0.4px; }
         .footer-bottom-bar .dot-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.25); }
 
         /* BOTTOM NAV */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            display: flex; justify-content: space-around; padding: 10px 0 12px; z-index: 1000;
-            border-radius: 20px 20px 0 0; border-top: 1px solid var(--glass-border);
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
-        }
+        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; justify-content: space-around; padding: 10px 0 12px; z-index: 1000; border-radius: 20px 20px 0 0; border-top: 1px solid var(--glass-border); box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
         .bottom-nav::before { content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 2px; background: var(--signature); border-radius: 2px; opacity: 0.6; }
         .nav-item { color: var(--text-muted); text-align: center; font-size: 10.5px; cursor: pointer; font-weight: 600; padding: 6px 12px; border-radius: 14px; transition: 0.25s; }
         .nav-item i { font-size: 17px; margin-bottom: 5px; display:block; }
@@ -306,32 +207,14 @@
         .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); }
 
         /* ===== PLAYER STATS SECTION ===== */
-        .stats-section-title {
-            font-family: var(--font-display); font-size: 13px; font-weight: 700;
-            letter-spacing: 1.5px; text-transform: uppercase; margin: 22px 0 14px;
-            padding-left: 11px; position: relative; color: var(--text-main);
-        }
-        .stats-section-title::before {
-            content: ''; position: absolute; left: 0; top: 1px; bottom: 1px;
-            width: 4px; border-radius: 3px; background: var(--signature);
-        }
+        .stats-section-title { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 22px 0 14px; padding-left: 11px; position: relative; color: var(--text-main); }
+        .stats-section-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
 
         /* --- Stats Grid (W / P / D / L / WR / GF / GA / MOTM) --- */
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr);
-            gap: 9px; margin-bottom: 14px;
-        }
-        .stat-box {
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            border-radius: 12px; padding: 12px 6px 10px;
-            text-align: center; position: relative; overflow: hidden;
-            transition: transform 0.2s;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 14px; }
+        .stat-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 6px 10px; text-align: center; position: relative; overflow: hidden; transition: transform 0.2s; }
         .stat-box:active { transform: scale(0.96); }
-        .stat-box::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            border-radius: 12px 12px 0 0;
-        }
+        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
         .stat-box.win::before   { background: linear-gradient(90deg, #22c55e, #16a34a); }
         .stat-box.played::before{ background: linear-gradient(90deg, var(--logo-blue), #0284c7); }
         .stat-box.draw::before  { background: linear-gradient(90deg, #94a3b8, #64748b); }
@@ -340,11 +223,7 @@
         .stat-box.gf::before    { background: linear-gradient(90deg, var(--gold), var(--gold-deep)); }
         .stat-box.ga::before    { background: linear-gradient(90deg, #f97316, #ea580c); }
         .stat-box.motm::before  { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
-
-        .stat-box-val {
-            font-family: var(--font-display); font-size: 20px; font-weight: 800;
-            display: block; line-height: 1.1; margin-bottom: 4px;
-        }
+        .stat-box-val { font-family: var(--font-display); font-size: 20px; font-weight: 800; display: block; line-height: 1.1; margin-bottom: 4px; }
         .stat-box.win   .stat-box-val { color: #4ade80; }
         .stat-box.played .stat-box-val { color: var(--logo-blue); }
         .stat-box.draw  .stat-box-val { color: #94a3b8; }
@@ -353,113 +232,53 @@
         .stat-box.gf    .stat-box-val { color: var(--gold); }
         .stat-box.ga    .stat-box-val { color: #fb923c; }
         .stat-box.motm  .stat-box-val { color: #c4b5fd; }
-
-        .stat-box-lbl {
-            font-size: 8.5px; color: var(--text-dim); font-weight: 700;
-            letter-spacing: 0.6px; text-transform: uppercase;
-        }
+        .stat-box-lbl { font-size: 8.5px; color: var(--text-dim); font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
 
         /* --- Form Strip --- */
-        .form-strip-wrap {
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            border-radius: 14px; padding: 14px 14px 16px; margin-bottom: 14px;
-        }
-        .form-strip-head {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
-        }
-        .form-strip-label {
-            font-family: var(--font-display); font-size: 11px; font-weight: 700;
-            color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;
-        }
+        .form-strip-wrap { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 14px 16px; margin-bottom: 14px; }
+        .form-strip-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .form-strip-label { font-family: var(--font-display); font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
         .form-strip-recent { font-size: 10px; color: var(--text-dim); font-weight: 600; }
-
         .form-matches { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
         .form-matches::-webkit-scrollbar { display: none; }
-
-        .form-match-card {
-            min-width: 62px; border-radius: 10px; padding: 8px 6px 7px;
-            text-align: center; flex-shrink: 0; border: 1px solid transparent;
-            position: relative; overflow: hidden;
-        }
+        .form-match-card { min-width: 62px; border-radius: 10px; padding: 8px 6px 7px; text-align: center; flex-shrink: 0; border: 1px solid transparent; position: relative; overflow: hidden; }
         .form-match-card.win-card  { background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.35); }
         .form-match-card.loss-card { background: rgba(239,68,68,0.10);  border-color: rgba(239,68,68,0.35); }
         .form-match-card.draw-card { background: rgba(148,163,184,0.09); border-color: rgba(148,163,184,0.28); }
-
-        /* result dot at top */
-        .form-match-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0;
-        }
+        .form-match-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0; }
         .form-match-card.win-card::before  { background: #22c55e; }
         .form-match-card.loss-card::before { background: #ef4444; }
         .form-match-card.draw-card::before { background: #94a3b8; }
-
-        .form-avatars {
-            display: flex; align-items: center; justify-content: center;
-            gap: 4px; margin-bottom: 5px;
-        }
-        .form-av {
-            width: 22px; height: 22px; border-radius: 50%; object-fit: cover;
-            border: 1.5px solid rgba(255,255,255,0.12);
-        }
+        .form-avatars { display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 5px; }
+        .form-av { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.12); }
         .form-vs { font-size: 7.5px; color: var(--text-dim); font-weight: 700; }
-
-        .form-score {
-            font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 0.5px;
-        }
+        .form-score { font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 0.5px; }
         .form-match-card.win-card  .form-score { color: #4ade80; }
         .form-match-card.loss-card .form-score { color: #f87171; }
         .form-match-card.draw-card .form-score { color: #94a3b8; }
-
-        .form-result-tag {
-            display: inline-block; font-size: 8px; font-weight: 800; letter-spacing: 0.8px;
-            padding: 2px 6px; border-radius: 5px; margin-top: 4px; text-transform: uppercase;
-        }
+        .form-result-tag { display: inline-block; font-size: 8px; font-weight: 800; letter-spacing: 0.8px; padding: 2px 6px; border-radius: 5px; margin-top: 4px; text-transform: uppercase; }
         .win-card  .form-result-tag { background: rgba(34,197,94,0.18); color: #4ade80; }
         .loss-card .form-result-tag { background: rgba(239,68,68,0.18);  color: #f87171; }
         .draw-card .form-result-tag { background: rgba(148,163,184,0.16); color: #94a3b8; }
-
         .form-opp-name { font-size: 8px; color: var(--text-muted); margin-top: 3px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 58px; }
 
         /* --- Performance Graph --- */
-        .graph-wrap {
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            border-radius: 14px; padding: 14px; overflow: hidden;
-        }
-        .graph-head {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
-        }
-        .graph-title {
-            font-family: var(--font-display); font-size: 11px; font-weight: 700;
-            color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;
-        }
+        .graph-wrap { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; overflow: hidden; }
+        .graph-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .graph-title { font-family: var(--font-display); font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
         .graph-legend { display: flex; gap: 10px; }
         .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 3px; }
         .legend-item { font-size: 9px; color: var(--text-dim); font-weight: 600; display: flex; align-items: center; }
-
         .perf-chart { width: 100%; height: 100px; position: relative; }
         .perf-bars { display: flex; align-items: flex-end; gap: 5px; height: 90px; padding-bottom: 22px; position: relative; }
-        .perf-bars::before {
-            content:''; position: absolute; top: 0; left: 0; right: 0; bottom: 22px;
-            background: repeating-linear-gradient(180deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 25%);
-            pointer-events: none;
-        }
+        .perf-bars::before { content:''; position: absolute; top: 0; left: 0; right: 0; bottom: 22px; background: repeating-linear-gradient(180deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 25%); pointer-events: none; }
         .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; position: relative; }
         .bar-inner { display: flex; gap: 2px; align-items: flex-end; width: 100%; justify-content: center; }
-        .bar {
-            width: 9px; border-radius: 4px 4px 0 0; transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1);
-            position: relative;
-        }
+        .bar { width: 9px; border-radius: 4px 4px 0 0; transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1); position: relative; }
         .bar.gf-bar  { background: linear-gradient(180deg, var(--gold), var(--gold-deep)); }
         .bar.ga-bar  { background: linear-gradient(180deg, #f87171, #b91c1c); }
-        .bar-match-label {
-            position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
-            font-size: 7.5px; color: var(--text-dim); font-weight: 700; white-space: nowrap;
-            letter-spacing: 0.3px;
-        }
-        .bar-val {
-            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-            font-size: 8px; font-weight: 800; color: var(--text-muted);
-        }
+        .bar-match-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 7.5px; color: var(--text-dim); font-weight: 700; white-space: nowrap; letter-spacing: 0.3px; }
+        .bar-val { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 800; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -596,7 +415,6 @@
                 <div class="footer-subtitle">EFOOTBALL COMMUNITY</div>
                 <div class="footer-tagline-pill"><i class="fas fa-trophy"></i> Home of Solo Tournaments</div>
 
-                <!-- Internal Nav (single row) -->
                 <div class="footer-nav-row">
                     <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
                         <div class="f-icon-circle"><i class="fas fa-home"></i></div> Home
@@ -722,7 +540,6 @@
                 <span class="form-strip-recent" id="formSummaryTag">— — — — —</span>
             </div>
             <div class="form-matches" id="formMatchStrip">
-                <!-- JS দিয়ে generate হবে -->
                 <p style="color:var(--text-dim); font-size:11px; padding:6px 0;">No matches recorded yet.</p>
             </div>
         </div>
@@ -752,6 +569,37 @@
     <!-- 5. ADMIN -->
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
+        
+        <!-- --- NEW: PLAYER MANAGEMENT SYSTEM --- -->
+        <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
+            <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Player Management</h3>
+            <input type="text" id="adminPlayerSearch" placeholder="Search by Name or Email..." onkeyup="filterAdminPlayers()">
+            
+            <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:8px; padding:8px;">
+                <p style="color:gray; font-size:11px; text-align:center;">Loading Players...</p>
+            </div>
+
+            <!-- Edit Player Form (Hidden by default) -->
+            <div id="adminEditPlayerForm" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed var(--card-border);">
+                <h4 style="color:white; margin-bottom:10px; font-size:13px; font-weight:600;"><i class="fas fa-user-edit" style="color:var(--accent);"></i> Edit Player Info</h4>
+                <input type="hidden" id="editPlayerUid">
+                <label style="font-size:10px; color:var(--text-muted);">Full Name</label>
+                <input type="text" id="editPlayerName" placeholder="Full Name">
+                <label style="font-size:10px; color:var(--text-muted);">Konami UID</label>
+                <input type="text" id="editPlayerKonami" placeholder="Konami UID">
+                <label style="font-size:10px; color:var(--text-muted);">Device Model</label>
+                <input type="text" id="editPlayerDevice" placeholder="Device Model">
+                <label style="font-size:10px; color:var(--text-muted);">Phone Number</label>
+                <input type="text" id="editPlayerPhone" placeholder="Phone/WhatsApp">
+                
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin-top:0;" onclick="savePlayerEdit()">Save Updates</button>
+                    <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin-top:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Tournament System -->
         <div class="card" style="border: 1px solid rgba(56,189,248,0.4);">
             <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
@@ -772,6 +620,8 @@
             <input type="text" id="tImage" placeholder="Banner Image URL">
             <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; box-shadow: 0 10px 22px -10px rgba(56,189,248,0.55);" onclick="createTournament()">Publish Tournament</button>
         </div>
+        
+        <!-- Update Leaderboard System -->
         <div class="card" style="border: 1px solid rgba(255,215,0,0.4);">
             <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
@@ -805,8 +655,6 @@
 
         // 🛑 আপনার জিমেইল বসাবেন 🛑
         const adminEmail = "mynewff123@gmail.com";
-
-        // 🛑 ImgBB API Key বসাবেন 🛑
         const imgbbAPIKey = "b7e891cd42aad3a93253595e33590ac1";
 
         firebase.initializeApp(firebaseConfig);
@@ -824,7 +672,7 @@
             document.body.style.overflow = '';
         }
         window.addEventListener('load', () => setTimeout(hidePreloader, 700));
-        setTimeout(hidePreloader, 4000); // safety net in case a resource stalls
+        setTimeout(hidePreloader, 4000); 
 
         /* --- GLASS HEADER ON SCROLL --- */
         window.addEventListener('scroll', () => {
@@ -834,7 +682,7 @@
             else header.classList.remove('scrolled');
         });
 
-        /* --- FADING HERO SLIDER JS (with synced dots) --- */
+        /* --- FADING HERO SLIDER JS --- */
         setInterval(() => {
             const slides = document.querySelectorAll('.hero-slide');
             const dots = document.querySelectorAll('#heroDots .dot');
@@ -929,6 +777,7 @@
                 if(user.email === adminEmail) {
                     document.getElementById('navAdmin').classList.add('show');
                     document.body.classList.add('is-admin');
+                    fetchAllPlayersAdmin(); // Load players for admin dashboard
                 } else {
                     document.getElementById('navAdmin').classList.remove('show');
                     document.body.classList.remove('is-admin');
@@ -941,6 +790,102 @@
                 document.body.classList.remove('is-admin');
             }
         });
+
+        /* ════════════════════════════════════════
+           NEW: ADMIN PLAYER MANAGEMENT SYSTEM
+        ════════════════════════════════════════ */
+        let allUsersData = [];
+
+        // 1. Fetch all registered players
+        function fetchAllPlayersAdmin() {
+            db.collection("users").onSnapshot(snapshot => {
+                allUsersData = [];
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    data.uid = doc.id;
+                    allUsersData.push(data);
+                });
+                renderAdminPlayers(allUsersData);
+            });
+        }
+
+        // 2. Render list to UI
+        function renderAdminPlayers(list) {
+            const container = document.getElementById('adminPlayerList');
+            container.innerHTML = "";
+            if(list.length === 0) {
+                container.innerHTML = "<p style='color:gray; font-size:11px; text-align:center;'>No players found.</p>";
+                return;
+            }
+            list.forEach(p => {
+                container.innerHTML += `
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; border-bottom:1px solid var(--card-border); cursor:pointer;" onclick="openPlayerEdit('${p.uid}')">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
+                        <div>
+                            <div style="font-size:13px; font-weight:700; color:white;">${p.name || 'Unknown'}</div>
+                            <div style="font-size:10px; color:var(--text-muted);">${p.email || 'No Email'}</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-edit" style="color:var(--accent); font-size:14px;"></i>
+                </div>
+                `;
+            });
+        }
+
+        // 3. Search Filter Logic
+        function filterAdminPlayers() {
+            const query = document.getElementById('adminPlayerSearch').value.toLowerCase();
+            const filtered = allUsersData.filter(p => 
+                (p.name && p.name.toLowerCase().includes(query)) || 
+                (p.email && p.email.toLowerCase().includes(query))
+            );
+            renderAdminPlayers(filtered);
+        }
+
+        // 4. Open Edit Form and map current data
+        function openPlayerEdit(uid) {
+            const player = allUsersData.find(p => p.uid === uid);
+            if(!player) return;
+            
+            document.getElementById('editPlayerUid').value = player.uid;
+            document.getElementById('editPlayerName').value = player.name || "";
+            document.getElementById('editPlayerKonami').value = player.konamiUid || "";
+            document.getElementById('editPlayerDevice').value = player.device || "";
+            document.getElementById('editPlayerPhone').value = player.phone || "";
+            
+            document.getElementById('adminEditPlayerForm').style.display = 'block';
+        }
+
+        function cancelPlayerEdit() {
+            document.getElementById('adminEditPlayerForm').style.display = 'none';
+        }
+
+        // 5. Save the updated info back to Firestore
+        function savePlayerEdit() {
+            const uid = document.getElementById('editPlayerUid').value;
+            const name = document.getElementById('editPlayerName').value;
+            const konami = document.getElementById('editPlayerKonami').value;
+            const device = document.getElementById('editPlayerDevice').value;
+            const phone = document.getElementById('editPlayerPhone').value;
+
+            if(!uid) return;
+
+            db.collection("users").doc(uid).update({
+                name: name,
+                konamiUid: konami,
+                device: device,
+                phone: phone
+            }).then(() => {
+                alert("Player Info Updated Successfully!");
+                cancelPlayerEdit();
+            }).catch(err => alert("Error updating info: " + err.message));
+        }
+
+
+        /* ════════════════════════════════════════
+           TOURNAMENT SYSTEM & FIXTURE ENGINE
+        ════════════════════════════════════════ */
 
         function createTournament() {
             const name = document.getElementById('tName').value; 
@@ -990,9 +935,8 @@
                         <button class="t-reg-btn" onclick="registerForTournament('${doc.id}')">REGISTER <i class="fas fa-chevron-right"></i></button>
                     </div>
                     
-                    <!-- Admin specific controls -->
                     <div class="admin-controls" style="gap:10px; padding: 0 16px 13px; background: var(--card-bg-soft);">
-                        <button style="flex:1; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="generateFixtures('${doc.id}', '${tFormat}')"><i class="fas fa-cogs"></i> Generate logic</button>
+                        <button style="flex:1; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="generateFixtures('${doc.id}', '${tFormat}')"><i class="fas fa-cogs"></i> Generate Logic</button>
                         <button style="background:var(--danger); color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="deleteTournament('${doc.id}')"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>`;
@@ -1004,6 +948,89 @@
             renderTournaments(snapshot, 'homeTournamentsList');
             renderTournaments(snapshot, 'allTournamentsList');
         });
+
+        // Delete Tournament Option
+        function deleteTournament(docId) {
+            if(confirm("Admin: Are you sure you want to completely DELETE this tournament?")) {
+                db.collection("tournaments").doc(docId).delete()
+                .then(() => alert("Tournament Deleted Successfully!"))
+                .catch(err => alert("Error: " + err.message));
+            }
+        }
+
+        // Register for Tournament Option
+        function registerForTournament(docId) {
+            const user = auth.currentUser;
+            if(!user) {
+                alert("You must be logged in to register.");
+                switchTab('authPage', document.getElementById('loginBtn'));
+                return;
+            }
+            
+            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({
+                uid: user.uid,
+                name: user.displayName || user.email,
+                avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+                time: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => alert("Registration Successful for this tournament!"));
+        }
+
+        // Generate Group Stage / Knockout Fixtures
+        async function generateFixtures(docId, format) {
+            if(!confirm(`Admin: Auto-Generate ${format} logic/brackets for this tournament?`)) return;
+
+            try {
+                const playersSnap = await db.collection("tournaments").doc(docId).collection("players").get();
+                let players = [];
+                playersSnap.forEach(doc => players.push(doc.data()));
+
+                if(players.length < 2) return alert("Minimum 2 players required to generate matches.");
+
+                for (let i = players.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [players[i], players[j]] = [players[j], players[i]];
+                }
+
+                let generatedData = {};
+
+                if (format === "Group Stage") {
+                    let groupIndex = 0;
+                    const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
+                    for(let i = 0; i < players.length; i += 4) {
+                        generatedData[`Group ${groupNames[groupIndex]}`] = players.slice(i, i+4);
+                        groupIndex++;
+                    }
+                } 
+                else if (format === "Knockout") {
+                    let matchIndex = 1;
+                    for(let i = 0; i < players.length; i += 2) {
+                        generatedData[`Match ${matchIndex}`] = {
+                            player1: players[i],
+                            player2: players[i+1] || { name: "BYE (Auto Qualify)" }
+                        };
+                        matchIndex++;
+                    }
+                } 
+                else {
+                    generatedData["League Table"] = players;
+                }
+
+                await db.collection("tournaments").doc(docId).update({
+                    status: 'Live',
+                    fixtures: generatedData
+                });
+
+                console.log("Successfully Generated Bracket Logic:", generatedData);
+                alert(`Successfully generated logic for ${players.length} players! Check Browser Console (F12) to see JSON structure.`);
+            } catch(e) {
+                alert("Generation Error: " + e.message);
+            }
+        }
+
+
+        /* ════════════════════════════════════════
+           LEADERBOARD SYSTEM
+        ════════════════════════════════════════ */
 
         function updateLeaderboard() {
             const name = document.getElementById('lbPlayerName').value; const points = parseInt(document.getElementById('lbPoints').value); const winRate = document.getElementById('lbWinRate').value; const avatar = document.getElementById('lbAvatar').value || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
@@ -1042,11 +1069,12 @@
             renderLeaderboard(snapshot, 'leaderboardList', false);
         });
 
+        /* ════════════════════════════════════════
+           TAB SWITCHING & PLAYER STATS DEMO
+        ════════════════════════════════════════ */
+
         function switchTab(tabId, element) {
-            // যদি ইউজার লগইন না করা থাকে এবং Profile আইকনে ক্লিক করে, তাহলে সরাসরি Auth Page-এ নিয়ে যাবে
-            if (tabId === 'profile' && !auth.currentUser) {
-                tabId = 'authPage';
-            }
+            if (tabId === 'profile' && !auth.currentUser) tabId = 'authPage';
 
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
@@ -1059,10 +1087,6 @@
             window.scrollTo(0,0);
             if(tabId === 'profile') loadPlayerStats();
         }
-
-        /* ════════════════════════════════════════
-           PLAYER STATS  —  Firestore integration
-        ════════════════════════════════════════ */
 
         const DEMO_MATCHES = [
             { result:'W', myScore:3, oppScore:1, opp:'Raihan', myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
@@ -1092,11 +1116,8 @@
                 } else {
                     matches = DEMO_MATCHES;
                     matches.forEach(m => {
-                        played++;
-                        gf += m.myScore; ga += m.oppScore;
-                        if(m.result==='W') wins++;
-                        else if(m.result==='L') losses++;
-                        else draws++;
+                        played++; gf += m.myScore; ga += m.oppScore;
+                        if(m.result==='W') wins++; else if(m.result==='L') losses++; else draws++;
                     });
                     motm = 2;
                 }
@@ -1147,11 +1168,7 @@
                 const oppAv  = m.oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149072.png';
                 return `
                 <div class="form-match-card ${cls}">
-                    <div class="form-avatars">
-                        <img class="form-av" src="${myAv}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                        <span class="form-vs">vs</span>
-                        <img class="form-av" src="${oppAv}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149072.png'">
-                    </div>
+                    <div class="form-avatars"><img class="form-av" src="${myAv}"><span class="form-vs">vs</span><img class="form-av" src="${oppAv}"></div>
                     <div class="form-score">${m.myScore} - ${m.oppScore}</div>
                     <span class="form-result-tag">${label}</span>
                     <div class="form-opp-name">${m.opp || 'Opponent'}</div>
@@ -1171,110 +1188,15 @@
             container.innerHTML = matches.map((m, i) => {
                 const gfH  = Math.max(4, Math.round((m.myScore  / maxVal) * barMaxH));
                 const gaH  = Math.max(4, Math.round((m.oppScore / maxVal) * barMaxH));
-                const matchLabel = 'M' + (i+1);
                 return `
                 <div class="bar-group">
                     <div class="bar-inner">
-                        <div class="bar gf-bar" style="height:${gfH}px; position:relative;">
-                            <span class="bar-val">${m.myScore}</span>
-                        </div>
-                        <div class="bar ga-bar" style="height:${gaH}px; position:relative;">
-                            <span class="bar-val">${m.oppScore}</span>
-                        </div>
+                        <div class="bar gf-bar" style="height:${gfH}px; position:relative;"><span class="bar-val">${m.myScore}</span></div>
+                        <div class="bar ga-bar" style="height:${gaH}px; position:relative;"><span class="bar-val">${m.oppScore}</span></div>
                     </div>
-                    <span class="bar-match-label">${matchLabel}</span>
+                    <span class="bar-match-label">M${i+1}</span>
                 </div>`;
             }).join('');
-        }
-
-        /* ════════════════════════════════════════
-           NEW ADMIN & FIXTURE ENGINE LOGIC
-        ════════════════════════════════════════ */
-
-        // Delete Tournament Option
-        function deleteTournament(docId) {
-            if(confirm("Admin: Are you sure you want to completely DELETE this tournament?")) {
-                db.collection("tournaments").doc(docId).delete()
-                .then(() => alert("Tournament Deleted Successfully!"))
-                .catch(err => alert("Error: " + err.message));
-            }
-        }
-
-        // Register for Tournament Option
-        function registerForTournament(docId) {
-            const user = auth.currentUser;
-            if(!user) {
-                alert("You must be logged in to register.");
-                switchTab('authPage', document.getElementById('loginBtn'));
-                return;
-            }
-            
-            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({
-                uid: user.uid,
-                name: user.displayName || user.email,
-                avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-                time: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => alert("Registration Successful for this tournament!"));
-        }
-
-        // Generate Group Stage / Knockout Fixtures
-        async function generateFixtures(docId, format) {
-            if(!confirm(`Admin: Auto-Generate ${format} logic/brackets for this tournament?`)) return;
-
-            try {
-                // Fetch registered players from the tournament
-                const playersSnap = await db.collection("tournaments").doc(docId).collection("players").get();
-                let players = [];
-                playersSnap.forEach(doc => players.push(doc.data()));
-
-                if(players.length < 2) {
-                    return alert("Minimum 2 players required to generate matches.");
-                }
-
-                // Fisher-Yates Shuffle for Randomization
-                for (let i = players.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [players[i], players[j]] = [players[j], players[i]];
-                }
-
-                let generatedData = {};
-
-                if (format === "Group Stage") {
-                    // Divide into groups of 4 automatically
-                    let groupIndex = 0;
-                    const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
-                    for(let i = 0; i < players.length; i += 4) {
-                        generatedData[`Group ${groupNames[groupIndex]}`] = players.slice(i, i+4);
-                        groupIndex++;
-                    }
-                } 
-                else if (format === "Knockout") {
-                    // Generate 1v1 pairings
-                    let matchIndex = 1;
-                    for(let i = 0; i < players.length; i += 2) {
-                        generatedData[`Match ${matchIndex}`] = {
-                            player1: players[i],
-                            player2: players[i+1] || { name: "BYE (Auto Qualify)" }
-                        };
-                        matchIndex++;
-                    }
-                } 
-                else {
-                    // League format - complete points table structure setup
-                    generatedData["League Table"] = players;
-                }
-
-                // Push generated logic to Firestore and set to Live
-                await db.collection("tournaments").doc(docId).update({
-                    status: 'Live',
-                    fixtures: generatedData
-                });
-
-                console.log("Successfully Generated Bracket Logic:", generatedData);
-                alert(`Successfully generated logic for ${players.length} players! Check Browser Console (F12) to see JSON structure.`);
-            } catch(e) {
-                alert("Generation Error: " + e.message);
-            }
         }
     </script>
 </body>
