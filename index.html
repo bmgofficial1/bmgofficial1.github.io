@@ -792,7 +792,7 @@
         };
 
         // 🛑 আপনার জিমেইল বসাবেন 🛑
-        const adminEmail = "your-email@gmail.com";
+        const adminEmail = "mynewff123@gmail.com";
 
         // 🛑 ImgBB API Key বসাবেন 🛑
         const imgbbAPIKey = "b7e891cd42aad3a93253595e33590ac1";
@@ -998,12 +998,19 @@
         });
 
         function switchTab(tabId, element) {
+            // যদি ইউজার লগইন না করা থাকে এবং Profile আইকনে ক্লিক করে, তাহলে সরাসরি Auth Page-এ নিয়ে যাবে
+            if (tabId === 'profile' && !auth.currentUser) {
+                tabId = 'authPage';
+            }
+
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
+            
             if(element) {
                 document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
                 if(element.classList.contains('nav-item')) element.classList.add('active');
             }
+            
             window.scrollTo(0,0);
             if(tabId === 'profile') loadPlayerStats();
         }
