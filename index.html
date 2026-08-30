@@ -55,6 +55,10 @@
         ::selection { background: var(--logo-blue); color: #000; }
         ::-webkit-scrollbar { width: 0; height: 0; }
 
+        /* Admin Action Visibility Control */
+        body:not(.is-admin) .admin-controls { display: none !important; }
+        body.is-admin .admin-controls { display: flex !important; }
+
         /* --- PRELOADER --- */
         #preloader {
             position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
@@ -191,7 +195,7 @@
         .leaderboard-row:nth-child(2) { border-left-color: #cbd5e1; background: linear-gradient(90deg, rgba(203,213,225,0.05), transparent 60%); }
         .leaderboard-row:nth-child(3) { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205,127,50,0.06), transparent 60%); }
         .rank { color: var(--gold); font-family: var(--font-display); font-weight: 700; width: 26px; font-size: 15px; text-align: center;}
-        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px -3px rgba(255,215,0,0.55);}
+        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px -3px rgba(255,215,0,0.55);}
         .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 13px solid transparent; border-right: 13px solid transparent; border-top: 5px solid var(--gold-deep);}
         .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 11px; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,215,0,0.5); }
         .player-info { flex: 1; }
@@ -751,7 +755,15 @@
         <div class="card" style="border: 1px solid rgba(56,189,248,0.4);">
             <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
-            <select id="tFormat">
+            
+            <label style="font-size:11px; color:var(--text-muted); margin-top:8px; display:block; text-align:left;">Tournament Format:</label>
+            <select id="tFormatType">
+                <option value="Group Stage">Group Stage System</option>
+                <option value="Knockout">Knockout (Elimination)</option>
+                <option value="League">League System</option>
+            </select>
+
+            <select id="tFormat" style="margin-top: 8px;">
                 <option value="Upcoming">Upcoming</option>
                 <option value="Live">Live</option>
             </select>
@@ -914,19 +926,40 @@
                     }
                 });
 
-                if(user.email === adminEmail) document.getElementById('navAdmin').classList.add('show'); else document.getElementById('navAdmin').classList.remove('show');
+                if(user.email === adminEmail) {
+                    document.getElementById('navAdmin').classList.add('show');
+                    document.body.classList.add('is-admin');
+                } else {
+                    document.getElementById('navAdmin').classList.remove('show');
+                    document.body.classList.remove('is-admin');
+                }
             } else {
                 document.getElementById('loginBtn').style.display = 'block';
                 document.getElementById('profileHeader').style.display = 'none';
                 document.getElementById('profEmailTxt').innerText = "Please login to view details.";
                 document.getElementById('navAdmin').classList.remove('show');
+                document.body.classList.remove('is-admin');
             }
         });
 
         function createTournament() {
-            const name = document.getElementById('tName').value; const format = document.getElementById('tFormat').value; const slots = document.getElementById('tSlots').value; const fee = document.getElementById('tFee').value; let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
+            const name = document.getElementById('tName').value; 
+            const formatType = document.getElementById('tFormatType').value;
+            const format = document.getElementById('tFormat').value; 
+            const slots = document.getElementById('tSlots').value; 
+            const fee = document.getElementById('tFee').value; 
+            let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
+            
             if(name && slots && fee) {
-                db.collection("tournaments").add({ name: name, status: format, slots: slots, fee: fee, image: image, time: firebase.firestore.FieldValue.serverTimestamp() })
+                db.collection("tournaments").add({ 
+                    name: name, 
+                    type: formatType, 
+                    status: format, 
+                    slots: slots, 
+                    fee: fee, 
+                    image: image, 
+                    time: firebase.firestore.FieldValue.serverTimestamp() 
+                })
                 .then(() => { alert("Tournament Created!"); document.getElementById('tName').value = ""; document.getElementById('tImage').value = ""; });
             }
         }
@@ -935,6 +968,8 @@
             const tList = document.getElementById(elementId); tList.innerHTML = "";
             snapshot.forEach(doc => {
                 const t = doc.data();
+                const tFormat = t.type || 'Knockout'; // Fallback for older tournaments
+
                 tList.innerHTML += `
                 <div class="t-card">
                     <div class="t-card-img" style="background-image: url('${t.image}');">
@@ -944,11 +979,21 @@
                             <div class="t-name">${t.name}</div>
                         </div>
                     </div>
-                    <div class="t-card-info">
+                    <div class="t-card-info" style="padding-bottom: 0; border-bottom: none;">
                         <div class="t-stat"><span>SLOTS</span><strong>${t.slots}</strong></div>
                         <div class="t-stat"><span>ENTRY FEE</span><strong style="color: var(--gold);">${t.fee}</strong></div>
-                        <div class="t-stat"><span>START DATE</span><strong>TBA</strong></div>
-                        <button class="t-reg-btn">REGISTER <i class="fas fa-chevron-right"></i></button>
+                        <div class="t-stat"><span>FORMAT</span><strong style="color: var(--logo-blue);">${tFormat}</strong></div>
+                    </div>
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 16px 13px; background: var(--card-bg-soft);">
+                        <span style="font-size: 10px; color: var(--logo-blue); padding: 4px 8px; border-radius: 6px; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3);"><i class="fas fa-gamepad"></i> ${tFormat}</span>
+                        <button class="t-reg-btn" onclick="registerForTournament('${doc.id}')">REGISTER <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    
+                    <!-- Admin specific controls -->
+                    <div class="admin-controls" style="gap:10px; padding: 0 16px 13px; background: var(--card-bg-soft);">
+                        <button style="flex:1; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="generateFixtures('${doc.id}', '${tFormat}')"><i class="fas fa-cogs"></i> Generate logic</button>
+                        <button style="background:var(--danger); color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="deleteTournament('${doc.id}')"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>`;
             });
@@ -1017,12 +1062,8 @@
 
         /* ════════════════════════════════════════
            PLAYER STATS  —  Firestore integration
-           Collection: playerStats / doc: uid
-           Fields: wins, played, draws, losses, gf, ga, motm
-           Sub-collection: matches (array stored in doc or sub-col)
         ════════════════════════════════════════ */
 
-        // Demo match data — replace with real Firestore data if available
         const DEMO_MATCHES = [
             { result:'W', myScore:3, oppScore:1, opp:'Raihan', myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
             { result:'L', myScore:0, oppScore:2, opp:'Sakib',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
@@ -1049,7 +1090,6 @@
                     motm   = d.motm   || 0;
                     matches= d.matches || DEMO_MATCHES;
                 } else {
-                    // Fallback demo while no data exists
                     matches = DEMO_MATCHES;
                     matches.forEach(m => {
                         played++;
@@ -1063,7 +1103,6 @@
 
                 const wr = played > 0 ? Math.round((wins/played)*100) : 0;
 
-                // --- Fill stat boxes ---
                 document.getElementById('statW').innerText  = wins;
                 document.getElementById('statP').innerText  = played;
                 document.getElementById('statD').innerText  = draws;
@@ -1073,14 +1112,10 @@
                 document.getElementById('statGA').innerText = ga;
                 document.getElementById('statMOTM').innerText = motm;
 
-                // --- Render form strip ---
                 renderFormStrip(matches);
-
-                // --- Render graph ---
                 renderPerfGraph(matches);
 
             }).catch(() => {
-                // still render demo if no permission
                 const matches = DEMO_MATCHES;
                 let wins=0,played=0,draws=0,losses=0,gf=0,ga=0;
                 matches.forEach(m=>{played++;gf+=m.myScore;ga+=m.oppScore;if(m.result==='W')wins++;else if(m.result==='L')losses++;else draws++;});
@@ -1102,7 +1137,6 @@
                 tag.innerText = '—';
                 return;
             }
-            // summary tag (last 5)
             const last5 = matches.slice(-5);
             tag.innerText = last5.map(m => m.result).join(' · ');
 
@@ -1132,7 +1166,7 @@
                 return;
             }
             const maxVal = Math.max(...matches.map(m => Math.max(m.myScore, m.oppScore, 1)));
-            const barMaxH = 62; // px
+            const barMaxH = 62;
 
             container.innerHTML = matches.map((m, i) => {
                 const gfH  = Math.max(4, Math.round((m.myScore  / maxVal) * barMaxH));
@@ -1151,6 +1185,96 @@
                     <span class="bar-match-label">${matchLabel}</span>
                 </div>`;
             }).join('');
+        }
+
+        /* ════════════════════════════════════════
+           NEW ADMIN & FIXTURE ENGINE LOGIC
+        ════════════════════════════════════════ */
+
+        // Delete Tournament Option
+        function deleteTournament(docId) {
+            if(confirm("Admin: Are you sure you want to completely DELETE this tournament?")) {
+                db.collection("tournaments").doc(docId).delete()
+                .then(() => alert("Tournament Deleted Successfully!"))
+                .catch(err => alert("Error: " + err.message));
+            }
+        }
+
+        // Register for Tournament Option
+        function registerForTournament(docId) {
+            const user = auth.currentUser;
+            if(!user) {
+                alert("You must be logged in to register.");
+                switchTab('authPage', document.getElementById('loginBtn'));
+                return;
+            }
+            
+            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({
+                uid: user.uid,
+                name: user.displayName || user.email,
+                avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+                time: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => alert("Registration Successful for this tournament!"));
+        }
+
+        // Generate Group Stage / Knockout Fixtures
+        async function generateFixtures(docId, format) {
+            if(!confirm(`Admin: Auto-Generate ${format} logic/brackets for this tournament?`)) return;
+
+            try {
+                // Fetch registered players from the tournament
+                const playersSnap = await db.collection("tournaments").doc(docId).collection("players").get();
+                let players = [];
+                playersSnap.forEach(doc => players.push(doc.data()));
+
+                if(players.length < 2) {
+                    return alert("Minimum 2 players required to generate matches.");
+                }
+
+                // Fisher-Yates Shuffle for Randomization
+                for (let i = players.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [players[i], players[j]] = [players[j], players[i]];
+                }
+
+                let generatedData = {};
+
+                if (format === "Group Stage") {
+                    // Divide into groups of 4 automatically
+                    let groupIndex = 0;
+                    const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
+                    for(let i = 0; i < players.length; i += 4) {
+                        generatedData[`Group ${groupNames[groupIndex]}`] = players.slice(i, i+4);
+                        groupIndex++;
+                    }
+                } 
+                else if (format === "Knockout") {
+                    // Generate 1v1 pairings
+                    let matchIndex = 1;
+                    for(let i = 0; i < players.length; i += 2) {
+                        generatedData[`Match ${matchIndex}`] = {
+                            player1: players[i],
+                            player2: players[i+1] || { name: "BYE (Auto Qualify)" }
+                        };
+                        matchIndex++;
+                    }
+                } 
+                else {
+                    // League format - complete points table structure setup
+                    generatedData["League Table"] = players;
+                }
+
+                // Push generated logic to Firestore and set to Live
+                await db.collection("tournaments").doc(docId).update({
+                    status: 'Live',
+                    fixtures: generatedData
+                });
+
+                console.log("Successfully Generated Bracket Logic:", generatedData);
+                alert(`Successfully generated logic for ${players.length} players! Check Browser Console (F12) to see JSON structure.`);
+            } catch(e) {
+                alert("Generation Error: " + e.message);
+            }
         }
     </script>
 </body>
