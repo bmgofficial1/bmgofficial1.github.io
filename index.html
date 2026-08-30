@@ -103,87 +103,117 @@
         .prof-name { font-size: 18px; font-weight: 700; line-height: 1.2; margin-bottom: 3px; }
         .prof-country { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
         
-        /* --- PREMIUM UPDATED FOOTER --- */
+        /* --- NEW ULTRA PREMIUM FOOTER --- */
         .bmg-footer { 
-            background: #0a0f1d; 
-            border-top: 1px solid #1f2940; 
+            background: #172554; /* Deep premium blue from image */
             border-radius: 35px 35px 0 0; 
-            padding: 50px 20px 40px 20px; 
+            padding: 45px 15px 100px 15px; /* Extra padding for bottom nav */
             text-align: center; 
             margin-top: 40px; 
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.4); 
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.4); 
         }
         .footer-logo { 
-            width: 90px; 
-            margin-bottom: 20px; 
-            filter: drop-shadow(0 0 15px rgba(59,130,246,0.2)); 
+            width: 60px; /* Perfectly sized to match text */
+            margin-bottom: 12px; 
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); 
         }
         .footer-title { 
-            font-size: 22px; 
-            letter-spacing: 3px; 
-            font-weight: 800; 
+            font-size: 18px; 
+            letter-spacing: 4px; /* Wide premium spacing */
+            font-weight: 700; 
             color: #ffffff; 
             text-transform: uppercase; 
-            margin-bottom: 5px; 
+            margin-bottom: 4px; 
         }
         .footer-subtitle { 
-            font-size: 10px; 
-            letter-spacing: 4px; 
-            color: #8a94b5; 
-            margin-bottom: 15px; 
+            font-size: 9px; 
+            letter-spacing: 5px; /* Ultra wide spacing for subtitle */
+            color: #94a3b8; 
+            margin-bottom: 20px; 
             font-weight: 500; 
             text-transform: uppercase; 
         }
         .footer-tagline { 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: #ffd700; 
-            letter-spacing: 1px; 
+            font-size: 10px; 
+            font-weight: 600; 
+            color: #cbd5e1; 
+            letter-spacing: 2px; 
             text-transform: uppercase; 
         }
         .footer-divider { 
             border: none; 
-            border-top: 1px solid #1f2940; 
-            margin: 30px auto; 
-            width: 85%; 
+            border-top: 1px solid rgba(255, 255, 255, 0.08); 
+            margin: 25px auto; 
+            width: 90%; 
         }
+        
+        /* Footer Internal Nav */
+        .footer-internal-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 95%;
+            margin: 0 auto;
+        }
+        .f-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #e2e8f0;
+            font-size: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .f-nav-item i {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-weight: 300; /* Lighter icon weight */
+        }
+        .f-nav-item:hover, .f-nav-item:hover i {
+            color: var(--gold);
+        }
+
         .footer-socials { 
             display: flex; 
             justify-content: center; 
-            gap: 20px; 
+            gap: 15px; 
         }
         .social-circle { 
-            width: 45px; 
-            height: 45px; 
+            width: 38px; 
+            height: 38px; 
             border-radius: 50%; 
-            background: #16203a; 
+            background: rgba(255, 255, 255, 0.08); 
             color: #ffffff; 
-            font-size: 18px; 
+            font-size: 15px; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             text-decoration: none; 
             transition: 0.3s; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
         }
         .social-circle:hover { 
-            background: #3b82f6; 
-            transform: translateY(-3px); 
+            background: var(--gold); 
+            color: #000; 
+            transform: translateY(-2px); 
         }
         .footer-contact { 
-            font-size: 13px; 
-            color: #ffffff; 
+            font-size: 11px; 
+            color: #cbd5e1; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
-            gap: 10px; 
-            font-weight: 600; 
+            gap: 8px; 
+            font-weight: 500; 
             margin-top: 25px; 
             letter-spacing: 0.5px; 
         }
-        .footer-contact i { 
-            font-size: 16px; 
-            color: #ffffff; 
+        .footer-copy {
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 15px;
+            letter-spacing: 0.5px;
         }
         
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1f2940; z-index: 1000; }
@@ -296,7 +326,7 @@
             <div id="homeLeaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
         </div>
 
-        <!-- UPDATED PREMIUM FOOTER -->
+        <!-- ULTRA PREMIUM MATCHING FOOTER -->
         <div class="bmg-footer">
             <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="footer-logo">
             <div class="footer-title">BMG OFFICIAL</div>
@@ -305,14 +335,41 @@
             
             <hr class="footer-divider">
             
+            <!-- Footer Internal Nav -->
+            <div class="footer-internal-nav">
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
+                    <i class="fas fa-home"></i> Home
+                </div>
+                <div class="f-nav-item" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">
+                    <i class="fas fa-ribbon"></i> Tournaments
+                </div>
+                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
+                    <i class="far fa-calendar-alt"></i> Matches
+                </div>
+                <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">
+                    <i class="fas fa-chart-line"></i> Leaderboard
+                </div>
+                <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[3])">
+                    <i class="far fa-user"></i> Profile
+                </div>
+            </div>
+
+            <hr class="footer-divider">
+            
             <div class="footer-socials">
                 <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
                 <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
             </div>
             
             <div class="footer-contact">
                 <i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com
+            </div>
+            
+            <div class="footer-copy">
+                &copy; 2026 BMG Official. All Rights Reserved. v1.0.0
             </div>
         </div>
     </div>
@@ -420,7 +477,7 @@
             slides[activeIdx].classList.remove('active');
             let nextIdx = (activeIdx + 1) % slides.length;
             slides[nextIdx].classList.add('active');
-        }, 4000); // 4 seconds fade interval
+        }, 4000); 
 
         function toggleAuth(type) {
             if(type === 'signup') {
