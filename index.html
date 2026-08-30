@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BMG Official - eFootball Community</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Updated Google Fonts (Added Extra Bold 800) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- LATEST FontAwesome v6.5.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -15,14 +17,15 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
-        :root { --bg-dark: #070b19; --card-bg: #12182b; --gold: #ffd700; --accent: #a3e635; --text-main: #ffffff; --text-muted: #8a94b5; --nav-bg: #16203a; }
+        :root { --bg-dark: #050814; --card-bg: #12182b; --gold: #ffd700; --accent: #a3e635; --text-main: #ffffff; --text-muted: #8a94b5; --nav-bg: #0d1323; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 80px; }
         
         .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1f2940; background: var(--bg-dark); position: sticky; top: 0; z-index: 100;}
-        .header h2 { font-size: 18px; letter-spacing: 2px; }
+        .header h2 { font-size: 18px; font-weight: 800; letter-spacing: 2px; }
         .header span { color: #3b82f6; }
-        .login-btn { background: transparent; color: var(--text-muted); border: 1px solid #1f2940; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 18px; }
+        .login-btn { background: transparent; color: var(--text-muted); border: 1px solid #1f2940; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 18px; transition: 0.3s;}
+        .login-btn:hover { background: #1f2940; color: #fff;}
         
         .page-section { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .page-section.active { display: block; }
@@ -41,7 +44,7 @@
 
         /* --- SECTION HEADERS --- */
         .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
-        .sec-title { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sec-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
         .sec-link { font-size: 11px; color: var(--gold); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 3px; }
         .sec-badge { background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 10px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 700;}
 
@@ -55,7 +58,7 @@
         .t-status::before { content:''; width: 6px; height: 6px; background: #000; border-radius: 50%; }
         .t-card-titles { position: relative; z-index: 2; }
         .t-prize { color: var(--gold); font-size: 12px; font-weight: 800; }
-        .t-name { font-size: 16px; font-weight: 700; text-transform: uppercase; line-height: 1.2; }
+        .t-name { font-size: 16px; font-weight: 800; text-transform: uppercase; line-height: 1.2; }
         .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #0b1120; border-top: 1px solid #1f2940;}
         .t-stat { text-align: center; }
         .t-stat span { display: block; font-size: 9px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px;}
@@ -70,12 +73,12 @@
         .pb-details { flex: 1; margin-left: 12px; }
         .pb-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 5px; margin-bottom: 2px;}
         .pb-verified { color: var(--accent); font-size: 12px; }
-        .pb-rank { background: #78350f; color: var(--gold); font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 700; }
+        .pb-rank { background: #78350f; color: var(--gold); font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 800; }
         .pb-style { font-size: 10px; color: var(--text-muted); }
         .pb-stats { display: flex; gap: 15px; text-align: center; }
         .pb-stat-val { font-size: 14px; font-weight: 700; display: block; }
         .pb-stat-label { font-size: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;}
-        .pb-link { text-align: right; margin-top: 10px; font-size: 11px; color: var(--accent); font-weight: 600; }
+        .pb-link { text-align: right; margin-top: 10px; font-size: 11px; color: var(--accent); font-weight: 600; cursor:pointer;}
 
         /* --- LEADERBOARD & OTHERS --- */
         .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #1f2940; padding-bottom: 10px; }
@@ -84,65 +87,66 @@
         .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 12.5px solid transparent; border-right: 12.5px solid transparent; border-top: 5px solid #d97706;}
         .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 10px; border: 1px solid var(--gold);}
         .player-info { flex: 1; }
-        .player-name { font-weight: 600; font-size: 14px; margin-bottom: 2px;}
+        .player-name { font-weight: 700; font-size: 14px; margin-bottom: 2px;}
         .points { font-size: 11px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 4px;}
         .win-rate-box { text-align: right; }
-        .win-rate-val { font-size: 15px; font-weight: 700; color: var(--accent); }
+        .win-rate-val { font-size: 15px; font-weight: 800; color: var(--accent); }
         .win-rate-lbl { font-size: 10px; color: var(--text-muted); }
 
         .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #1f2940; }
-        input, select { width: 100%; margin: 8px 0; padding: 10px; border-radius: 5px; border: none; background: #1f2940; color: white; font-size: 13px; }
-        .submit-btn { background: var(--accent); color: #000; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .link-text { color: #3b82f6; font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: bold; text-decoration: underline; text-align: center; }
+        input, select { width: 100%; margin: 8px 0; padding: 10px; border-radius: 5px; border: none; background: #1f2940; color: white; font-size: 13px; font-weight: 500;}
+        .submit-btn { background: var(--accent); color: #000; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: 800; margin-top: 10px; transition:0.3s;}
+        .submit-btn:hover { opacity: 0.9; }
+        .link-text { color: #3b82f6; font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; text-decoration: underline; text-align: center; }
 
         /* Profile Details */
-        .prof-top-title { text-align: center; color: var(--text-muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        .prof-top-title { text-align: center; color: var(--text-muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; font-weight:600;}
         .prof-header { display: flex; align-items: center; margin-bottom: 20px; }
         .prof-avatar { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 3px solid #1f2940; }
         .prof-details { margin-left: 15px; flex: 1; }
-        .prof-name { font-size: 18px; font-weight: 700; line-height: 1.2; margin-bottom: 3px; }
-        .prof-country { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; }
+        .prof-name { font-size: 18px; font-weight: 800; line-height: 1.2; margin-bottom: 3px; }
+        .prof-country { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; margin-bottom: 8px; font-weight: 500;}
         
-        /* --- NEW ULTRA PREMIUM FOOTER --- */
+        /* --- NEW ULTRA PREMIUM MATCHING FOOTER --- */
         .bmg-footer { 
-            background: #172554; /* Deep premium blue from image */
-            border-radius: 35px 35px 0 0; 
-            padding: 45px 15px 100px 15px; /* Extra padding for bottom nav */
+            background: #111a31; /* Deep Premium Navy Blue Matching Screenshot */
+            border-radius: 30px 30px 0 0; 
+            padding: 40px 15px 100px 15px; 
             text-align: center; 
             margin-top: 40px; 
-            box-shadow: 0 -5px 25px rgba(0,0,0,0.4); 
+            box-shadow: 0 -5px 25px rgba(0,0,0,0.5); 
         }
         .footer-logo { 
-            width: 60px; /* Perfectly sized to match text */
-            margin-bottom: 12px; 
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); 
+            width: 65px; /* Perfectly sized to match text */
+            margin-bottom: 8px; 
+            filter: drop-shadow(0 0 10px rgba(59,130,246,0.3)); 
         }
         .footer-title { 
-            font-size: 18px; 
-            letter-spacing: 4px; /* Wide premium spacing */
-            font-weight: 700; 
+            font-size: 20px; 
+            letter-spacing: 3px; 
+            font-weight: 800; /* Extra Bold */
             color: #ffffff; 
             text-transform: uppercase; 
-            margin-bottom: 4px; 
+            margin-bottom: 2px; 
         }
         .footer-subtitle { 
-            font-size: 9px; 
-            letter-spacing: 5px; /* Ultra wide spacing for subtitle */
+            font-size: 8px; 
+            letter-spacing: 4px; /* Ultra wide spacing */
             color: #94a3b8; 
-            margin-bottom: 20px; 
+            margin-bottom: 18px; 
             font-weight: 500; 
             text-transform: uppercase; 
         }
         .footer-tagline { 
             font-size: 10px; 
             font-weight: 600; 
-            color: #cbd5e1; 
+            color: #64748b; /* Professional Ash/Grey */
             letter-spacing: 2px; 
             text-transform: uppercase; 
         }
         .footer-divider { 
             border: none; 
-            border-top: 1px solid rgba(255, 255, 255, 0.08); 
+            border-top: 1px solid rgba(255, 255, 255, 0.05); 
             margin: 25px auto; 
             width: 90%; 
         }
@@ -159,44 +163,40 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #e2e8f0;
+            color: #cbd5e1;
             font-size: 10px;
             cursor: pointer;
             transition: 0.3s;
             font-weight: 500;
         }
         .f-nav-item i {
-            font-size: 18px;
+            font-size: 20px;
             margin-bottom: 8px;
             color: #ffffff;
-            font-weight: 300; /* Lighter icon weight */
+            font-weight: 400; 
         }
-        .f-nav-item:hover, .f-nav-item:hover i {
-            color: var(--gold);
-        }
+        .f-nav-item:hover, .f-nav-item:hover i { color: #3b82f6; }
 
-        .footer-socials { 
-            display: flex; 
-            justify-content: center; 
-            gap: 15px; 
-        }
+        .footer-socials { display: flex; justify-content: center; gap: 15px; }
         .social-circle { 
-            width: 38px; 
-            height: 38px; 
+            width: 40px; 
+            height: 40px; 
             border-radius: 50%; 
-            background: rgba(255, 255, 255, 0.08); 
+            background: rgba(255, 255, 255, 0.05); 
             color: #ffffff; 
-            font-size: 15px; 
+            font-size: 16px; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             text-decoration: none; 
             transition: 0.3s; 
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
         .social-circle:hover { 
-            background: var(--gold); 
-            color: #000; 
-            transform: translateY(-2px); 
+            background: #3b82f6; 
+            color: #fff; 
+            border-color: #3b82f6;
+            transform: translateY(-3px); 
         }
         .footer-contact { 
             font-size: 11px; 
@@ -211,13 +211,15 @@
         }
         .footer-copy {
             font-size: 9px;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.3);
             margin-top: 15px;
             letter-spacing: 0.5px;
         }
         
+        /* BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1f2940; z-index: 1000; }
-        .nav-item { color: var(--text-muted); text-align: center; font-size: 12px; cursor: pointer; display: block; font-weight: 600; padding: 5px; } 
+        .nav-item { color: var(--text-muted); text-align: center; font-size: 11px; cursor: pointer; display: block; font-weight: 600; padding: 5px; } 
+        .nav-item i { font-size: 18px; margin-bottom: 4px; display:block; }
         .nav-admin { display: none; color: #ef4444; } 
         .nav-admin.show { display: block; }
         .nav-item.active { color: var(--gold); }
@@ -227,13 +229,13 @@
 
     <div class="header">
         <h2>BMG <span>OFFICIAL</span></h2>
-        <button id="loginBtn" class="login-btn" onclick="switchTab('authPage', this)"><i class="far fa-user"></i></button>
+        <button id="loginBtn" class="login-btn" onclick="switchTab('authPage', this)"><i class="fa-regular fa-user"></i></button>
     </div>
 
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
         <div class="card" id="loginBox" style="text-align: center; margin-top: 20px;">
-            <h2 style="color: #3b82f6; margin-bottom: 15px;">Player Login</h2>
+            <h2 style="color: #3b82f6; margin-bottom: 15px; font-weight:800;">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
             <input type="password" id="loginPassword" placeholder="Password">
             <button class="submit-btn" style="background: #3b82f6; color:white;" onclick="loginWithEmail()">Log In</button>
@@ -241,12 +243,12 @@
         </div>
 
         <div class="card" id="signupBox" style="text-align: center; margin-top: 20px; display: none;">
-            <h2 style="color: var(--gold); margin-bottom: 15px;">Create Account</h2>
+            <h2 style="color: var(--gold); margin-bottom: 15px; font-weight:800;">Create Account</h2>
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name (Must)">
             <input type="url" id="regFacebook" placeholder="Facebook Profile Link (Optional)">
-            <label style="color: var(--text-muted); font-size: 11px; text-align: left; display: block; margin: 10px 0 5px;">Upload Avatar (Auto Compressed):</label>
+            <label style="color: var(--text-muted); font-size: 11px; text-align: left; display: block; margin: 10px 0 5px; font-weight:500;">Upload Avatar (Auto Compressed):</label>
             <input type="file" id="regAvatarFile" accept="image/*">
             <input type="text" id="regPhone" placeholder="WhatsApp Number (Optional)">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
@@ -267,7 +269,7 @@
                     <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.2); border-color: var(--accent);">SEASON 1</span>
                     <h1 class="hero-title">NEW ERA<br><span style="color:var(--accent)">OF GREATNESS</span></h1>
                     <p class="hero-desc">Introducing the highest individual honours in our community.</p>
-                    <button class="hero-btn" style="background:var(--accent); color:#000;" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
+                    <button class="hero-btn" style="background:var(--accent); color:#000;" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">JOIN EVENT <i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
             <div class="hero-slide" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);">
@@ -276,7 +278,7 @@
                     <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.1); border-color: var(--gold);">ELITE</span>
                     <h1 class="hero-title">BECOME A<br><span style="color:var(--gold)">LEGEND</span></h1>
                     <p class="hero-desc">Compete with top players and dominate the global rankings.</p>
-                    <button class="hero-btn" style="background:var(--gold); color:#000;" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fas fa-chevron-right"></i></button>
+                    <button class="hero-btn" style="background:var(--gold); color:#000;" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fa-solid fa-chevron-right"></i></button>
                 </div>
             </div>
         </div>
@@ -284,7 +286,7 @@
         <!-- Featured Tournaments -->
         <div class="sec-head">
             <div class="sec-title">Featured Tournaments</div>
-            <div class="sec-link" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">View All <i class="fas fa-chevron-right"></i></div>
+            <div class="sec-link" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">View All <i class="fa-solid fa-chevron-right"></i></div>
         </div>
         <div class="t-slider" id="homeTournamentsList">
             <p style="font-size:12px; color:gray; padding: 10px;">Loading...</p>
@@ -296,11 +298,11 @@
             <div class="sec-badge">Updated Weekly</div>
         </div>
         <div class="playbook-card">
-            <div class="pb-badge"><i class="fas fa-trophy"></i> This Week's Top Player</div>
+            <div class="pb-badge"><i class="fa-solid fa-trophy"></i> This Week's Top Player</div>
             <div class="pb-content">
                 <img src="https://img.freepik.com/premium-photo/portrait-handsome-young-man-soccer-player-confident_758367-17562.jpg" class="pb-avatar">
                 <div class="pb-details">
-                    <div class="pb-name">Abdul Ohab <i class="fas fa-check-circle pb-verified"></i> <span class="pb-rank">#1</span></div>
+                    <div class="pb-name">Abdul Ohab <i class="fa-solid fa-circle-check pb-verified"></i> <span class="pb-rank">#1</span></div>
                     <div class="pb-style">4-2-1-3 • Long Ball Counter</div>
                 </div>
                 <div class="pb-stats">
@@ -314,7 +316,7 @@
                     </div>
                 </div>
             </div>
-            <div class="pb-link">Watch Gameplay <i class="fas fa-chevron-right"></i></div>
+            <div class="pb-link">Watch Gameplay <i class="fa-solid fa-chevron-right"></i></div>
         </div>
 
         <!-- Top Players Preview -->
@@ -335,37 +337,37 @@
             
             <hr class="footer-divider">
             
-            <!-- Footer Internal Nav -->
+            <!-- Internal Nav -->
             <div class="footer-internal-nav">
                 <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
-                    <i class="fas fa-home"></i> Home
+                    <i class="fa-solid fa-house"></i> Home
                 </div>
                 <div class="f-nav-item" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">
-                    <i class="fas fa-ribbon"></i> Tournaments
+                    <i class="fa-solid fa-ribbon"></i> Tournaments
                 </div>
                 <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
-                    <i class="far fa-calendar-alt"></i> Matches
+                    <i class="fa-regular fa-calendar"></i> Matches
                 </div>
                 <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">
-                    <i class="fas fa-chart-line"></i> Leaderboard
+                    <i class="fa-solid fa-chart-column"></i> Leaderboard
                 </div>
                 <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[3])">
-                    <i class="far fa-user"></i> Profile
+                    <i class="fa-regular fa-user"></i> Profile
                 </div>
             </div>
 
             <hr class="footer-divider">
             
             <div class="footer-socials">
-                <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="social-circle"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="social-circle"><i class="fa-brands fa-discord"></i></a>
+                <a href="#" class="social-circle"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="social-circle"><i class="fa-brands fa-youtube"></i></a>
+                <a href="#" class="social-circle"><i class="fa-brands fa-tiktok"></i></a>
             </div>
             
             <div class="footer-contact">
-                <i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com
+                <i class="fa-regular fa-envelope"></i> Contact: bmgofficial@gmail.com
             </div>
             
             <div class="footer-copy">
@@ -394,21 +396,21 @@
             <div class="prof-details">
                 <div class="prof-name" id="profName">Player Name</div>
                 <div class="prof-country">🇧🇩 Bangladesh</div>
-                <p id="profEmailTxt" style="color: var(--accent); font-size: 10px; margin-top: 5px;"></p>
+                <p id="profEmailTxt" style="color: var(--accent); font-size: 10px; margin-top: 5px; font-weight:500;"></p>
             </div>
         </div>
         <div class="card" style="margin-top: 15px;">
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1f2940; margin-bottom:10px;">
-                <span style="color: var(--text-muted); font-size: 12px;">eFootball UID</span>
+                <span style="color: var(--text-muted); font-size: 12px; font-weight:500;">eFootball UID</span>
                 <strong style="color: white; font-size: 13px;" id="profKonamiTxt">N/A</strong>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                <span style="color: var(--text-muted); font-size: 12px;">Device Model</span>
+                <span style="color: var(--text-muted); font-size: 12px; font-weight:500;">Device Model</span>
                 <strong style="color: white; font-size: 13px;" id="profDeviceTxt">N/A</strong>
             </div>
         </div>
         <div style="text-align: center; margin-top: 25px;">
-            <button onclick="logOut()" style="background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 8px 25px; border-radius: 5px; cursor: pointer; font-weight: bold;">Logout Account</button>
+            <button onclick="logOut()" style="background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 8px 25px; border-radius: 5px; cursor: pointer; font-weight: 800; transition:0.3s;">Logout Account</button>
         </div>
     </div>
 
@@ -416,7 +418,7 @@
     <div id="admin" class="page-section">
         <div class="section-title" style="color: #ef4444;">Admin Dashboard</div>
         <div class="card" style="border: 1px solid #3b82f6;">
-            <h3 style="color: #3b82f6; font-size: 16px;">Create Tournament</h3>
+            <h3 style="color: #3b82f6; font-size: 16px; font-weight:800;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
             <select id="tFormat">
                 <option value="Upcoming">Upcoming</option>
@@ -428,7 +430,7 @@
             <button class="submit-btn" style="background: #3b82f6; color:white;" onclick="createTournament()">Publish Tournament</button>
         </div>
         <div class="card" style="border: 1px solid var(--gold);">
-            <h3 style="color: var(--gold); font-size: 16px;">Update Leaderboard</h3>
+            <h3 style="color: var(--gold); font-size: 16px; font-weight:800;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
             <input type="text" id="lbAvatar" placeholder="Player Avatar URL (Optional)">
             <input type="number" id="lbPoints" placeholder="Total Points">
@@ -439,11 +441,11 @@
 
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home" style="font-size: 16px; margin-bottom: 3px;"></i><br>Home</div>
-        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class="fas fa-trophy" style="font-size: 16px; margin-bottom: 3px;"></i><br>Events</div>
-        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class="fas fa-chart-bar" style="font-size: 16px; margin-bottom: 3px;"></i><br>Ranking</div>
-        <div class="nav-item" onclick="switchTab('profile', this)"><i class="far fa-user" style="font-size: 16px; margin-bottom: 3px;"></i><br>Profile</div>
-        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class="fas fa-cog" style="font-size: 16px; margin-bottom: 3px;"></i><br>Admin</div>
+        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fa-solid fa-house"></i>Home</div>
+        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class="fa-solid fa-trophy"></i>Events</div>
+        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class="fa-solid fa-chart-simple"></i>Ranking</div>
+        <div class="nav-item" onclick="switchTab('profile', this)"><i class="fa-regular fa-user"></i>Profile</div>
+        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class="fa-solid fa-gear"></i>Admin</div>
     </div>
 
     <!-- JAVASCRIPT -->
@@ -591,7 +593,7 @@
                         <div class="t-stat"><span>SLOTS</span><strong>${t.slots}</strong></div>
                         <div class="t-stat"><span>ENTRY FEE</span><strong style="color: var(--gold);">${t.fee}</strong></div>
                         <div class="t-stat"><span>START DATE</span><strong>TBA</strong></div>
-                        <button class="t-reg-btn">REGISTER <i class="fas fa-chevron-right"></i></button>
+                        <button class="t-reg-btn">REGISTER <i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>`;
             });
@@ -623,7 +625,7 @@
                     <img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="lb-avatar">
                     <div class="player-info">
                         <div class="player-name">${p.name}</div>
-                        <div class="points"><i class="fas fa-star" style="font-size:10px;"></i> ${p.points} Points</div>
+                        <div class="points"><i class="fa-solid fa-star" style="font-size:10px;"></i> ${p.points} Points</div>
                     </div>
                     <div class="win-rate-box">
                         <div class="win-rate-val">${p.winRate || "0"}%</div>
