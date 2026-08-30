@@ -556,7 +556,7 @@
             </div>
             <div class="perf-chart">
                 <div class="perf-bars" id="perfBarsContainer">
-                    <p style="color:var(--text-dim); font-size:11px; margin:auto;">No data yet.</p>
+                    <p style="color:var(--text-dim); font-size:11px; margin:auto;">No match data yet.</p>
                 </div>
             </div>
         </div>
@@ -570,7 +570,7 @@
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
         
-        <!-- --- NEW: PLAYER MANAGEMENT SYSTEM --- -->
+        <!-- PLAYER MANAGEMENT SYSTEM -->
         <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
             <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Player Management</h3>
             <input type="text" id="adminPlayerSearch" placeholder="Search by Name or Email..." onkeyup="filterAdminPlayers()">
@@ -579,7 +579,7 @@
                 <p style="color:gray; font-size:11px; text-align:center;">Loading Players...</p>
             </div>
 
-            <!-- Edit Player Form (Hidden by default) -->
+            <!-- Edit Player Form -->
             <div id="adminEditPlayerForm" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed var(--card-border);">
                 <h4 style="color:white; margin-bottom:10px; font-size:13px; font-weight:600;"><i class="fas fa-user-edit" style="color:var(--accent);"></i> Edit Player Info</h4>
                 <input type="hidden" id="editPlayerUid">
@@ -777,7 +777,7 @@
                 if(user.email === adminEmail) {
                     document.getElementById('navAdmin').classList.add('show');
                     document.body.classList.add('is-admin');
-                    fetchAllPlayersAdmin(); // Load players for admin dashboard
+                    fetchAllPlayersAdmin();
                 } else {
                     document.getElementById('navAdmin').classList.remove('show');
                     document.body.classList.remove('is-admin');
@@ -792,11 +792,10 @@
         });
 
         /* ════════════════════════════════════════
-           NEW: ADMIN PLAYER MANAGEMENT SYSTEM
+           ADMIN PLAYER MANAGEMENT SYSTEM
         ════════════════════════════════════════ */
         let allUsersData = [];
 
-        // 1. Fetch all registered players
         function fetchAllPlayersAdmin() {
             db.collection("users").onSnapshot(snapshot => {
                 allUsersData = [];
@@ -809,7 +808,6 @@
             });
         }
 
-        // 2. Render list to UI
         function renderAdminPlayers(list) {
             const container = document.getElementById('adminPlayerList');
             container.innerHTML = "";
@@ -833,7 +831,6 @@
             });
         }
 
-        // 3. Search Filter Logic
         function filterAdminPlayers() {
             const query = document.getElementById('adminPlayerSearch').value.toLowerCase();
             const filtered = allUsersData.filter(p => 
@@ -843,7 +840,6 @@
             renderAdminPlayers(filtered);
         }
 
-        // 4. Open Edit Form and map current data
         function openPlayerEdit(uid) {
             const player = allUsersData.find(p => p.uid === uid);
             if(!player) return;
@@ -861,7 +857,6 @@
             document.getElementById('adminEditPlayerForm').style.display = 'none';
         }
 
-        // 5. Save the updated info back to Firestore
         function savePlayerEdit() {
             const uid = document.getElementById('editPlayerUid').value;
             const name = document.getElementById('editPlayerName').value;
@@ -913,7 +908,7 @@
             const tList = document.getElementById(elementId); tList.innerHTML = "";
             snapshot.forEach(doc => {
                 const t = doc.data();
-                const tFormat = t.type || 'Knockout'; // Fallback for older tournaments
+                const tFormat = t.type || 'Knockout';
 
                 tList.innerHTML += `
                 <div class="t-card">
@@ -949,7 +944,6 @@
             renderTournaments(snapshot, 'allTournamentsList');
         });
 
-        // Delete Tournament Option
         function deleteTournament(docId) {
             if(confirm("Admin: Are you sure you want to completely DELETE this tournament?")) {
                 db.collection("tournaments").doc(docId).delete()
@@ -958,7 +952,6 @@
             }
         }
 
-        // Register for Tournament Option
         function registerForTournament(docId) {
             const user = auth.currentUser;
             if(!user) {
@@ -975,7 +968,6 @@
             }).then(() => alert("Registration Successful for this tournament!"));
         }
 
-        // Generate Group Stage / Knockout Fixtures
         async function generateFixtures(docId, format) {
             if(!confirm(`Admin: Auto-Generate ${format} logic/brackets for this tournament?`)) return;
 
@@ -1020,7 +1012,6 @@
                     fixtures: generatedData
                 });
 
-                console.log("Successfully Generated Bracket Logic:", generatedData);
                 alert(`Successfully generated logic for ${players.length} players! Check Browser Console (F12) to see JSON structure.`);
             } catch(e) {
                 alert("Generation Error: " + e.message);
@@ -1070,7 +1061,7 @@
         });
 
         /* ════════════════════════════════════════
-           TAB SWITCHING & PLAYER STATS DEMO
+           TAB SWITCHING & REAL PLAYER STATS (NO DEMO)
         ════════════════════════════════════════ */
 
         function switchTab(tabId, element) {
@@ -1088,14 +1079,6 @@
             if(tabId === 'profile') loadPlayerStats();
         }
 
-        const DEMO_MATCHES = [
-            { result:'W', myScore:3, oppScore:1, opp:'Raihan', myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
-            { result:'L', myScore:0, oppScore:2, opp:'Sakib',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
-            { result:'W', myScore:2, oppScore:0, opp:'Rifat',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
-            { result:'D', myScore:1, oppScore:1, opp:'Nayem',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
-            { result:'W', myScore:4, oppScore:2, opp:'Tasin',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
-        ];
-
         function loadPlayerStats() {
             const user = auth.currentUser;
             if (!user) return;
@@ -1112,17 +1095,10 @@
                     gf     = d.gf     || 0;
                     ga     = d.ga     || 0;
                     motm   = d.motm   || 0;
-                    matches= d.matches || DEMO_MATCHES;
-                } else {
-                    matches = DEMO_MATCHES;
-                    matches.forEach(m => {
-                        played++; gf += m.myScore; ga += m.oppScore;
-                        if(m.result==='W') wins++; else if(m.result==='L') losses++; else draws++;
-                    });
-                    motm = 2;
+                    matches= d.matches || [];
                 }
 
-                const wr = played > 0 ? Math.round((wins/played)*100) : 0;
+                const wr = played > 0 ? Math.round((wins / played) * 100) : 0;
 
                 document.getElementById('statW').innerText  = wins;
                 document.getElementById('statP').innerText  = played;
@@ -1137,25 +1113,26 @@
                 renderPerfGraph(matches);
 
             }).catch(() => {
-                const matches = DEMO_MATCHES;
-                let wins=0,played=0,draws=0,losses=0,gf=0,ga=0;
-                matches.forEach(m=>{played++;gf+=m.myScore;ga+=m.oppScore;if(m.result==='W')wins++;else if(m.result==='L')losses++;else draws++;});
-                document.getElementById('statW').innerText=wins; document.getElementById('statP').innerText=played;
-                document.getElementById('statD').innerText=draws; document.getElementById('statL').innerText=losses;
-                const wr=played>0?Math.round((wins/played)*100):0;
-                document.getElementById('statWR').innerText=wr+'%';
-                document.getElementById('statGF').innerText=gf; document.getElementById('statGA').innerText=ga;
-                document.getElementById('statMOTM').innerText=2;
-                renderFormStrip(matches); renderPerfGraph(matches);
+                document.getElementById('statW').innerText  = 0;
+                document.getElementById('statP').innerText  = 0;
+                document.getElementById('statD').innerText  = 0;
+                document.getElementById('statL').innerText  = 0;
+                document.getElementById('statWR').innerText = '0%';
+                document.getElementById('statGF').innerText = 0;
+                document.getElementById('statGA').innerText = 0;
+                document.getElementById('statMOTM').innerText = 0;
+                renderFormStrip([]);
+                renderPerfGraph([]);
             });
         }
 
         function renderFormStrip(matches) {
             const strip = document.getElementById('formMatchStrip');
             const tag   = document.getElementById('formSummaryTag');
+            
             if(!matches || matches.length === 0) {
-                strip.innerHTML = '<p style="color:var(--text-dim);font-size:11px;padding:6px 0;">No matches yet.</p>';
-                tag.innerText = '—';
+                strip.innerHTML = '<p style="color:var(--text-dim);font-size:11px;padding:6px 0;">No matches recorded yet.</p>';
+                tag.innerText = '— — — — —';
                 return;
             }
             const last5 = matches.slice(-5);
@@ -1179,7 +1156,7 @@
         function renderPerfGraph(matches) {
             const container = document.getElementById('perfBarsContainer');
             if(!matches || matches.length === 0) {
-                container.innerHTML = '<p style="color:var(--text-dim);font-size:11px;margin:auto;">No data yet.</p>';
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:11px;margin:auto;">No match data yet.</p>';
                 return;
             }
             const maxVal = Math.max(...matches.map(m => Math.max(m.myScore, m.oppScore, 1)));
