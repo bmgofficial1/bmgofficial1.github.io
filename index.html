@@ -4,253 +4,495 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BMG Official - eFootball Community</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
+
     <!-- STABLE FontAwesome v5.15.4 (100% Working) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <style>
-        :root { 
-            --bg-dark: #050814; 
-            --card-bg: #12182b; 
-            --gold: #ffd700; 
-            --accent: #a3e635; 
-            --logo-blue: #38bdf8; /* Logo Matching Light Blue */
-            --text-main: #ffffff; 
-            --text-muted: #8a94b5; 
-            --nav-bg: #0d1323; 
+        :root {
+            /* Base surfaces (background kept exactly as-is) */
+            --bg-dark: #050814;
+            --card-bg: #10162a;
+            --card-bg-soft: #0c1120;
+            --card-border: rgba(148, 163, 184, 0.10);
+            --nav-bg: #0a0e1c;
+
+            /* Brand accents (matched to the logo) */
+            --gold: #ffd700;
+            --gold-deep: #c9970a;
+            --accent: #a3e635;
+            --accent-deep: #5a8a10;
+            --logo-blue: #38bdf8;
+            --logo-blue-deep: #0284c7;
+            --danger: #ef4444;
+
+            /* Text */
+            --text-main: #ffffff;
+            --text-muted: #8a94b5;
+            --text-dim: #576088;
+
+            /* Signature tri-accent line — the thread that ties logo + palette together */
+            --signature: linear-gradient(90deg, var(--logo-blue), var(--gold) 50%, var(--accent));
+
+            /* Glass surfaces for the modern chrome (header / bottom nav) */
+            --glass-bg: rgba(8, 12, 26, 0.72);
+            --glass-border: rgba(255, 255, 255, 0.06);
+
+            --font-body: 'Poppins', sans-serif;
+            --font-display: 'Orbitron', sans-serif;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 80px; }
-        
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #1f2940; background: var(--bg-dark); position: sticky; top: 0; z-index: 100;}
-        .header h2 { font-size: 18px; font-weight: 800; letter-spacing: 2px; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 92px; }
+
+        ::selection { background: var(--logo-blue); color: #000; }
+        ::-webkit-scrollbar { width: 0; height: 0; }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: radial-gradient(120% 140% at 50% 32%, #0e1c3d 0%, #081128 48%, #050814 100%);
+            transition: opacity 0.55s ease, visibility 0.55s ease;
+        }
+        #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+        .preloader-ring-wrap { position: relative; width: 118px; height: 118px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
+        .preloader-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(56,189,248,0.12); border-top-color: var(--logo-blue); border-right-color: var(--gold); animation: preloaderSpin 1s linear infinite; }
+        .preloader-ring::after { content: ''; position: absolute; inset: -8px; border-radius: 50%; border: 1px solid rgba(56,189,248,0.15); }
+        .preloader-logo-badge {
+            width: 86px; height: 86px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at 35% 30%, rgba(56,189,248,0.28), rgba(5,8,20,0.5));
+            border: 1px solid rgba(56,189,248,0.4); box-shadow: 0 0 34px rgba(56,189,248,0.4);
+        }
+        .preloader-logo { width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(56,189,248,0.6)); animation: preloaderPulse 1.8s ease-in-out infinite; }
+        .preloader-title { font-family: var(--font-display); font-size: 19px; letter-spacing: 4px; font-weight: 800; margin-top: 22px; color: #fff; }
+        .preloader-title span { background: linear-gradient(90deg, var(--logo-blue), #7dd3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .preloader-subtitle { font-size: 9px; letter-spacing: 4.5px; color: #6f7fac; margin-top: 8px; text-transform: uppercase; font-weight: 600; }
+        .preloader-loading-txt { font-size: 9.5px; letter-spacing: 2.5px; color: var(--text-dim); margin-top: 26px; text-transform: uppercase; font-weight: 600; }
+        .preloader-loading-txt::after { content: ''; display: inline-block; width: 1px; }
+        @keyframes preloaderSpin { to { transform: rotate(360deg); } }
+        @keyframes preloaderPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.07); opacity: 0.85; } }
+
+        /* --- HEADER (glass chrome) --- */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 15px; background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease;
+        }
+        .header::after {
+            content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+            background: var(--signature); opacity: 0.55;
+        }
+        .header.scrolled { background: rgba(6, 9, 20, 0.92); box-shadow: 0 12px 30px -18px rgba(0,0,0,0.85); }
+        .header-brand { display: flex; align-items: center; gap: 9px; }
+        .header-mark {
+            width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.35), rgba(56,189,248,0.05));
+            border: 1px solid rgba(56,189,248,0.35); color: var(--logo-blue); font-size: 13px;
+            box-shadow: 0 0 14px rgba(56,189,248,0.35);
+        }
+        .header h2 { font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 2.5px; }
         .header span { color: var(--logo-blue); }
-        .login-btn { background: transparent; color: var(--text-muted); border: 1px solid #1f2940; padding: 5px 12px; border-radius: 20px; cursor: pointer; font-size: 18px; transition: 0.3s;}
-        .login-btn:hover { background: #1f2940; color: #fff;}
-        
-        .page-section { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
+        .login-btn {
+            background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border);
+            width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 15px; transition: 0.25s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-btn:hover { background: rgba(56,189,248,0.12); color: var(--logo-blue); border-color: rgba(56,189,248,0.4); }
+
+        .page-section { display: none; padding: 16px 15px 0; animation: fadeIn 0.35s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        .section-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; padding-left: 11px; position: relative; }
+        .section-title::before { content: ''; position: absolute; left: 0; top: 2px; bottom: 2px; width: 4px; border-radius: 3px; background: var(--signature); }
+
         /* --- HERO SLIDER --- */
-        .hero-banner-slider { position: relative; width: 100%; height: 180px; border-radius: 16px; overflow: hidden; margin-bottom: 25px; border: 1px solid #1f2940; }
-        .hero-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; padding: 20px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
+        .hero-banner-slider { position: relative; width: 100%; height: 190px; border-radius: 18px; overflow: hidden; margin-bottom: 28px; border: 1px solid var(--card-border); box-shadow: 0 18px 40px -12px rgba(0,0,0,0.65); }
+        .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 22px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
         .hero-content { z-index: 3; width: 65%; position: relative; }
-        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
-        .hero-title { font-size: 21px; font-weight: 800; line-height: 1.1; margin-bottom: 6px; text-transform: uppercase; }
-        .hero-desc { font-size: 9px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.4; }
-        .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; width: fit-content; }
-        .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 65%; object-fit: cover; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%); border-top-right-radius: 16px; border-bottom-right-radius: 16px; }
+        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 11px; border-radius: 12px; display: inline-block; margin-bottom: 9px; letter-spacing: 1.5px; border: 1px solid; backdrop-filter: blur(4px); }
+        .hero-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; line-height: 1.18; margin-bottom: 7px; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+        .hero-desc { font-size: 9.5px; color: #cbd5e1; margin-bottom: 13px; line-height: 1.5; }
+        .hero-btn { border: none; padding: 9px 14px; border-radius: 9px; font-size: 10.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; width: fit-content; letter-spacing: 0.4px; transition: 0.2s; }
+        .hero-btn:active { transform: scale(0.96); }
+        .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 65%; object-fit: cover; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%); }
+        .hero-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
+        .hero-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
+        .hero-dots .dot.active { width: 18px; border-radius: 4px; background: var(--logo-blue); box-shadow: 0 0 8px rgba(56,189,248,0.7); }
 
         /* --- SECTION HEADERS --- */
-        .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px; }
-        .sec-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
-        .sec-link { font-size: 11px; color: var(--gold); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 3px; }
-        .sec-badge { background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 10px; padding: 3px 8px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.4); font-weight: 700;}
+        .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
+        .sec-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding-left: 11px; position: relative; }
+        .sec-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
+        .sec-link { font-size: 11px; color: var(--logo-blue); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .sec-badge { background: rgba(239, 68, 68, 0.12); color: #f87171; font-size: 10px; padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.35); font-weight: 700; letter-spacing: 0.3px; }
+        .sec-badge.live { background: rgba(255, 215, 0, 0.1); color: var(--gold); border-color: rgba(255, 215, 0, 0.3); display: inline-flex; align-items: center; gap: 6px; }
+        .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 0 rgba(255,215,0,0.6); animation: livepulse 1.6s infinite; }
+        @keyframes livepulse { 0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.55); } 70% { box-shadow: 0 0 0 6px rgba(255,215,0,0); } 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); } }
 
         /* --- TOURNAMENT SLIDER --- */
-        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 10px; scrollbar-width: none; }
+        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 6px; scrollbar-width: none; }
         .t-slider::-webkit-scrollbar { display: none; }
-        .t-card { min-width: 90%; scroll-snap-align: center; background: var(--card-bg); border-radius: 14px; border: 1px solid #1f2940; overflow: hidden; }
-        .t-card-img { height: 140px; background-size: cover; background-position: center; position: relative; padding: 15px; display: flex; flex-direction: column; justify-content: space-between; }
-        .t-card-img::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.2)); }
-        .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 4px;}
+        .t-card {
+            min-width: 90%; scroll-snap-align: center; border-radius: 18px; overflow: hidden;
+            box-shadow: 0 14px 30px -14px rgba(0,0,0,0.7); transition: transform 0.2s ease;
+            border: 1px solid transparent;
+            background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+                        linear-gradient(135deg, rgba(56,189,248,0.35), rgba(255,215,0,0.12) 55%, rgba(163,230,53,0.25)) border-box;
+        }
+        .t-card:active { transform: scale(0.985); }
+        .t-card-img { height: 148px; background-size: cover; background-position: center; position: relative; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
+        .t-card-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,6,15,0.95), rgba(3,6,15,0.15) 60%); }
+        .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 4px 9px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 5px; letter-spacing: 0.3px; }
         .t-status::before { content:''; width: 6px; height: 6px; background: #000; border-radius: 50%; }
         .t-card-titles { position: relative; z-index: 2; }
-        .t-prize { color: var(--gold); font-size: 12px; font-weight: 800; }
-        .t-name { font-size: 16px; font-weight: 800; text-transform: uppercase; line-height: 1.2; }
-        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; background: #0b1120; border-top: 1px solid #1f2940;}
+        .t-prize { font-family: var(--font-display); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .t-name { font-family: var(--font-display); font-size: 16px; font-weight: 800; text-transform: uppercase; line-height: 1.25; }
+        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; background: var(--card-bg-soft); border-top: 1px solid var(--card-border); }
         .t-stat { text-align: center; }
-        .t-stat span { display: block; font-size: 9px; color: var(--text-muted); font-weight: 600; margin-bottom: 2px;}
-        .t-stat strong { font-size: 13px; font-weight: 700; }
-        .t-reg-btn { background: linear-gradient(90deg, #f97316, #ef4444); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+        .t-stat span { display: block; font-size: 8.5px; color: var(--text-dim); font-weight: 700; margin-bottom: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .t-stat strong { font-family: var(--font-display); font-size: 13px; font-weight: 700; }
+        .t-reg-btn { background: linear-gradient(135deg, #f97316, #ef4444); color: white; border: none; padding: 8px 13px; border-radius: 9px; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px -6px rgba(239,68,68,0.55); transition: 0.2s; }
+        .t-reg-btn:active { transform: scale(0.95); }
 
         /* --- EXPERT PLAYBOOK --- */
-        .playbook-card { background: linear-gradient(180deg, #12182b, #070b19); border: 1px solid #14532d; border-radius: 14px; padding: 15px; position: relative; margin-bottom: 25px;}
-        .pb-badge { background: #064e3b; color: var(--accent); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 12px; border: 1px solid #14532d; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 15px; }
-        .pb-content { display: flex; align-items: center; justify-content: space-between; }
-        .pb-avatar { width: 60px; height: 60px; border-radius: 50%; border: 2px solid #1f2940; }
-        .pb-details { flex: 1; margin-left: 12px; }
-        .pb-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 5px; margin-bottom: 2px;}
+        .playbook-card {
+            border-radius: 18px; padding: 16px; position: relative; margin-bottom: 26px; overflow: hidden;
+            box-shadow: 0 14px 30px -16px rgba(0,0,0,0.75); border: 1px solid transparent;
+            background: linear-gradient(165deg, #101d18 0%, #070b19 65%) padding-box,
+                        linear-gradient(165deg, rgba(163,230,53,0.5), rgba(20,83,45,0.2) 70%) border-box;
+        }
+        .playbook-card::before { content: ''; position: absolute; top: -40px; right: -40px; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, rgba(163,230,53,0.18), transparent 70%); }
+        .pb-badge { background: #06301f; color: var(--accent); font-size: 10px; font-weight: 700; padding: 5px 11px; border-radius: 12px; border: 1px solid rgba(20,83,45,0.8); display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px; letter-spacing: 0.3px; position: relative; z-index: 2; }
+        .pb-content { display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2; }
+        .pb-avatar { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--accent); }
+        .pb-details { flex: 1; margin-left: 14px; }
+        .pb-name { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 6px; margin-bottom: 3px;}
         .pb-verified { color: var(--accent); font-size: 12px; }
-        .pb-rank { background: #78350f; color: var(--gold); font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 800; }
+        .pb-rank { font-family: var(--font-display); background: #4a2b06; color: var(--gold); font-size: 9px; padding: 3px 7px; border-radius: 8px; font-weight: 800; }
         .pb-style { font-size: 10px; color: var(--text-muted); }
-        .pb-stats { display: flex; gap: 15px; text-align: center; }
-        .pb-stat-val { font-size: 14px; font-weight: 700; display: block; }
-        .pb-stat-label { font-size: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;}
-        .pb-link { text-align: right; margin-top: 10px; font-size: 11px; color: var(--accent); font-weight: 600; cursor:pointer;}
+        .pb-stats { display: flex; gap: 16px; text-align: center; }
+        .pb-stat-val { font-family: var(--font-display); font-size: 15px; font-weight: 700; display: block; }
+        .pb-stat-label { font-size: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.6px; margin-top: 2px; }
+        .pb-link { text-align: right; margin-top: 12px; font-size: 11px; color: var(--accent); font-weight: 600; cursor:pointer; position: relative; z-index: 2; }
 
         /* --- LEADERBOARD & OTHERS --- */
-        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #1f2940; padding-bottom: 10px; }
-        .rank { color: var(--gold); font-weight: bold; width: 25px; font-size: 18px; text-align: center;}
-        .rank-badge { background: #d97706; width: 25px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 4px; color: white; font-weight: bold; position: relative;}
-        .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 12.5px solid transparent; border-right: 12.5px solid transparent; border-top: 5px solid #d97706;}
-        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 10px; border: 1px solid var(--gold);}
+        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding: 4px 8px 12px 10px; border-left: 3px solid transparent; border-radius: 6px; transition: background 0.2s; }
+        .leaderboard-row:nth-child(1) { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.06), transparent 60%); }
+        .leaderboard-row:nth-child(2) { border-left-color: #cbd5e1; background: linear-gradient(90deg, rgba(203,213,225,0.05), transparent 60%); }
+        .leaderboard-row:nth-child(3) { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205,127,50,0.06), transparent 60%); }
+        .rank { color: var(--gold); font-family: var(--font-display); font-weight: 700; width: 26px; font-size: 15px; text-align: center;}
+        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px -3px rgba(255,215,0,0.55);}
+        .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 13px solid transparent; border-right: 13px solid transparent; border-top: 5px solid var(--gold-deep);}
+        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 11px; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,215,0,0.5); }
         .player-info { flex: 1; }
-        .player-name { font-weight: 700; font-size: 14px; margin-bottom: 2px;}
-        .points { font-size: 11px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 4px;}
+        .player-name { font-weight: 700; font-size: 14px; margin-bottom: 3px;}
+        .points { font-size: 11px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 5px; font-family: var(--font-display); }
         .win-rate-box { text-align: right; }
-        .win-rate-val { font-size: 15px; font-weight: 800; color: var(--accent); }
-        .win-rate-lbl { font-size: 10px; color: var(--text-muted); }
+        .win-rate-val { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--accent); }
+        .win-rate-lbl { font-size: 9.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; }
 
-        .card { background: var(--card-bg); border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #1f2940; }
-        input, select { width: 100%; margin: 8px 0; padding: 10px; border-radius: 5px; border: none; background: #1f2940; color: white; font-size: 13px; font-weight: 500;}
-        .submit-btn { background: var(--accent); color: #000; border: none; padding: 10px; width: 100%; border-radius: 5px; cursor: pointer; font-weight: 800; margin-top: 10px; transition:0.3s;}
-        .submit-btn:hover { opacity: 0.9; }
-        .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; text-decoration: underline; text-align: center; }
+        .card { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 26px -18px rgba(0,0,0,0.8); }
+        input, select { width: 100%; margin: 8px 0; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--card-border); background: #161d33; color: white; font-size: 13px; font-weight: 500; transition: border-color 0.2s; }
+        input:focus, select:focus { outline: none; border-color: var(--logo-blue); box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+        .submit-btn { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #04210a; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 800; margin-top: 10px; transition: 0.25s; letter-spacing: 0.3px; box-shadow: 0 10px 22px -10px rgba(163,230,53,0.5); }
+        .submit-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+        .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; text-align: center; }
 
-        /* --- NEW ULTRA PREMIUM FOOTER --- */
-        .bmg-footer { 
-            background: #0a0f1d; /* Very Deep Dark Background */
-            border-radius: 35px 35px 0 0; 
-            padding: 50px 15px 100px 15px; 
-            text-align: center; 
-            margin-top: 40px; 
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.6); 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .prof-top-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; padding-left: 11px; position: relative; }
+        .prof-top-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
+        .prof-header { display: flex; align-items: center; gap: 14px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; }
+        .prof-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--logo-blue); }
+        .prof-name { font-size: 16px; font-weight: 700; }
+        .prof-country { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+        /* --- ULTRA PREMIUM FOOTER --- */
+        .bmg-footer {
+            position: relative;
+            background: radial-gradient(120% 140% at 50% -10%, #0d1730 0%, #070b19 55%, #05070f 100%);
+            border-radius: 34px 34px 0 0;
+            padding: 46px 22px 34px;
+            text-align: center;
+            margin-top: 42px;
+            overflow: hidden;
+            box-shadow: 0 -18px 45px -20px rgba(0,0,0,0.75);
         }
-        .footer-logo { 
-            width: 70px; 
-            margin-bottom: 15px; 
-            filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4)); /* Logo glowing effect */
+        .bmg-footer::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: var(--signature); border-radius: 34px 34px 0 0;
         }
-        .footer-title { 
-            font-size: 22px; 
-            letter-spacing: 4px; 
-            font-weight: 900; /* Max Bold */
-            color: #ffffff; 
-            text-transform: uppercase; 
-            margin-bottom: 5px;
-            /* 3D Shadow Effect */
-            text-shadow: 2px 2px 0px rgba(0,0,0,0.8), 
-                         4px 4px 10px rgba(56, 189, 248, 0.3); 
+        .footer-glow {
+            position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+            width: 280px; height: 280px; border-radius: 50%; pointer-events: none;
+            background: radial-gradient(circle, rgba(56,189,248,0.16), transparent 65%);
         }
-        .footer-subtitle { 
-            font-size: 9px; 
-            letter-spacing: 5px; 
-            color: #94a3b8; 
-            margin-bottom: 25px; 
-            font-weight: 600; 
-            text-transform: uppercase; 
+        .footer-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+
+        .footer-logo-badge {
+            width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at 35% 30%, rgba(56,189,248,0.18), rgba(5,8,20,0.4));
+            border: 1px solid rgba(56,189,248,0.35);
+            box-shadow: 0 0 0 6px rgba(56,189,248,0.05), 0 0 28px rgba(56,189,248,0.3);
+            margin-bottom: 16px;
         }
-        .footer-tagline { 
-            font-size: 11px; 
-            font-weight: 600; 
-            color: #64748b; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
+        .footer-logo { width: 52px; height: 52px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5)); }
+
+        .footer-title { font-family: var(--font-display); font-size: 21px; letter-spacing: 4px; font-weight: 800; color: #ffffff; text-transform: uppercase; margin-bottom: 6px; }
+        .footer-title span { background: linear-gradient(90deg, var(--logo-blue), #7dd3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .footer-subtitle { font-size: 9px; letter-spacing: 4.5px; color: #8b9bc4; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; }
+        .footer-tagline-pill {
+            display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; color: var(--gold);
+            border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.06); padding: 7px 16px; border-radius: 20px;
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 30px;
         }
-        .footer-divider { 
-            border: none; 
-            border-top: 1px solid rgba(255, 255, 255, 0.05); 
-            margin: 30px auto; 
-            width: 90%; 
-        }
-        
-        /* Footer Internal Nav */
-        .footer-internal-nav {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 95%;
-            margin: 0 auto;
-        }
+
+        .footer-nav-row { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; max-width: 340px; margin-bottom: 8px; gap: 2px; }
         .f-nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #cbd5e1;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-weight: 500;
+            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px;
+            color: #cbd5e1; font-size: 9px; cursor: pointer; transition: 0.25s; font-weight: 600; letter-spacing: 0.2px;
         }
-        .f-nav-item i {
-            font-size: 22px;
-            margin-bottom: 10px;
-            color: #ffffff;
-            transition: 0.3s;
+        .f-nav-item .f-icon-circle {
+            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); color: #ffffff; font-size: 12.5px; transition: 0.25s;
         }
-        .f-nav-item:hover, .f-nav-item:hover i { color: var(--logo-blue); }
+        .f-nav-item:hover .f-icon-circle { border-color: rgba(56,189,248,0.5); background: rgba(56,189,248,0.12); color: var(--logo-blue); box-shadow: 0 0 14px rgba(56,189,248,0.35); }
+        .f-nav-item:hover { color: var(--logo-blue); }
 
-        .footer-socials { display: flex; justify-content: center; gap: 15px; }
-        .social-circle { 
-            width: 42px; 
-            height: 42px; 
-            border-radius: 50%; 
-            background: rgba(255, 255, 255, 0.05); 
-            color: #ffffff; 
-            font-size: 18px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            text-decoration: none; 
-            transition: 0.3s; 
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 28px 0 22px; width: 100%; }
+
+        .footer-group-label { font-size: 9px; letter-spacing: 2.5px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 14px; }
+        .footer-socials { display: flex; justify-content: center; gap: 13px; margin-bottom: 26px; }
+        .social-circle {
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.03); color: #e2e8f0;
+            font-size: 16px; display: flex; justify-content: center; align-items: center; text-decoration: none;
+            transition: 0.25s; border: 1px solid var(--card-border);
         }
-        .social-circle:hover { 
-            background: var(--logo-blue); 
-            color: #000; 
-            border-color: var(--logo-blue);
-            transform: translateY(-4px); 
-            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+        .social-circle:hover { background: var(--logo-blue); color: #04101c; border-color: var(--logo-blue); transform: translateY(-3px); box-shadow: 0 8px 18px -6px rgba(56,189,248,0.55); }
+
+        .footer-contact {
+            font-size: 11.5px; color: #cbd5e1; display: inline-flex; justify-content: center; align-items: center;
+            gap: 8px; font-weight: 500; padding: 9px 18px; border-radius: 20px; background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
         }
-        .footer-contact { 
-            font-size: 12px; 
-            color: #cbd5e1; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 8px; 
-            font-weight: 500; 
-            margin-top: 30px; 
-            letter-spacing: 0.5px; 
-        }
-        .footer-copy {
-            font-size: 9px;
-            color: rgba(255, 255, 255, 0.3);
-            margin-top: 15px;
-            letter-spacing: 0.5px;
-        }
-        
+        .footer-bottom-bar { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 22px; font-size: 9.5px; color: rgba(255,255,255,0.32); letter-spacing: 0.4px; }
+        .footer-bottom-bar .dot-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.25); }
+
         /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #1f2940; z-index: 1000; }
-        .nav-item { color: var(--text-muted); text-align: center; font-size: 11px; cursor: pointer; display: block; font-weight: 600; padding: 5px; } 
-        .nav-item i { font-size: 18px; margin-bottom: 4px; display:block; }
-        .nav-admin { display: none; color: #ef4444; } 
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            display: flex; justify-content: space-around; padding: 10px 0 12px; z-index: 1000;
+            border-radius: 20px 20px 0 0; border-top: 1px solid var(--glass-border);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
+        }
+        .bottom-nav::before { content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 2px; background: var(--signature); border-radius: 2px; opacity: 0.6; }
+        .nav-item { color: var(--text-muted); text-align: center; font-size: 10.5px; cursor: pointer; font-weight: 600; padding: 6px 12px; border-radius: 14px; transition: 0.25s; }
+        .nav-item i { font-size: 17px; margin-bottom: 5px; display:block; }
+        .nav-admin { display: none; color: #f87171; }
         .nav-admin.show { display: block; }
-        .nav-item.active { color: var(--gold); }
+        .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); }
+
+        /* ===== PLAYER STATS SECTION ===== */
+        .stats-section-title {
+            font-family: var(--font-display); font-size: 13px; font-weight: 700;
+            letter-spacing: 1.5px; text-transform: uppercase; margin: 22px 0 14px;
+            padding-left: 11px; position: relative; color: var(--text-main);
+        }
+        .stats-section-title::before {
+            content: ''; position: absolute; left: 0; top: 1px; bottom: 1px;
+            width: 4px; border-radius: 3px; background: var(--signature);
+        }
+
+        /* --- Stats Grid (W / P / D / L / WR / GF / GA / MOTM) --- */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 9px; margin-bottom: 14px;
+        }
+        .stat-box {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 12px; padding: 12px 6px 10px;
+            text-align: center; position: relative; overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .stat-box:active { transform: scale(0.96); }
+        .stat-box::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            border-radius: 12px 12px 0 0;
+        }
+        .stat-box.win::before   { background: linear-gradient(90deg, #22c55e, #16a34a); }
+        .stat-box.played::before{ background: linear-gradient(90deg, var(--logo-blue), #0284c7); }
+        .stat-box.draw::before  { background: linear-gradient(90deg, #94a3b8, #64748b); }
+        .stat-box.loss::before  { background: linear-gradient(90deg, #ef4444, #b91c1c); }
+        .stat-box.wr::before    { background: linear-gradient(90deg, var(--accent), var(--accent-deep)); }
+        .stat-box.gf::before    { background: linear-gradient(90deg, var(--gold), var(--gold-deep)); }
+        .stat-box.ga::before    { background: linear-gradient(90deg, #f97316, #ea580c); }
+        .stat-box.motm::before  { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+
+        .stat-box-val {
+            font-family: var(--font-display); font-size: 20px; font-weight: 800;
+            display: block; line-height: 1.1; margin-bottom: 4px;
+        }
+        .stat-box.win   .stat-box-val { color: #4ade80; }
+        .stat-box.played .stat-box-val { color: var(--logo-blue); }
+        .stat-box.draw  .stat-box-val { color: #94a3b8; }
+        .stat-box.loss  .stat-box-val { color: #f87171; }
+        .stat-box.wr    .stat-box-val { color: var(--accent); }
+        .stat-box.gf    .stat-box-val { color: var(--gold); }
+        .stat-box.ga    .stat-box-val { color: #fb923c; }
+        .stat-box.motm  .stat-box-val { color: #c4b5fd; }
+
+        .stat-box-lbl {
+            font-size: 8.5px; color: var(--text-dim); font-weight: 700;
+            letter-spacing: 0.6px; text-transform: uppercase;
+        }
+
+        /* --- Form Strip --- */
+        .form-strip-wrap {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 14px; padding: 14px 14px 16px; margin-bottom: 14px;
+        }
+        .form-strip-head {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+        }
+        .form-strip-label {
+            font-family: var(--font-display); font-size: 11px; font-weight: 700;
+            color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .form-strip-recent { font-size: 10px; color: var(--text-dim); font-weight: 600; }
+
+        .form-matches { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        .form-matches::-webkit-scrollbar { display: none; }
+
+        .form-match-card {
+            min-width: 62px; border-radius: 10px; padding: 8px 6px 7px;
+            text-align: center; flex-shrink: 0; border: 1px solid transparent;
+            position: relative; overflow: hidden;
+        }
+        .form-match-card.win-card  { background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.35); }
+        .form-match-card.loss-card { background: rgba(239,68,68,0.10);  border-color: rgba(239,68,68,0.35); }
+        .form-match-card.draw-card { background: rgba(148,163,184,0.09); border-color: rgba(148,163,184,0.28); }
+
+        /* result dot at top */
+        .form-match-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0;
+        }
+        .form-match-card.win-card::before  { background: #22c55e; }
+        .form-match-card.loss-card::before { background: #ef4444; }
+        .form-match-card.draw-card::before { background: #94a3b8; }
+
+        .form-avatars {
+            display: flex; align-items: center; justify-content: center;
+            gap: 4px; margin-bottom: 5px;
+        }
+        .form-av {
+            width: 22px; height: 22px; border-radius: 50%; object-fit: cover;
+            border: 1.5px solid rgba(255,255,255,0.12);
+        }
+        .form-vs { font-size: 7.5px; color: var(--text-dim); font-weight: 700; }
+
+        .form-score {
+            font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 0.5px;
+        }
+        .form-match-card.win-card  .form-score { color: #4ade80; }
+        .form-match-card.loss-card .form-score { color: #f87171; }
+        .form-match-card.draw-card .form-score { color: #94a3b8; }
+
+        .form-result-tag {
+            display: inline-block; font-size: 8px; font-weight: 800; letter-spacing: 0.8px;
+            padding: 2px 6px; border-radius: 5px; margin-top: 4px; text-transform: uppercase;
+        }
+        .win-card  .form-result-tag { background: rgba(34,197,94,0.18); color: #4ade80; }
+        .loss-card .form-result-tag { background: rgba(239,68,68,0.18);  color: #f87171; }
+        .draw-card .form-result-tag { background: rgba(148,163,184,0.16); color: #94a3b8; }
+
+        .form-opp-name { font-size: 8px; color: var(--text-muted); margin-top: 3px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 58px; }
+
+        /* --- Performance Graph --- */
+        .graph-wrap {
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 14px; padding: 14px; overflow: hidden;
+        }
+        .graph-head {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+        }
+        .graph-title {
+            font-family: var(--font-display); font-size: 11px; font-weight: 700;
+            color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;
+        }
+        .graph-legend { display: flex; gap: 10px; }
+        .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 3px; }
+        .legend-item { font-size: 9px; color: var(--text-dim); font-weight: 600; display: flex; align-items: center; }
+
+        .perf-chart { width: 100%; height: 100px; position: relative; }
+        .perf-bars { display: flex; align-items: flex-end; gap: 5px; height: 90px; padding-bottom: 22px; position: relative; }
+        .perf-bars::before {
+            content:''; position: absolute; top: 0; left: 0; right: 0; bottom: 22px;
+            background: repeating-linear-gradient(180deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 25%);
+            pointer-events: none;
+        }
+        .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; position: relative; }
+        .bar-inner { display: flex; gap: 2px; align-items: flex-end; width: 100%; justify-content: center; }
+        .bar {
+            width: 9px; border-radius: 4px 4px 0 0; transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1);
+            position: relative;
+        }
+        .bar.gf-bar  { background: linear-gradient(180deg, var(--gold), var(--gold-deep)); }
+        .bar.ga-bar  { background: linear-gradient(180deg, #f87171, #b91c1c); }
+        .bar-match-label {
+            position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+            font-size: 7.5px; color: var(--text-dim); font-weight: 700; white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+        .bar-val {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            font-size: 8px; font-weight: 800; color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
 
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="preloader-ring-wrap">
+            <div class="preloader-ring"></div>
+            <div class="preloader-logo-badge">
+                <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="preloader-logo">
+            </div>
+        </div>
+        <div class="preloader-title">BMG <span>OFFICIAL</span></div>
+        <div class="preloader-subtitle">eFootball Community</div>
+        <div class="preloader-loading-txt">Loading Arena...</div>
+    </div>
+
     <div class="header">
-        <h2>BMG <span>OFFICIAL</span></h2>
+        <div class="header-brand">
+            <div class="header-mark"><i class="fas fa-bolt"></i></div>
+            <h2>BMG <span>OFFICIAL</span></h2>
+        </div>
         <button id="loginBtn" class="login-btn" onclick="switchTab('authPage', this)"><i class="far fa-user"></i></button>
     </div>
 
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
         <div class="card" id="loginBox" style="text-align: center; margin-top: 20px;">
-            <h2 style="color: var(--logo-blue); margin-bottom: 15px; font-weight:800;">Player Login</h2>
+            <h2 style="color: var(--logo-blue); margin-bottom: 15px; font-weight:800; font-family: var(--font-display); letter-spacing: 1px;">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
             <input type="password" id="loginPassword" placeholder="Password">
-            <button class="submit-btn" style="background: var(--logo-blue); color:white;" onclick="loginWithEmail()">Log In</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; box-shadow: 0 10px 22px -10px rgba(56,189,248,0.55);" onclick="loginWithEmail()">Log In</button>
             <p class="link-text" onclick="toggleAuth('signup')">Don't have an account? Sign Up</p>
         </div>
 
         <div class="card" id="signupBox" style="text-align: center; margin-top: 20px; display: none;">
-            <h2 style="color: var(--gold); margin-bottom: 15px; font-weight:800;">Create Account</h2>
+            <h2 style="color: var(--gold); margin-bottom: 15px; font-weight:800; font-family: var(--font-display); letter-spacing: 1px;">Create Account</h2>
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name (Must)">
@@ -260,33 +502,37 @@
             <input type="text" id="regPhone" placeholder="WhatsApp Number (Optional)">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
-            <button id="regBtn" class="submit-btn" style="background: var(--gold);" onclick="signUpWithEmail()">Sign Up</button>
+            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; box-shadow: 0 10px 22px -10px rgba(255,215,0,0.5);" onclick="signUpWithEmail()">Sign Up</button>
             <p class="link-text" onclick="toggleAuth('login')">Already have an account? Log In</p>
         </div>
     </div>
 
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
-        
+
         <!-- Blended Hero Slider -->
         <div class="hero-banner-slider">
             <div class="hero-slide active" style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);">
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.2); border-color: var(--accent);">SEASON 1</span>
+                    <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.14); border-color: var(--accent);">SEASON 1</span>
                     <h1 class="hero-title">NEW ERA<br><span style="color:var(--accent)">OF GREATNESS</span></h1>
                     <p class="hero-desc">Introducing the highest individual honours in our community.</p>
-                    <button class="hero-btn" style="background:var(--accent); color:#000;" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
+                    <button class="hero-btn" style="background:var(--accent); color:#04210a; box-shadow: 0 10px 20px -8px rgba(163,230,53,0.6);" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
             <div class="hero-slide" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);">
                 <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.1); border-color: var(--gold);">ELITE</span>
+                    <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.08); border-color: var(--gold);">ELITE</span>
                     <h1 class="hero-title">BECOME A<br><span style="color:var(--gold)">LEGEND</span></h1>
                     <p class="hero-desc">Compete with top players and dominate the global rankings.</p>
-                    <button class="hero-btn" style="background:var(--gold); color:#000;" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fas fa-chevron-right"></i></button>
+                    <button class="hero-btn" style="background:var(--gold); color:#241b00; box-shadow: 0 10px 20px -8px rgba(255,215,0,0.55);" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">RANKINGS <i class="fas fa-chevron-right"></i></button>
                 </div>
+            </div>
+            <div class="hero-dots" id="heroDots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
             </div>
         </div>
 
@@ -300,7 +546,7 @@
         </div>
 
         <!-- Expert Playbook -->
-        <div class="sec-head" style="margin-top: 10px;">
+        <div class="sec-head" style="margin-top: 26px;">
             <div class="sec-title">Expert Playbook</div>
             <div class="sec-badge">Updated Weekly</div>
         </div>
@@ -329,56 +575,64 @@
         <!-- Top Players Preview -->
         <div class="sec-head">
             <div class="sec-title">Top Players</div>
-            <div class="sec-badge" style="color: var(--gold); background: rgba(255, 215, 0, 0.1); border-color: rgba(255, 215, 0, 0.3);">🔴 Live Leaderboard</div>
+            <div class="sec-badge live"><span class="live-dot"></span> Live Leaderboard</div>
         </div>
-        <div class="card" style="padding: 10px; border-radius: 16px;">
+        <div class="card" style="padding: 12px; border-radius: 16px;">
             <div id="homeLeaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
         </div>
 
         <!-- ULTRA PREMIUM MATCHING FOOTER -->
         <div class="bmg-footer">
-            <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="footer-logo">
-            <div class="footer-title">BMG OFFICIAL</div>
-            <div class="footer-subtitle">EFOOTBALL COMMUNITY</div>
-            <div class="footer-tagline">HOME OF SOLO TOURNAMENTS</div>
-            
-            <hr class="footer-divider">
-            
-            <!-- Internal Nav -->
-            <div class="footer-internal-nav">
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
-                    <i class="fas fa-home"></i> Home
+            <div class="footer-glow"></div>
+            <div class="footer-inner">
+                <div class="footer-logo-badge">
+                    <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="footer-logo">
                 </div>
-                <div class="f-nav-item" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">
-                    <i class="fas fa-ribbon"></i> Tournaments
-                </div>
-                <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
-                    <i class="far fa-calendar-alt"></i> Matches
-                </div>
-                <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">
-                    <i class="fas fa-chart-line"></i> Leaderboard
-                </div>
-                <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[3])">
-                    <i class="far fa-user"></i> Profile
-                </div>
-            </div>
+                <div class="footer-title">BMG <span>OFFICIAL</span></div>
+                <div class="footer-subtitle">EFOOTBALL COMMUNITY</div>
+                <div class="footer-tagline-pill"><i class="fas fa-trophy"></i> Home of Solo Tournaments</div>
 
-            <hr class="footer-divider">
-            
-            <div class="footer-socials">
-                <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
-                <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
-            </div>
-            
-            <div class="footer-contact">
-                <i class="far fa-envelope"></i> Contact: bmgofficial@gmail.com
-            </div>
-            
-            <div class="footer-copy">
-                &copy; 2026 BMG Official. All Rights Reserved. v1.0.0
+                <!-- Internal Nav (single row) -->
+                <div class="footer-nav-row">
+                    <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
+                        <div class="f-icon-circle"><i class="fas fa-home"></i></div> Home
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('tournamentsTab', document.querySelectorAll('.nav-item')[1])">
+                        <div class="f-icon-circle"><i class="fas fa-ribbon"></i></div> Events
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('home', document.querySelectorAll('.nav-item')[0])">
+                        <div class="f-icon-circle"><i class="far fa-calendar-alt"></i></div> Matches
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('leaderboard', document.querySelectorAll('.nav-item')[2])">
+                        <div class="f-icon-circle"><i class="fas fa-chart-line"></i></div> Ranking
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[3])">
+                        <div class="f-icon-circle"><i class="far fa-user"></i></div> Profile
+                    </div>
+                </div>
+
+                <hr class="footer-divider">
+
+                <div class="footer-group-label">Follow The Community</div>
+                <div class="footer-socials">
+                    <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
+                </div>
+
+                <div class="footer-contact">
+                    <i class="far fa-envelope"></i> bmgofficial@gmail.com
+                </div>
+
+                <div class="footer-bottom-bar">
+                    <span>&copy; 2026 BMG Official</span>
+                    <span class="dot-sep"></span>
+                    <span>All Rights Reserved</span>
+                    <span class="dot-sep"></span>
+                    <span>v1.1.0</span>
+                </div>
             </div>
         </div>
     </div>
@@ -407,7 +661,7 @@
             </div>
         </div>
         <div class="card" style="margin-top: 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #1f2940; margin-bottom:10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--card-border); margin-bottom:10px;">
                 <span style="color: var(--text-muted); font-size: 12px; font-weight:500;">eFootball UID</span>
                 <strong style="color: white; font-size: 13px;" id="profKonamiTxt">N/A</strong>
             </div>
@@ -416,16 +670,86 @@
                 <strong style="color: white; font-size: 13px;" id="profDeviceTxt">N/A</strong>
             </div>
         </div>
-        <div style="text-align: center; margin-top: 25px;">
-            <button onclick="logOut()" style="background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 8px 25px; border-radius: 5px; cursor: pointer; font-weight: 800; transition:0.3s;">Logout Account</button>
+
+        <!-- ══════════ STATS SECTION ══════════ -->
+        <div class="stats-section-title">Season Stats</div>
+
+        <!-- 8-box grid: W · P · D · L · WR · GF · GA · MOTM -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-box win">
+                <span class="stat-box-val" id="statW">0</span>
+                <span class="stat-box-lbl">Won</span>
+            </div>
+            <div class="stat-box played">
+                <span class="stat-box-val" id="statP">0</span>
+                <span class="stat-box-lbl">Played</span>
+            </div>
+            <div class="stat-box draw">
+                <span class="stat-box-val" id="statD">0</span>
+                <span class="stat-box-lbl">Draw</span>
+            </div>
+            <div class="stat-box loss">
+                <span class="stat-box-val" id="statL">0</span>
+                <span class="stat-box-lbl">Lost</span>
+            </div>
+            <div class="stat-box wr">
+                <span class="stat-box-val" id="statWR">0%</span>
+                <span class="stat-box-lbl">Win Rate</span>
+            </div>
+            <div class="stat-box gf">
+                <span class="stat-box-val" id="statGF">0</span>
+                <span class="stat-box-lbl">GF</span>
+            </div>
+            <div class="stat-box ga">
+                <span class="stat-box-val" id="statGA">0</span>
+                <span class="stat-box-lbl">GA</span>
+            </div>
+            <div class="stat-box motm">
+                <span class="stat-box-val" id="statMOTM">0</span>
+                <span class="stat-box-lbl">MOTM</span>
+            </div>
+        </div>
+
+        <!-- ══════════ FORM SECTION ══════════ -->
+        <div class="stats-section-title">Recent Form</div>
+        <div class="form-strip-wrap">
+            <div class="form-strip-head">
+                <span class="form-strip-label">Last Matches</span>
+                <span class="form-strip-recent" id="formSummaryTag">— — — — —</span>
+            </div>
+            <div class="form-matches" id="formMatchStrip">
+                <!-- JS দিয়ে generate হবে -->
+                <p style="color:var(--text-dim); font-size:11px; padding:6px 0;">No matches recorded yet.</p>
+            </div>
+        </div>
+
+        <!-- ══════════ PERFORMANCE GRAPH ══════════ -->
+        <div class="stats-section-title">Performance Graph</div>
+        <div class="graph-wrap">
+            <div class="graph-head">
+                <span class="graph-title">GF vs GA per Match</span>
+                <div class="graph-legend">
+                    <span class="legend-item"><span class="legend-dot" style="background:var(--gold);"></span>GF</span>
+                    <span class="legend-item"><span class="legend-dot" style="background:#f87171;"></span>GA</span>
+                </div>
+            </div>
+            <div class="perf-chart">
+                <div class="perf-bars" id="perfBarsContainer">
+                    <p style="color:var(--text-dim); font-size:11px; margin:auto;">No data yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 28px; margin-bottom: 8px;">
+            <button onclick="logOut()" style="background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 9px 26px; border-radius: 8px; cursor: pointer; font-weight: 800; transition:0.3s; letter-spacing: 0.3px;">Logout Account</button>
         </div>
     </div>
 
     <!-- 5. ADMIN -->
     <div id="admin" class="page-section">
-        <div class="section-title" style="color: #ef4444;">Admin Dashboard</div>
-        <div class="card" style="border: 1px solid #3b82f6;">
-            <h3 style="color: #3b82f6; font-size: 16px; font-weight:800;">Create Tournament</h3>
+        <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
+        <div class="card" style="border: 1px solid rgba(56,189,248,0.4);">
+            <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
             <select id="tFormat">
                 <option value="Upcoming">Upcoming</option>
@@ -434,15 +758,15 @@
             <input type="text" id="tSlots" placeholder="Total Slots (e.g. 96)">
             <input type="text" id="tFee" placeholder="Entry Fee (e.g. Free or 50 BDT)">
             <input type="text" id="tImage" placeholder="Banner Image URL">
-            <button class="submit-btn" style="background: #3b82f6; color:white;" onclick="createTournament()">Publish Tournament</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; box-shadow: 0 10px 22px -10px rgba(56,189,248,0.55);" onclick="createTournament()">Publish Tournament</button>
         </div>
-        <div class="card" style="border: 1px solid var(--gold);">
-            <h3 style="color: var(--gold); font-size: 16px; font-weight:800;">Update Leaderboard</h3>
+        <div class="card" style="border: 1px solid rgba(255,215,0,0.4);">
+            <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
             <input type="text" id="lbAvatar" placeholder="Player Avatar URL (Optional)">
             <input type="number" id="lbPoints" placeholder="Total Points">
             <input type="text" id="lbWinRate" placeholder="Win Rate (e.g. 78.8)">
-            <button class="submit-btn" style="background: var(--gold);" onclick="updateLeaderboard()">Update Player</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; box-shadow: 0 10px 22px -10px rgba(255,215,0,0.5);" onclick="updateLeaderboard()">Update Player</button>
         </div>
     </div>
 
@@ -466,34 +790,58 @@
             appId: "1:686980285364:web:66e38cf3b7a559f051e8e1",
             measurementId: "G-4MYGG5J7P2"
         };
-        
+
         // 🛑 আপনার জিমেইল বসাবেন 🛑
-        const adminEmail = "your-email@gmail.com"; 
-        
+        const adminEmail = "your-email@gmail.com";
+
         // 🛑 ImgBB API Key বসাবেন 🛑
-        const imgbbAPIKey = "b7e891cd42aad3a93253595e33590ac1"; 
+        const imgbbAPIKey = "b7e891cd42aad3a93253595e33590ac1";
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        /* --- FADING HERO SLIDER JS --- */
+        /* --- PRELOADER --- */
+        document.body.style.overflow = 'hidden';
+        let preloaderHidden = false;
+        function hidePreloader() {
+            if (preloaderHidden) return;
+            preloaderHidden = true;
+            const pre = document.getElementById('preloader');
+            if (pre) pre.classList.add('hide');
+            document.body.style.overflow = '';
+        }
+        window.addEventListener('load', () => setTimeout(hidePreloader, 700));
+        setTimeout(hidePreloader, 4000); // safety net in case a resource stalls
+
+        /* --- GLASS HEADER ON SCROLL --- */
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (!header) return;
+            if (window.scrollY > 8) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        /* --- FADING HERO SLIDER JS (with synced dots) --- */
         setInterval(() => {
             const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('#heroDots .dot');
             if(slides.length === 0) return;
             let activeIdx = 0;
             slides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
             slides[activeIdx].classList.remove('active');
+            if(dots[activeIdx]) dots[activeIdx].classList.remove('active');
             let nextIdx = (activeIdx + 1) % slides.length;
             slides[nextIdx].classList.add('active');
-        }, 4000); 
+            if(dots[nextIdx]) dots[nextIdx].classList.add('active');
+        }, 4000);
 
         function toggleAuth(type) {
             if(type === 'signup') {
-                document.getElementById('loginBox').style.display = 'none'; 
+                document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('signupBox').style.display = 'block';
             } else {
-                document.getElementById('loginBox').style.display = 'block'; 
+                document.getElementById('loginBox').style.display = 'block';
                 document.getElementById('signupBox').style.display = 'none';
             }
         }
@@ -516,7 +864,7 @@
         async function uploadToImgBB(blob) {
             const formData = new FormData(); formData.append('image', blob, 'avatar.jpg');
             const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, { method: 'POST', body: formData });
-            const data = await response.json(); return data.data.url; 
+            const data = await response.json(); return data.data.url;
         }
 
         async function signUpWithEmail() {
@@ -533,7 +881,7 @@
                 const user = userCredential.user;
                 await user.updateProfile({ displayName: name, photoURL: photoURL });
                 await db.collection("users").doc(user.uid).set({ name: name, konamiUid: konami, device: device, facebook: facebook, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp() });
-                
+
                 alert("Account Created Successfully!");
                 document.getElementById('signupBox').querySelectorAll('input').forEach(input => input.value = '');
                 switchTab('home', document.querySelectorAll('.nav-item')[0]);
@@ -565,7 +913,7 @@
                         document.getElementById('profDeviceTxt').innerText = doc.data().device || "N/A";
                     }
                 });
-                
+
                 if(user.email === adminEmail) document.getElementById('navAdmin').classList.add('show'); else document.getElementById('navAdmin').classList.remove('show');
             } else {
                 document.getElementById('loginBtn').style.display = 'block';
@@ -584,7 +932,7 @@
         }
 
         function renderTournaments(snapshot, elementId) {
-            const tList = document.getElementById(elementId); tList.innerHTML = ""; 
+            const tList = document.getElementById(elementId); tList.innerHTML = "";
             snapshot.forEach(doc => {
                 const t = doc.data();
                 tList.innerHTML += `
@@ -645,8 +993,8 @@
         }
 
         db.collection("leaderboard").orderBy("points", "desc").onSnapshot(snapshot => {
-            renderLeaderboard(snapshot, 'homeLeaderboardList', 3); 
-            renderLeaderboard(snapshot, 'leaderboardList', false); 
+            renderLeaderboard(snapshot, 'homeLeaderboardList', 3);
+            renderLeaderboard(snapshot, 'leaderboardList', false);
         });
 
         function switchTab(tabId, element) {
@@ -657,6 +1005,145 @@
                 if(element.classList.contains('nav-item')) element.classList.add('active');
             }
             window.scrollTo(0,0);
+            if(tabId === 'profile') loadPlayerStats();
+        }
+
+        /* ════════════════════════════════════════
+           PLAYER STATS  —  Firestore integration
+           Collection: playerStats / doc: uid
+           Fields: wins, played, draws, losses, gf, ga, motm
+           Sub-collection: matches (array stored in doc or sub-col)
+        ════════════════════════════════════════ */
+
+        // Demo match data — replace with real Firestore data if available
+        const DEMO_MATCHES = [
+            { result:'W', myScore:3, oppScore:1, opp:'Raihan', myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
+            { result:'L', myScore:0, oppScore:2, opp:'Sakib',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
+            { result:'W', myScore:2, oppScore:0, opp:'Rifat',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
+            { result:'D', myScore:1, oppScore:1, opp:'Nayem',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
+            { result:'W', myScore:4, oppScore:2, opp:'Tasin',  myAvatar:'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppAvatar:'https://cdn-icons-png.flaticon.com/512/149/149072.png' },
+        ];
+
+        function loadPlayerStats() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            db.collection("playerStats").doc(user.uid).get().then(doc => {
+                let wins=0, played=0, draws=0, losses=0, gf=0, ga=0, motm=0, matches=[];
+
+                if (doc.exists) {
+                    const d = doc.data();
+                    wins   = d.wins   || 0;
+                    played = d.played || 0;
+                    draws  = d.draws  || 0;
+                    losses = d.losses || 0;
+                    gf     = d.gf     || 0;
+                    ga     = d.ga     || 0;
+                    motm   = d.motm   || 0;
+                    matches= d.matches || DEMO_MATCHES;
+                } else {
+                    // Fallback demo while no data exists
+                    matches = DEMO_MATCHES;
+                    matches.forEach(m => {
+                        played++;
+                        gf += m.myScore; ga += m.oppScore;
+                        if(m.result==='W') wins++;
+                        else if(m.result==='L') losses++;
+                        else draws++;
+                    });
+                    motm = 2;
+                }
+
+                const wr = played > 0 ? Math.round((wins/played)*100) : 0;
+
+                // --- Fill stat boxes ---
+                document.getElementById('statW').innerText  = wins;
+                document.getElementById('statP').innerText  = played;
+                document.getElementById('statD').innerText  = draws;
+                document.getElementById('statL').innerText  = losses;
+                document.getElementById('statWR').innerText = wr + '%';
+                document.getElementById('statGF').innerText = gf;
+                document.getElementById('statGA').innerText = ga;
+                document.getElementById('statMOTM').innerText = motm;
+
+                // --- Render form strip ---
+                renderFormStrip(matches);
+
+                // --- Render graph ---
+                renderPerfGraph(matches);
+
+            }).catch(() => {
+                // still render demo if no permission
+                const matches = DEMO_MATCHES;
+                let wins=0,played=0,draws=0,losses=0,gf=0,ga=0;
+                matches.forEach(m=>{played++;gf+=m.myScore;ga+=m.oppScore;if(m.result==='W')wins++;else if(m.result==='L')losses++;else draws++;});
+                document.getElementById('statW').innerText=wins; document.getElementById('statP').innerText=played;
+                document.getElementById('statD').innerText=draws; document.getElementById('statL').innerText=losses;
+                const wr=played>0?Math.round((wins/played)*100):0;
+                document.getElementById('statWR').innerText=wr+'%';
+                document.getElementById('statGF').innerText=gf; document.getElementById('statGA').innerText=ga;
+                document.getElementById('statMOTM').innerText=2;
+                renderFormStrip(matches); renderPerfGraph(matches);
+            });
+        }
+
+        function renderFormStrip(matches) {
+            const strip = document.getElementById('formMatchStrip');
+            const tag   = document.getElementById('formSummaryTag');
+            if(!matches || matches.length === 0) {
+                strip.innerHTML = '<p style="color:var(--text-dim);font-size:11px;padding:6px 0;">No matches yet.</p>';
+                tag.innerText = '—';
+                return;
+            }
+            // summary tag (last 5)
+            const last5 = matches.slice(-5);
+            tag.innerText = last5.map(m => m.result).join(' · ');
+
+            strip.innerHTML = matches.slice().reverse().map(m => {
+                const cls    = m.result === 'W' ? 'win-card' : m.result === 'L' ? 'loss-card' : 'draw-card';
+                const label  = m.result === 'W' ? 'WIN' : m.result === 'L' ? 'LOST' : 'DRAW';
+                const myAv   = m.myAvatar  || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                const oppAv  = m.oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149072.png';
+                return `
+                <div class="form-match-card ${cls}">
+                    <div class="form-avatars">
+                        <img class="form-av" src="${myAv}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                        <span class="form-vs">vs</span>
+                        <img class="form-av" src="${oppAv}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149072.png'">
+                    </div>
+                    <div class="form-score">${m.myScore} - ${m.oppScore}</div>
+                    <span class="form-result-tag">${label}</span>
+                    <div class="form-opp-name">${m.opp || 'Opponent'}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderPerfGraph(matches) {
+            const container = document.getElementById('perfBarsContainer');
+            if(!matches || matches.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:11px;margin:auto;">No data yet.</p>';
+                return;
+            }
+            const maxVal = Math.max(...matches.map(m => Math.max(m.myScore, m.oppScore, 1)));
+            const barMaxH = 62; // px
+
+            container.innerHTML = matches.map((m, i) => {
+                const gfH  = Math.max(4, Math.round((m.myScore  / maxVal) * barMaxH));
+                const gaH  = Math.max(4, Math.round((m.oppScore / maxVal) * barMaxH));
+                const matchLabel = 'M' + (i+1);
+                return `
+                <div class="bar-group">
+                    <div class="bar-inner">
+                        <div class="bar gf-bar" style="height:${gfH}px; position:relative;">
+                            <span class="bar-val">${m.myScore}</span>
+                        </div>
+                        <div class="bar ga-bar" style="height:${gaH}px; position:relative;">
+                            <span class="bar-val">${m.oppScore}</span>
+                        </div>
+                    </div>
+                    <span class="bar-match-label">${matchLabel}</span>
+                </div>`;
+            }).join('');
         }
     </script>
 </body>
