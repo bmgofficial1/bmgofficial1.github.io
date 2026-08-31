@@ -45,9 +45,10 @@
         ::-webkit-scrollbar { width: 4px; height: 0; }
         ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
 
-        /* Admin Action Visibility Control */
-        body:not(.is-admin) .admin-controls { display: none !important; }
-        body.is-admin .admin-controls { display: flex !important; }
+        /* Admin Action Visibility Control (Updated for RBAC) */
+        body:not(.is-main-admin) .admin-controls { display: none !important; }
+        body.is-main-admin .admin-controls { display: flex !important; }
+        body:not(.is-main-admin) .main-admin-only { display: none !important; }
 
         /* --- PRELOADER --- */
         #preloader { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(120% 140% at 50% 32%, #0e1c3d 0%, #081128 48%, #050814 100%); transition: opacity 0.55s ease, visibility 0.55s ease; }
@@ -527,7 +528,7 @@
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
         
-        <!-- PLAYER MANAGEMENT SYSTEM -->
+        <!-- PLAYER MANAGEMENT SYSTEM (Visible to both Main Admin & Moderator) -->
         <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
             <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Player Management</h3>
             <input type="text" id="adminPlayerSearch" placeholder="Search by Name or Email..." onkeyup="filterAdminPlayers()">
@@ -549,6 +550,15 @@
                 <label style="font-size:10px; color:var(--text-muted);">Phone Number</label>
                 <input type="text" id="editPlayerPhone" placeholder="Phone/WhatsApp">
                 
+                <!-- Only Main Admin can assign roles -->
+                <div class="main-admin-only">
+                    <label style="font-size:10px; color:var(--text-muted); margin-top:8px; display:block;">Account Role</label>
+                    <select id="editPlayerRole" style="margin-bottom:10px;">
+                        <option value="user">Normal Player</option>
+                        <option value="moderator">Moderator (View & Edit Players Only)</option>
+                    </select>
+                </div>
+                
                 <div style="display:flex; gap:10px; margin-top:10px;">
                     <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin-top:0;" onclick="savePlayerEdit()">Save Updates</button>
                     <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin-top:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
@@ -556,8 +566,8 @@
             </div>
         </div>
 
-        <!-- Create Tournament System -->
-        <div class="card" style="border: 1px solid rgba(56,189,248,0.4);">
+        <!-- Create Tournament System (Main Admin Only) -->
+        <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.4);">
             <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
             
@@ -578,8 +588,8 @@
             <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; box-shadow: 0 10px 22px -10px rgba(56,189,248,0.55);" onclick="createTournament()">Publish Tournament</button>
         </div>
 
-        <!-- Manage Tournament Players UI (NEW) -->
-        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-top: 15px;">
+        <!-- Manage Tournament Players UI (Main Admin Only) -->
+        <div class="card main-admin-only" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-top: 15px;">
             <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Manage Registrations</h3>
             <input type="hidden" id="manageTid">
             
@@ -593,8 +603,8 @@
             <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:10px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
         </div>
         
-        <!-- Update Leaderboard System -->
-        <div class="card" style="border: 1px solid rgba(255,215,0,0.4);">
+        <!-- Update Leaderboard System (Main Admin Only) -->
+        <div class="card main-admin-only" style="border: 1px solid rgba(255,215,0,0.4);">
             <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
             <input type="text" id="lbAvatar" placeholder="Player Avatar URL (Optional)">
@@ -712,7 +722,7 @@
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
                 await user.updateProfile({ displayName: name, photoURL: photoURL });
-                await db.collection("users").doc(user.uid).set({ name: name, konamiUid: konami, device: device, facebook: facebook, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp() });
+                await db.collection("users").doc(user.uid).set({ name: name, konamiUid: konami, device: device, facebook: facebook, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp(), role: "user" });
 
                 alert("Account Created Successfully!");
                 document.getElementById('signupBox').querySelectorAll('input').forEach(input => input.value = '');
@@ -731,6 +741,7 @@
 
         function logOut() { auth.signOut().then(() => switchTab('home', document.querySelectorAll('.nav-item')[0])); }
 
+        /* --- Updated Auth Listener for RBAC --- */
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('loginBtn').style.display = 'none';
@@ -740,26 +751,40 @@
                 document.getElementById('profAvatar').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
                 db.collection("users").doc(user.uid).get().then(doc => {
+                    let role = "user";
                     if (doc.exists) {
-                        document.getElementById('profKonamiTxt').innerText = doc.data().konamiUid || "N/A";
-                        document.getElementById('profDeviceTxt').innerText = doc.data().device || "N/A";
+                        const d = doc.data();
+                        role = d.role || "user";
+                        document.getElementById('profKonamiTxt').innerText = d.konamiUid || "N/A";
+                        document.getElementById('profDeviceTxt').innerText = d.device || "N/A";
+                    }
+
+                    // Main admin override
+                    if(user.email === adminEmail) {
+                        role = "admin";
+                    }
+
+                    // Apply CSS Access Classes
+                    document.body.classList.remove('is-main-admin', 'is-moderator');
+                    
+                    if(role === "admin") {
+                        document.getElementById('navAdmin').classList.add('show');
+                        document.body.classList.add('is-main-admin');
+                        fetchAllPlayersAdmin();
+                    } else if (role === "moderator") {
+                        document.getElementById('navAdmin').classList.add('show');
+                        document.body.classList.add('is-moderator');
+                        fetchAllPlayersAdmin();
+                    } else {
+                        document.getElementById('navAdmin').classList.remove('show');
                     }
                 });
-
-                if(user.email === adminEmail) {
-                    document.getElementById('navAdmin').classList.add('show');
-                    document.body.classList.add('is-admin');
-                    fetchAllPlayersAdmin();
-                } else {
-                    document.getElementById('navAdmin').classList.remove('show');
-                    document.body.classList.remove('is-admin');
-                }
             } else {
                 document.getElementById('loginBtn').style.display = 'block';
                 document.getElementById('profileHeader').style.display = 'none';
                 document.getElementById('profEmailTxt').innerText = "Please login to view details.";
                 document.getElementById('navAdmin').classList.remove('show');
-                document.body.classList.remove('is-admin');
+                document.body.classList.remove('is-main-admin', 'is-moderator');
             }
         });
 
@@ -793,7 +818,7 @@
                     <div style="display:flex; align-items:center; gap:10px;">
                         <img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
                         <div>
-                            <div style="font-size:13px; font-weight:700; color:white;">${p.name || 'Unknown'}</div>
+                            <div style="font-size:13px; font-weight:700; color:white;">${p.name || 'Unknown'} ${p.role === 'moderator' ? '<i class="fas fa-shield-alt" style="color:var(--accent);font-size:10px;"></i>' : ''}</div>
                             <div style="font-size:10px; color:var(--text-muted);">${p.email || 'No Email'}</div>
                         </div>
                     </div>
@@ -822,6 +847,10 @@
             document.getElementById('editPlayerDevice').value = player.device || "";
             document.getElementById('editPlayerPhone').value = player.phone || "";
             
+            if(document.getElementById('editPlayerRole')) {
+                document.getElementById('editPlayerRole').value = player.role || "user";
+            }
+            
             document.getElementById('adminEditPlayerForm').style.display = 'block';
         }
 
@@ -835,15 +864,21 @@
             const konami = document.getElementById('editPlayerKonami').value;
             const device = document.getElementById('editPlayerDevice').value;
             const phone = document.getElementById('editPlayerPhone').value;
+            
+            let roleElem = document.getElementById('editPlayerRole');
+            let roleToSave = roleElem ? roleElem.value : undefined;
 
             if(!uid) return;
-
-            db.collection("users").doc(uid).update({
+            
+            let updateData = {
                 name: name,
                 konamiUid: konami,
                 device: device,
                 phone: phone
-            }).then(() => {
+            };
+            if(roleToSave) updateData.role = roleToSave;
+
+            db.collection("users").doc(uid).update(updateData).then(() => {
                 alert("Player Info Updated Successfully!");
                 cancelPlayerEdit();
             }).catch(err => alert("Error updating info: " + err.message));
