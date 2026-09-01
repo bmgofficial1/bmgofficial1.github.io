@@ -530,8 +530,11 @@
         
         <!-- PLAYER MANAGEMENT SYSTEM (Visible to both Main Admin & Moderator) -->
         <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
-            <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Player Management</h3>
-            <input type="text" id="adminPlayerSearch" placeholder="Search by Name or Email..." onkeyup="filterAdminPlayers()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px; margin: 0;">Player Management</h3>
+                <button onclick="copyAllPlayerNames()" style="background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.4); padding: 6px 12px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; transition: 0.2s;"><i class="far fa-copy"></i> Copy All Names</button>
+            </div>
+            <input type="text" id="adminPlayerSearch" placeholder="Search by Name or Email..." onkeyup="filterAdminPlayers()" style="margin-top: 0;">
             
             <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:8px; padding:8px;">
                 <p style="color:gray; font-size:11px; text-align:center;">Loading Players...</p>
@@ -835,6 +838,24 @@
                 (p.email && p.email.toLowerCase().includes(query))
             );
             renderAdminPlayers(filtered);
+        }
+
+        /* --- 1-Click Copy All Player Names --- */
+        function copyAllPlayerNames() {
+            if(allUsersData.length === 0) {
+                alert("No players found to copy!");
+                return;
+            }
+            
+            // Extract only the names from the array and join them with a new line
+            const namesList = allUsersData.map((p, index) => `${index + 1}. ${p.name || 'Unknown'}`).join('\n');
+            
+            // Use Clipboard API
+            navigator.clipboard.writeText(namesList).then(() => {
+                alert(`Successfully copied ${allUsersData.length} player names!`);
+            }).catch(err => {
+                alert("Failed to copy text: " + err);
+            });
         }
 
         function openPlayerEdit(uid) {
