@@ -143,7 +143,7 @@
         .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 8px 13px; border-radius: 9px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 8px 18px -6px rgba(56,189,248,0.4); flex:1;}
         .t-reg-btn:active { transform: scale(0.95); }
 
-        /* --- TOURNAMENT DETAILS UI (NEW) --- */
+        /* --- TOURNAMENT DETAILS UI --- */
         .td-tabs-container { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; }
         .td-tabs-container::-webkit-scrollbar { display: none; }
         .td-tab { background: transparent; border: 1px solid var(--card-border); color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s; }
@@ -423,7 +423,7 @@
         <div id="myMatchesList"></div>
     </div>
 
-    <!-- 4. TOURNAMENT DETAILS (NEW TABS UI) -->
+    <!-- 4. TOURNAMENT DETAILS (TABS UI) -->
     <div id="tournamentDetails" class="page-section">
         <div class="card" style="padding:20px 15px; position:relative; overflow:hidden;">
             <div style="position:absolute; top:0; right:0; width:150px; height:150px; background:radial-gradient(circle, rgba(56,189,248,0.15), transparent 70%); border-radius:50%; top:-50px; right:-50px;"></div>
@@ -458,7 +458,7 @@
         <div class="card" id="leaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
     </div>
 
-    <!-- 6. PROFILE SECTION (RESTORED FULLY) -->
+    <!-- 6. PROFILE SECTION -->
     <div id="profile" class="page-section">
         <div class="prof-top-title">Player Overview</div>
         <div class="prof-header" id="profileHeader" style="display:none;">
@@ -546,13 +546,32 @@
 
             <select id="tFormat" style="margin-top: 8px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
             <div style="display:flex; gap:10px;">
-                <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32)">
+                <input type="number" id="tSlots" placeholder="Total Slots (e.g. 32)">
                 <input type="text" id="tFee" placeholder="Entry Fee">
             </div>
             <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
             <input type="date" id="tDate" style="color:var(--text-muted);">
             <input type="text" id="tImage" placeholder="Banner Image URL">
             <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
+        </div>
+
+        <!-- Manage Tournament Players UI (Admins & Moderators) -->
+        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-top: 15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px; margin:0;">Manage Registrations</h3>
+                <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:10px; font-weight:700;"></span>
+            </div>
+            <input type="hidden" id="manageTid">
+            
+            <!-- NEW: Search Registered Site Users -->
+            <div style="margin-top:12px;">
+                <input type="text" id="searchSiteUserForTourney" placeholder="Search site user by name..." onkeyup="filterSiteUsersForTourney()" style="margin:0;">
+                <div id="tourneyUserSearchResults" style="max-height: 140px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 8px; margin-top: 5px; display: none;"></div>
+            </div>
+            
+            <div id="tPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:15px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
+            
+            <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:10px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
         </div>
 
         <!-- Player Management -->
@@ -628,7 +647,7 @@
         document.body.style.overflow = 'hidden';
         window.addEventListener('load', () => setTimeout(() => { document.getElementById('preloader').classList.add('hide'); document.body.style.overflow = ''; }, 700));
 
-        /* --- HEADER & SIDE MENU --- */
+        /* --- UI & MENUS --- */
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
             if (window.scrollY > 8) header.classList.add('scrolled'); else header.classList.remove('scrolled');
@@ -649,7 +668,6 @@
             }
             window.scrollTo(0,0);
             if(tabId === 'myMatchesTab') loadMyMatches();
-            if(tabId === 'profile') loadPlayerStats();
         }
 
         function toggleAuth(type) {
@@ -760,8 +778,8 @@
         function renderAdminPlayers(list) {
             document.getElementById('adminPlayerList').innerHTML = list.map(p => `
                 <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--card-border);" onclick="openPlayerEdit('${p.uid}')">
-                    <span style="color:white; font-size:13px;">${p.name} ${p.role==='moderator'?'<i class="fas fa-shield-alt" style="color:var(--accent);font-size:10px;"></i>':''}</span> 
-                    <i class="fas fa-edit" style="color:var(--accent);"></i>
+                    <span style="color:white; font-size:13px; cursor:pointer;">${p.name} ${p.role==='moderator'?'<i class="fas fa-shield-alt" style="color:var(--accent);font-size:10px;"></i>':''}</span> 
+                    <i class="fas fa-edit" style="color:var(--accent); cursor:pointer;"></i>
                 </div>`).join('');
         }
 
@@ -804,7 +822,7 @@
                 name: document.getElementById('tName').value,
                 type: document.getElementById('tFormatType').value,
                 status: document.getElementById('tFormat').value,
-                slots: document.getElementById('tSlots').value,
+                slots: parseInt(document.getElementById('tSlots').value),
                 fee: document.getElementById('tFee').value,
                 prize: document.getElementById('tPrize').value || 'TBA',
                 date: document.getElementById('tDate').value || 'TBA',
@@ -843,9 +861,11 @@
                     <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 16px 13px; background: var(--card-bg-soft);">
                         ${actionBtn}
                     </div>
-                    <div class="admin-controls" style="gap:10px; padding: 0 16px 13px; background: var(--card-bg-soft);">
-                        <button class="main-admin-only" style="flex:1; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="generateFixtures('${doc.id}', '${t.type}')"><i class="fas fa-cogs"></i> Logic</button>
-                        <button class="main-admin-only" style="background:var(--danger); color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="db.collection('tournaments').doc('${doc.id}').delete()"><i class="fas fa-trash-alt"></i></button>
+                    <div class="admin-controls" style="gap:6px; padding: 0 16px 13px; background: var(--card-bg-soft); flex-wrap: wrap;">
+                        <button style="flex:1 1 45%; background:var(--gold); color:#000; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="openManageTPlayers('${doc.id}', ${t.slots})"><i class="fas fa-users"></i> Players</button>
+                        <button class="main-admin-only" style="flex:1 1 45%; background:#8b5cf6; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="editTournamentSlots('${doc.id}', ${t.slots})"><i class="fas fa-edit"></i> Slots</button>
+                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="generateFixtures('${doc.id}', '${t.type}')"><i class="fas fa-cogs"></i> Logic</button>
+                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--danger); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="db.collection('tournaments').doc('${doc.id}').delete()"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
                 </div>`;
                 list1.innerHTML += cardHtml; list2.innerHTML += cardHtml;
@@ -853,9 +873,86 @@
             if(list1.innerHTML === "") list1.innerHTML = "<p style='color:gray; padding: 10px;'>No tournaments available.</p>";
         });
 
+        /* --- ADD/REMOVE PLAYERS FROM TOURNEY --- */
+        function openManageTPlayers(docId, slots) {
+            document.getElementById('adminTournamentPlayersCard').style.display = 'block';
+            document.getElementById('manageTid').value = docId;
+            document.getElementById('manageTSlotsDisplay').innerText = `Slots: ${slots}`;
+            document.getElementById('searchSiteUserForTourney').value = "";
+            document.getElementById('tourneyUserSearchResults').style.display = 'none';
+            loadTPlayers(docId);
+        }
+
+        function filterSiteUsersForTourney() {
+            const query = document.getElementById('searchSiteUserForTourney').value.toLowerCase();
+            const resultsDiv = document.getElementById('tourneyUserSearchResults');
+            
+            if(!query) { resultsDiv.style.display = 'none'; return; }
+            
+            const filtered = allUsersData.filter(p => p.name && p.name.toLowerCase().includes(query));
+            if(filtered.length === 0) {
+                resultsDiv.innerHTML = "<p style='color:gray; font-size:10px; padding:8px; text-align:center;'>No matching users found.</p>";
+            } else {
+                resultsDiv.innerHTML = filtered.map(p => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; border-bottom:1px solid var(--card-border);">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:20px; height:20px; border-radius:50%;">
+                            <span style="font-size:11px; color:white;">${p.name}</span>
+                        </div>
+                        <button onclick="addSiteUserToTourney('${p.uid}', '${p.name.replace(/'/g, "\\'")}', '${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}')" style="background:var(--accent); color:#000; border:none; padding:4px 8px; border-radius:4px; font-size:9px; font-weight:bold; cursor:pointer;">Add</button>
+                    </div>
+                `).join('');
+            }
+            resultsDiv.style.display = 'block';
+        }
+
+        function addSiteUserToTourney(uid, name, avatar) {
+            const docId = document.getElementById('manageTid').value;
+            if(!docId) return;
+            db.collection("tournaments").doc(docId).collection("players").doc(uid).set({
+                uid: uid, name: name, avatar: avatar, time: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                document.getElementById('searchSiteUserForTourney').value = "";
+                document.getElementById('tourneyUserSearchResults').style.display = "none";
+            }).catch(err => alert("Error: " + err.message));
+        }
+
+        function loadTPlayers(docId) {
+            const list = document.getElementById('tPlayerList');
+            list.innerHTML = "<p style='color:gray; font-size:11px; text-align:center;'>Loading...</p>";
+            
+            db.collection("tournaments").doc(docId).collection("players").onSnapshot(snap => {
+                list.innerHTML = "";
+                if(snap.empty) { list.innerHTML = "<p style='color:gray; font-size:11px;'>No players registered yet.</p>"; return; }
+                
+                snap.forEach(doc => {
+                    const p = doc.data();
+                    list.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--card-border);">
+                        <span style="font-size:13px; color:white;">${p.name}</span>
+                        <button onclick="removeTPlayer('${docId}', '${doc.id}')" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer;">Remove</button>
+                    </div>`;
+                });
+            });
+        }
+
+        function removeTPlayer(docId, playerId) {
+            if(confirm("Remove this player from the tournament?")) {
+                db.collection("tournaments").doc(docId).collection("players").doc(playerId).delete();
+            }
+        }
+
         function registerForTournament(docId) {
             const user = auth.currentUser; if(!user) return switchTab('authPage');
-            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ uid: user.uid, name: user.displayName, avatar: user.photoURL }).then(() => alert("Registered!"));
+            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ uid: user.uid, name: user.displayName, avatar: user.photoURL, time: firebase.firestore.FieldValue.serverTimestamp() }).then(() => alert("Registered!"));
+        }
+
+        function editTournamentSlots(docId, currentSlots) {
+            const newSlots = prompt("Enter new slot limit for this tournament:", currentSlots);
+            if(newSlots !== null && newSlots.trim() !== "" && !isNaN(newSlots)) {
+                db.collection("tournaments").doc(docId).update({ slots: parseInt(newSlots) })
+                .then(() => alert("Tournament slots updated to " + newSlots)).catch(err => alert("Error: " + err.message));
+            }
         }
 
         /* --- TOURNAMENT DETAILS UI --- */
@@ -1023,7 +1120,7 @@
             let round1 = []; let playerIndex = 0;
             for(let i = 0; i < nextPowerOf2 / 2; i++) {
                 let p1 = players[playerIndex++];
-                let p2 = (i < byes) ? { name: "BYE (Auto Win)" } : players[playerIndex++];
+                let p2 = (i < byes) ? { name: "BYE (Auto Win)", uid: "bye" } : players[playerIndex++];
                 round1.push({ match: i + 1, player1: p1, player2: p2 });
             }
             generatedData[`Round 1`] = round1;
