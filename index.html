@@ -335,7 +335,7 @@
         </div>
     </div>
 
-    <!-- PUBLIC PROFILE REDESIGN (FULL SCREEN PAGE-LIKE) -->
+    <!-- PUBLIC PROFILE REDESIGN -->
     <div id="publicProfileModal" class="modal-overlay">
         <div class="pub-header">
             <button class="pub-back-btn" onclick="closeModal('publicProfileModal')"><i class="fas fa-chevron-left"></i></button>
@@ -359,7 +359,6 @@
                 </div>
             </div>
             
-            <!-- 4 STATS ROW -->
             <div class="pub-stats-grid">
                 <div class="pub-stat-box">
                     <div id="pubProfMatches" class="pub-stat-num">0</div>
@@ -379,7 +378,6 @@
                 </div>
             </div>
 
-            <!-- TABS -->
             <div class="pub-tabs-wrap">
                 <button class="pub-tab active" onclick="switchPubTab('pubInfo', this)">Info</button>
                 <button class="pub-tab" onclick="switchPubTab('pubStats', this)">Stats</button>
@@ -387,7 +385,6 @@
                 <button class="pub-tab" onclick="switchPubTab('pubTrophy', this)">Trophy</button>
             </div>
 
-            <!-- TAB 1: INFO -->
             <div id="pubInfo" class="pub-content active pub-card">
                 <div class="pub-card-title">Player Information</div>
                 <div class="pub-list-item">
@@ -404,7 +401,6 @@
                 </div>
             </div>
 
-            <!-- TAB 2: STATS -->
             <div id="pubStats" class="pub-content pub-card">
                 <div class="pub-card-title">Additional Stats</div>
                 <div class="pub-list-item">
@@ -421,12 +417,8 @@
                 </div>
             </div>
 
-            <!-- TAB 3: FORM (DYNAMIC A, B, C, +, - AND LATEST 10 MATCHES) -->
-            <div id="pubForm" class="pub-content pub-card">
-                <!-- Injected dynamically via renderPubFormTab() -->
-            </div>
+            <div id="pubForm" class="pub-content pub-card"></div>
 
-            <!-- TAB 4: TROPHY -->
             <div id="pubTrophy" class="pub-content pub-card">
                 <div class="pub-card-title">Trophy Cabinet</div>
                 <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:10px;">
@@ -582,7 +574,7 @@
         <div id="myMatchesList"></div>
     </div>
 
-    <!-- 4. TOURNAMENT DETAILS (TABS UI) WITH REAL-TIME MATCH UPDATES -->
+    <!-- 4. TOURNAMENT DETAILS (TABS UI) -->
     <div id="tournamentDetails" class="page-section">
         <div class="card" style="padding:20px 15px; position:relative; overflow:hidden;">
             <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:11px; cursor:pointer; margin-bottom:12px; font-weight:600;"><i class="fas fa-arrow-left"></i> Back to Tournaments</button>
@@ -663,6 +655,29 @@
                 <p style="color:var(--text-dim); font-size:11px; text-align:center;">Checking pending submissions...</p>
             </div>
         </div>
+        
+        <!-- FULL PLAYER MANAGEMENT SYSTEM -->
+        <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
+            <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display);"><i class="fas fa-users-cog"></i> Player Mgmt</h3>
+            <input type="text" id="adminPlayerSearch" placeholder="Search by Name..." onkeyup="filterAdminPlayers()" style="margin-top: 10px;">
+            <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
+            
+            <div id="adminEditPlayerForm" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed var(--card-border);">
+                <input type="hidden" id="editPlayerUid">
+                <input type="text" id="editPlayerName" placeholder="Full Name">
+                <input type="text" id="editPlayerKonami" placeholder="Konami UID">
+                <input type="text" id="editPlayerDevice" placeholder="Device Model">
+                <input type="text" id="editPlayerPhone" placeholder="Phone Number">
+                <select id="editPlayerRole" class="main-admin-only" style="margin-bottom:10px;">
+                    <option value="user">Normal Player</option>
+                    <option value="moderator">Moderator</option>
+                </select>
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin-top:0;" onclick="savePlayerEdit()">Save Updates</button>
+                    <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin-top:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
+                </div>
+            </div>
+        </div>
 
         <!-- Manage Tournament Players UI -->
         <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-bottom: 20px;">
@@ -699,12 +714,12 @@
             <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
         </div>
 
-        <!-- Manual Leaderboard Override -->
+        <!-- Update Leaderboard System -->
         <div class="card main-admin-only" style="border: 1px solid rgba(255,215,0,0.4);">
             <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display);">Manual Leaderboard Override</h3>
-            <input type="text" id="lbPlayerUid" placeholder="Player Konami ID or Name">
-            <input type="number" id="lbPoints" placeholder="Total Points">
-            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="updateLeaderboard()">Update Player</button>
+            <input type="text" id="lbPlayerUid" placeholder="Enter Player Name or UID">
+            <input type="number" id="lbPoints" placeholder="Total Points to Set">
+            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="updateLeaderboard()">Update Leaderboard</button>
         </div>
     </div>
 
@@ -747,62 +762,37 @@
         
         function copyUID() {
             const uidText = document.getElementById('pubInfoUid').innerText;
-            if(uidText && uidText !== "N/A") {
-                navigator.clipboard.writeText(uidText).then(() => { alert("UID Copied!"); });
-            }
+            if(uidText && uidText !== "N/A") { navigator.clipboard.writeText(uidText.trim()).then(() => { alert("UID Copied!"); }); }
         }
 
-        let fullLeaderboardData = []; // Cached leaderboard to resolve ranks
+        let fullLeaderboardData = []; // Cached leaderboard
 
         /* --- ADVANCED FORM GRADE CALCULATION (A, B, C, +, -) --- */
         function getFormDetails(matches) {
-            if(!matches || matches.length === 0) {
-                return { grade: 'C', class: 'grade-c', desc: 'Neutral / No Data', pct: 0, recent: [] };
-            }
+            if(!matches || matches.length === 0) return { grade: 'C', class: 'grade-c', desc: 'Neutral / No Data', pct: 0, recent: [] };
             const last10 = matches.slice(-10);
             let pts = 0;
-            last10.forEach(m => {
-                if(m.result === 'W') pts += 3;
-                else if(m.result === 'D') pts += 1;
-            });
-            const maxPts = last10.length * 3;
-            const pct = Math.round((pts / maxPts) * 100);
+            last10.forEach(m => { if(m.result === 'W') pts += 3; else if(m.result === 'D') pts += 1; });
+            const pct = Math.round((pts / (last10.length * 3)) * 100);
+            let grade = 'C', cls = 'grade-c', desc = 'Neutral Form';
             
-            let grade = 'C';
-            let cls = 'grade-c';
-            let desc = 'Neutral Form';
+            if (pct >= 85) { grade = 'A (+)'; cls = 'grade-a-plus'; desc = 'Exceptional Form'; } 
+            else if (pct >= 70) { grade = 'A'; cls = 'grade-a'; desc = 'Great Condition'; } 
+            else if (pct >= 55) { grade = 'B (+)'; cls = 'grade-b-plus'; desc = 'Rising Positive Form'; } 
+            else if (pct >= 45) { grade = 'B'; cls = 'grade-b'; desc = 'Standard Condition'; } 
+            else if (pct >= 35) { grade = 'C (+)'; cls = 'grade-c-plus'; desc = 'Steady Condition'; } 
+            else if (pct >= 25) { grade = 'C (-)'; cls = 'grade-c-minus'; desc = 'Inconsistent Form'; } 
+            else if (pct >= 15) { grade = 'D (-)'; cls = 'grade-d-minus'; desc = 'Poor Condition'; } 
+            else { grade = 'E (-)'; cls = 'grade-e-minus'; desc = 'Cold / Critical Form'; }
             
-            if (pct >= 85) {
-                grade = 'A (+)'; cls = 'grade-a-plus'; desc = 'Exceptional Form';
-            } else if (pct >= 70) {
-                grade = 'A'; cls = 'grade-a'; desc = 'Great Condition';
-            } else if (pct >= 55) {
-                grade = 'B (+)'; cls = 'grade-b-plus'; desc = 'Rising Positive Form';
-            } else if (pct >= 45) {
-                grade = 'B'; cls = 'grade-b'; desc = 'Standard Condition';
-            } else if (pct >= 35) {
-                grade = 'C (+)'; cls = 'grade-c-plus'; desc = 'Steady Condition';
-            } else if (pct >= 25) {
-                grade = 'C (-)'; cls = 'grade-c-minus'; desc = 'Inconsistent Form';
-            } else if (pct >= 15) {
-                grade = 'D (-)'; cls = 'grade-d-minus'; desc = 'Poor Condition';
-            } else {
-                grade = 'E (-)'; cls = 'grade-e-minus'; desc = 'Cold / Critical Form';
-            }
             return { grade, class: cls, desc, pct, recent: last10 };
         }
 
-        /* --- RENDER FORM TAB IN PUBLIC PROFILE (LATEST 10 MATCHES) --- */
+        /* --- RENDER FORM TAB IN PUBLIC PROFILE --- */
         function renderPubFormTab(matches) {
             const container = document.getElementById('pubForm');
             if(!matches || matches.length === 0) {
-                container.innerHTML = `
-                    <div class="pub-card-title">Recent Form</div>
-                    <div style="text-align:center; padding:20px 10px;">
-                        <i class="far fa-chart-bar" style="font-size:30px; color:var(--text-dim); margin-bottom:8px;"></i>
-                        <p style="color:var(--text-muted); font-size:12px;">No matches recorded yet.</p>
-                    </div>`;
-                return;
+                container.innerHTML = `<div class="pub-card-title">Recent Form</div><div style="text-align:center; padding:20px 10px;"><i class="far fa-chart-bar" style="font-size:30px; color:var(--text-dim); margin-bottom:8px;"></i><p style="color:var(--text-muted); font-size:12px;">No matches recorded yet.</p></div>`; return;
             }
             
             const formInfo = getFormDetails(matches);
@@ -815,22 +805,21 @@
             }).join('');
 
             let matchesListHTML = last10Desc.map((m, idx) => {
-                const isW = m.result === 'W';
-                const isD = m.result === 'D';
-                const cls = isW ? 'win' : isD ? 'draw' : 'loss';
+                const isW = m.result === 'W'; const isD = m.result === 'D'; const cls = isW ? 'win' : isD ? 'draw' : 'loss';
                 const tagColor = isW ? '#4ade80' : isD ? '#94a3b8' : '#f87171';
                 const tagBg = isW ? 'rgba(34,197,94,0.15)' : isD ? 'rgba(148,163,184,0.15)' : 'rgba(239,68,68,0.15)';
                 const oppAv = m.oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
                 const oppName = m.opp || 'Opponent';
+                const oppUid = m.oppUid || '';
                 
                 return `
                 <div class="form-history-item ${cls}">
-                    <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="openPublicProfile('${oppUid}')">
                         <span style="font-size:10px; font-weight:800; color:var(--text-dim); width:18px;">#${last10Desc.length - idx}</span>
                         <img src="${oppAv}" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
                         <div>
                             <div style="font-size:11.5px; font-weight:700; color:white; max-width:115px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${oppName}</div>
-                            <span style="font-size:8.5px; color:var(--text-dim);">vs Opponent</span>
+                            <span style="font-size:8.5px; color:var(--text-dim);"><i class="fas fa-external-link-alt"></i> View Profile</span>
                         </div>
                     </div>
                     <div style="display:flex; align-items:center; gap:10px;">
@@ -844,22 +833,16 @@
                 <div class="pub-card-title">Condition & Recent Form</div>
                 <div class="form-grade-box">
                     <div class="form-grade-left">
-                        <div class="form-grade-badge ${formInfo.class}">
-                            ${formInfo.grade}
-                        </div>
+                        <div class="form-grade-badge ${formInfo.class}">${formInfo.grade}</div>
                         <div>
                             <div style="font-size:13px; font-weight:800; color:white; line-height:1.2;">${formInfo.desc}</div>
                             <div style="font-size:10px; color:var(--text-dim); margin-top:3px;">Points Rate: <span style="color:var(--gold); font-weight:700;">${formInfo.pct}%</span> (Last ${last10Desc.length} Games)</div>
                         </div>
                     </div>
-                    <div style="display:flex; gap:4px;">
-                        ${sequenceHTML}
-                    </div>
+                    <div style="display:flex; gap:4px;">${sequenceHTML}</div>
                 </div>
                 <div style="font-size:10px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">Latest ${last10Desc.length} Matches History</div>
-                <div class="form-history-list">
-                    ${matchesListHTML}
-                </div>
+                <div class="form-history-list">${matchesListHTML}</div>
             `;
         }
 
@@ -870,7 +853,7 @@
                 if(doc.exists) {
                     const p = doc.data();
                     document.getElementById('pubProfName').innerText = p.name;
-                    document.getElementById('pubInfoUid').innerHTML = `<i class="far fa-copy"></i> ${p.konamiUid || "N/A"}`;
+                    document.getElementById('pubInfoUid').innerHTML = p.konamiUid || "N/A";
                     document.getElementById('pubInfoDevice').innerText = p.device || "N/A";
                     document.getElementById('pubProfAvatar').src = p.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                     
@@ -884,19 +867,11 @@
                         if(statDoc.exists) {
                             const s = statDoc.data();
                             w = s.wins || 0; d = s.draws || 0; l = s.losses || 0; gf = s.gf || 0; ga = s.ga || 0;
-                            played = s.played || 0;
-                            matches = s.matches || [];
+                            played = s.played || 0; matches = s.matches || [];
                             wr = played > 0 ? Math.round((w/played)*100) : 0;
                         }
-                        
-                        document.getElementById('pubProfMatches').innerText = played;
-                        document.getElementById('pubProfWins').innerText = w;
-                        document.getElementById('pubProfGoals').innerText = gf;
-                        document.getElementById('pubProfWR').innerText = wr + '%';
-                        
-                        document.getElementById('pubStatDraws').innerText = d;
-                        document.getElementById('pubStatLosses').innerText = l;
-                        document.getElementById('pubStatGA').innerText = ga;
+                        document.getElementById('pubProfMatches').innerText = played; document.getElementById('pubProfWins').innerText = w; document.getElementById('pubProfGoals').innerText = gf; document.getElementById('pubProfWR').innerText = wr + '%';
+                        document.getElementById('pubStatDraws').innerText = d; document.getElementById('pubStatLosses').innerText = l; document.getElementById('pubStatGA').innerText = ga;
                         
                         renderPubFormTab(matches);
                         switchPubTab('pubInfo', document.querySelectorAll('.pub-tab')[0]);
@@ -907,10 +882,7 @@
         }
 
         /* --- UI & MENUS --- */
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 8) header.classList.add('scrolled'); else header.classList.remove('scrolled');
-        });
+        window.addEventListener('scroll', () => { const header = document.querySelector('.header'); if (window.scrollY > 8) header.classList.add('scrolled'); else header.classList.remove('scrolled'); });
 
         function openSideMenu() { document.getElementById('sideMenu').classList.add('open'); document.getElementById('sideMenuOverlay').classList.add('open'); }
         function closeSideMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('sideMenuOverlay').classList.remove('open'); }
@@ -920,21 +892,14 @@
             if ((tabId === 'profile' || tabId === 'myMatchesTab') && !auth.currentUser) tabId = 'authPage';
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            
-            if(element && element.classList) {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                if(element.classList.contains('nav-item')) element.classList.add('active');
-            }
+            if(element && element.classList) { document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active')); if(element.classList.contains('nav-item')) element.classList.add('active'); }
             window.scrollTo(0,0);
             if(tabId === 'myMatchesTab') loadMyMatches();
             if(tabId === 'profile') loadPlayerStats();
             if(tabId === 'admin') loadPendingResults(); 
         }
 
-        function toggleAuth(type) {
-            document.getElementById('loginBox').style.display = type === 'signup' ? 'none' : 'block';
-            document.getElementById('signupBox').style.display = type === 'signup' ? 'block' : 'none';
-        }
+        function toggleAuth(type) { document.getElementById('loginBox').style.display = type === 'signup' ? 'none' : 'block'; document.getElementById('signupBox').style.display = type === 'signup' ? 'block' : 'none'; }
 
         /* --- HERO SLIDER JS --- */
         setInterval(() => {
@@ -966,7 +931,7 @@
             const data = await response.json(); return data.data.url;
         }
 
-        /* --- AUTHENTICATION --- */
+        /* --- AUTHENTICATION & USERS DATA --- */
         async function signUpWithEmail() {
             const name = document.getElementById('regName').value; const konami = document.getElementById('regKonami').value; const device = document.getElementById('regDevice').value; const email = document.getElementById('regEmail').value; const password = document.getElementById('regPassword').value; const avatarFile = document.getElementById('regAvatarFile').files[0];
             if(!avatarFile || !name || !email || password.length < 6) return alert("Fill required fields correctly!");
@@ -1003,7 +968,7 @@
                     if(currentUserRole === "admin" || currentUserRole === "moderator") { 
                         document.getElementById('navAdmin').classList.add('show'); document.body.classList.add('is-admin');
                         if(currentUserRole === "admin") document.body.classList.add('is-main-admin');
-                        fetchAllUsersForSearch(); loadPendingResults();
+                        fetchAllUsersForAdmin(); loadPendingResults();
                     } else { document.getElementById('navAdmin').classList.remove('show'); }
                 });
             } else {
@@ -1014,7 +979,44 @@
             }
         });
 
-        function fetchAllUsersForSearch() { db.collection("users").onSnapshot(snap => { allUsersData = []; snap.forEach(doc => { let d = doc.data(); d.uid = doc.id; allUsersData.push(d); }); }); }
+        // ADMIN PLAYER LIST MANAGEMENT
+        function fetchAllUsersForAdmin() { 
+            db.collection("users").onSnapshot(snap => { 
+                allUsersData = []; 
+                snap.forEach(doc => { let d = doc.data(); d.uid = doc.id; allUsersData.push(d); }); 
+                renderAdminPlayers(allUsersData);
+            }); 
+        }
+
+        function renderAdminPlayers(list) {
+            document.getElementById('adminPlayerList').innerHTML = list.map(p => `
+                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--card-border);" onclick="openPlayerEdit('${p.uid}')">
+                    <span style="color:white; font-size:13px; cursor:pointer;">${p.name} ${p.role==='moderator'?'<i class="fas fa-shield-alt" style="color:var(--accent);font-size:10px;margin-left:5px;"></i>':''}</span> 
+                    <i class="fas fa-edit" style="color:var(--accent); cursor:pointer;"></i>
+                </div>`).join('');
+        }
+
+        function filterAdminPlayers() {
+            const query = document.getElementById('adminPlayerSearch').value.toLowerCase();
+            renderAdminPlayers(allUsersData.filter(p => (p.name && p.name.toLowerCase().includes(query))));
+        }
+
+        function openPlayerEdit(uid) {
+            const p = allUsersData.find(x => x.uid === uid);
+            if(!p) return;
+            document.getElementById('editPlayerUid').value = p.uid; document.getElementById('editPlayerName').value = p.name || "";
+            document.getElementById('editPlayerKonami').value = p.konamiUid || ""; document.getElementById('editPlayerDevice').value = p.device || ""; document.getElementById('editPlayerPhone').value = p.phone || "";
+            if(document.getElementById('editPlayerRole')) document.getElementById('editPlayerRole').value = p.role || "user";
+            document.getElementById('adminEditPlayerForm').style.display = 'block';
+        }
+        function cancelPlayerEdit() { document.getElementById('adminEditPlayerForm').style.display = 'none'; }
+        
+        function savePlayerEdit() {
+            const uid = document.getElementById('editPlayerUid').value; if(!uid) return;
+            let data = { name: document.getElementById('editPlayerName').value, konamiUid: document.getElementById('editPlayerKonami').value, device: document.getElementById('editPlayerDevice').value, phone: document.getElementById('editPlayerPhone').value };
+            let roleElem = document.getElementById('editPlayerRole'); if(roleElem && currentUserRole === 'admin') data.role = roleElem.value;
+            db.collection("users").doc(uid).update(data).then(() => { alert("Player details updated!"); cancelPlayerEdit(); });
+        }
 
         /* --- TOURNAMENT CREATION --- */
         function toggleGroupOptions() { document.getElementById('groupOptions').style.display = document.getElementById('tFormatType').value === 'Group Stage' ? 'flex' : 'none'; }
@@ -1188,7 +1190,7 @@
             }); 
         }
 
-        /* --- TOURNAMENT DETAILS (REAL-TIME ON SNAPSHOT) --- */
+        /* --- TOURNAMENT DETAILS (REAL-TIME FIXTURES & ADMIN EDIT MATCH) --- */
         function switchTdTab(tabId, btn) {
             document.querySelectorAll('.td-content').forEach(el => el.classList.remove('active')); 
             document.querySelectorAll('.td-tab').forEach(el => el.classList.remove('active'));
@@ -1306,13 +1308,13 @@
             await tRef.update({ fixtures: fixtures });
 
             if(s1 !== undefined && s2 !== undefined && p1Uid && p2Uid && p1Uid !== 'bye' && p2Uid !== 'bye') {
-                await updatePlayerStatsDB(p1Uid, s1, s2, p2Name, p2Av);
-                await updatePlayerStatsDB(p2Uid, s2, s1, p1Name, p1Av);
+                await updatePlayerStatsDB(p1Uid, s1, s2, p2Name, p2Av, p2Uid);
+                await updatePlayerStatsDB(p2Uid, s2, s1, p1Name, p1Av, p1Uid);
             }
             alert("Match result updated & player stats/ranking synced!");
         }
 
-        /* --- MY MATCHES & RESULT SUBMISSION --- */
+        /* --- MY MATCHES & DOUBLE SUBMISSION BUG FIX --- */
         function loadMyMatches() {
             const user = auth.currentUser;
             const list = document.getElementById('myMatchesList'); const countBadge = document.getElementById('myMatchCountText');
@@ -1340,18 +1342,24 @@
                                             let statusHtml = `<span class="mm-status pending">Not Played</span>`;
                                             let btnHtml = `<button class="mm-btn" onclick="openScoreSubmit('${tId}', '${groupOrRound}', '${m.match}', '${me.uid}', '${opp.uid}')">SUBMIT SCORE</button>`;
                                             
-                                            if(m.myScore !== undefined) {
+                                            let isFinished = (m.myScore !== undefined); 
+                                            let isPending = false;
+                                            
+                                            if(!resSnap.empty) {
+                                                const resDoc = resSnap.docs[0].data();
+                                                if(resDoc.status === 'Pending') isPending = true;
+                                                if(resDoc.status === 'Approved') isFinished = true;
+                                            }
+
+                                            if(isFinished) {
                                                 let myGoals = isP1 ? m.myScore : m.oppScore; let oppGoals = isP1 ? m.oppScore : m.myScore;
                                                 statusHtml = `<span class="mm-status approved">Finished</span>`;
                                                 btnHtml = `<button class="mm-btn" style="background:rgba(163,230,53,0.1); color:var(--accent); border:1px solid var(--accent); box-shadow:none;" disabled>${myGoals} - ${oppGoals}</button>`;
+                                            } else if (isPending) {
+                                                statusHtml = `<span class="mm-status submitted">Pending Admin</span>`;
+                                                btnHtml = `<button class="mm-btn" style="background:var(--card-bg-soft); color:var(--text-muted); box-shadow:none;" disabled>WAITING APPROVAL</button>`;
                                             }
-                                            else if(!resSnap.empty) {
-                                                const resDoc = resSnap.docs[0].data();
-                                                if(resDoc.status === 'Pending') {
-                                                    statusHtml = `<span class="mm-status submitted">Pending Admin</span>`;
-                                                    btnHtml = `<button class="mm-btn" style="background:var(--card-bg-soft); color:var(--text-muted); box-shadow:none;" disabled>WAITING APPROVAL</button>`;
-                                                }
-                                            }
+
                                             return `<div class="mm-card"><div class="mm-top"><span class="mm-tag">${t.name.substring(0,20)} • ${groupOrRound}</span><span><i class="far fa-clock"></i> ${statusHtml}</span></div><div class="mm-vs-row"><div class="mm-player" onclick="openPublicProfile('${me.uid}')"><img src="${me.avatar}" class="mm-avatar"><span class="mm-name">You</span></div><div class="mm-vs-badge">VS</div><div class="mm-player right" onclick="openPublicProfile('${opp.uid}')"><span class="mm-name">${opp.name}</span><img src="${opp.avatar}" class="mm-avatar"></div></div><div class="mm-bot">${btnHtml}</div></div>`;
                                         });
                                         fetchPromises.push(p);
@@ -1420,31 +1428,29 @@
                 const reqDoc = await db.collection("pending_results").doc(reqId).get();
                 const r = reqDoc.data();
                 
-                // Fetch player details to record true names and avatars in match history
                 const p1UserDoc = await db.collection("users").doc(r.submittedBy).get();
                 const p2UserDoc = await db.collection("users").doc(r.oppUid).get();
                 const p1Data = p1UserDoc.exists ? p1UserDoc.data() : { name: "Player 1", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
                 const p2Data = p2UserDoc.exists ? p2UserDoc.data() : { name: "Player 2", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
 
-                // 1. Sync stats & ranking for both players
-                await updatePlayerStatsDB(r.submittedBy, r.myScore, r.oppScore, p2Data.name, p2Data.avatar);
-                await updatePlayerStatsDB(r.oppUid, r.oppScore, r.myScore, p1Data.name, p1Data.avatar);
+                // 1. Sync stats & ranking 
+                await updatePlayerStatsDB(r.submittedBy, r.myScore, r.oppScore, p2Data.name, p2Data.avatar, r.oppUid);
+                await updatePlayerStatsDB(r.oppUid, r.oppScore, r.myScore, p1Data.name, p1Data.avatar, r.submittedBy);
 
-                // 2. Update Tournament Fixtures Array
+                // 2. Update Fixtures
                 const tRef = db.collection("tournaments").doc(r.tournamentId);
                 const tDoc = await tRef.get();
                 if(tDoc.exists) {
                     let fixtures = tDoc.data().fixtures; let matchFound = false;
-                    for(let round in fixtures) {
-                        if(Array.isArray(fixtures[round])) {
-                            fixtures[round].forEach(m => {
-                                if(m.match === r.matchId) {
-                                    if(m.player1.uid === r.submittedBy) { m.myScore = r.myScore; m.oppScore = r.oppScore; } 
-                                    else { m.myScore = r.oppScore; m.oppScore = r.myScore; }
-                                    matchFound = true;
-                                }
-                            });
-                        }
+                    let roundName = r.groupRound;
+                    if(fixtures[roundName] && Array.isArray(fixtures[roundName])) {
+                        fixtures[roundName].forEach(m => {
+                            if(m.match === r.matchId) {
+                                if(m.player1.uid === r.submittedBy) { m.myScore = r.myScore; m.oppScore = r.oppScore; } 
+                                else { m.myScore = r.oppScore; m.oppScore = r.myScore; }
+                                matchFound = true;
+                            }
+                        });
                     }
                     if(matchFound) await tRef.update({ fixtures: fixtures });
                 }
@@ -1453,7 +1459,7 @@
             } catch(e) { alert("Error: " + e.message); }
         }
 
-        async function updatePlayerStatsDB(uid, gf, ga, oppName, oppAvatar) {
+        async function updatePlayerStatsDB(uid, gf, ga, oppName, oppAvatar, oppUid) {
             const statRef = db.collection("playerStats").doc(uid); 
             const userRef = db.collection("users").doc(uid);
             const doc = await statRef.get(); 
@@ -1470,31 +1476,40 @@
             
             if(!Array.isArray(d.matches)) d.matches = [];
             d.matches.push({ 
-                result: resChar, 
-                myScore: gf, 
-                oppScore: ga, 
-                opp: oppName || 'Opponent',
-                oppAvatar: oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+                result: resChar, myScore: gf, oppScore: ga, 
+                opp: oppName || 'Opponent', oppAvatar: oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppUid: oppUid || '',
                 time: Date.now()
             });
-            if(d.matches.length > 10) d.matches = d.matches.slice(-10); // Keep latest 10 matches
+            if(d.matches.length > 10) d.matches = d.matches.slice(-10);
             await statRef.set(d);
             
-            // AUTOMATIC LEADERBOARD UPDATE
+            // AUTOMATIC LEADERBOARD UPDATE BY UID
             const lbRef = db.collection("leaderboard").doc(uid); 
             const lbDoc = await lbRef.get();
-            let lb = lbDoc.exists ? lbDoc.data() : { name: u.name, avatar: u.avatar, points: 0, played: 0, wins: 0 };
+            let lb = lbDoc.exists ? lbDoc.data() : { name: u.name, avatar: u.avatar, points: 0, played: 0, wins: 0, uid: uid };
             lb.points = (lb.points || 0) + ptsToAdd; 
             lb.played = (lb.played || 0) + 1; 
             if (gf > ga) lb.wins = (lb.wins || 0) + 1;
             lb.winRate = Math.round(((lb.wins || 0) / lb.played) * 100); 
-            lb.name = u.name || lb.name; 
-            lb.avatar = u.avatar || lb.avatar; 
-            lb.time = firebase.firestore.FieldValue.serverTimestamp();
+            lb.name = u.name; lb.avatar = u.avatar; lb.time = firebase.firestore.FieldValue.serverTimestamp();
             await lbRef.set(lb);
         }
 
         /* Leaderboard Setup */
+        function updateLeaderboard() {
+            const uidInput = document.getElementById('lbPlayerUid').value.trim();
+            const points = parseInt(document.getElementById('lbPoints').value);
+            if(uidInput && !isNaN(points)) {
+                const p = allUsersData.find(x => x.uid === uidInput || x.konamiUid === uidInput || x.name.toLowerCase() === uidInput.toLowerCase());
+                if(!p) return alert("Player not found in database!");
+                
+                db.collection("leaderboard").doc(p.uid).set({ 
+                    name: p.name, avatar: p.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png", 
+                    points: points, uid: p.uid, time: firebase.firestore.FieldValue.serverTimestamp() 
+                }, {merge:true}).then(() => { alert("Leaderboard Updated!"); document.getElementById('lbPlayerUid').value = ''; document.getElementById('lbPoints').value = ''; });
+            }
+        }
+
         db.collection("leaderboard").orderBy("points", "desc").onSnapshot(snapshot => {
             fullLeaderboardData = [];
             snapshot.forEach(doc => { let d = doc.data(); d.uid = doc.id; fullLeaderboardData.push(d); });
