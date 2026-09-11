@@ -45,7 +45,7 @@
         ::-webkit-scrollbar { width: 4px; height: 0; }
         ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
 
-        /* Admin Action Visibility Control */
+        /* Admin Action Visibility Control (RBAC) */
         body:not(.is-admin) .admin-controls { display: none !important; }
         body.is-admin .admin-controls { display: flex !important; }
         body:not(.is-main-admin) .main-admin-only { display: none !important; }
@@ -66,7 +66,7 @@
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
         @keyframes preloaderPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.07); opacity: 0.85; } }
 
-        /* --- HEADER --- */
+        /* --- HEADER & 3-DOT MENU --- */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 15px; background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease; }
         .header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--signature); opacity: 0.55; }
         .header.scrolled { background: rgba(6, 9, 20, 0.92); box-shadow: 0 12px 30px -18px rgba(0,0,0,0.85); }
@@ -74,23 +74,22 @@
         .header-mark { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.35), rgba(56,189,248,0.05)); border: 1px solid rgba(56,189,248,0.35); color: var(--logo-blue); font-size: 13px; box-shadow: 0 0 14px rgba(56,189,248,0.35); }
         .header h2 { font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 2.5px; }
         .header span { color: var(--logo-blue); }
-        .header-actions { display: flex; align-items: center; gap: 8px; }
-        .btn-icon { background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border); height: 36px; border-radius: 12px; cursor: pointer; font-size: 15px; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
-        .btn-icon.profile { width: 36px; border-radius: 50%; }
-        .btn-icon.menu { width: 40px; }
-        .btn-icon:hover { background: rgba(56,189,248,0.12); color: var(--logo-blue); border-color: rgba(56,189,248,0.4); }
+        .login-btn { background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border); height: 36px; border-radius: 8px; cursor: pointer; font-size: 15px; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
+        .login-btn.prof-icon { width: 36px; border-radius: 50%; }
+        .login-btn.menu-icon { width: 40px; }
+        .login-btn:hover { background: rgba(56,189,248,0.12); color: var(--logo-blue); border-color: rgba(56,189,248,0.4); }
 
-        /* --- SLIDING SIDE MENU (DARK THEME) --- */
-        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(5px); }
+        /* --- SIDE MENU (DARK THEME) --- */
+        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(4px); }
         .side-menu-overlay.open { display: block; opacity: 1; }
-        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: var(--bg-dark); z-index: 99999; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px 20px; box-shadow: -5px 0 25px rgba(0,0,0,0.8); overflow-y: auto; display: flex; flex-direction: column; border-left: 1px solid var(--glass-border); }
+        .side-menu { position: fixed; top: 0; right: -300px; width: 270px; height: 100%; background: var(--bg-dark); z-index: 99999; transition: right 0.3s ease; padding: 25px 20px; border-left: 1px solid var(--glass-border); overflow-y: auto; display: flex; flex-direction: column; }
         .side-menu.open { right: 0; }
-        .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .sm-header h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: white; letter-spacing: 1px; }
-        .sm-close { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 8px; width: 32px; height: 32px; font-size: 16px; cursor: pointer; color: var(--text-muted); transition: 0.2s; display:flex; align-items:center; justify-content:center; }
+        .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .sm-header h3 { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; }
+        .sm-close { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
         .sm-close:active { transform: scale(0.9); }
-        .sm-nav-group { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px 5px; }
-        .sm-item { display: flex; align-items: center; gap: 14px; padding: 12px 15px; font-size: 13px; font-weight: 600; color: #cbd5e1; text-decoration: none; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .sm-group-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px 5px; }
+        .sm-item { display: flex; align-items: center; gap: 14px; padding: 12px 15px; font-size: 13px; font-weight: 600; color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 4px; }
         .sm-item i { font-size: 16px; width: 20px; text-align: center; color: var(--text-muted); }
         .sm-item:active { transform: scale(0.98); }
         .sm-item.highlight { background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.2); }
@@ -146,20 +145,21 @@
         .t-reg-btn { background: linear-gradient(135deg, #f97316, #ef4444); color: white; border: none; padding: 8px 13px; border-radius: 9px; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px -6px rgba(239,68,68,0.55); transition: 0.2s; }
         .t-reg-btn:active { transform: scale(0.95); }
 
-        /* --- MY MATCHES (DARK THEME) --- */
-        .mm-card { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 26px -18px rgba(0,0,0,0.8); }
-        .mm-top { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 15px; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; align-items: center; }
-        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(163,230,53,0.1); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(163,230,53,0.2); }
-        .mm-vs-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .mm-player { display: flex; align-items: center; gap: 10px; width: 40%; }
+        /* --- MY MATCHES UI (DARK THEME) --- */
+        .mm-card { background: var(--card-bg); border-radius: 14px; padding: 14px; margin-bottom: 15px; border: 1px solid var(--card-border); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5); }
+        .mm-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; }
+        .mm-tourney-name { font-size: 10px; font-weight: 700; color: var(--logo-blue); text-transform: uppercase; background: rgba(56,189,248,0.1); padding: 4px 8px; border-radius: 6px; }
+        .mm-date { font-size: 9px; color: var(--text-muted); }
+        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .mm-player { display: flex; align-items: center; gap: 8px; width: 40%; }
         .mm-player.right { flex-direction: row-reverse; text-align: right; }
-        .mm-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,255,255,0.1); }
-        .mm-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.2; word-break: break-word; }
-        .mm-vs-badge { font-family: var(--font-display); font-size: 11px; color: var(--gold); font-weight: 800; background: rgba(255,215,0,0.1); padding: 5px 8px; border-radius: 8px; }
+        .mm-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-bg); box-shadow: 0 0 0 2px var(--text-dim); }
+        .mm-name { font-size: 12px; font-weight: 700; color: white; line-height: 1.2; word-break: break-word; }
+        .mm-vs-badge { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 8px; }
         .mm-bot { display: flex; justify-content: space-between; align-items: center; }
-        .mm-submit-btn { background: linear-gradient(135deg, var(--gold), var(--gold-deep)); color: #000; border: none; padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px -4px rgba(255,215,0,0.5); letter-spacing: 0.5px; }
-        .mm-submit-btn:active { transform: scale(0.95); }
-        .mm-status { font-size: 10px; color: #f87171; background: rgba(239,68,68,0.1); padding: 5px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(239,68,68,0.2); }
+        .mm-btn { background: linear-gradient(135deg, var(--gold), var(--gold-deep)); color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px -4px rgba(255,215,0,0.5); }
+        .mm-btn:active { transform: scale(0.95); }
+        .mm-status { font-size: 9px; color: #f87171; background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(239,68,68,0.2); }
 
         /* --- LEADERBOARD & OTHERS --- */
         .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding: 4px 8px 12px 10px; border-left: 3px solid transparent; border-radius: 6px; transition: background 0.2s; }
@@ -229,7 +229,7 @@
         .stats-section-title { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 22px 0 14px; padding-left: 11px; position: relative; color: var(--text-main); }
         .stats-section-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
 
-        /* --- Stats Grid --- */
+        /* --- Stats Grid (W / P / D / L / WR / GF / GA / MOTM) --- */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 14px; }
         .stat-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 6px 10px; text-align: center; position: relative; overflow: hidden; transition: transform 0.2s; }
         .stat-box:active { transform: scale(0.96); }
@@ -315,49 +315,52 @@
         <div class="preloader-loading-txt">Loading Arena...</div>
     </div>
 
-    <!-- SIDE MENU OVERLAY (NEW) -->
+    <!-- SIDE MENU OVERLAY -->
     <div id="sideMenuOverlay" class="side-menu-overlay" onclick="closeSideMenu()"></div>
 
-    <!-- SLIDING SIDE MENU (NEW - Matches your picture's options) -->
+    <!-- SLIDING SIDE MENU (DARK THEMED) -->
     <div id="sideMenu" class="side-menu">
         <div class="sm-header">
             <h3>MENU</h3>
             <button class="sm-close" onclick="closeSideMenu()"><i class="fas fa-times"></i></button>
         </div>
         
-        <div class="sm-nav" style="margin-bottom: 10px;">
-            <a class="sm-item" onclick="switchMenuTab('authPage')"><i class="far fa-user"></i> LOGIN / SIGN UP</a>
+        <!-- Auth Status Box in Menu -->
+        <div id="smLoginSection">
+            <div class="sm-item" onclick="switchMenuTab('authPage')"><i class="far fa-user"></i> LOGIN / SIGN UP</div>
         </div>
-        
-        <div class="sm-nav-group">Navigate</div>
-        <div class="sm-nav">
-            <a class="sm-item" onclick="switchMenuTab('home')"><i class="fas fa-home"></i> Home</a>
-            <a class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class="fas fa-plus-circle"></i> MY MATCHES</a>
-            <a class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class="fas fa-ribbon"></i> Tournaments</a>
-            <a class="sm-item" onclick="alert('Fixtures coming soon!')"><i class="far fa-calendar-alt"></i> Fixtures</a>
-            <a class="sm-item" onclick="alert('Recent matches coming soon!')"><i class="far fa-clock"></i> Recent</a>
-            <a class="sm-item" onclick="alert('Title Winners coming soon!')"><i class="fas fa-trophy"></i> Title Winners</a>
-            <a class="sm-item" onclick="switchMenuTab('leaderboard')"><i class="fas fa-chart-line"></i> Rankings</a>
-            <a class="sm-item" onclick="switchMenuTab('profile')"><i class="far fa-user-circle"></i> Profile</a>
+        <div id="smProfileSection" style="display:none; border-bottom:1px solid var(--card-border); padding-bottom:15px; margin-bottom:10px;">
+            <div class="sm-item" onclick="switchMenuTab('profile')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);">
+                <img id="smAvatar" src="" style="width:26px; height:26px; border-radius:50%; object-fit:cover; margin-left:-4px; border:1px solid var(--logo-blue);">
+                <span id="smName" style="color:white; font-weight:700;">Player Name</span>
+            </div>
         </div>
 
-        <div class="sm-nav-group">Settings & Info</div>
-        <div class="sm-nav" style="margin-bottom: 20px;">
-            <a class="sm-item" onclick="alert('Notifications coming soon!')"><i class="far fa-bell"></i> Notifications</a>
-            <a class="sm-item" onclick="alert('Contact Support coming soon!')"><i class="far fa-comment-dots"></i> Contact Support</a>
-            <a class="sm-item" onclick="alert('Match Rules coming soon!')"><i class="far fa-file-alt"></i> Match Rules</a>
-        </div>
+        <div class="sm-group-title">Navigate</div>
+        <div class="sm-item" onclick="switchMenuTab('home')"><i class="fas fa-home"></i> Home</div>
+        <div class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class="fas fa-plus-circle"></i> MY MATCHES</div>
+        <div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class="fas fa-ribbon"></i> Tournaments</div>
+        <div class="sm-item" onclick="alert('Fixtures coming soon!')"><i class="far fa-calendar-alt"></i> Fixtures</div>
+        <div class="sm-item" onclick="alert('Recent matches coming soon!')"><i class="far fa-clock"></i> Recent</div>
+        <div class="sm-item" onclick="alert('Title Winners coming soon!')"><i class="fas fa-trophy"></i> Title Winners</div>
+        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class="fas fa-chart-line"></i> Rankings</div>
+        <div class="sm-item" onclick="switchMenuTab('profile')"><i class="far fa-user-circle"></i> Profile</div>
+
+        <div class="sm-group-title">Settings & Info</div>
+        <div class="sm-item" onclick="alert('Notifications coming soon!')"><i class="far fa-bell"></i> Notifications</div>
+        <div class="sm-item" onclick="alert('Contact Support coming soon!')"><i class="far fa-comment-dots"></i> Contact Support</div>
+        <div class="sm-item" onclick="alert('Match Rules coming soon!')"><i class="far fa-file-alt"></i> Match Rules</div>
     </div>
 
-    <!-- HEADER (UPDATED WITH 3 DOT MENU) -->
+    <!-- HEADER (UPDATED WITH 3-DOT MENU BUTTON) -->
     <div class="header">
         <div class="header-brand">
             <div class="header-mark"><i class="fas fa-bolt"></i></div>
             <h2>BMG <span>OFFICIAL</span></h2>
         </div>
         <div class="header-actions">
-            <button id="loginBtn" class="btn-icon profile" onclick="switchTab('authPage')"><i class="far fa-user"></i></button>
-            <button class="btn-icon menu" onclick="openSideMenu()"><i class="fas fa-ellipsis-v"></i></button>
+            <button id="loginBtn" class="login-btn prof-icon" onclick="switchTab('authPage')"><i class="far fa-user"></i></button>
+            <button class="login-btn menu-icon" onclick="openSideMenu()"><i class="fas fa-ellipsis-v"></i></button>
         </div>
     </div>
 
@@ -387,9 +390,8 @@
         </div>
     </div>
 
-    <!-- 1. HOME PAGE (UPDATED - DEMO PROFILE REMOVED) -->
+    <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
-
         <!-- Blended Hero Slider -->
         <div class="hero-banner-slider">
             <div class="hero-slide active" style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);">
@@ -464,7 +466,6 @@
                 </div>
 
                 <hr class="footer-divider">
-
                 <div class="footer-group-label">Follow The Community</div>
                 <div class="footer-socials">
                     <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
@@ -473,17 +474,9 @@
                     <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
                     <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
                 </div>
-
-                <div class="footer-contact">
-                    <i class="far fa-envelope"></i> bmgofficial@gmail.com
-                </div>
-
+                <div class="footer-contact"><i class="far fa-envelope"></i> bmgofficial@gmail.com</div>
                 <div class="footer-bottom-bar">
-                    <span>&copy; 2026 BMG Official</span>
-                    <span class="dot-sep"></span>
-                    <span>All Rights Reserved</span>
-                    <span class="dot-sep"></span>
-                    <span>v1.1.0</span>
+                    <span>&copy; 2026 BMG Official</span><span class="dot-sep"></span><span>All Rights Reserved</span><span class="dot-sep"></span><span>v1.2.0</span>
                 </div>
             </div>
         </div>
@@ -495,16 +488,17 @@
         <div id="allTournamentsList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
     </div>
 
-    <!-- 3. MY MATCHES TAB (NEW - THEMED TO YOUR DARK UI) -->
+    <!-- 3. MY MATCHES TAB (DARK THEMED UI) -->
     <div id="myMatchesTab" class="page-section">
-        <div class="section-title" style="color: var(--text-dim);">Your Schedule</div>
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h3 style="font-family: var(--font-display); font-size: 22px; color: white;">Upcoming <br><span style="color:var(--accent);">Matches</span></h3>
-            <div style="background: rgba(163,230,53,0.1); color: var(--accent); font-size:10px; padding:6px 12px; border-radius:12px; font-weight:800; border:1px solid rgba(163,230,53,0.3);" id="myMatchCountText">0 Upcoming</div>
+        <div class="prof-top-title">Your Schedule</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:16px;">
+            <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 800; line-height: 1.2;">UPCOMING <br><span style="color:var(--accent);">MATCHES</span></h3>
+            <div style="background: rgba(255,215,0,0.1); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; display:flex; align-items:center; gap:5px;" id="myMatchCountText"><span class="dot" style="width:6px; height:6px; background:var(--gold); border-radius:50%;"></span> 0 Upcoming</div>
         </div>
+        <p style="font-size: 10px; color: var(--text-dim); margin-bottom: 20px;">Start before the deadline — result submission is your responsibility.</p>
         
         <div id="myMatchesList">
-            <p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">Loading matches...</p>
+            <p style="text-align:center; color:var(--text-muted); font-size:12px; margin-top:30px;">Loading matches...</p>
         </div>
     </div>
 
@@ -539,40 +533,16 @@
         <!-- ══════════ STATS SECTION ══════════ -->
         <div class="stats-section-title">Season Stats</div>
 
-        <!-- 8-box grid: W · P · D · L · WR · GF · GA · MOTM -->
+        <!-- 8-box grid -->
         <div class="stats-grid" id="statsGrid">
-            <div class="stat-box win">
-                <span class="stat-box-val" id="statW">0</span>
-                <span class="stat-box-lbl">Won</span>
-            </div>
-            <div class="stat-box played">
-                <span class="stat-box-val" id="statP">0</span>
-                <span class="stat-box-lbl">Played</span>
-            </div>
-            <div class="stat-box draw">
-                <span class="stat-box-val" id="statD">0</span>
-                <span class="stat-box-lbl">Draw</span>
-            </div>
-            <div class="stat-box loss">
-                <span class="stat-box-val" id="statL">0</span>
-                <span class="stat-box-lbl">Lost</span>
-            </div>
-            <div class="stat-box wr">
-                <span class="stat-box-val" id="statWR">0%</span>
-                <span class="stat-box-lbl">Win Rate</span>
-            </div>
-            <div class="stat-box gf">
-                <span class="stat-box-val" id="statGF">0</span>
-                <span class="stat-box-lbl">GF</span>
-            </div>
-            <div class="stat-box ga">
-                <span class="stat-box-val" id="statGA">0</span>
-                <span class="stat-box-lbl">GA</span>
-            </div>
-            <div class="stat-box motm">
-                <span class="stat-box-val" id="statMOTM">0</span>
-                <span class="stat-box-lbl">MOTM</span>
-            </div>
+            <div class="stat-box win"><span class="stat-box-val" id="statW">0</span><span class="stat-box-lbl">Won</span></div>
+            <div class="stat-box played"><span class="stat-box-val" id="statP">0</span><span class="stat-box-lbl">Played</span></div>
+            <div class="stat-box draw"><span class="stat-box-val" id="statD">0</span><span class="stat-box-lbl">Draw</span></div>
+            <div class="stat-box loss"><span class="stat-box-val" id="statL">0</span><span class="stat-box-lbl">Lost</span></div>
+            <div class="stat-box wr"><span class="stat-box-val" id="statWR">0%</span><span class="stat-box-lbl">Win Rate</span></div>
+            <div class="stat-box gf"><span class="stat-box-val" id="statGF">0</span><span class="stat-box-lbl">GF</span></div>
+            <div class="stat-box ga"><span class="stat-box-val" id="statGA">0</span><span class="stat-box-lbl">GA</span></div>
+            <div class="stat-box motm"><span class="stat-box-val" id="statMOTM">0</span><span class="stat-box-lbl">MOTM</span></div>
         </div>
 
         <!-- ══════════ FORM SECTION ══════════ -->
@@ -613,11 +583,11 @@
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
         
-        <!-- PLAYER MANAGEMENT SYSTEM (Visible to both Main Admin & Moderator) -->
+        <!-- PLAYER MANAGEMENT SYSTEM -->
         <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                 <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px; margin: 0;">Player Management</h3>
-                <button onclick="copyAllPlayerNames()" style="background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.4); padding: 6px 12px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; transition: 0.2s;"><i class="far fa-copy"></i> Copy All Names</button>
+                <button onclick="copyAllPlayerNames()" style="background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.4); padding: 6px 12px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; transition: 0.2s;"><i class="far fa-copy"></i> Copy All</button>
             </div>
             <input type="text" id="adminPlayerSearch" placeholder="Search by Name or Email..." onkeyup="filterAdminPlayers()" style="margin-top: 0;">
             
@@ -705,7 +675,6 @@
     <div class="bottom-nav">
         <div class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home"></i>Home</div>
         <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class="fas fa-trophy"></i>Events</div>
-        <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class="fas fa-gamepad"></i>Matches</div>
         <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class="fas fa-chart-bar"></i>Ranking</div>
         <div class="nav-item" onclick="switchTab('profile', this)"><i class="far fa-user"></i>Profile</div>
         <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class="fas fa-cog"></i>Admin</div>
@@ -752,7 +721,7 @@
             else header.classList.remove('scrolled');
         });
 
-        /* --- SLIDING SIDE MENU LOGIC --- */
+        /* --- SLIDING SIDE MENU FUNCTIONS --- */
         function openSideMenu() {
             document.getElementById('sideMenu').classList.add('open');
             document.getElementById('sideMenuOverlay').classList.add('open');
@@ -845,7 +814,7 @@
 
         function logOut() { auth.signOut().then(() => switchTab('home', document.querySelectorAll('.nav-item')[0])); }
 
-        /* --- Updated Auth Listener for RBAC --- */
+        /* --- UPDATED AUTH LISTENER (SIDE MENU & RBAC) --- */
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('loginBtn').style.display = 'none';
@@ -853,6 +822,12 @@
                 document.getElementById('profName').innerText = user.displayName || "Player";
                 document.getElementById('profEmailTxt').innerText = user.email;
                 document.getElementById('profAvatar').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+                // Fix side menu auth section
+                document.getElementById('smLoginSection').style.display = 'none';
+                document.getElementById('smProfileSection').style.display = 'block';
+                document.getElementById('smName').innerText = user.displayName || "Player";
+                document.getElementById('smAvatar').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
                 db.collection("users").doc(user.uid).get().then(doc => {
                     let role = "user";
@@ -863,12 +838,8 @@
                         document.getElementById('profDeviceTxt').innerText = d.device || "N/A";
                     }
 
-                    // Main admin override
-                    if(user.email === adminEmail) {
-                        role = "admin";
-                    }
+                    if(user.email === adminEmail) role = "admin"; // Main admin override
 
-                    // Apply CSS Access Classes
                     document.body.classList.remove('is-main-admin', 'is-admin');
                     
                     if(role === "admin") {
@@ -877,7 +848,7 @@
                         fetchAllPlayersAdmin();
                     } else if (role === "moderator") {
                         document.getElementById('navAdmin').classList.add('show');
-                        document.body.classList.add('is-admin'); // Sees admin controls, but not main-admin-only
+                        document.body.classList.add('is-admin');
                         fetchAllPlayersAdmin();
                     } else {
                         document.getElementById('navAdmin').classList.remove('show');
@@ -886,9 +857,12 @@
             } else {
                 document.getElementById('loginBtn').style.display = 'flex';
                 document.getElementById('profileHeader').style.display = 'none';
-                document.getElementById('profEmailTxt').innerText = "Please login to view details.";
                 document.getElementById('navAdmin').classList.remove('show');
                 document.body.classList.remove('is-main-admin', 'is-admin');
+                
+                // Fix side menu auth section
+                document.getElementById('smLoginSection').style.display = 'block';
+                document.getElementById('smProfileSection').style.display = 'none';
             }
         });
 
@@ -941,7 +915,6 @@
             renderAdminPlayers(filtered);
         }
 
-        /* --- 1-Click Copy All Player Names --- */
         function copyAllPlayerNames() {
             if(allUsersData.length === 0) {
                 alert("No players found to copy!");
@@ -950,7 +923,9 @@
             const namesList = allUsersData.map((p, index) => `${index + 1}. ${p.name || 'Unknown'}`).join('\n');
             navigator.clipboard.writeText(namesList).then(() => {
                 alert(`Successfully copied ${allUsersData.length} player names!`);
-            }).catch(err => alert("Failed to copy text: " + err));
+            }).catch(err => {
+                alert("Failed to copy text: " + err);
+            });
         }
 
         function openPlayerEdit(uid) {
@@ -966,6 +941,7 @@
             if(document.getElementById('editPlayerRole')) {
                 document.getElementById('editPlayerRole').value = player.role || "user";
             }
+            
             document.getElementById('adminEditPlayerForm').style.display = 'block';
         }
 
@@ -984,6 +960,7 @@
             let roleToSave = roleElem ? roleElem.value : undefined;
 
             if(!uid) return;
+            
             let updateData = { name: name, konamiUid: konami, device: device, phone: phone };
             if(roleToSave) updateData.role = roleToSave;
 
@@ -1095,7 +1072,9 @@
             const mockUid = "manual_" + new Date().getTime();
             db.collection("tournaments").doc(docId).collection("players").doc(mockUid).set({
                 uid: mockUid, name: name, avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png", time: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => { document.getElementById('manualTPlayerName').value = ""; });
+            }).then(() => {
+                document.getElementById('manualTPlayerName').value = "";
+            });
         }
 
         function deleteTournament(docId) {
@@ -1116,7 +1095,6 @@
             }).then(() => alert("Registration Successful for this tournament!"));
         }
 
-        /* --- GENERATE FIXTURES LOGIC --- */
         async function generateFixtures(docId, format) {
             if(!confirm(`Admin: Auto-Generate ${format} logic/brackets for this tournament?`)) return;
 
@@ -1127,7 +1105,7 @@
 
                 if(players.length < 2) return alert("Minimum 2 players required to generate matches.");
 
-                // Auto-shuffle players
+                // Auto-shuffle players for fairness
                 for (let i = players.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [players[i], players[j]] = [players[j], players[i]];
@@ -1139,15 +1117,12 @@
                     const numGroups = Math.max(1, Math.ceil(players.length / 4)); 
                     const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
                     let groups = {};
-                    for (let i = 0; i < numGroups; i++) {
-                        groups[`Group ${groupNames[i]}`] = [];
-                    }
+                    for (let i = 0; i < numGroups; i++) groups[`Group ${groupNames[i]}`] = [];
                     players.forEach((p, index) => {
                         let groupChar = groupNames[index % numGroups];
                         groups[`Group ${groupChar}`].push(p);
                     });
 
-                    // Generate 1v1 Matches for each group
                     let matchId = 1;
                     Object.keys(groups).forEach(gName => {
                         let gPlayers = groups[gName];
@@ -1175,7 +1150,6 @@
                     }
                     generatedData[`Round 1`] = round1;
                     
-                    // Map out subsequent placeholders up to the Final
                     let currentMatches = nextPowerOf2 / 2;
                     let roundNum = 2;
                     while(currentMatches > 1) {
@@ -1233,11 +1207,11 @@
 
                                         html += `
                                         <div class="mm-card">
-                                            <div class="mm-top">
-                                                <span class="mm-tag">${t.name.substring(0,20)} • ${groupOrRound}</span>
-                                                <span><i class="far fa-clock"></i> Not Played</span>
+                                            <div class="mm-head">
+                                                <span class="mm-tourney-name">${t.name.substring(0,18)} • ${groupOrRound}</span>
+                                                <span class="mm-date"><i class="far fa-clock"></i> Not Played</span>
                                             </div>
-                                            <div class="mm-vs-area">
+                                            <div class="mm-vs-row">
                                                 <div class="mm-player">
                                                     <img src="${me.avatar}" class="mm-avatar">
                                                     <span class="mm-name">You</span>
@@ -1249,7 +1223,7 @@
                                                 </div>
                                             </div>
                                             <div class="mm-bot">
-                                                <button class="mm-submit-btn" onclick="alert('Submission coming soon!')">SUBMIT SCORE</button>
+                                                <button class="mm-btn" onclick="alert('Submission coming soon!')">SUBMIT SCORE</button>
                                                 <span class="mm-status"><i class="fas fa-circle" style="font-size:6px; margin-right:4px;"></i> Pending</span>
                                             </div>
                                         </div>`;
@@ -1262,7 +1236,7 @@
                 
                 if(count === 0) list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">You have no upcoming matches.</p>`;
                 else list.innerHTML = html;
-                countBadge.innerText = `${count} Upcoming`;
+                countBadge.innerHTML = `<span class="dot" style="width:6px; height:6px; background:var(--gold); border-radius:50%;"></span> ${count} Upcoming`;
             });
         }
 
