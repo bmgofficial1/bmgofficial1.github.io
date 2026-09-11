@@ -82,7 +82,7 @@
         @keyframes slideInRight { from { transform: translateX(150px) scale(0.5); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* PUBLIC PROFILE REDESIGN (FULL SCREEN) */
+        /* PUBLIC PROFILE REDESIGN */
         #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
         .pub-header { display: flex; align-items: center; padding: 15px; width: 100%; background: var(--glass-bg); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
         .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 8px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
@@ -118,6 +118,21 @@
         .pub-list-lbl { font-size: 13px; font-weight: 600; color: white; }
         .pub-list-val { font-size: 13px; font-weight: 700; color: var(--text-muted); }
         .pub-list-val.copyable { color: var(--logo-blue); cursor: pointer; }
+
+        /* FORM CALCULATION & LATEST 10 MATCHES STYLES */
+        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 15px; }
+        .form-grade-left { display: flex; align-items: center; gap: 12px; }
+        .form-grade-badge { font-family: var(--font-display); font-size: 16px; font-weight: 900; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .grade-a-plus, .grade-a { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; border: 1.5px solid #4ade80; box-shadow: 0 0 15px rgba(34,197,94,0.4); }
+        .grade-b-plus, .grade-b { background: linear-gradient(135deg, #38bdf8, #0284c7); color: #fff; border: 1.5px solid #7dd3fc; box-shadow: 0 0 15px rgba(56,189,248,0.4); }
+        .grade-c-plus, .grade-c, .grade-c-minus { background: linear-gradient(135deg, #eab308, #a16207); color: #fff; border: 1.5px solid #fde047; box-shadow: 0 0 15px rgba(234,179,8,0.3); }
+        .grade-d-minus { background: linear-gradient(135deg, #f97316, #c2410c); color: #fff; border: 1.5px solid #fdba74; }
+        .grade-e-minus { background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: 1.5px solid #f87171; }
+        .form-history-list { display: flex; flex-direction: column; gap: 7px; max-height: 280px; overflow-y: auto; }
+        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 7px 10px; }
+        .form-history-item.win { border-left: 3px solid #22c55e; }
+        .form-history-item.draw { border-left: 3px solid #94a3b8; }
+        .form-history-item.loss { border-left: 3px solid #ef4444; }
 
         /* HEADER & SIDE MENU */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 15px; background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease; }
@@ -372,7 +387,7 @@
                 <button class="pub-tab" onclick="switchPubTab('pubTrophy', this)">Trophy</button>
             </div>
 
-            <!-- TAB CONTENTS -->
+            <!-- TAB 1: INFO -->
             <div id="pubInfo" class="pub-content active pub-card">
                 <div class="pub-card-title">Player Information</div>
                 <div class="pub-list-item">
@@ -389,6 +404,7 @@
                 </div>
             </div>
 
+            <!-- TAB 2: STATS -->
             <div id="pubStats" class="pub-content pub-card">
                 <div class="pub-card-title">Additional Stats</div>
                 <div class="pub-list-item">
@@ -405,11 +421,12 @@
                 </div>
             </div>
 
+            <!-- TAB 3: FORM (DYNAMIC A, B, C, +, - AND LATEST 10 MATCHES) -->
             <div id="pubForm" class="pub-content pub-card">
-                <div class="pub-card-title">Recent Form</div>
-                <p style="color:var(--text-muted); font-size:12px; text-align:center; padding:10px 0;">No matches recorded yet.</p>
+                <!-- Injected dynamically via renderPubFormTab() -->
             </div>
 
+            <!-- TAB 4: TROPHY -->
             <div id="pubTrophy" class="pub-content pub-card">
                 <div class="pub-card-title">Trophy Cabinet</div>
                 <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:10px;">
@@ -565,7 +582,7 @@
         <div id="myMatchesList"></div>
     </div>
 
-    <!-- 4. TOURNAMENT DETAILS (TABS UI) WITH ADMIN EDIT BUTTONS IN MATCHES -->
+    <!-- 4. TOURNAMENT DETAILS (TABS UI) WITH REAL-TIME MATCH UPDATES -->
     <div id="tournamentDetails" class="page-section">
         <div class="card" style="padding:20px 15px; position:relative; overflow:hidden;">
             <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:11px; cursor:pointer; margin-bottom:12px; font-weight:600;"><i class="fas fa-arrow-left"></i> Back to Tournaments</button>
@@ -635,7 +652,7 @@
         </div>
     </div>
 
-    <!-- 7. ADMIN DASHBOARD (CLEANED UP - EDIT MATCHES REMOVED) -->
+    <!-- 7. ADMIN DASHBOARD -->
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
         
@@ -682,7 +699,7 @@
             <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
         </div>
 
-        <!-- Update Leaderboard System -->
+        <!-- Manual Leaderboard Override -->
         <div class="card main-admin-only" style="border: 1px solid rgba(255,215,0,0.4);">
             <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display);">Manual Leaderboard Override</h3>
             <input type="text" id="lbPlayerUid" placeholder="Player Konami ID or Name">
@@ -735,9 +752,117 @@
             }
         }
 
-        let fullLeaderboardData = []; // Store for finding rank easily
+        let fullLeaderboardData = []; // Cached leaderboard to resolve ranks
 
-        // NEW: Advanced Profile Fetcher matching the redesign
+        /* --- ADVANCED FORM GRADE CALCULATION (A, B, C, +, -) --- */
+        function getFormDetails(matches) {
+            if(!matches || matches.length === 0) {
+                return { grade: 'C', class: 'grade-c', desc: 'Neutral / No Data', pct: 0, recent: [] };
+            }
+            const last10 = matches.slice(-10);
+            let pts = 0;
+            last10.forEach(m => {
+                if(m.result === 'W') pts += 3;
+                else if(m.result === 'D') pts += 1;
+            });
+            const maxPts = last10.length * 3;
+            const pct = Math.round((pts / maxPts) * 100);
+            
+            let grade = 'C';
+            let cls = 'grade-c';
+            let desc = 'Neutral Form';
+            
+            if (pct >= 85) {
+                grade = 'A (+)'; cls = 'grade-a-plus'; desc = 'Exceptional Form';
+            } else if (pct >= 70) {
+                grade = 'A'; cls = 'grade-a'; desc = 'Great Condition';
+            } else if (pct >= 55) {
+                grade = 'B (+)'; cls = 'grade-b-plus'; desc = 'Rising Positive Form';
+            } else if (pct >= 45) {
+                grade = 'B'; cls = 'grade-b'; desc = 'Standard Condition';
+            } else if (pct >= 35) {
+                grade = 'C (+)'; cls = 'grade-c-plus'; desc = 'Steady Condition';
+            } else if (pct >= 25) {
+                grade = 'C (-)'; cls = 'grade-c-minus'; desc = 'Inconsistent Form';
+            } else if (pct >= 15) {
+                grade = 'D (-)'; cls = 'grade-d-minus'; desc = 'Poor Condition';
+            } else {
+                grade = 'E (-)'; cls = 'grade-e-minus'; desc = 'Cold / Critical Form';
+            }
+            return { grade, class: cls, desc, pct, recent: last10 };
+        }
+
+        /* --- RENDER FORM TAB IN PUBLIC PROFILE (LATEST 10 MATCHES) --- */
+        function renderPubFormTab(matches) {
+            const container = document.getElementById('pubForm');
+            if(!matches || matches.length === 0) {
+                container.innerHTML = `
+                    <div class="pub-card-title">Recent Form</div>
+                    <div style="text-align:center; padding:20px 10px;">
+                        <i class="far fa-chart-bar" style="font-size:30px; color:var(--text-dim); margin-bottom:8px;"></i>
+                        <p style="color:var(--text-muted); font-size:12px;">No matches recorded yet.</p>
+                    </div>`;
+                return;
+            }
+            
+            const formInfo = getFormDetails(matches);
+            const last10Desc = [...matches].slice(-10).reverse();
+            
+            let sequenceHTML = matches.slice(-5).map(m => {
+                const color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#f87171';
+                const bg = m.result === 'W' ? 'rgba(34,197,94,0.15)' : m.result === 'D' ? 'rgba(148,163,184,0.15)' : 'rgba(239,68,68,0.15)';
+                return `<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; background:${bg}; color:${color}; font-size:9.5px; font-weight:800; border:1px solid ${color}40;">${m.result}</span>`;
+            }).join('');
+
+            let matchesListHTML = last10Desc.map((m, idx) => {
+                const isW = m.result === 'W';
+                const isD = m.result === 'D';
+                const cls = isW ? 'win' : isD ? 'draw' : 'loss';
+                const tagColor = isW ? '#4ade80' : isD ? '#94a3b8' : '#f87171';
+                const tagBg = isW ? 'rgba(34,197,94,0.15)' : isD ? 'rgba(148,163,184,0.15)' : 'rgba(239,68,68,0.15)';
+                const oppAv = m.oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                const oppName = m.opp || 'Opponent';
+                
+                return `
+                <div class="form-history-item ${cls}">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:10px; font-weight:800; color:var(--text-dim); width:18px;">#${last10Desc.length - idx}</span>
+                        <img src="${oppAv}" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
+                        <div>
+                            <div style="font-size:11.5px; font-weight:700; color:white; max-width:115px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${oppName}</div>
+                            <span style="font-size:8.5px; color:var(--text-dim);">vs Opponent</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="font-family:var(--font-display); font-size:13px; font-weight:800; color:white;">${m.myScore} - ${m.oppScore}</div>
+                        <span style="display:inline-block; padding:3px 7px; border-radius:6px; background:${tagBg}; color:${tagColor}; font-size:9px; font-weight:800; text-transform:uppercase;">${m.result === 'W' ? 'WIN' : m.result === 'D' ? 'DRAW' : 'LOSS'}</span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            container.innerHTML = `
+                <div class="pub-card-title">Condition & Recent Form</div>
+                <div class="form-grade-box">
+                    <div class="form-grade-left">
+                        <div class="form-grade-badge ${formInfo.class}">
+                            ${formInfo.grade}
+                        </div>
+                        <div>
+                            <div style="font-size:13px; font-weight:800; color:white; line-height:1.2;">${formInfo.desc}</div>
+                            <div style="font-size:10px; color:var(--text-dim); margin-top:3px;">Points Rate: <span style="color:var(--gold); font-weight:700;">${formInfo.pct}%</span> (Last ${last10Desc.length} Games)</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:4px;">
+                        ${sequenceHTML}
+                    </div>
+                </div>
+                <div style="font-size:10px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">Latest ${last10Desc.length} Matches History</div>
+                <div class="form-history-list">
+                    ${matchesListHTML}
+                </div>
+            `;
+        }
+
         function openPublicProfile(uid) {
             if(!uid || uid === 'bye' || uid === 'undefined' || uid === 'tbd') return;
             
@@ -749,35 +874,32 @@
                     document.getElementById('pubInfoDevice').innerText = p.device || "N/A";
                     document.getElementById('pubProfAvatar').src = p.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                     
-                    // Find Rank from pre-fetched Leaderboard
                     let userRank = "#--";
-                    const lbIndex = fullLeaderboardData.findIndex(x => x.name === p.name);
+                    const lbIndex = fullLeaderboardData.findIndex(x => x.name === p.name || x.uid === uid);
                     if(lbIndex !== -1) userRank = `#${lbIndex + 1}`;
                     document.getElementById('pubProfRank').innerText = userRank;
 
-                    // Fetch Stats
                     db.collection("playerStats").doc(uid).get().then(statDoc => {
-                        let w = 0, d = 0, l = 0, wr = 0, played = 0, gf = 0, ga = 0;
+                        let w = 0, d = 0, l = 0, wr = 0, played = 0, gf = 0, ga = 0, matches = [];
                         if(statDoc.exists) {
                             const s = statDoc.data();
                             w = s.wins || 0; d = s.draws || 0; l = s.losses || 0; gf = s.gf || 0; ga = s.ga || 0;
                             played = s.played || 0;
+                            matches = s.matches || [];
                             wr = played > 0 ? Math.round((w/played)*100) : 0;
                         }
                         
-                        // Top row blocks
                         document.getElementById('pubProfMatches').innerText = played;
                         document.getElementById('pubProfWins').innerText = w;
                         document.getElementById('pubProfGoals').innerText = gf;
                         document.getElementById('pubProfWR').innerText = wr + '%';
                         
-                        // Stats Tab
                         document.getElementById('pubStatDraws').innerText = d;
                         document.getElementById('pubStatLosses').innerText = l;
                         document.getElementById('pubStatGA').innerText = ga;
                         
-                        // Default open info tab
-                        switchPubTab('pubInfo', document.querySelector('.pub-tab.active') || document.querySelectorAll('.pub-tab')[0]);
+                        renderPubFormTab(matches);
+                        switchPubTab('pubInfo', document.querySelectorAll('.pub-tab')[0]);
                         document.getElementById('publicProfileModal').classList.add('active');
                     });
                 }
@@ -968,7 +1090,7 @@
         }
         function updatePlayerPot(tId, pId, potVal) { db.collection("tournaments").doc(tId).collection("players").doc(pId).update({ pot: potVal }); }
 
-        /* --- DRAW CEREMONY (Unchanged logic, just keeping it intact) --- */
+        /* --- DRAW CEREMONY --- */
         let pendingDrawFixtures = {}; let drawQueue = []; let currentDrawIndex = 0; let pendingDrawTid = null;
         async function generateFixturesAnimated(docId, format) {
             try {
@@ -977,51 +1099,99 @@
                 let players = []; playersSnap.forEach(d => players.push(d.data()));
                 if(players.length < 2) return alert("Minimum 2 players required.");
                 
-                let pot1 = players.filter(p => p.pot === 'Pot 1').sort(() => Math.random() - 0.5); let pot2 = players.filter(p => p.pot === 'Pot 2').sort(() => Math.random() - 0.5); let pot3 = players.filter(p => p.pot === 'Pot 3').sort(() => Math.random() - 0.5); let unassigned = players.filter(p => p.pot === 'Unassigned' || !p.pot).sort(() => Math.random() - 0.5);
+                let pot1 = players.filter(p => p.pot === 'Pot 1').sort(() => Math.random() - 0.5); 
+                let pot2 = players.filter(p => p.pot === 'Pot 2').sort(() => Math.random() - 0.5); 
+                let pot3 = players.filter(p => p.pot === 'Pot 3').sort(() => Math.random() - 0.5); 
+                let unassigned = players.filter(p => p.pot === 'Unassigned' || !p.pot).sort(() => Math.random() - 0.5);
+                
                 let mixedPlayers = [];
-                while(pot1.length || pot2.length || pot3.length || unassigned.length) { if(pot1.length) mixedPlayers.push(pot1.pop()); if(pot2.length) mixedPlayers.push(pot2.pop()); if(pot3.length) mixedPlayers.push(pot3.pop()); if(unassigned.length) mixedPlayers.push(unassigned.pop()); }
+                while(pot1.length || pot2.length || pot3.length || unassigned.length) { 
+                    if(pot1.length) mixedPlayers.push(pot1.pop()); 
+                    if(pot2.length) mixedPlayers.push(pot2.pop()); 
+                    if(pot3.length) mixedPlayers.push(pot3.pop()); 
+                    if(unassigned.length) mixedPlayers.push(unassigned.pop()); 
+                }
 
                 pendingDrawFixtures = {}; drawQueue = []; pendingDrawTid = docId; currentDrawIndex = 0;
 
                 if (format === "Group Stage") {
-                    const totalGroups = parseInt(tInfo.numGroups) || Math.max(1, Math.ceil(mixedPlayers.length / 4)); const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
-                    let groups = {}; for (let i = 0; i < totalGroups; i++) groups[`Group ${groupNames[i]}`] = [];
+                    const totalGroups = parseInt(tInfo.numGroups) || Math.max(1, Math.ceil(mixedPlayers.length / 4)); 
+                    const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
+                    let groups = {}; 
+                    for (let i = 0; i < totalGroups; i++) groups[`Group ${groupNames[i]}`] = [];
                     mixedPlayers.forEach((p, index) => groups[`Group ${groupNames[index % totalGroups]}`].push(p));
-                    pendingDrawFixtures['standings'] = groups; let matchId = 1;
+                    pendingDrawFixtures['standings'] = groups; 
+                    let matchId = 1;
                     Object.keys(groups).forEach(gName => {
                         let gPlayers = groups[gName]; let gMatches = [];
-                        for(let i=0; i<gPlayers.length; i++) { for(let j=i+1; j<gPlayers.length; j++) { let m = { match: matchId++, player1: gPlayers[i], player2: gPlayers[j], group: gName }; gMatches.push(m); drawQueue.push(m); } }
+                        for(let i=0; i<gPlayers.length; i++) { 
+                            for(let j=i+1; j<gPlayers.length; j++) { 
+                                let m = { match: matchId++, player1: gPlayers[i], player2: gPlayers[j], group: gName }; 
+                                gMatches.push(m); drawQueue.push(m); 
+                            } 
+                        }
                         pendingDrawFixtures[gName] = gMatches;
                     });
                 } else {
-                    const totalPlayers = mixedPlayers.length; const nextPowerOf2 = Math.pow(2, Math.ceil(Math.log2(totalPlayers))); const byes = nextPowerOf2 - totalPlayers;
+                    const totalPlayers = mixedPlayers.length; 
+                    const nextPowerOf2 = Math.pow(2, Math.ceil(Math.log2(totalPlayers))); 
+                    const byes = nextPowerOf2 - totalPlayers;
                     let round1 = []; let playerIndex = 0;
                     for(let i = 0; i < nextPowerOf2 / 2; i++) {
-                        let p1 = mixedPlayers[playerIndex++]; let p2 = (i < byes) ? { name: "BYE", uid: "bye", avatar:"https://cdn-icons-png.flaticon.com/512/149/149071.png" } : mixedPlayers[playerIndex++];
-                        let m = { match: i + 1, player1: p1, player2: p2, round: 'Round 1' }; round1.push(m); drawQueue.push(m);
+                        let p1 = mixedPlayers[playerIndex++]; 
+                        let p2 = (i < byes) ? { name: "BYE", uid: "bye", avatar:"https://cdn-icons-png.flaticon.com/512/149/149071.png" } : mixedPlayers[playerIndex++];
+                        let m = { match: i + 1, player1: p1, player2: p2, round: 'Round 1' }; 
+                        round1.push(m); drawQueue.push(m);
                     }
                     pendingDrawFixtures[`Round 1`] = round1;
                     let currentMatches = nextPowerOf2 / 2; let roundNum = 2;
                     while(currentMatches > 1) {
-                        currentMatches /= 2; let roundName = currentMatches === 1 ? "Final" : currentMatches === 2 ? "Semi-Final" : currentMatches === 4 ? "Quarter-Final" : `Round ${roundNum}`;
-                        let matches = []; for(let i = 0; i < currentMatches; i++) matches.push({ match: i + 1, player1: { name: "TBD", uid:"tbd" }, player2: { name: "TBD", uid:"tbd" } });
+                        currentMatches /= 2; 
+                        let roundName = currentMatches === 1 ? "Final" : currentMatches === 2 ? "Semi-Final" : currentMatches === 4 ? "Quarter-Final" : `Round ${roundNum}`;
+                        let matches = []; 
+                        for(let i = 0; i < currentMatches; i++) matches.push({ match: i + 1, player1: { name: "TBD", uid:"tbd" }, player2: { name: "TBD", uid:"tbd" } });
                         pendingDrawFixtures[roundName] = matches; roundNum++;
                     }
                 }
-                document.getElementById('drawOverlay').classList.add('active'); document.getElementById('drawNextBtn').style.display = 'block'; document.getElementById('drawFinishBtn').style.display = 'none'; document.getElementById('drawArena').classList.remove('animate-draw'); document.getElementById('drawStatusTxt').innerText = "Draw Ready! Click Next."; document.getElementById('drawName1').innerText = "?"; document.getElementById('drawImg1').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; document.getElementById('drawName2').innerText = "?"; document.getElementById('drawImg2').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                document.getElementById('drawOverlay').classList.add('active'); 
+                document.getElementById('drawNextBtn').style.display = 'block'; 
+                document.getElementById('drawFinishBtn').style.display = 'none'; 
+                document.getElementById('drawArena').classList.remove('animate-draw'); 
+                document.getElementById('drawStatusTxt').innerText = "Draw Ready! Click Next."; 
+                document.getElementById('drawName1').innerText = "?"; document.getElementById('drawImg1').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
+                document.getElementById('drawName2').innerText = "?"; document.getElementById('drawImg2').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
             } catch(e) { alert("Error: " + e.message); }
         }
         function animateNextDraw() {
-            if(currentDrawIndex >= drawQueue.length) { document.getElementById('drawStatusTxt').innerText = "All Matches Drawn!"; document.getElementById('drawNextBtn').style.display = 'none'; document.getElementById('drawFinishBtn').style.display = 'block'; return; }
+            if(currentDrawIndex >= drawQueue.length) { 
+                document.getElementById('drawStatusTxt').innerText = "All Matches Drawn!"; 
+                document.getElementById('drawNextBtn').style.display = 'none'; 
+                document.getElementById('drawFinishBtn').style.display = 'block'; 
+                return; 
+            }
             const match = drawQueue[currentDrawIndex];
-            document.getElementById('drawArena').classList.remove('animate-draw'); void document.getElementById('drawArena').offsetWidth;
-            document.getElementById('drawStatusTxt').innerText = match.group ? `Drawing for ${match.group}` : `Drawing for ${match.round}`; document.getElementById('drawName1').innerText = match.player1.name; document.getElementById('drawImg1').src = match.player1.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; document.getElementById('drawName2').innerText = match.player2.name; document.getElementById('drawImg2').src = match.player2.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; document.getElementById('drawArena').classList.add('animate-draw'); currentDrawIndex++;
+            document.getElementById('drawArena').classList.remove('animate-draw'); 
+            void document.getElementById('drawArena').offsetWidth;
+            document.getElementById('drawStatusTxt').innerText = match.group ? `Drawing for ${match.group}` : `Drawing for ${match.round}`; 
+            document.getElementById('drawName1').innerText = match.player1.name; 
+            document.getElementById('drawImg1').src = match.player1.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
+            document.getElementById('drawName2').innerText = match.player2.name; 
+            document.getElementById('drawImg2').src = match.player2.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
+            document.getElementById('drawArena').classList.add('animate-draw'); 
+            currentDrawIndex++;
         }
-        function finishDraw() { db.collection("tournaments").doc(pendingDrawTid).update({ status: 'Live', fixtures: pendingDrawFixtures }).then(() => { document.getElementById('drawOverlay').classList.remove('active'); alert("Fixtures Generated!"); openTournamentDetails(pendingDrawTid); }); }
+        function finishDraw() { 
+            db.collection("tournaments").doc(pendingDrawTid).update({ status: 'Live', fixtures: pendingDrawFixtures }).then(() => { 
+                document.getElementById('drawOverlay').classList.remove('active'); 
+                alert("Fixtures Generated!"); 
+                openTournamentDetails(pendingDrawTid); 
+            }); 
+        }
 
-        /* --- TOURNAMENT DETAILS (NOW REAL-TIME & ADMIN MATCH EDIT) --- */
+        /* --- TOURNAMENT DETAILS (REAL-TIME ON SNAPSHOT) --- */
         function switchTdTab(tabId, btn) {
-            document.querySelectorAll('.td-content').forEach(el => el.classList.remove('active')); document.querySelectorAll('.td-tab').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.td-content').forEach(el => el.classList.remove('active')); 
+            document.querySelectorAll('.td-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active'); btn.classList.add('active');
         }
 
@@ -1030,7 +1200,6 @@
             currentActiveTournamentId = docId; switchTab('tournamentDetails');
             if(tdUnsubscribe) tdUnsubscribe();
             
-            // USING onSnapshot FOR REAL-TIME MATCH UPDATES
             tdUnsubscribe = db.collection("tournaments").doc(docId).onSnapshot(doc => {
                 if(!doc.exists) return;
                 const t = doc.data(); 
@@ -1083,7 +1252,6 @@
             divM.innerHTML = allMatchesHtml;
         }
 
-        // UPDATED: Now includes Admin Edit and Delete options right on the match card!
         function buildMatchBox(m, round, tId) {
             let p1Name = m.player1 ? m.player1.name : "TBD"; let p1Av = m.player1 && m.player1.avatar ? m.player1.avatar : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
             let p2Name = m.player2 ? m.player2.name : "TBD"; let p2Av = m.player2 && m.player2.avatar ? m.player2.avatar : "https://cdn-icons-png.flaticon.com/512/149/149071.png";
@@ -1109,7 +1277,7 @@
             </div>`;
         }
 
-        // ADMIN MATCH EDIT LOGIC
+        /* --- ADMIN MATCH EDIT / SYNC STATS --- */
         function adminEditScore(tId, round, matchId) {
             const p1Score = prompt("Enter Player 1 Score:"); if(p1Score === null || p1Score === "") return;
             const p2Score = prompt("Enter Player 2 Score:"); if(p2Score === null || p2Score === "") return;
@@ -1122,14 +1290,26 @@
             const tRef = db.collection("tournaments").doc(tId);
             const doc = await tRef.get();
             let fixtures = doc.data().fixtures;
+            let p1Uid = null, p2Uid = null, p1Name = "", p2Name = "", p1Av = "", p2Av = "";
+
             fixtures[round].forEach(m => {
                 if(m.match === matchId) {
-                    if(s1 !== undefined && s2 !== undefined) { m.myScore = s1; m.oppScore = s2; } 
+                    if(s1 !== undefined && s2 !== undefined) { 
+                        m.myScore = s1; m.oppScore = s2; 
+                        p1Uid = m.player1?.uid; p2Uid = m.player2?.uid;
+                        p1Name = m.player1?.name; p2Name = m.player2?.name;
+                        p1Av = m.player1?.avatar; p2Av = m.player2?.avatar;
+                    } 
                     else { delete m.myScore; delete m.oppScore; }
                 }
             });
             await tRef.update({ fixtures: fixtures });
-            // Since we use onSnapshot on the Tournament page, the UI will update instantly!
+
+            if(s1 !== undefined && s2 !== undefined && p1Uid && p2Uid && p1Uid !== 'bye' && p2Uid !== 'bye') {
+                await updatePlayerStatsDB(p1Uid, s1, s2, p2Name, p2Av);
+                await updatePlayerStatsDB(p2Uid, s2, s1, p1Name, p1Av);
+            }
+            alert("Match result updated & player stats/ranking synced!");
         }
 
         /* --- MY MATCHES & RESULT SUBMISSION --- */
@@ -1207,7 +1387,7 @@
             }).then(() => { alert("Score Submitted! Waiting for admin approval."); closeModal('submitScoreModal'); loadMyMatches(); });
         }
 
-        /* --- ADMIN APPROVAL SYSTEM & LEADERBOARD SYNC --- */
+        /* --- ADMIN APPROVAL SYSTEM & AUTOMATIC RANKING/STATS SYNC --- */
         function loadPendingResults() {
             const list = document.getElementById('adminPendingResultsList');
             db.collection("pending_results").where("status", "==", "Pending").onSnapshot(snap => {
@@ -1240,10 +1420,17 @@
                 const reqDoc = await db.collection("pending_results").doc(reqId).get();
                 const r = reqDoc.data();
                 
-                await updatePlayerStatsDB(r.submittedBy, r.myScore, r.oppScore);
-                await updatePlayerStatsDB(r.oppUid, r.oppScore, r.myScore);
+                // Fetch player details to record true names and avatars in match history
+                const p1UserDoc = await db.collection("users").doc(r.submittedBy).get();
+                const p2UserDoc = await db.collection("users").doc(r.oppUid).get();
+                const p1Data = p1UserDoc.exists ? p1UserDoc.data() : { name: "Player 1", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
+                const p2Data = p2UserDoc.exists ? p2UserDoc.data() : { name: "Player 2", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
 
-                // Update Fixtures Array
+                // 1. Sync stats & ranking for both players
+                await updatePlayerStatsDB(r.submittedBy, r.myScore, r.oppScore, p2Data.name, p2Data.avatar);
+                await updatePlayerStatsDB(r.oppUid, r.oppScore, r.myScore, p1Data.name, p1Data.avatar);
+
+                // 2. Update Tournament Fixtures Array
                 const tRef = db.collection("tournaments").doc(r.tournamentId);
                 const tDoc = await tRef.get();
                 if(tDoc.exists) {
@@ -1262,34 +1449,54 @@
                     if(matchFound) await tRef.update({ fixtures: fixtures });
                 }
                 await db.collection("pending_results").doc(reqId).update({ status: 'Approved' });
-                alert("Result Approved! Stats, Leaderboard & Fixtures Updated.");
+                alert("Result Approved! Player Stats, Leaderboard & Fixtures Updated.");
             } catch(e) { alert("Error: " + e.message); }
         }
 
-        async function updatePlayerStatsDB(uid, gf, ga) {
-            const statRef = db.collection("playerStats").doc(uid); const userRef = db.collection("users").doc(uid);
-            const doc = await statRef.get(); const userDoc = await userRef.get();
+        async function updatePlayerStatsDB(uid, gf, ga, oppName, oppAvatar) {
+            const statRef = db.collection("playerStats").doc(uid); 
+            const userRef = db.collection("users").doc(uid);
+            const doc = await statRef.get(); 
+            const userDoc = await userRef.get();
+            
             let d = doc.exists ? doc.data() : { wins:0, played:0, draws:0, losses:0, gf:0, ga:0, motm:0, matches:[] };
             let u = userDoc.exists ? userDoc.data() : { name: "Unknown", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
             
             d.played += 1; d.gf += gf; d.ga += ga;
-            let ptsToAdd = 0;
-            if(gf > ga) { d.wins += 1; ptsToAdd = 3; } else if(gf === ga) { d.draws += 1; ptsToAdd = 1; } else { d.losses += 1; }
-            d.matches.push({ result: gf > ga ? 'W' : (gf === ga ? 'D' : 'L'), myScore: gf, oppScore: ga, opp: 'Opponent' });
-            if(d.matches.length > 5) d.matches.shift(); 
+            let ptsToAdd = 0; let resChar = 'L';
+            if(gf > ga) { d.wins += 1; ptsToAdd = 3; resChar = 'W'; } 
+            else if(gf === ga) { d.draws += 1; ptsToAdd = 1; resChar = 'D'; } 
+            else { d.losses += 1; resChar = 'L'; }
+            
+            if(!Array.isArray(d.matches)) d.matches = [];
+            d.matches.push({ 
+                result: resChar, 
+                myScore: gf, 
+                oppScore: ga, 
+                opp: oppName || 'Opponent',
+                oppAvatar: oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png',
+                time: Date.now()
+            });
+            if(d.matches.length > 10) d.matches = d.matches.slice(-10); // Keep latest 10 matches
             await statRef.set(d);
             
             // AUTOMATIC LEADERBOARD UPDATE
-            const lbRef = db.collection("leaderboard").doc(uid); const lbDoc = await lbRef.get();
+            const lbRef = db.collection("leaderboard").doc(uid); 
+            const lbDoc = await lbRef.get();
             let lb = lbDoc.exists ? lbDoc.data() : { name: u.name, avatar: u.avatar, points: 0, played: 0, wins: 0 };
-            lb.points += ptsToAdd; lb.played += 1; if (gf > ga) lb.wins += 1;
-            lb.winRate = Math.round((lb.wins / lb.played) * 100); lb.name = u.name; lb.avatar = u.avatar; lb.time = firebase.firestore.FieldValue.serverTimestamp();
+            lb.points = (lb.points || 0) + ptsToAdd; 
+            lb.played = (lb.played || 0) + 1; 
+            if (gf > ga) lb.wins = (lb.wins || 0) + 1;
+            lb.winRate = Math.round(((lb.wins || 0) / lb.played) * 100); 
+            lb.name = u.name || lb.name; 
+            lb.avatar = u.avatar || lb.avatar; 
+            lb.time = firebase.firestore.FieldValue.serverTimestamp();
             await lbRef.set(lb);
         }
 
         /* Leaderboard Setup */
         db.collection("leaderboard").orderBy("points", "desc").onSnapshot(snapshot => {
-            fullLeaderboardData = []; // Update local array for Profile Ranks
+            fullLeaderboardData = [];
             snapshot.forEach(doc => { let d = doc.data(); d.uid = doc.id; fullLeaderboardData.push(d); });
             
             const renderLB = (id, lim) => {
