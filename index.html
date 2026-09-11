@@ -46,8 +46,8 @@
         ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
 
         /* Admin Action Visibility Control */
-        body:not(.is-main-admin) .admin-controls { display: none !important; }
-        body.is-main-admin .admin-controls { display: flex !important; }
+        body:not(.is-admin) .admin-controls { display: none !important; }
+        body.is-admin .admin-controls { display: flex !important; }
         body:not(.is-main-admin) .main-admin-only { display: none !important; }
 
         /* --- PRELOADER --- */
@@ -62,86 +62,46 @@
         .preloader-title span { background: linear-gradient(90deg, var(--logo-blue), #7dd3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .preloader-subtitle { font-size: 9px; letter-spacing: 4.5px; color: #6f7fac; margin-top: 8px; text-transform: uppercase; font-weight: 600; }
         .preloader-loading-txt { font-size: 9.5px; letter-spacing: 2.5px; color: var(--text-dim); margin-top: 26px; text-transform: uppercase; font-weight: 600; }
-
+        .preloader-loading-txt::after { content: ''; display: inline-block; width: 1px; }
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
         @keyframes preloaderPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.07); opacity: 0.85; } }
 
-        /* --- HEADER & MENU ALIGNMENT --- */
+        /* --- HEADER --- */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 15px; background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease; }
         .header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--signature); opacity: 0.55; }
         .header.scrolled { background: rgba(6, 9, 20, 0.92); box-shadow: 0 12px 30px -18px rgba(0,0,0,0.85); }
         .header-brand { display: flex; align-items: center; gap: 9px; }
         .header-mark { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.35), rgba(56,189,248,0.05)); border: 1px solid rgba(56,189,248,0.35); color: var(--logo-blue); font-size: 13px; box-shadow: 0 0 14px rgba(56,189,248,0.35); }
         .header h2 { font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 2.5px; }
-        .header h2 span { color: var(--logo-blue); }
-        
+        .header span { color: var(--logo-blue); }
         .header-actions { display: flex; align-items: center; gap: 8px; }
-        .btn-icon { background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border); height: 36px; border-radius: 8px; cursor: pointer; font-size: 15px; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
+        .btn-icon { background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border); height: 36px; border-radius: 12px; cursor: pointer; font-size: 15px; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
         .btn-icon.profile { width: 36px; border-radius: 50%; }
         .btn-icon.menu { width: 40px; }
         .btn-icon:hover { background: rgba(56,189,248,0.12); color: var(--logo-blue); border-color: rgba(56,189,248,0.4); }
 
-        /* --- SLIDING SIDE MENU (LIGHT THEME LIKE PIC) --- */
-        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(3px); }
+        /* --- SLIDING SIDE MENU (DARK THEME) --- */
+        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(5px); }
         .side-menu-overlay.open { display: block; opacity: 1; }
-        .side-menu { position: fixed; top: 0; right: -300px; width: 270px; height: 100%; background: #fcf9f2; z-index: 99999; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px 20px; box-shadow: -5px 0 25px rgba(0,0,0,0.5); overflow-y: auto; color: #222; display: flex; flex-direction: column; }
+        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: var(--bg-dark); z-index: 99999; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px 20px; box-shadow: -5px 0 25px rgba(0,0,0,0.8); overflow-y: auto; display: flex; flex-direction: column; border-left: 1px solid var(--glass-border); }
         .side-menu.open { right: 0; }
-        
         .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .sm-header h3 { font-family: var(--font-body); font-size: 15px; font-weight: 700; letter-spacing: 1px; color: #111; }
-        .sm-close { background: none; border: none; font-size: 22px; cursor: pointer; color: #555; transition: 0.2s; }
+        .sm-header h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: white; letter-spacing: 1px; }
+        .sm-close { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); border-radius: 8px; width: 32px; height: 32px; font-size: 16px; cursor: pointer; color: var(--text-muted); transition: 0.2s; display:flex; align-items:center; justify-content:center; }
         .sm-close:active { transform: scale(0.9); }
-        
-        .sm-nav-group { font-size: 9px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px 5px; }
-        .sm-nav { display: flex; flex-direction: column; gap: 6px; }
-        .sm-item { display: flex; align-items: center; gap: 14px; padding: 12px 15px; font-size: 13px; font-weight: 600; color: #333; text-decoration: none; border-radius: 12px; cursor: pointer; transition: 0.2s; }
-        .sm-item i { font-size: 16px; width: 20px; text-align: center; color: #555; }
+        .sm-nav-group { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px 5px; }
+        .sm-item { display: flex; align-items: center; gap: 14px; padding: 12px 15px; font-size: 13px; font-weight: 600; color: #cbd5e1; text-decoration: none; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .sm-item i { font-size: 16px; width: 20px; text-align: center; color: var(--text-muted); }
         .sm-item:active { transform: scale(0.98); }
-        
-        .sm-item.highlight { background: #fdf3e1; color: #a67c00; border: 1px solid #f6e3b5; }
-        .sm-item.highlight i { color: #a67c00; }
+        .sm-item.highlight { background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.2); }
+        .sm-item.highlight i { color: var(--accent); }
 
-        /* General Pages */
         .page-section { display: none; padding: 16px 15px 0; animation: fadeIn 0.35s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .section-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; padding-left: 11px; position: relative; }
         .section-title::before { content: ''; position: absolute; left: 0; top: 2px; bottom: 2px; width: 4px; border-radius: 3px; background: var(--signature); }
-
-        /* --- MY MATCHES TAB (LIGHT THEME MATCHING PIC 3) --- */
-        #myMatchesTab { background: #f8f6f0; min-height: 100vh; margin: -16px -15px 0; padding: 25px 15px 100px; color: #111; }
-        .mm-head-wrap { margin-bottom: 20px; }
-        .mm-subtitle { font-size: 10px; font-weight: 700; color: #a67c00; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
-        .mm-subtitle::before { content:''; width: 12px; height: 2px; background: #a67c00; }
-        .mm-main-title { font-family: var(--font-display); font-size: 26px; font-weight: 800; color: #222; line-height: 1.1; margin-bottom: 6px; }
-        .mm-main-title span { color: #8a1538; /* Red highlight */ }
-        .mm-desc-row { display: flex; justify-content: space-between; align-items: flex-end; }
-        .mm-desc { font-size: 10px; color: #666; font-style: italic; max-width: 65%; }
-        .mm-badge-count { background: #fdf3e1; color: #a67c00; border: 1px solid #f6e3b5; font-size: 10px; font-weight: 800; padding: 5px 12px; border-radius: 15px; display: flex; align-items: center; gap: 5px; }
-        .mm-badge-count .dot { width: 6px; height: 6px; background: #a67c00; border-radius: 50%; }
-
-        .mm-card { background: #ffffff; border-radius: 16px; padding: 15px; margin-bottom: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.04); border: 1px solid #efeae0; position: relative; overflow: hidden; }
-        .mm-card-next { border: 1px solid #f6e3b5; }
-        .mm-card-next::before { content: 'NEXT UP'; position: absolute; top: 0; left: 15px; background: #111; color: #ffd700; font-size: 8px; font-weight: 800; padding: 3px 10px; border-radius: 0 0 8px 8px; letter-spacing: 1px; }
-        
-        .mm-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; margin-top: 8px; }
-        .mm-tourney-tag { font-size: 9px; font-weight: 800; color: #206b3f; background: #e6f4ea; padding: 4px 8px; border-radius: 6px; border: 1px solid #cce8d6; text-transform: uppercase; }
-        .mm-date { font-size: 10px; font-weight: 700; color: #666; display: flex; align-items: center; gap: 4px; }
-        
-        .mm-versus-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; padding: 0 5px; }
-        .mm-p-box { display: flex; align-items: center; gap: 10px; width: 40%; }
-        .mm-p-box.right { flex-direction: row-reverse; text-align: right; }
-        .mm-p-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #fff; }
-        .mm-p-name { font-size: 13px; font-weight: 800; color: #111; line-height: 1.2; word-wrap: break-word; }
-        
-        .mm-vs-badge { background: #111; color: #fff; font-size: 10px; font-weight: 800; padding: 5px 8px; border-radius: 8px; }
-        
-        .mm-card-bot { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #efeae0; padding-top: 12px; }
-        .mm-submit-btn { background: #111; color: #ffd700; border: none; padding: 9px 18px; border-radius: 10px; font-size: 10px; font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
-        .mm-submit-btn:active { transform: scale(0.95); }
-        .mm-status { font-size: 10px; font-weight: 700; color: #d97706; background: #fef3c7; padding: 5px 12px; border-radius: 12px; display: flex; align-items: center; gap: 5px; }
-        .mm-status .dot { width: 5px; height: 5px; background: #d97706; border-radius: 50%; }
 
         /* --- HERO SLIDER --- */
         .hero-banner-slider { position: relative; width: 100%; height: 190px; border-radius: 18px; overflow: hidden; margin-bottom: 28px; border: 1px solid var(--card-border); box-shadow: 0 18px 40px -12px rgba(0,0,0,0.65); }
@@ -152,43 +112,62 @@
         .hero-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; line-height: 1.18; margin-bottom: 7px; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
         .hero-desc { font-size: 9.5px; color: #cbd5e1; margin-bottom: 13px; line-height: 1.5; }
         .hero-btn { border: none; padding: 9px 14px; border-radius: 9px; font-size: 10.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; width: fit-content; letter-spacing: 0.4px; transition: 0.2s; }
+        .hero-btn:active { transform: scale(0.96); }
         .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 65%; object-fit: cover; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%); }
+        .hero-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
+        .hero-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
+        .hero-dots .dot.active { width: 18px; border-radius: 4px; background: var(--logo-blue); box-shadow: 0 0 8px rgba(56,189,248,0.7); }
 
         .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
         .sec-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding-left: 11px; position: relative; }
         .sec-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
-        
-        /* TOURNAMENT CARDS */
+        .sec-link { font-size: 11px; color: var(--logo-blue); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .sec-badge { background: rgba(239, 68, 68, 0.12); color: #f87171; font-size: 10px; padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.35); font-weight: 700; letter-spacing: 0.3px; }
+        .sec-badge.live { background: rgba(255, 215, 0, 0.1); color: var(--gold); border-color: rgba(255, 215, 0, 0.3); display: inline-flex; align-items: center; gap: 6px; }
+        .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 0 rgba(255,215,0,0.6); animation: livepulse 1.6s infinite; }
+        @keyframes livepulse { 0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.55); } 70% { box-shadow: 0 0 0 6px rgba(255,215,0,0); } 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); } }
+
+        /* --- TOURNAMENT SLIDER --- */
         .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 6px; scrollbar-width: none; }
         .t-slider::-webkit-scrollbar { display: none; }
         .t-card { min-width: 90%; scroll-snap-align: center; border-radius: 18px; overflow: hidden; box-shadow: 0 14px 30px -14px rgba(0,0,0,0.7); transition: transform 0.2s ease; border: 1px solid transparent; background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box, linear-gradient(135deg, rgba(56,189,248,0.35), rgba(255,215,0,0.12) 55%, rgba(163,230,53,0.25)) border-box; }
+        .t-card:active { transform: scale(0.985); }
         .t-card-img { height: 148px; background-size: cover; background-position: center; position: relative; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
         .t-card-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,6,15,0.95), rgba(3,6,15,0.15) 60%); }
-        .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 4px 9px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 5px; }
+        .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 4px 9px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 5px; letter-spacing: 0.3px; }
         .t-status::before { content:''; width: 6px; height: 6px; background: #000; border-radius: 50%; }
         .t-card-titles { position: relative; z-index: 2; }
-        .t-prize { font-family: var(--font-display); color: var(--gold); font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+        .t-prize { font-family: var(--font-display); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 3px; }
         .t-name { font-family: var(--font-display); font-size: 16px; font-weight: 800; text-transform: uppercase; line-height: 1.25; }
         .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; background: var(--card-bg-soft); border-top: 1px solid var(--card-border); }
         .t-stat { text-align: center; }
-        .t-stat span { display: block; font-size: 8.5px; color: var(--text-dim); font-weight: 700; margin-bottom: 3px; text-transform: uppercase; }
+        .t-stat span { display: block; font-size: 8.5px; color: var(--text-dim); font-weight: 700; margin-bottom: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
         .t-stat strong { font-family: var(--font-display); font-size: 13px; font-weight: 700; }
-        .t-reg-btn { background: linear-gradient(135deg, #f97316, #ef4444); color: white; border: none; padding: 8px 13px; border-radius: 9px; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px -6px rgba(239,68,68,0.55); }
+        .t-reg-btn { background: linear-gradient(135deg, #f97316, #ef4444); color: white; border: none; padding: 8px 13px; border-radius: 9px; font-size: 11px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 18px -6px rgba(239,68,68,0.55); transition: 0.2s; }
+        .t-reg-btn:active { transform: scale(0.95); }
 
-        /* Inputs & Cards */
-        .card { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 26px -18px rgba(0,0,0,0.8); }
-        input, select { width: 100%; margin: 8px 0; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--card-border); background: #161d33; color: white; font-size: 13px; font-weight: 500; }
-        input:focus, select:focus { outline: none; border-color: var(--logo-blue); box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
-        .submit-btn { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #04210a; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 800; margin-top: 10px; transition: 0.25s; box-shadow: 0 10px 22px -10px rgba(163,230,53,0.5); }
-        .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; text-align: center; }
+        /* --- MY MATCHES (DARK THEME) --- */
+        .mm-card { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 26px -18px rgba(0,0,0,0.8); }
+        .mm-top { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 15px; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; align-items: center; }
+        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(163,230,53,0.1); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(163,230,53,0.2); }
+        .mm-vs-area { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .mm-player { display: flex; align-items: center; gap: 10px; width: 40%; }
+        .mm-player.right { flex-direction: row-reverse; text-align: right; }
+        .mm-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,255,255,0.1); }
+        .mm-name { font-size: 13px; font-weight: 700; color: white; line-height: 1.2; word-break: break-word; }
+        .mm-vs-badge { font-family: var(--font-display); font-size: 11px; color: var(--gold); font-weight: 800; background: rgba(255,215,0,0.1); padding: 5px 8px; border-radius: 8px; }
+        .mm-bot { display: flex; justify-content: space-between; align-items: center; }
+        .mm-submit-btn { background: linear-gradient(135deg, var(--gold), var(--gold-deep)); color: #000; border: none; padding: 8px 16px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px -4px rgba(255,215,0,0.5); letter-spacing: 0.5px; }
+        .mm-submit-btn:active { transform: scale(0.95); }
+        .mm-status { font-size: 10px; color: #f87171; background: rgba(239,68,68,0.1); padding: 5px 10px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(239,68,68,0.2); }
 
-        /* LEADERBOARD */
-        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding: 4px 8px 12px 10px; border-left: 3px solid transparent; border-radius: 6px; }
+        /* --- LEADERBOARD & OTHERS --- */
+        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding: 4px 8px 12px 10px; border-left: 3px solid transparent; border-radius: 6px; transition: background 0.2s; }
         .leaderboard-row:nth-child(1) { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.06), transparent 60%); }
         .leaderboard-row:nth-child(2) { border-left-color: #cbd5e1; background: linear-gradient(90deg, rgba(203,213,225,0.05), transparent 60%); }
         .leaderboard-row:nth-child(3) { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205,127,50,0.06), transparent 60%); }
         .rank { color: var(--gold); font-family: var(--font-display); font-weight: 700; width: 26px; font-size: 15px; text-align: center;}
-        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; }
+        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px -3px rgba(255,215,0,0.55);}
         .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 13px solid transparent; border-right: 13px solid transparent; border-top: 5px solid var(--gold-deep);}
         .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 11px; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,215,0,0.5); }
         .player-info { flex: 1; }
@@ -196,21 +175,129 @@
         .points { font-size: 11px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 5px; font-family: var(--font-display); }
         .win-rate-box { text-align: right; }
         .win-rate-val { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--accent); }
-        .win-rate-lbl { font-size: 9.5px; color: var(--text-dim); text-transform: uppercase; }
+        .win-rate-lbl { font-size: 9.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; }
 
-        /* Stats & Graph grids (simplified for brevity) */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 14px; }
-        .stat-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 6px 10px; text-align: center; }
-        .stat-box-val { font-family: var(--font-display); font-size: 20px; font-weight: 800; display: block; line-height: 1.1; margin-bottom: 4px; color:white; }
-        .stat-box-lbl { font-size: 8.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
+        .card { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 26px -18px rgba(0,0,0,0.8); }
+        input, select { width: 100%; margin: 8px 0; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--card-border); background: #161d33; color: white; font-size: 13px; font-weight: 500; transition: border-color 0.2s; }
+        input:focus, select:focus { outline: none; border-color: var(--logo-blue); box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+        .submit-btn { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #04210a; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 800; margin-top: 10px; transition: 0.25s; letter-spacing: 0.3px; box-shadow: 0 10px 22px -10px rgba(163,230,53,0.5); }
+        .submit-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+        .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; text-align: center; }
+
+        .prof-top-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; padding-left: 11px; position: relative; }
+        .prof-top-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
+        .prof-header { display: flex; align-items: center; gap: 14px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; }
+        .prof-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--logo-blue); }
+        .prof-name { font-size: 16px; font-weight: 700; }
+        .prof-country { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+        /* --- ULTRA PREMIUM FOOTER --- */
+        .bmg-footer { position: relative; background: radial-gradient(120% 140% at 50% -10%, #0d1730 0%, #070b19 55%, #05070f 100%); border-radius: 34px 34px 0 0; padding: 46px 22px 34px; text-align: center; margin-top: 42px; overflow: hidden; box-shadow: 0 -18px 45px -20px rgba(0,0,0,0.75); }
+        .bmg-footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--signature); border-radius: 34px 34px 0 0; }
+        .footer-glow { position: absolute; top: -60px; left: 50%; transform: translateX(-50%); width: 280px; height: 280px; border-radius: 50%; pointer-events: none; background: radial-gradient(circle, rgba(56,189,248,0.16), transparent 65%); }
+        .footer-inner { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+        .footer-logo-badge { width: 84px; height: 84px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 35% 30%, rgba(56,189,248,0.18), rgba(5,8,20,0.4)); border: 1px solid rgba(56,189,248,0.35); box-shadow: 0 0 0 6px rgba(56,189,248,0.05), 0 0 28px rgba(56,189,248,0.3); margin-bottom: 16px; }
+        .footer-logo { width: 52px; height: 52px; object-fit: contain; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5)); }
+        .footer-title { font-family: var(--font-display); font-size: 21px; letter-spacing: 4px; font-weight: 800; color: #ffffff; text-transform: uppercase; margin-bottom: 6px; }
+        .footer-title span { background: linear-gradient(90deg, var(--logo-blue), #7dd3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .footer-subtitle { font-size: 9px; letter-spacing: 4.5px; color: #8b9bc4; margin-bottom: 16px; font-weight: 600; text-transform: uppercase; }
+        .footer-tagline-pill { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; font-weight: 700; color: var(--gold); border: 1px solid rgba(255,215,0,0.3); background: rgba(255,215,0,0.06); padding: 7px 16px; border-radius: 20px; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 30px; }
+        .footer-nav-row { display: flex; justify-content: space-between; align-items: flex-start; width: 100%; max-width: 340px; margin-bottom: 8px; gap: 2px; }
+        .f-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; color: #cbd5e1; font-size: 9px; cursor: pointer; transition: 0.25s; font-weight: 600; letter-spacing: 0.2px; }
+        .f-nav-item .f-icon-circle { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); color: #ffffff; font-size: 12.5px; transition: 0.25s; }
+        .f-nav-item:hover .f-icon-circle { border-color: rgba(56,189,248,0.5); background: rgba(56,189,248,0.12); color: var(--logo-blue); box-shadow: 0 0 14px rgba(56,189,248,0.35); }
+        .f-nav-item:hover { color: var(--logo-blue); }
+        .footer-divider { border: none; border-top: 1px solid rgba(255,255,255,0.06); margin: 28px 0 22px; width: 100%; }
+        .footer-group-label { font-size: 9px; letter-spacing: 2.5px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 14px; }
+        .footer-socials { display: flex; justify-content: center; gap: 13px; margin-bottom: 26px; }
+        .social-circle { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.03); color: #e2e8f0; font-size: 16px; display: flex; justify-content: center; align-items: center; text-decoration: none; transition: 0.25s; border: 1px solid var(--card-border); }
+        .social-circle:hover { background: var(--logo-blue); color: #04101c; border-color: var(--logo-blue); transform: translateY(-3px); box-shadow: 0 8px 18px -6px rgba(56,189,248,0.55); }
+        .footer-contact { font-size: 11.5px; color: #cbd5e1; display: inline-flex; justify-content: center; align-items: center; gap: 8px; font-weight: 500; padding: 9px 18px; border-radius: 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); }
+        .footer-bottom-bar { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 22px; font-size: 9.5px; color: rgba(255,255,255,0.32); letter-spacing: 0.4px; }
+        .footer-bottom-bar .dot-sep { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.25); }
 
         /* BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; justify-content: space-around; padding: 10px 0 12px; z-index: 1000; border-radius: 20px 20px 0 0; border-top: 1px solid var(--glass-border); box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
+        .bottom-nav::before { content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 2px; background: var(--signature); border-radius: 2px; opacity: 0.6; }
         .nav-item { color: var(--text-muted); text-align: center; font-size: 10.5px; cursor: pointer; font-weight: 600; padding: 6px 12px; border-radius: 14px; transition: 0.25s; }
         .nav-item i { font-size: 17px; margin-bottom: 5px; display:block; }
         .nav-admin { display: none; color: #f87171; }
         .nav-admin.show { display: block; }
         .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); }
+
+        /* ===== PLAYER STATS SECTION ===== */
+        .stats-section-title { font-family: var(--font-display); font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 22px 0 14px; padding-left: 11px; position: relative; color: var(--text-main); }
+        .stats-section-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
+
+        /* --- Stats Grid --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 14px; }
+        .stat-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 6px 10px; text-align: center; position: relative; overflow: hidden; transition: transform 0.2s; }
+        .stat-box:active { transform: scale(0.96); }
+        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+        .stat-box.win::before   { background: linear-gradient(90deg, #22c55e, #16a34a); }
+        .stat-box.played::before{ background: linear-gradient(90deg, var(--logo-blue), #0284c7); }
+        .stat-box.draw::before  { background: linear-gradient(90deg, #94a3b8, #64748b); }
+        .stat-box.loss::before  { background: linear-gradient(90deg, #ef4444, #b91c1c); }
+        .stat-box.wr::before    { background: linear-gradient(90deg, var(--accent), var(--accent-deep)); }
+        .stat-box.gf::before    { background: linear-gradient(90deg, var(--gold), var(--gold-deep)); }
+        .stat-box.ga::before    { background: linear-gradient(90deg, #f97316, #ea580c); }
+        .stat-box.motm::before  { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
+        .stat-box-val { font-family: var(--font-display); font-size: 20px; font-weight: 800; display: block; line-height: 1.1; margin-bottom: 4px; }
+        .stat-box.win   .stat-box-val { color: #4ade80; }
+        .stat-box.played .stat-box-val { color: var(--logo-blue); }
+        .stat-box.draw  .stat-box-val { color: #94a3b8; }
+        .stat-box.loss  .stat-box-val { color: #f87171; }
+        .stat-box.wr    .stat-box-val { color: var(--accent); }
+        .stat-box.gf    .stat-box-val { color: var(--gold); }
+        .stat-box.ga    .stat-box-val { color: #fb923c; }
+        .stat-box.motm  .stat-box-val { color: #c4b5fd; }
+        .stat-box-lbl { font-size: 8.5px; color: var(--text-dim); font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
+
+        /* --- Form Strip --- */
+        .form-strip-wrap { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 14px 16px; margin-bottom: 14px; }
+        .form-strip-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .form-strip-label { font-family: var(--font-display); font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+        .form-strip-recent { font-size: 10px; color: var(--text-dim); font-weight: 600; }
+        .form-matches { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+        .form-matches::-webkit-scrollbar { display: none; }
+        .form-match-card { min-width: 62px; border-radius: 10px; padding: 8px 6px 7px; text-align: center; flex-shrink: 0; border: 1px solid transparent; position: relative; overflow: hidden; }
+        .form-match-card.win-card  { background: rgba(34,197,94,0.10); border-color: rgba(34,197,94,0.35); }
+        .form-match-card.loss-card { background: rgba(239,68,68,0.10);  border-color: rgba(239,68,68,0.35); }
+        .form-match-card.draw-card { background: rgba(148,163,184,0.09); border-color: rgba(148,163,184,0.28); }
+        .form-match-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 10px 10px 0 0; }
+        .form-match-card.win-card::before  { background: #22c55e; }
+        .form-match-card.loss-card::before { background: #ef4444; }
+        .form-match-card.draw-card::before { background: #94a3b8; }
+        .form-avatars { display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 5px; }
+        .form-av { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; border: 1.5px solid rgba(255,255,255,0.12); }
+        .form-vs { font-size: 7.5px; color: var(--text-dim); font-weight: 700; }
+        .form-score { font-family: var(--font-display); font-size: 14px; font-weight: 800; letter-spacing: 0.5px; }
+        .form-match-card.win-card  .form-score { color: #4ade80; }
+        .form-match-card.loss-card .form-score { color: #f87171; }
+        .form-match-card.draw-card .form-score { color: #94a3b8; }
+        .form-result-tag { display: inline-block; font-size: 8px; font-weight: 800; letter-spacing: 0.8px; padding: 2px 6px; border-radius: 5px; margin-top: 4px; text-transform: uppercase; }
+        .win-card  .form-result-tag { background: rgba(34,197,94,0.18); color: #4ade80; }
+        .loss-card .form-result-tag { background: rgba(239,68,68,0.18);  color: #f87171; }
+        .draw-card .form-result-tag { background: rgba(148,163,184,0.16); color: #94a3b8; }
+        .form-opp-name { font-size: 8px; color: var(--text-muted); margin-top: 3px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 58px; }
+
+        /* --- Performance Graph --- */
+        .graph-wrap { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; overflow: hidden; }
+        .graph-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .graph-title { font-family: var(--font-display); font-size: 11px; font-weight: 700; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+        .graph-legend { display: flex; gap: 10px; }
+        .legend-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 3px; }
+        .legend-item { font-size: 9px; color: var(--text-dim); font-weight: 600; display: flex; align-items: center; }
+        .perf-chart { width: 100%; height: 100px; position: relative; }
+        .perf-bars { display: flex; align-items: flex-end; gap: 5px; height: 90px; padding-bottom: 22px; position: relative; }
+        .perf-bars::before { content:''; position: absolute; top: 0; left: 0; right: 0; bottom: 22px; background: repeating-linear-gradient(180deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 25%); pointer-events: none; }
+        .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0; position: relative; }
+        .bar-inner { display: flex; gap: 2px; align-items: flex-end; width: 100%; justify-content: center; }
+        .bar { width: 9px; border-radius: 4px 4px 0 0; transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1); position: relative; }
+        .bar.gf-bar  { background: linear-gradient(180deg, var(--gold), var(--gold-deep)); }
+        .bar.ga-bar  { background: linear-gradient(180deg, #f87171, #b91c1c); }
+        .bar-match-label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 7.5px; color: var(--text-dim); font-weight: 700; white-space: nowrap; letter-spacing: 0.3px; }
+        .bar-val { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 800; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -224,20 +311,21 @@
             </div>
         </div>
         <div class="preloader-title">BMG <span>OFFICIAL</span></div>
+        <div class="preloader-subtitle">eFootball Community</div>
         <div class="preloader-loading-txt">Loading Arena...</div>
     </div>
 
-    <!-- SIDE MENU OVERLAY -->
+    <!-- SIDE MENU OVERLAY (NEW) -->
     <div id="sideMenuOverlay" class="side-menu-overlay" onclick="closeSideMenu()"></div>
 
-    <!-- SLIDING SIDE MENU -->
+    <!-- SLIDING SIDE MENU (NEW - Matches your picture's options) -->
     <div id="sideMenu" class="side-menu">
         <div class="sm-header">
             <h3>MENU</h3>
             <button class="sm-close" onclick="closeSideMenu()"><i class="fas fa-times"></i></button>
         </div>
         
-        <div class="sm-nav">
+        <div class="sm-nav" style="margin-bottom: 10px;">
             <a class="sm-item" onclick="switchMenuTab('authPage')"><i class="far fa-user"></i> LOGIN / SIGN UP</a>
         </div>
         
@@ -246,19 +334,22 @@
             <a class="sm-item" onclick="switchMenuTab('home')"><i class="fas fa-home"></i> Home</a>
             <a class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class="fas fa-plus-circle"></i> MY MATCHES</a>
             <a class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class="fas fa-ribbon"></i> Tournaments</a>
+            <a class="sm-item" onclick="alert('Fixtures coming soon!')"><i class="far fa-calendar-alt"></i> Fixtures</a>
+            <a class="sm-item" onclick="alert('Recent matches coming soon!')"><i class="far fa-clock"></i> Recent</a>
+            <a class="sm-item" onclick="alert('Title Winners coming soon!')"><i class="fas fa-trophy"></i> Title Winners</a>
             <a class="sm-item" onclick="switchMenuTab('leaderboard')"><i class="fas fa-chart-line"></i> Rankings</a>
             <a class="sm-item" onclick="switchMenuTab('profile')"><i class="far fa-user-circle"></i> Profile</a>
         </div>
 
         <div class="sm-nav-group">Settings & Info</div>
         <div class="sm-nav" style="margin-bottom: 20px;">
-            <a class="sm-item" href="#"><i class="far fa-bell"></i> Notifications</a>
-            <a class="sm-item" href="#"><i class="far fa-comment-dots"></i> Contact Support</a>
-            <a class="sm-item" href="#"><i class="far fa-file-alt"></i> Match Rules</a>
+            <a class="sm-item" onclick="alert('Notifications coming soon!')"><i class="far fa-bell"></i> Notifications</a>
+            <a class="sm-item" onclick="alert('Contact Support coming soon!')"><i class="far fa-comment-dots"></i> Contact Support</a>
+            <a class="sm-item" onclick="alert('Match Rules coming soon!')"><i class="far fa-file-alt"></i> Match Rules</a>
         </div>
     </div>
 
-    <!-- HEADER -->
+    <!-- HEADER (UPDATED WITH 3 DOT MENU) -->
     <div class="header">
         <div class="header-brand">
             <div class="header-mark"><i class="fas fa-bolt"></i></div>
@@ -273,38 +364,41 @@
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
         <div class="card" id="loginBox" style="text-align: center; margin-top: 20px;">
-            <h2 style="color: var(--logo-blue); margin-bottom: 15px; font-weight:800; font-family: var(--font-display);">Player Login</h2>
+            <h2 style="color: var(--logo-blue); margin-bottom: 15px; font-weight:800; font-family: var(--font-display); letter-spacing: 1px;">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
             <input type="password" id="loginPassword" placeholder="Password">
-            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="loginWithEmail()">Log In</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; box-shadow: 0 10px 22px -10px rgba(56,189,248,0.55);" onclick="loginWithEmail()">Log In</button>
             <p class="link-text" onclick="toggleAuth('signup')">Don't have an account? Sign Up</p>
         </div>
 
         <div class="card" id="signupBox" style="text-align: center; margin-top: 20px; display: none;">
-            <h2 style="color: var(--gold); margin-bottom: 15px; font-weight:800; font-family: var(--font-display);">Create Account</h2>
+            <h2 style="color: var(--gold); margin-bottom: 15px; font-weight:800; font-family: var(--font-display); letter-spacing: 1px;">Create Account</h2>
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name (Must)">
             <input type="url" id="regFacebook" placeholder="Facebook Profile Link (Optional)">
-            <label style="color: var(--text-muted); font-size: 11px; text-align: left; display: block; margin: 10px 0 5px; font-weight:500;">Upload Avatar:</label>
+            <label style="color: var(--text-muted); font-size: 11px; text-align: left; display: block; margin: 10px 0 5px; font-weight:500;">Upload Avatar (Auto Compressed):</label>
             <input type="file" id="regAvatarFile" accept="image/*">
             <input type="text" id="regPhone" placeholder="WhatsApp Number (Optional)">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
-            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="signUpWithEmail()">Sign Up</button>
+            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; box-shadow: 0 10px 22px -10px rgba(255,215,0,0.5);" onclick="signUpWithEmail()">Sign Up</button>
             <p class="link-text" onclick="toggleAuth('login')">Already have an account? Log In</p>
         </div>
     </div>
 
-    <!-- 1. HOME PAGE -->
+    <!-- 1. HOME PAGE (UPDATED - DEMO PROFILE REMOVED) -->
     <div id="home" class="page-section active">
+
+        <!-- Blended Hero Slider -->
         <div class="hero-banner-slider">
             <div class="hero-slide active" style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);">
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-content">
                     <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.14); border-color: var(--accent);">SEASON 1</span>
                     <h1 class="hero-title">NEW ERA<br><span style="color:var(--accent)">OF GREATNESS</span></h1>
-                    <button class="hero-btn" style="background:var(--accent); color:#04210a;" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
+                    <p class="hero-desc">Introducing the highest individual honours in our community.</p>
+                    <button class="hero-btn" style="background:var(--accent); color:#04210a; box-shadow: 0 10px 20px -8px rgba(163,230,53,0.6);" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
             <div class="hero-slide" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);">
@@ -312,7 +406,8 @@
                 <div class="hero-content">
                     <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.08); border-color: var(--gold);">ELITE</span>
                     <h1 class="hero-title">BECOME A<br><span style="color:var(--gold)">LEGEND</span></h1>
-                    <button class="hero-btn" style="background:var(--gold); color:#241b00;" onclick="switchTab('leaderboard')">RANKINGS <i class="fas fa-chevron-right"></i></button>
+                    <p class="hero-desc">Compete with top players and dominate the global rankings.</p>
+                    <button class="hero-btn" style="background:var(--gold); color:#241b00; box-shadow: 0 10px 20px -8px rgba(255,215,0,0.55);" onclick="switchTab('leaderboard')">RANKINGS <i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
             <div class="hero-dots" id="heroDots">
@@ -321,18 +416,76 @@
             </div>
         </div>
 
+        <!-- Featured Tournaments -->
         <div class="sec-head">
             <div class="sec-title">Featured Tournaments</div>
             <div class="sec-link" onclick="switchTab('tournamentsTab')">View All <i class="fas fa-chevron-right"></i></div>
         </div>
-        <div class="t-slider" id="homeTournamentsList"><p style="font-size:12px; color:gray; padding:10px;">Loading...</p></div>
+        <div class="t-slider" id="homeTournamentsList">
+            <p style="font-size:12px; color:gray; padding: 10px;">Loading...</p>
+        </div>
 
+        <!-- Top Players Preview -->
         <div class="sec-head" style="margin-top: 26px;">
             <div class="sec-title">Top Players</div>
             <div class="sec-badge live"><span class="live-dot"></span> Live Leaderboard</div>
         </div>
         <div class="card" style="padding: 12px; border-radius: 16px;">
             <div id="homeLeaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
+        </div>
+
+        <!-- ULTRA PREMIUM MATCHING FOOTER -->
+        <div class="bmg-footer">
+            <div class="footer-glow"></div>
+            <div class="footer-inner">
+                <div class="footer-logo-badge">
+                    <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" class="footer-logo">
+                </div>
+                <div class="footer-title">BMG <span>OFFICIAL</span></div>
+                <div class="footer-subtitle">EFOOTBALL COMMUNITY</div>
+                <div class="footer-tagline-pill"><i class="fas fa-trophy"></i> Home of Solo Tournaments</div>
+
+                <div class="footer-nav-row">
+                    <div class="f-nav-item" onclick="switchTab('home')">
+                        <div class="f-icon-circle"><i class="fas fa-home"></i></div> Home
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('tournamentsTab')">
+                        <div class="f-icon-circle"><i class="fas fa-ribbon"></i></div> Events
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('myMatchesTab')">
+                        <div class="f-icon-circle"><i class="fas fa-gamepad"></i></div> Matches
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('leaderboard')">
+                        <div class="f-icon-circle"><i class="fas fa-chart-line"></i></div> Ranking
+                    </div>
+                    <div class="f-nav-item" onclick="switchTab('profile')">
+                        <div class="f-icon-circle"><i class="far fa-user"></i></div> Profile
+                    </div>
+                </div>
+
+                <hr class="footer-divider">
+
+                <div class="footer-group-label">Follow The Community</div>
+                <div class="footer-socials">
+                    <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-discord"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-circle"><i class="fab fa-tiktok"></i></a>
+                </div>
+
+                <div class="footer-contact">
+                    <i class="far fa-envelope"></i> bmgofficial@gmail.com
+                </div>
+
+                <div class="footer-bottom-bar">
+                    <span>&copy; 2026 BMG Official</span>
+                    <span class="dot-sep"></span>
+                    <span>All Rights Reserved</span>
+                    <span class="dot-sep"></span>
+                    <span>v1.1.0</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -342,19 +495,16 @@
         <div id="allTournamentsList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
     </div>
 
-    <!-- 3. MY MATCHES TAB (NEW LIGHT THEME UI) -->
+    <!-- 3. MY MATCHES TAB (NEW - THEMED TO YOUR DARK UI) -->
     <div id="myMatchesTab" class="page-section">
-        <div class="mm-head-wrap">
-            <div class="mm-subtitle">YOUR SCHEDULE</div>
-            <div class="mm-main-title">Upcoming<span>Matches</span></div>
-            <div class="mm-desc-row">
-                <div class="mm-desc">Start before the deadline — result submission is your responsibility.</div>
-                <div class="mm-badge-count" id="myMatchCount"><span class="dot"></span> 0 Upcoming</div>
-            </div>
+        <div class="section-title" style="color: var(--text-dim);">Your Schedule</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <h3 style="font-family: var(--font-display); font-size: 22px; color: white;">Upcoming <br><span style="color:var(--accent);">Matches</span></h3>
+            <div style="background: rgba(163,230,53,0.1); color: var(--accent); font-size:10px; padding:6px 12px; border-radius:12px; font-weight:800; border:1px solid rgba(163,230,53,0.3);" id="myMatchCountText">0 Upcoming</div>
         </div>
         
         <div id="myMatchesList">
-            <p style="text-align:center; color:#666; font-size:13px; margin-top:30px;">Loading matches...</p>
+            <p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">Loading matches...</p>
         </div>
     </div>
 
@@ -366,23 +516,96 @@
 
     <!-- 5. PROFILE -->
     <div id="profile" class="page-section">
-        <div class="prof-header" id="profileHeader" style="display:none; background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom:15px; border: 1px solid var(--card-border); align-items: center; gap: 14px;">
-            <img id="profAvatar" src="" style="width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 3px solid var(--logo-blue);">
-            <div>
-                <div style="font-size: 16px; font-weight: 700;" id="profName">Player Name</div>
-                <p id="profEmailTxt" style="color: var(--accent); font-size: 10px; font-weight:500;"></p>
+        <div class="prof-top-title">Player Overview</div>
+        <div class="prof-header" id="profileHeader" style="display:none;">
+            <img id="profAvatar" src="" class="prof-avatar">
+            <div class="prof-details">
+                <div class="prof-name" id="profName">Player Name</div>
+                <div class="prof-country">🇧🇩 Bangladesh</div>
+                <p id="profEmailTxt" style="color: var(--accent); font-size: 10px; margin-top: 5px; font-weight:500;"></p>
             </div>
         </div>
-        
-        <div class="stats-section-title">Season Stats</div>
-        <div class="stats-grid">
-            <div class="stat-box"><span class="stat-box-val" id="statW" style="color:#4ade80;">0</span><span class="stat-box-lbl">Won</span></div>
-            <div class="stat-box"><span class="stat-box-val" id="statP" style="color:var(--logo-blue);">0</span><span class="stat-box-lbl">Played</span></div>
-            <div class="stat-box"><span class="stat-box-val" id="statD" style="color:#94a3b8;">0</span><span class="stat-box-lbl">Draw</span></div>
-            <div class="stat-box"><span class="stat-box-val" id="statL" style="color:#f87171;">0</span><span class="stat-box-lbl">Lost</span></div>
+        <div class="card" style="margin-top: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--card-border); margin-bottom:10px;">
+                <span style="color: var(--text-muted); font-size: 12px; font-weight:500;">eFootball UID</span>
+                <strong style="color: white; font-size: 13px;" id="profKonamiTxt">N/A</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
+                <span style="color: var(--text-muted); font-size: 12px; font-weight:500;">Device Model</span>
+                <strong style="color: white; font-size: 13px;" id="profDeviceTxt">N/A</strong>
+            </div>
         </div>
-        <div style="text-align: center; margin-top: 28px;">
-            <button onclick="logOut()" style="background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 9px 26px; border-radius: 8px; cursor: pointer; font-weight: 800;">Logout Account</button>
+
+        <!-- ══════════ STATS SECTION ══════════ -->
+        <div class="stats-section-title">Season Stats</div>
+
+        <!-- 8-box grid: W · P · D · L · WR · GF · GA · MOTM -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-box win">
+                <span class="stat-box-val" id="statW">0</span>
+                <span class="stat-box-lbl">Won</span>
+            </div>
+            <div class="stat-box played">
+                <span class="stat-box-val" id="statP">0</span>
+                <span class="stat-box-lbl">Played</span>
+            </div>
+            <div class="stat-box draw">
+                <span class="stat-box-val" id="statD">0</span>
+                <span class="stat-box-lbl">Draw</span>
+            </div>
+            <div class="stat-box loss">
+                <span class="stat-box-val" id="statL">0</span>
+                <span class="stat-box-lbl">Lost</span>
+            </div>
+            <div class="stat-box wr">
+                <span class="stat-box-val" id="statWR">0%</span>
+                <span class="stat-box-lbl">Win Rate</span>
+            </div>
+            <div class="stat-box gf">
+                <span class="stat-box-val" id="statGF">0</span>
+                <span class="stat-box-lbl">GF</span>
+            </div>
+            <div class="stat-box ga">
+                <span class="stat-box-val" id="statGA">0</span>
+                <span class="stat-box-lbl">GA</span>
+            </div>
+            <div class="stat-box motm">
+                <span class="stat-box-val" id="statMOTM">0</span>
+                <span class="stat-box-lbl">MOTM</span>
+            </div>
+        </div>
+
+        <!-- ══════════ FORM SECTION ══════════ -->
+        <div class="stats-section-title">Recent Form</div>
+        <div class="form-strip-wrap">
+            <div class="form-strip-head">
+                <span class="form-strip-label">Last Matches</span>
+                <span class="form-strip-recent" id="formSummaryTag">— — — — —</span>
+            </div>
+            <div class="form-matches" id="formMatchStrip">
+                <p style="color:var(--text-dim); font-size:11px; padding:6px 0;">No matches recorded yet.</p>
+            </div>
+        </div>
+
+        <!-- ══════════ PERFORMANCE GRAPH ══════════ -->
+        <div class="stats-section-title">Performance Graph</div>
+        <div class="graph-wrap">
+            <div class="graph-head">
+                <span class="graph-title">GF vs GA per Match</span>
+                <div class="graph-legend">
+                    <span class="legend-item"><span class="legend-dot" style="background:var(--gold);"></span>GF</span>
+                    <span class="legend-item"><span class="legend-dot" style="background:#f87171;"></span>GA</span>
+                </div>
+            </div>
+            <div class="perf-chart">
+                <div class="perf-bars" id="perfBarsContainer">
+                    <p style="color:var(--text-dim); font-size:11px; margin:auto;">No match data yet.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 28px; margin-bottom: 8px;">
+            <button onclick="logOut()" style="background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 9px 26px; border-radius: 8px; cursor: pointer; font-weight: 800; transition:0.3s; letter-spacing: 0.3px;">Logout Account</button>
         </div>
     </div>
 
@@ -390,55 +613,91 @@
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
         
-        <!-- Player Management -->
+        <!-- PLAYER MANAGEMENT SYSTEM (Visible to both Main Admin & Moderator) -->
         <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); margin: 0;">Player Management</h3>
-                <button onclick="copyAllPlayerNames()" style="background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.4); padding: 6px 12px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold;"><i class="far fa-copy"></i> Copy</button>
+                <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px; margin: 0;">Player Management</h3>
+                <button onclick="copyAllPlayerNames()" style="background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.4); padding: 6px 12px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: bold; transition: 0.2s;"><i class="far fa-copy"></i> Copy All Names</button>
             </div>
             <input type="text" id="adminPlayerSearch" placeholder="Search by Name or Email..." onkeyup="filterAdminPlayers()" style="margin-top: 0;">
-            <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
+            
+            <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:8px; padding:8px;">
+                <p style="color:gray; font-size:11px; text-align:center;">Loading Players...</p>
+            </div>
 
             <!-- Edit Player Form -->
             <div id="adminEditPlayerForm" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed var(--card-border);">
+                <h4 style="color:white; margin-bottom:10px; font-size:13px; font-weight:600;"><i class="fas fa-user-edit" style="color:var(--accent);"></i> Edit Player Info</h4>
                 <input type="hidden" id="editPlayerUid">
+                <label style="font-size:10px; color:var(--text-muted);">Full Name</label>
                 <input type="text" id="editPlayerName" placeholder="Full Name">
+                <label style="font-size:10px; color:var(--text-muted);">Konami UID</label>
+                <input type="text" id="editPlayerKonami" placeholder="Konami UID">
+                <label style="font-size:10px; color:var(--text-muted);">Device Model</label>
+                <input type="text" id="editPlayerDevice" placeholder="Device Model">
+                <label style="font-size:10px; color:var(--text-muted);">Phone Number</label>
+                <input type="text" id="editPlayerPhone" placeholder="Phone/WhatsApp">
+                
+                <!-- Only Main Admin can assign roles -->
                 <div class="main-admin-only">
+                    <label style="font-size:10px; color:var(--text-muted); margin-top:8px; display:block;">Account Role</label>
                     <select id="editPlayerRole" style="margin-bottom:10px;">
                         <option value="user">Normal Player</option>
-                        <option value="moderator">Moderator</option>
+                        <option value="moderator">Moderator (View & Edit Players Only)</option>
                     </select>
                 </div>
-                <div style="display:flex; gap:10px;">
-                    <button class="submit-btn" style="flex:1; margin-top:0;" onclick="savePlayerEdit()">Save</button>
+                
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin-top:0;" onclick="savePlayerEdit()">Save Updates</button>
                     <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin-top:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <!-- Create Tournament (Main Admin Only) -->
+        <!-- Create Tournament System (Main Admin Only) -->
         <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.4);">
-            <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display);">Create Tournament</h3>
+            <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Create Tournament</h3>
             <input type="text" id="tName" placeholder="Tournament Name">
+            
+            <label style="font-size:11px; color:var(--text-muted); margin-top:8px; display:block; text-align:left;">Tournament Format:</label>
             <select id="tFormatType">
                 <option value="Group Stage">Group Stage System</option>
                 <option value="Knockout">Knockout (Elimination)</option>
             </select>
-            <select id="tFormat"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
+
+            <select id="tFormat" style="margin-top: 8px;">
+                <option value="Upcoming">Upcoming</option>
+                <option value="Live">Live</option>
+            </select>
             <input type="text" id="tSlots" placeholder="Total Slots (e.g. 96)">
-            <input type="text" id="tFee" placeholder="Entry Fee">
+            <input type="text" id="tFee" placeholder="Entry Fee (e.g. Free or 50 BDT)">
             <input type="text" id="tImage" placeholder="Banner Image URL">
-            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; box-shadow: 0 10px 22px -10px rgba(56,189,248,0.55);" onclick="createTournament()">Publish Tournament</button>
         </div>
 
-        <!-- Update Leaderboard (Main Admin Only) -->
+        <!-- Manage Tournament Players UI (Admins & Moderators) -->
+        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-top: 15px;">
+            <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Manage Registrations</h3>
+            <input type="hidden" id="manageTid">
+            
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <input type="text" id="manualTPlayerName" placeholder="Player Name" style="margin:0;">
+                <button class="submit-btn" style="margin:0; width:80px; padding:0;" onclick="addManualTPlayer()">Add</button>
+            </div>
+            
+            <div id="tPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:15px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
+            
+            <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:10px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
+        </div>
+        
+        <!-- Update Leaderboard System (Main Admin Only) -->
         <div class="card main-admin-only" style="border: 1px solid rgba(255,215,0,0.4);">
-            <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display);">Update Leaderboard</h3>
+            <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px;">Update Leaderboard</h3>
             <input type="text" id="lbPlayerName" placeholder="Player Name">
             <input type="text" id="lbAvatar" placeholder="Player Avatar URL (Optional)">
             <input type="number" id="lbPoints" placeholder="Total Points">
             <input type="text" id="lbWinRate" placeholder="Win Rate (e.g. 78.8)">
-            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="updateLeaderboard()">Update Player</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; box-shadow: 0 10px 22px -10px rgba(255,215,0,0.5);" onclick="updateLeaderboard()">Update Player</button>
         </div>
     </div>
 
@@ -447,6 +706,7 @@
         <div class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home"></i>Home</div>
         <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class="fas fa-trophy"></i>Events</div>
         <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class="fas fa-gamepad"></i>Matches</div>
+        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class="fas fa-chart-bar"></i>Ranking</div>
         <div class="nav-item" onclick="switchTab('profile', this)"><i class="far fa-user"></i>Profile</div>
         <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class="fas fa-cog"></i>Admin</div>
     </div>
@@ -459,9 +719,11 @@
             projectId: "bmg-official-c0d9a",
             storageBucket: "bmg-official-c0d9a.firebasestorage.app",
             messagingSenderId: "686980285364",
-            appId: "1:686980285364:web:66e38cf3b7a559f051e8e1"
+            appId: "1:686980285364:web:66e38cf3b7a559f051e8e1",
+            measurementId: "G-4MYGG5J7P2"
         };
 
+        // 🛑 আপনার জিমেইল বসাবেন 🛑
         const adminEmail = "mynewff123@gmail.com";
         const imgbbAPIKey = "b7e891cd42aad3a93253595e33590ac1";
 
@@ -471,15 +733,26 @@
 
         /* --- PRELOADER --- */
         document.body.style.overflow = 'hidden';
-        window.addEventListener('load', () => setTimeout(() => { document.getElementById('preloader').classList.add('hide'); document.body.style.overflow = ''; }, 700));
+        let preloaderHidden = false;
+        function hidePreloader() {
+            if (preloaderHidden) return;
+            preloaderHidden = true;
+            const pre = document.getElementById('preloader');
+            if (pre) pre.classList.add('hide');
+            document.body.style.overflow = '';
+        }
+        window.addEventListener('load', () => setTimeout(hidePreloader, 700));
+        setTimeout(hidePreloader, 4000); 
 
-        /* --- HEADER & SIDE MENU --- */
+        /* --- GLASS HEADER ON SCROLL --- */
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
+            if (!header) return;
             if (window.scrollY > 8) header.classList.add('scrolled');
             else header.classList.remove('scrolled');
         });
 
+        /* --- SLIDING SIDE MENU LOGIC --- */
         function openSideMenu() {
             document.getElementById('sideMenu').classList.add('open');
             document.getElementById('sideMenuOverlay').classList.add('open');
@@ -495,54 +768,84 @@
             switchTab(tabId);
         }
 
-        /* --- TAB SWITCHING --- */
-        function switchTab(tabId, element) {
-            if ((tabId === 'profile' || tabId === 'myMatchesTab') && !auth.currentUser) tabId = 'authPage';
-
-            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            
-            if(element && element.classList.contains('nav-item')) {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                element.classList.add('active');
-            } else {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-            }
-            
-            window.scrollTo(0,0);
-            if(tabId === 'myMatchesTab') loadMyMatches();
-            if(tabId === 'profile') loadPlayerStats();
-        }
+        /* --- FADING HERO SLIDER JS --- */
+        setInterval(() => {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('#heroDots .dot');
+            if(slides.length === 0) return;
+            let activeIdx = 0;
+            slides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
+            slides[activeIdx].classList.remove('active');
+            if(dots[activeIdx]) dots[activeIdx].classList.remove('active');
+            let nextIdx = (activeIdx + 1) % slides.length;
+            slides[nextIdx].classList.add('active');
+            if(dots[nextIdx]) dots[nextIdx].classList.add('active');
+        }, 4000);
 
         function toggleAuth(type) {
-            document.getElementById('loginBox').style.display = type === 'signup' ? 'none' : 'block';
-            document.getElementById('signupBox').style.display = type === 'signup' ? 'block' : 'none';
+            if(type === 'signup') {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('signupBox').style.display = 'block';
+            } else {
+                document.getElementById('loginBox').style.display = 'block';
+                document.getElementById('signupBox').style.display = 'none';
+            }
         }
 
-        /* --- AUTHENTICATION --- */
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader(); reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image(); img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas'); let width = img.width; let height = img.height; const max_size = 500;
+                        if (width > height) { if (width > max_size) { height *= max_size / width; width = max_size; } } else { if (height > max_size) { width *= max_size / height; height = max_size; } }
+                        canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                        canvas.toBlob((blob) => { resolve(blob); }, 'image/jpeg', 0.7);
+                    };
+                };
+            });
+        }
+
+        async function uploadToImgBB(blob) {
+            const formData = new FormData(); formData.append('image', blob, 'avatar.jpg');
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, { method: 'POST', body: formData });
+            const data = await response.json(); return data.data.url;
+        }
+
         async function signUpWithEmail() {
-            const name = document.getElementById('regName').value; const email = document.getElementById('regEmail').value; const password = document.getElementById('regPassword').value; const avatarFile = document.getElementById('regAvatarFile').files[0];
-            if(!avatarFile || !name || !email || password.length < 6) return alert("Fill all fields and select avatar!");
-            
-            const btn = document.getElementById('regBtn'); btn.innerText = "Processing..."; btn.disabled = true;
+            const name = document.getElementById('regName').value; const konami = document.getElementById('regKonami').value; const device = document.getElementById('regDevice').value; const facebook = document.getElementById('regFacebook').value; const avatarFile = document.getElementById('regAvatarFile').files[0]; const phone = document.getElementById('regPhone').value; const email = document.getElementById('regEmail').value; const password = document.getElementById('regPassword').value;
+            if(!avatarFile) { alert("Please select an avatar image!"); return; }
+            if(!name || !konami || !device || !email || password.length < 6) { alert("Please fill all required fields (Min password 6 chars)."); return; }
+            const btn = document.getElementById('regBtn'); btn.innerText = "Uploading Image..."; btn.disabled = true;
+
             try {
-                const formData = new FormData(); formData.append('image', avatarFile);
-                const res = await fetch(`https://api.imgbb.com/1/upload?key=${imgbbAPIKey}`, { method: 'POST', body: formData });
-                const data = await res.json();
-                const userCred = await auth.createUserWithEmailAndPassword(email, password);
-                await userCred.user.updateProfile({ displayName: name, photoURL: data.data.url });
-                await db.collection("users").doc(userCred.user.uid).set({ name: name, avatar: data.data.url, email: email, role: "user" });
-                alert("Account Created!"); switchTab('home');
-            } catch (e) { alert(e.message); } finally { btn.innerText = "Sign Up"; btn.disabled = false; }
+                const compressedImage = await compressImage(avatarFile);
+                const photoURL = await uploadToImgBB(compressedImage);
+                btn.innerText = "Creating Account...";
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                await user.updateProfile({ displayName: name, photoURL: photoURL });
+                await db.collection("users").doc(user.uid).set({ name: name, konamiUid: konami, device: device, facebook: facebook, avatar: photoURL, phone: phone, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp(), role: "user" });
+
+                alert("Account Created Successfully!");
+                document.getElementById('signupBox').querySelectorAll('input').forEach(input => input.value = '');
+                switchTab('home', document.querySelectorAll('.nav-item')[0]);
+            } catch (error) { alert("Error: " + error.message); } finally { btn.innerText = "Sign Up"; btn.disabled = false; }
         }
 
         function loginWithEmail() {
-            const email = document.getElementById('loginEmail').value; const pass = document.getElementById('loginPassword').value;
-            if(email && pass) auth.signInWithEmailAndPassword(email, pass).then(() => switchTab('home')).catch(e => alert(e.message));
+            const email = document.getElementById('loginEmail').value; const password = document.getElementById('loginPassword').value;
+            if(email && password) {
+                auth.signInWithEmailAndPassword(email, password).then(() => {
+                    alert("Logged In Successfully!"); document.getElementById('loginEmail').value = ""; document.getElementById('loginPassword').value = ""; switchTab('home', document.querySelectorAll('.nav-item')[0]);
+                }).catch((error) => alert(error.message));
+            }
         }
 
-        function logOut() { auth.signOut().then(() => switchTab('home')); }
+        function logOut() { auth.signOut().then(() => switchTab('home', document.querySelectorAll('.nav-item')[0])); }
 
+        /* --- Updated Auth Listener for RBAC --- */
         auth.onAuthStateChanged(user => {
             if (user) {
                 document.getElementById('loginBtn').style.display = 'none';
@@ -552,140 +855,283 @@
                 document.getElementById('profAvatar').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
 
                 db.collection("users").doc(user.uid).get().then(doc => {
-                    let role = doc.exists ? (doc.data().role || "user") : "user";
-                    if(user.email === adminEmail) role = "admin";
+                    let role = "user";
+                    if (doc.exists) {
+                        const d = doc.data();
+                        role = d.role || "user";
+                        document.getElementById('profKonamiTxt').innerText = d.konamiUid || "N/A";
+                        document.getElementById('profDeviceTxt').innerText = d.device || "N/A";
+                    }
+
+                    // Main admin override
+                    if(user.email === adminEmail) {
+                        role = "admin";
+                    }
+
+                    // Apply CSS Access Classes
+                    document.body.classList.remove('is-main-admin', 'is-admin');
                     
-                    document.body.classList.remove('is-main-admin', 'is-moderator');
-                    if(role === "admin") { document.getElementById('navAdmin').classList.add('show'); document.body.classList.add('is-main-admin'); fetchAllPlayersAdmin(); }
-                    else if (role === "moderator") { document.getElementById('navAdmin').classList.add('show'); document.body.classList.add('is-moderator'); fetchAllPlayersAdmin(); }
-                    else document.getElementById('navAdmin').classList.remove('show');
+                    if(role === "admin") {
+                        document.getElementById('navAdmin').classList.add('show');
+                        document.body.classList.add('is-main-admin', 'is-admin');
+                        fetchAllPlayersAdmin();
+                    } else if (role === "moderator") {
+                        document.getElementById('navAdmin').classList.add('show');
+                        document.body.classList.add('is-admin'); // Sees admin controls, but not main-admin-only
+                        fetchAllPlayersAdmin();
+                    } else {
+                        document.getElementById('navAdmin').classList.remove('show');
+                    }
                 });
             } else {
                 document.getElementById('loginBtn').style.display = 'flex';
                 document.getElementById('profileHeader').style.display = 'none';
+                document.getElementById('profEmailTxt').innerText = "Please login to view details.";
                 document.getElementById('navAdmin').classList.remove('show');
-                document.body.classList.remove('is-main-admin', 'is-moderator');
+                document.body.classList.remove('is-main-admin', 'is-admin');
             }
         });
 
-        /* --- MY MATCHES LOGIC (LIGHT THEME LIKE PIC 3) --- */
-        function loadMyMatches() {
-            const user = auth.currentUser;
-            const list = document.getElementById('myMatchesList');
-            const countBadge = document.getElementById('myMatchCount');
-            
-            if(!user) return;
-            
-            list.innerHTML = `<p style="text-align:center; color:#666; font-size:13px; margin-top:30px;">Checking arena for your matches...</p>`;
-            
-            db.collection("tournaments").where("status", "==", "Live").get().then(snap => {
-                let html = ""; let count = 0; let isFirst = true;
-                
-                snap.forEach(doc => {
-                    const t = doc.data();
-                    if(t.fixtures) {
-                        Object.keys(t.fixtures).forEach(groupOrRound => {
-                            const matches = t.fixtures[groupOrRound];
-                            if(Array.isArray(matches) && matches.length > 0 && matches[0].player1) {
-                                matches.forEach(m => {
-                                    if((m.player1.uid === user.uid) || (m.player2 && m.player2.uid === user.uid)) {
-                                        count++;
-                                        let isP1 = m.player1.uid === user.uid;
-                                        let me = isP1 ? m.player1 : m.player2;
-                                        let opp = isP1 ? m.player2 : m.player1;
-                                        
-                                        if(!opp || opp.name.includes("BYE")) opp = { name: "BYE (Auto Win)", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
+        /* ════════════════════════════════════════
+           ADMIN PLAYER MANAGEMENT SYSTEM
+        ════════════════════════════════════════ */
+        let allUsersData = [];
 
-                                        html += `
-                                        <div class="mm-card ${isFirst ? 'mm-card-next' : ''}">
-                                            <div class="mm-card-top">
-                                                <span class="mm-tourney-tag">${t.name.substring(0,18)} • ${groupOrRound}</span>
-                                                <span class="mm-date"><i class="far fa-clock"></i> Not Played</span>
-                                            </div>
-                                            <div class="mm-versus-area">
-                                                <div class="mm-p-box">
-                                                    <img src="${me.avatar}" class="mm-p-avatar">
-                                                    <span class="mm-p-name">You</span>
-                                                </div>
-                                                <div class="mm-vs-badge">VS</div>
-                                                <div class="mm-p-box right">
-                                                    <span class="mm-p-name">${opp.name}</span>
-                                                    <img src="${opp.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="mm-p-avatar">
-                                                </div>
-                                            </div>
-                                            <div class="mm-card-bot">
-                                                <button class="mm-submit-btn" onclick="alert('Submission for Match ${m.match} coming soon!')">SUBMIT SCORE</button>
-                                                <span class="mm-status"><span class="dot"></span> Pending</span>
-                                            </div>
-                                        </div>`;
-                                        isFirst = false;
-                                    }
-                                });
-                            }
-                        });
-                    }
+        function fetchAllPlayersAdmin() {
+            db.collection("users").onSnapshot(snapshot => {
+                allUsersData = [];
+                snapshot.forEach(doc => {
+                    let data = doc.data();
+                    data.uid = doc.id;
+                    allUsersData.push(data);
                 });
-                
-                if(count === 0) list.innerHTML = `<p style="text-align:center; color:#666; font-size:13px; margin-top:30px;">You have no upcoming matches generated yet.</p>`;
-                else list.innerHTML = html;
-                countBadge.innerHTML = `<span class="dot"></span> ${count} Upcoming`;
+                renderAdminPlayers(allUsersData);
             });
         }
 
+        function renderAdminPlayers(list) {
+            const container = document.getElementById('adminPlayerList');
+            container.innerHTML = "";
+            if(list.length === 0) {
+                container.innerHTML = "<p style='color:gray; font-size:11px; text-align:center;'>No players found.</p>";
+                return;
+            }
+            list.forEach(p => {
+                container.innerHTML += `
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:8px 4px; border-bottom:1px solid var(--card-border); cursor:pointer;" onclick="openPlayerEdit('${p.uid}')">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
+                        <div>
+                            <div style="font-size:13px; font-weight:700; color:white;">${p.name || 'Unknown'} ${p.role === 'moderator' ? '<i class="fas fa-shield-alt" style="color:var(--accent);font-size:10px;"></i>' : ''}</div>
+                            <div style="font-size:10px; color:var(--text-muted);">${p.email || 'No Email'}</div>
+                        </div>
+                    </div>
+                    <i class="fas fa-edit" style="color:var(--accent); font-size:14px;"></i>
+                </div>
+                `;
+            });
+        }
 
-        /* --- TOURNAMENT CREATION & GENERATION --- */
+        function filterAdminPlayers() {
+            const query = document.getElementById('adminPlayerSearch').value.toLowerCase();
+            const filtered = allUsersData.filter(p => 
+                (p.name && p.name.toLowerCase().includes(query)) || 
+                (p.email && p.email.toLowerCase().includes(query))
+            );
+            renderAdminPlayers(filtered);
+        }
+
+        /* --- 1-Click Copy All Player Names --- */
+        function copyAllPlayerNames() {
+            if(allUsersData.length === 0) {
+                alert("No players found to copy!");
+                return;
+            }
+            const namesList = allUsersData.map((p, index) => `${index + 1}. ${p.name || 'Unknown'}`).join('\n');
+            navigator.clipboard.writeText(namesList).then(() => {
+                alert(`Successfully copied ${allUsersData.length} player names!`);
+            }).catch(err => alert("Failed to copy text: " + err));
+        }
+
+        function openPlayerEdit(uid) {
+            const player = allUsersData.find(p => p.uid === uid);
+            if(!player) return;
+            
+            document.getElementById('editPlayerUid').value = player.uid;
+            document.getElementById('editPlayerName').value = player.name || "";
+            document.getElementById('editPlayerKonami').value = player.konamiUid || "";
+            document.getElementById('editPlayerDevice').value = player.device || "";
+            document.getElementById('editPlayerPhone').value = player.phone || "";
+            
+            if(document.getElementById('editPlayerRole')) {
+                document.getElementById('editPlayerRole').value = player.role || "user";
+            }
+            document.getElementById('adminEditPlayerForm').style.display = 'block';
+        }
+
+        function cancelPlayerEdit() {
+            document.getElementById('adminEditPlayerForm').style.display = 'none';
+        }
+
+        function savePlayerEdit() {
+            const uid = document.getElementById('editPlayerUid').value;
+            const name = document.getElementById('editPlayerName').value;
+            const konami = document.getElementById('editPlayerKonami').value;
+            const device = document.getElementById('editPlayerDevice').value;
+            const phone = document.getElementById('editPlayerPhone').value;
+            
+            let roleElem = document.getElementById('editPlayerRole');
+            let roleToSave = roleElem ? roleElem.value : undefined;
+
+            if(!uid) return;
+            let updateData = { name: name, konamiUid: konami, device: device, phone: phone };
+            if(roleToSave) updateData.role = roleToSave;
+
+            db.collection("users").doc(uid).update(updateData).then(() => {
+                alert("Player Info Updated Successfully!");
+                cancelPlayerEdit();
+            }).catch(err => alert("Error updating info: " + err.message));
+        }
+
+
+        /* ════════════════════════════════════════
+           TOURNAMENT SYSTEM & FIXTURE ENGINE
+        ════════════════════════════════════════ */
+
         function createTournament() {
-            const name = document.getElementById('tName').value; const formatType = document.getElementById('tFormatType').value; const format = document.getElementById('tFormat').value; const slots = document.getElementById('tSlots').value; const fee = document.getElementById('tFee').value; let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
+            const name = document.getElementById('tName').value; 
+            const formatType = document.getElementById('tFormatType').value;
+            const format = document.getElementById('tFormat').value; 
+            const slots = document.getElementById('tSlots').value; 
+            const fee = document.getElementById('tFee').value; 
+            let image = document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
+            
             if(name && slots && fee) {
-                db.collection("tournaments").add({ name: name, type: formatType, status: format, slots: slots, fee: fee, image: image, time: firebase.firestore.FieldValue.serverTimestamp() })
-                .then(() => { alert("Created!"); document.getElementById('tName').value = ""; });
+                db.collection("tournaments").add({ 
+                    name: name, type: formatType, status: format, slots: slots, fee: fee, image: image, time: firebase.firestore.FieldValue.serverTimestamp() 
+                })
+                .then(() => { alert("Tournament Created!"); document.getElementById('tName').value = ""; document.getElementById('tImage').value = ""; });
             }
         }
 
-        db.collection("tournaments").orderBy("time", "desc").onSnapshot(snapshot => {
-            const list1 = document.getElementById('homeTournamentsList'); const list2 = document.getElementById('allTournamentsList');
-            list1.innerHTML = ""; list2.innerHTML = "";
+        function renderTournaments(snapshot, elementId) {
+            const tList = document.getElementById(elementId); tList.innerHTML = "";
             snapshot.forEach(doc => {
-                const t = doc.data(); const tFormat = t.type || 'Knockout';
-                const cardHtml = `
+                const t = doc.data();
+                const tFormat = t.type || 'Knockout';
+
+                tList.innerHTML += `
                 <div class="t-card">
                     <div class="t-card-img" style="background-image: url('${t.image}');">
                         <span class="t-status" style="${t.status === 'Live' ? 'background:#ef4444; color:white;' : ''}">${t.status}</span>
-                        <div class="t-card-titles"><div class="t-prize">PRIZE POOL: SPECIAL</div><div class="t-name">${t.name}</div></div>
+                        <div class="t-card-titles">
+                            <div class="t-prize">PRIZE POOL: SPECIAL</div>
+                            <div class="t-name">${t.name}</div>
+                        </div>
                     </div>
-                    <div class="t-card-info" style="border-bottom: none;">
+                    <div class="t-card-info" style="padding-bottom: 0; border-bottom: none;">
                         <div class="t-stat"><span>SLOTS</span><strong>${t.slots}</strong></div>
-                        <div class="t-stat"><span>FEE</span><strong style="color: var(--gold);">${t.fee}</strong></div>
+                        <div class="t-stat"><span>ENTRY FEE</span><strong style="color: var(--gold);">${t.fee}</strong></div>
                         <div class="t-stat"><span>FORMAT</span><strong style="color: var(--logo-blue);">${tFormat}</strong></div>
                     </div>
+                    
                     <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 16px 13px; background: var(--card-bg-soft);">
-                        <button class="t-reg-btn" onclick="registerForTournament('${doc.id}')" style="width:100%;">REGISTER FOR EVENT <i class="fas fa-chevron-right"></i></button>
+                        <span style="font-size: 10px; color: var(--logo-blue); padding: 4px 8px; border-radius: 6px; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3);"><i class="fas fa-gamepad"></i> ${tFormat}</span>
+                        <button class="t-reg-btn" onclick="registerForTournament('${doc.id}')">REGISTER <i class="fas fa-chevron-right"></i></button>
                     </div>
+                    
                     <div class="admin-controls" style="gap:10px; padding: 0 16px 13px; background: var(--card-bg-soft);">
-                        <button style="flex:1; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="generateFixtures('${doc.id}', '${tFormat}')"><i class="fas fa-cogs"></i> Logic</button>
-                        <button style="background:var(--danger); color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="db.collection('tournaments').doc('${doc.id}').delete()"><i class="fas fa-trash-alt"></i></button>
+                        <button style="flex:1; background:var(--gold); color:#000; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="openManageTPlayers('${doc.id}')"><i class="fas fa-users"></i> Players</button>
+                        <button class="main-admin-only" style="flex:1; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="generateFixtures('${doc.id}', '${tFormat}')"><i class="fas fa-cogs"></i> Logic</button>
+                        <button class="main-admin-only" style="background:var(--danger); color:white; border:none; padding:8px 14px; border-radius:6px; font-weight:bold; cursor:pointer;" onclick="deleteTournament('${doc.id}')"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>`;
-                list1.innerHTML += cardHtml; list2.innerHTML += cardHtml;
             });
-            if(list1.innerHTML === "") list1.innerHTML = "<p style='color:gray; padding: 10px;'>No tournaments available.</p>";
+            if(tList.innerHTML === "") tList.innerHTML = "<p style='color:gray; padding: 10px;'>No tournaments available.</p>";
+        }
+
+        db.collection("tournaments").orderBy("time", "desc").onSnapshot(snapshot => {
+            renderTournaments(snapshot, 'homeTournamentsList');
+            renderTournaments(snapshot, 'allTournamentsList');
         });
+
+        /* --- Admin Player Management inside Tournaments --- */
+        function openManageTPlayers(docId) {
+            document.getElementById('adminTournamentPlayersCard').style.display = 'block';
+            document.getElementById('manageTid').value = docId;
+            loadTPlayers(docId);
+        }
+
+        function loadTPlayers(docId) {
+            const list = document.getElementById('tPlayerList');
+            list.innerHTML = "<p style='color:gray; font-size:11px; text-align:center;'>Loading...</p>";
+            
+            db.collection("tournaments").doc(docId).collection("players").onSnapshot(snap => {
+                list.innerHTML = "";
+                if(snap.empty) { list.innerHTML = "<p style='color:gray; font-size:11px;'>No players registered yet.</p>"; return; }
+                
+                snap.forEach(doc => {
+                    const p = doc.data();
+                    list.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--card-border);">
+                        <span style="font-size:13px;">${p.name}</span>
+                        <button onclick="removeTPlayer('${docId}', '${doc.id}')" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer;">Remove</button>
+                    </div>`;
+                });
+            });
+        }
+
+        function removeTPlayer(docId, playerId) {
+            if(confirm("Remove this player from the tournament?")) {
+                db.collection("tournaments").doc(docId).collection("players").doc(playerId).delete();
+            }
+        }
+
+        function addManualTPlayer() {
+            const docId = document.getElementById('manageTid').value;
+            const name = document.getElementById('manualTPlayerName').value;
+            if(!name) return;
+            
+            const mockUid = "manual_" + new Date().getTime();
+            db.collection("tournaments").doc(docId).collection("players").doc(mockUid).set({
+                uid: mockUid, name: name, avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png", time: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => { document.getElementById('manualTPlayerName').value = ""; });
+        }
+
+        function deleteTournament(docId) {
+            if(confirm("Admin: Are you sure you want to completely DELETE this tournament?")) {
+                db.collection("tournaments").doc(docId).delete().then(() => alert("Tournament Deleted Successfully!")).catch(err => alert("Error: " + err.message));
+            }
+        }
 
         function registerForTournament(docId) {
             const user = auth.currentUser;
-            if(!user) return switchTab('authPage');
-            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ uid: user.uid, name: user.displayName || user.email, avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png" }).then(() => alert("Registration Successful!"));
+            if(!user) {
+                alert("You must be logged in to register.");
+                switchTab('authPage');
+                return;
+            }
+            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({
+                uid: user.uid, name: user.displayName || user.email, avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png", time: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => alert("Registration Successful for this tournament!"));
         }
 
-        /* --- UPDATED GENERATE FIXTURES (Creates 1v1 Matches for BOTH Group & Knockout) --- */
+        /* --- GENERATE FIXTURES LOGIC --- */
         async function generateFixtures(docId, format) {
-            if(!confirm(`Admin: Auto-Generate ${format} logic/brackets?`)) return;
+            if(!confirm(`Admin: Auto-Generate ${format} logic/brackets for this tournament?`)) return;
+
             try {
                 const playersSnap = await db.collection("tournaments").doc(docId).collection("players").get();
-                let players = []; playersSnap.forEach(doc => players.push(doc.data()));
-                if(players.length < 2) return alert("Min 2 players required.");
+                let players = [];
+                playersSnap.forEach(doc => players.push(doc.data()));
 
-                for (let i = players.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [players[i], players[j]] = [players[j], players[i]]; }
+                if(players.length < 2) return alert("Minimum 2 players required to generate matches.");
+
+                // Auto-shuffle players
+                for (let i = players.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [players[i], players[j]] = [players[j], players[i]];
+                }
 
                 let generatedData = {};
 
@@ -693,12 +1139,19 @@
                     const numGroups = Math.max(1, Math.ceil(players.length / 4)); 
                     const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
                     let groups = {};
-                    for (let i = 0; i < numGroups; i++) groups[`Group ${groupNames[i]}`] = [];
-                    players.forEach((p, i) => groups[`Group ${groupNames[i % numGroups]}`].push(p));
+                    for (let i = 0; i < numGroups; i++) {
+                        groups[`Group ${groupNames[i]}`] = [];
+                    }
+                    players.forEach((p, index) => {
+                        let groupChar = groupNames[index % numGroups];
+                        groups[`Group ${groupChar}`].push(p);
+                    });
 
+                    // Generate 1v1 Matches for each group
                     let matchId = 1;
                     Object.keys(groups).forEach(gName => {
-                        let gPlayers = groups[gName]; let gMatches = [];
+                        let gPlayers = groups[gName];
+                        let gMatches = [];
                         for(let i=0; i<gPlayers.length; i++) {
                             for(let j=i+1; j<gPlayers.length; j++) {
                                 gMatches.push({ match: matchId++, player1: gPlayers[i], player2: gPlayers[j] });
@@ -707,59 +1160,270 @@
                         generatedData[gName] = gMatches;
                     });
                 } 
-                else {
-                    const totalPlayers = players.length; const nextPowerOf2 = Math.pow(2, Math.ceil(Math.log2(totalPlayers))); const byes = nextPowerOf2 - totalPlayers;
-                    let round1 = []; let playerIndex = 0;
+                else if (format === "Knockout") {
+                    const totalPlayers = players.length;
+                    const nextPowerOf2 = Math.pow(2, Math.ceil(Math.log2(totalPlayers)));
+                    const byes = nextPowerOf2 - totalPlayers;
+                    
+                    let round1 = [];
+                    let playerIndex = 0;
+                    
                     for(let i = 0; i < nextPowerOf2 / 2; i++) {
-                        let p1 = players[playerIndex++]; let p2 = (i < byes) ? { name: "BYE", uid: "bye" } : players[playerIndex++];
+                        let p1 = players[playerIndex++];
+                        let p2 = (i < byes) ? { name: "BYE (Auto Qualify)" } : players[playerIndex++];
                         round1.push({ match: i + 1, player1: p1, player2: p2 });
                     }
                     generatedData[`Round 1`] = round1;
-                }
+                    
+                    // Map out subsequent placeholders up to the Final
+                    let currentMatches = nextPowerOf2 / 2;
+                    let roundNum = 2;
+                    while(currentMatches > 1) {
+                        currentMatches /= 2;
+                        let roundName = currentMatches === 1 ? "Final" : currentMatches === 2 ? "Semi-Final" : currentMatches === 4 ? "Quarter-Final" : `Round ${roundNum}`;
+                        let matches = [];
+                        for(let i = 0; i < currentMatches; i++) {
+                            matches.push({ match: i + 1, player1: { name: "TBD" }, player2: { name: "TBD" } });
+                        }
+                        generatedData[roundName] = matches;
+                        roundNum++;
+                    }
+                } 
 
-                await db.collection("tournaments").doc(docId).update({ status: 'Live', fixtures: generatedData });
-                alert(`Successfully generated logic! Players can now see their games in 'My Matches'.`);
-            } catch(e) { alert("Error: " + e.message); }
+                await db.collection("tournaments").doc(docId).update({
+                    status: 'Live',
+                    fixtures: generatedData
+                });
+
+                alert(`Successfully generated logic for ${players.length} players! Check 'My Matches'.`);
+            } catch(e) {
+                alert("Generation Error: " + e.message);
+            }
         }
 
-        /* --- LEADERBOARD --- */
+        /* --- MY MATCHES LOGIC (DARK THEME) --- */
+        function loadMyMatches() {
+            const user = auth.currentUser;
+            const list = document.getElementById('myMatchesList');
+            const countBadge = document.getElementById('myMatchCountText');
+            
+            if(!user) {
+                list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">Please log in to see your matches.</p>`;
+                return;
+            }
+            
+            list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;"><i class="fas fa-spinner fa-spin"></i> Checking arena...</p>`;
+            
+            db.collection("tournaments").where("status", "==", "Live").get().then(snap => {
+                let html = ""; let count = 0;
+                snap.forEach(doc => {
+                    const t = doc.data();
+                    if(t.fixtures) {
+                        Object.keys(t.fixtures).forEach(groupOrRound => {
+                            const matches = t.fixtures[groupOrRound];
+                            if(Array.isArray(matches) && matches.length > 0 && matches[0].player1) {
+                                matches.forEach(m => {
+                                    if((m.player1 && m.player1.uid === user.uid) || (m.player2 && m.player2.uid === user.uid)) {
+                                        count++;
+                                        let isP1 = m.player1.uid === user.uid;
+                                        let me = isP1 ? m.player1 : m.player2;
+                                        let opp = isP1 ? m.player2 : m.player1;
+                                        
+                                        if(!opp || opp.name.includes("BYE")) opp = { name: "BYE (Auto Win)", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
+
+                                        html += `
+                                        <div class="mm-card">
+                                            <div class="mm-top">
+                                                <span class="mm-tag">${t.name.substring(0,20)} • ${groupOrRound}</span>
+                                                <span><i class="far fa-clock"></i> Not Played</span>
+                                            </div>
+                                            <div class="mm-vs-area">
+                                                <div class="mm-player">
+                                                    <img src="${me.avatar}" class="mm-avatar">
+                                                    <span class="mm-name">You</span>
+                                                </div>
+                                                <div class="mm-vs-badge">VS</div>
+                                                <div class="mm-player right">
+                                                    <span class="mm-name">${opp.name}</span>
+                                                    <img src="${opp.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="mm-avatar">
+                                                </div>
+                                            </div>
+                                            <div class="mm-bot">
+                                                <button class="mm-submit-btn" onclick="alert('Submission coming soon!')">SUBMIT SCORE</button>
+                                                <span class="mm-status"><i class="fas fa-circle" style="font-size:6px; margin-right:4px;"></i> Pending</span>
+                                            </div>
+                                        </div>`;
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+                
+                if(count === 0) list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">You have no upcoming matches.</p>`;
+                else list.innerHTML = html;
+                countBadge.innerText = `${count} Upcoming`;
+            });
+        }
+
+
+        /* ════════════════════════════════════════
+           LEADERBOARD SYSTEM
+        ════════════════════════════════════════ */
+
         function updateLeaderboard() {
-            const name = document.getElementById('lbPlayerName').value; const points = parseInt(document.getElementById('lbPoints').value); const winRate = document.getElementById('lbWinRate').value;
-            if(name && !isNaN(points)) db.collection("leaderboard").doc(name).set({ name: name, points: points, winRate: winRate, avatar: document.getElementById('lbAvatar').value || "https://cdn-icons-png.flaticon.com/512/149/149071.png", time: firebase.firestore.FieldValue.serverTimestamp() }).then(() => alert("Updated!"));
+            const name = document.getElementById('lbPlayerName').value; const points = parseInt(document.getElementById('lbPoints').value); const winRate = document.getElementById('lbWinRate').value; const avatar = document.getElementById('lbAvatar').value || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+            if(name && !isNaN(points)) {
+                db.collection("leaderboard").doc(name).set({ name: name, points: points, winRate: winRate, avatar: avatar, time: firebase.firestore.FieldValue.serverTimestamp() })
+                .then(() => { alert("Player Updated!"); document.getElementById('lbPlayerName').value = ""; document.getElementById('lbPoints').value = ""; document.getElementById('lbWinRate').value = ""; });
+            }
+        }
+
+        function renderLeaderboard(snapshot, elementId, limit) {
+            const lbList = document.getElementById(elementId); lbList.innerHTML = ""; let rank = 1;
+            snapshot.forEach(doc => {
+                if(limit && rank > limit) return;
+                const p = doc.data();
+                let rankHTML = rank === 1 ? `<div class="rank-badge">1</div>` : `<div class="rank">#${rank}</div>`;
+                lbList.innerHTML += `
+                <div class="leaderboard-row">
+                    ${rankHTML}
+                    <img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="lb-avatar">
+                    <div class="player-info">
+                        <div class="player-name">${p.name}</div>
+                        <div class="points"><i class="fas fa-star" style="font-size:10px;"></i> ${p.points} Points</div>
+                    </div>
+                    <div class="win-rate-box">
+                        <div class="win-rate-val">${p.winRate || "0"}%</div>
+                        <div class="win-rate-lbl">Win Rate</div>
+                    </div>
+                </div>`;
+                rank++;
+            });
+            if(lbList.innerHTML === "") lbList.innerHTML = "<p style='color:gray;'>Leaderboard is empty.</p>";
         }
 
         db.collection("leaderboard").orderBy("points", "desc").onSnapshot(snapshot => {
-            let html = ""; let rank = 1;
-            snapshot.forEach(doc => {
-                const p = doc.data();
-                html += `<div class="leaderboard-row">${rank === 1 ? `<div class="rank-badge">1</div>` : `<div class="rank">#${rank}</div>`}<img src="${p.avatar}" class="lb-avatar"><div class="player-info"><div class="player-name">${p.name}</div><div class="points"><i class="fas fa-star" style="font-size:10px;"></i> ${p.points} Pts</div></div><div class="win-rate-box"><div class="win-rate-val">${p.winRate || "0"}%</div><div class="win-rate-lbl">WR</div></div></div>`;
-                rank++;
-            });
-            document.getElementById('homeLeaderboardList').innerHTML = html; document.getElementById('leaderboardList').innerHTML = html;
+            renderLeaderboard(snapshot, 'homeLeaderboardList', 3);
+            renderLeaderboard(snapshot, 'leaderboardList', false);
         });
 
-        /* --- ADMIN PLAYER MGMT --- */
-        let allUsersData = [];
-        function fetchAllPlayersAdmin() { db.collection("users").onSnapshot(snap => { allUsersData = []; snap.forEach(doc => { let d = doc.data(); d.uid = doc.id; allUsersData.push(d); }); renderAdminPlayers(allUsersData); }); }
-        function renderAdminPlayers(list) {
-            document.getElementById('adminPlayerList').innerHTML = list.map(p => `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--card-border);" onclick="openPlayerEdit('${p.uid}')"><span>${p.name} ${p.role==='moderator'?'(Mod)':''}</span><i class="fas fa-edit" style="color:var(--accent);"></i></div>`).join('');
-        }
-        function copyAllPlayerNames() { navigator.clipboard.writeText(allUsersData.map((p, i) => `${i + 1}. ${p.name || 'Unknown'}`).join('\n')).then(() => alert("Copied!")); }
-        function openPlayerEdit(uid) {
-            const p = allUsersData.find(x => x.uid === uid);
-            if(!p) return;
-            document.getElementById('editPlayerUid').value = p.uid; document.getElementById('editPlayerName').value = p.name || "";
-            if(document.getElementById('editPlayerRole')) document.getElementById('editPlayerRole').value = p.role || "user";
-            document.getElementById('adminEditPlayerForm').style.display = 'block';
-        }
-        function cancelPlayerEdit() { document.getElementById('adminEditPlayerForm').style.display = 'none'; }
-        function savePlayerEdit() {
-            const uid = document.getElementById('editPlayerUid').value; const name = document.getElementById('editPlayerName').value; const roleElem = document.getElementById('editPlayerRole');
-            if(!uid) return;
-            let data = { name: name }; if(roleElem) data.role = roleElem.value;
-            db.collection("users").doc(uid).update(data).then(() => { alert("Updated!"); cancelPlayerEdit(); });
+        /* ════════════════════════════════════════
+           TAB SWITCHING & REAL PLAYER STATS
+        ════════════════════════════════════════ */
+
+        function switchTab(tabId, element) {
+            if ((tabId === 'profile' || tabId === 'myMatchesTab') && !auth.currentUser) tabId = 'authPage';
+
+            document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                if(element.classList && element.classList.contains('nav-item')) element.classList.add('active');
+            }
+            
+            window.scrollTo(0,0);
+            if(tabId === 'profile') loadPlayerStats();
+            if(tabId === 'myMatchesTab') loadMyMatches();
         }
 
+        function loadPlayerStats() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            db.collection("playerStats").doc(user.uid).get().then(doc => {
+                let wins=0, played=0, draws=0, losses=0, gf=0, ga=0, motm=0, matches=[];
+
+                if (doc.exists) {
+                    const d = doc.data();
+                    wins   = d.wins   || 0;
+                    played = d.played || 0;
+                    draws  = d.draws  || 0;
+                    losses = d.losses || 0;
+                    gf     = d.gf     || 0;
+                    ga     = d.ga     || 0;
+                    motm   = d.motm   || 0;
+                    matches= d.matches || [];
+                }
+
+                const wr = played > 0 ? Math.round((wins / played) * 100) : 0;
+
+                document.getElementById('statW').innerText  = wins;
+                document.getElementById('statP').innerText  = played;
+                document.getElementById('statD').innerText  = draws;
+                document.getElementById('statL').innerText  = losses;
+                document.getElementById('statWR').innerText = wr + '%';
+                document.getElementById('statGF').innerText = gf;
+                document.getElementById('statGA').innerText = ga;
+                document.getElementById('statMOTM').innerText = motm;
+
+                renderFormStrip(matches);
+                renderPerfGraph(matches);
+
+            }).catch(() => {
+                document.getElementById('statW').innerText  = 0;
+                document.getElementById('statP').innerText  = 0;
+                document.getElementById('statD').innerText  = 0;
+                document.getElementById('statL').innerText  = 0;
+                document.getElementById('statWR').innerText = '0%';
+                document.getElementById('statGF').innerText = 0;
+                document.getElementById('statGA').innerText = 0;
+                document.getElementById('statMOTM').innerText = 0;
+                renderFormStrip([]);
+                renderPerfGraph([]);
+            });
+        }
+
+        function renderFormStrip(matches) {
+            const strip = document.getElementById('formMatchStrip');
+            const tag   = document.getElementById('formSummaryTag');
+            
+            if(!matches || matches.length === 0) {
+                strip.innerHTML = '<p style="color:var(--text-dim);font-size:11px;padding:6px 0;">No matches recorded yet.</p>';
+                tag.innerText = '— — — — —';
+                return;
+            }
+            const last5 = matches.slice(-5);
+            tag.innerText = last5.map(m => m.result).join(' · ');
+
+            strip.innerHTML = matches.slice().reverse().map(m => {
+                const cls    = m.result === 'W' ? 'win-card' : m.result === 'L' ? 'loss-card' : 'draw-card';
+                const label  = m.result === 'W' ? 'WIN' : m.result === 'L' ? 'LOST' : 'DRAW';
+                const myAv   = m.myAvatar  || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                const oppAv  = m.oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149072.png';
+                return `
+                <div class="form-match-card ${cls}">
+                    <div class="form-avatars"><img class="form-av" src="${myAv}"><span class="form-vs">vs</span><img class="form-av" src="${oppAv}"></div>
+                    <div class="form-score">${m.myScore} - ${m.oppScore}</div>
+                    <span class="form-result-tag">${label}</span>
+                    <div class="form-opp-name">${m.opp || 'Opponent'}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function renderPerfGraph(matches) {
+            const container = document.getElementById('perfBarsContainer');
+            if(!matches || matches.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim);font-size:11px;margin:auto;">No match data yet.</p>';
+                return;
+            }
+            const maxVal = Math.max(...matches.map(m => Math.max(m.myScore, m.oppScore, 1)));
+            const barMaxH = 62;
+
+            container.innerHTML = matches.map((m, i) => {
+                const gfH  = Math.max(4, Math.round((m.myScore  / maxVal) * barMaxH));
+                const gaH  = Math.max(4, Math.round((m.oppScore / maxVal) * barMaxH));
+                return `
+                <div class="bar-group">
+                    <div class="bar-inner">
+                        <div class="bar gf-bar" style="height:${gfH}px; position:relative;"><span class="bar-val">${m.myScore}</span></div>
+                        <div class="bar ga-bar" style="height:${gaH}px; position:relative;"><span class="bar-val">${m.oppScore}</span></div>
+                    </div>
+                    <span class="bar-match-label">M${i+1}</span>
+                </div>`;
+            }).join('');
+        }
     </script>
 </body>
 </html>
