@@ -134,7 +134,7 @@
         .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 4px 9px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 5px; letter-spacing: 0.3px; }
         .t-status::before { content:''; width: 6px; height: 6px; background: #000; border-radius: 50%; }
         .t-card-titles { position: relative; z-index: 2; }
-        .t-prize { font-family: var(--font-display); color: var(--gold); font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+        .t-prize { font-family: var(--font-display); color: var(--gold); font-size: 11px; font-weight: 700; margin-bottom: 3px; text-transform: uppercase;}
         .t-name { font-family: var(--font-display); font-size: 16px; font-weight: 800; text-transform: uppercase; line-height: 1.25; }
         .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; background: var(--card-bg-soft); border-top: 1px solid var(--card-border); }
         .t-stat { text-align: center; }
@@ -546,7 +546,7 @@
 
             <select id="tFormat" style="margin-top: 8px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
             <div style="display:flex; gap:10px;">
-                <input type="number" id="tSlots" placeholder="Total Slots (e.g. 32)">
+                <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32)">
                 <input type="text" id="tFee" placeholder="Entry Fee">
             </div>
             <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
@@ -563,7 +563,7 @@
             </div>
             <input type="hidden" id="manageTid">
             
-            <!-- NEW: Search Registered Site Users -->
+            <!-- Search Registered Site Users -->
             <div style="margin-top:12px;">
                 <input type="text" id="searchSiteUserForTourney" placeholder="Search site user by name..." onkeyup="filterSiteUsersForTourney()" style="margin:0;">
                 <div id="tourneyUserSearchResults" style="max-height: 140px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 8px; margin-top: 5px; display: none;"></div>
@@ -668,6 +668,7 @@
             }
             window.scrollTo(0,0);
             if(tabId === 'myMatchesTab') loadMyMatches();
+            if(tabId === 'profile') loadPlayerStats();
         }
 
         function toggleAuth(type) {
@@ -822,7 +823,7 @@
                 name: document.getElementById('tName').value,
                 type: document.getElementById('tFormatType').value,
                 status: document.getElementById('tFormat').value,
-                slots: parseInt(document.getElementById('tSlots').value),
+                slots: document.getElementById('tSlots').value || 'Unlimited',
                 fee: document.getElementById('tFee').value,
                 prize: document.getElementById('tPrize').value || 'TBA',
                 date: document.getElementById('tDate').value || 'TBA',
@@ -833,45 +834,108 @@
                 data.numGroups = document.getElementById('tNumGroups').value || 4;
                 data.qualifiers = document.getElementById('tQualifiers').value || 2;
             }
-            if(data.name && data.slots) db.collection("tournaments").add(data).then(() => { alert("Created!"); document.getElementById('tName').value = ""; });
+            if(data.name) db.collection("tournaments").add(data).then(() => { alert("Created!"); document.getElementById('tName').value = ""; });
         }
 
         let currentActiveTournamentId = null;
 
         db.collection("tournaments").orderBy("time", "desc").onSnapshot(snapshot => {
-            const list1 = document.getElementById('homeTournamentsList'); const list2 = document.getElementById('allTournamentsList');
+            const list1 = document.getElementById('homeTournamentsList'); 
+            const list2 = document.getElementById('allTournamentsList');
             list1.innerHTML = ""; list2.innerHTML = "";
+            
             snapshot.forEach(doc => {
                 const t = doc.data(); 
-                let actionBtn = t.status === 'Live' ? 
-                    `<button class="t-reg-btn" style="background:var(--card-bg-soft); color:var(--logo-blue); border:1px solid var(--logo-blue); box-shadow:none;" onclick="openTournamentDetails('${doc.id}')">VIEW DETAILS <i class="fas fa-arrow-right"></i></button>` : 
-                    `<button class="t-reg-btn" onclick="registerForTournament('${doc.id}')">REGISTER <i class="fas fa-chevron-right"></i></button>`;
+                const tFormat = t.type || 'Knockout';
 
-                const cardHtml = `
+                let actionBtn1 = t.status === 'Live' ? 
+                    `<button class="t-reg-btn" style="background:var(--card-bg-soft); color:var(--logo-blue); border:1px solid var(--logo-blue); box-shadow:none;" onclick="openTournamentDetails('${doc.id}')">VIEW DETAILS <i class="fas fa-arrow-right"></i></button>` : 
+                    `<button id="reg-btn-home-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER <i class="fas fa-chevron-right"></i></button>`;
+
+                let actionBtn2 = t.status === 'Live' ? 
+                    `<button class="t-reg-btn" style="background:var(--card-bg-soft); color:var(--logo-blue); border:1px solid var(--logo-blue); box-shadow:none;" onclick="openTournamentDetails('${doc.id}')">VIEW DETAILS <i class="fas fa-arrow-right"></i></button>` : 
+                    `<button id="reg-btn-all-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER <i class="fas fa-chevron-right"></i></button>`;
+
+                const createCard = (btnHtml) => `
                 <div class="t-card">
                     <div class="t-card-img" style="background-image: url('${t.image}');">
                         <span class="t-status" style="${t.status === 'Live' ? 'background:#ef4444; color:white;' : ''}">${t.status}</span>
                         <div class="t-card-titles"><div class="t-prize">${t.prize || 'PRIZE: TBA'}</div><div class="t-name">${t.name}</div></div>
                     </div>
                     <div class="t-card-info" style="border-bottom: none;">
-                        <div class="t-stat"><span>SLOTS</span><strong>${t.slots}</strong></div>
+                        <div class="t-stat"><span>SLOTS</span><strong>${t.slots || 'Unlimited'}</strong></div>
                         <div class="t-stat"><span>FEE</span><strong style="color: var(--gold);">${t.fee}</strong></div>
-                        <div class="t-stat"><span>FORMAT</span><strong style="color: var(--logo-blue);">${t.type}</strong></div>
+                        <div class="t-stat"><span>FORMAT</span><strong style="color: var(--logo-blue);">${tFormat}</strong></div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 16px 13px; background: var(--card-bg-soft);">
-                        ${actionBtn}
+                        ${btnHtml}
                     </div>
                     <div class="admin-controls" style="gap:6px; padding: 0 16px 13px; background: var(--card-bg-soft); flex-wrap: wrap;">
-                        <button style="flex:1 1 45%; background:var(--gold); color:#000; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="openManageTPlayers('${doc.id}', ${t.slots})"><i class="fas fa-users"></i> Players</button>
-                        <button class="main-admin-only" style="flex:1 1 45%; background:#8b5cf6; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="editTournamentSlots('${doc.id}', ${t.slots})"><i class="fas fa-edit"></i> Slots</button>
-                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="generateFixtures('${doc.id}', '${t.type}')"><i class="fas fa-cogs"></i> Logic</button>
+                        <button style="flex:1 1 45%; background:var(--gold); color:#000; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class="fas fa-users"></i> Players</button>
+                        <button class="main-admin-only" style="flex:1 1 45%; background:#8b5cf6; color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="editTournamentSlots('${doc.id}', '${t.slots || 'Unlimited'}')"><i class="fas fa-edit"></i> Slots</button>
+                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="generateFixtures('${doc.id}', '${tFormat}')"><i class="fas fa-cogs"></i> Logic</button>
                         <button class="main-admin-only" style="flex:1 1 45%; background:var(--danger); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="db.collection('tournaments').doc('${doc.id}').delete()"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
                 </div>`;
-                list1.innerHTML += cardHtml; list2.innerHTML += cardHtml;
+
+                list1.innerHTML += createCard(actionBtn1);
+                list2.innerHTML += createCard(actionBtn2);
+
+                // Async Registration Status Check
+                if (t.status !== 'Live' && auth.currentUser) {
+                    db.collection("tournaments").doc(doc.id).collection("players").doc(auth.currentUser.uid).get().then(pDoc => {
+                        if (pDoc.exists) {
+                            ['reg-btn-home-', 'reg-btn-all-'].forEach(prefix => {
+                                const btn = document.getElementById(prefix + doc.id);
+                                if(btn) {
+                                    btn.innerHTML = 'REGISTERED <i class="fas fa-check-circle"></i>';
+                                    btn.style.background = "var(--card-bg)";
+                                    btn.style.border = "1px solid var(--card-border)";
+                                    btn.style.color = "var(--accent)";
+                                    btn.style.boxShadow = "none";
+                                    btn.onclick = () => alert("You are already registered for this tournament!");
+                                }
+                            });
+                        }
+                    });
+                }
             });
             if(list1.innerHTML === "") list1.innerHTML = "<p style='color:gray; padding: 10px;'>No tournaments available.</p>";
         });
+
+        /* --- DYNAMIC REGISTER ACTION --- */
+        function registerForTournament(docId, btnElement) {
+            const user = auth.currentUser; 
+            if(!user) return switchTab('authPage');
+
+            const oldText = btnElement.innerHTML;
+            btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> WAIT...';
+            btnElement.disabled = true;
+
+            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ 
+                uid: user.uid, 
+                name: user.displayName || user.email, 
+                avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png", 
+                time: firebase.firestore.FieldValue.serverTimestamp() 
+            }).then(() => {
+                ['reg-btn-home-', 'reg-btn-all-'].forEach(prefix => {
+                    const btn = document.getElementById(prefix + docId);
+                    if(btn) {
+                        btn.innerHTML = 'REGISTERED <i class="fas fa-check-circle"></i>';
+                        btn.style.background = "var(--card-bg)";
+                        btn.style.border = "1px solid var(--card-border)";
+                        btn.style.color = "var(--accent)";
+                        btn.style.boxShadow = "none";
+                        btn.onclick = () => alert("You are already registered for this tournament!");
+                        btn.disabled = false;
+                    }
+                });
+            }).catch(e => {
+                alert("Error: " + e.message);
+                btnElement.innerHTML = oldText;
+                btnElement.disabled = false;
+            });
+        }
 
         /* --- ADD/REMOVE PLAYERS FROM TOURNEY --- */
         function openManageTPlayers(docId, slots) {
@@ -942,15 +1006,10 @@
             }
         }
 
-        function registerForTournament(docId) {
-            const user = auth.currentUser; if(!user) return switchTab('authPage');
-            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ uid: user.uid, name: user.displayName, avatar: user.photoURL, time: firebase.firestore.FieldValue.serverTimestamp() }).then(() => alert("Registered!"));
-        }
-
         function editTournamentSlots(docId, currentSlots) {
-            const newSlots = prompt("Enter new slot limit for this tournament:", currentSlots);
-            if(newSlots !== null && newSlots.trim() !== "" && !isNaN(newSlots)) {
-                db.collection("tournaments").doc(docId).update({ slots: parseInt(newSlots) })
+            const newSlots = prompt("Enter new slot limit for this tournament (e.g., 32 or Unlimited):", currentSlots);
+            if(newSlots !== null && newSlots.trim() !== "") {
+                db.collection("tournaments").doc(docId).update({ slots: newSlots })
                 .then(() => alert("Tournament slots updated to " + newSlots)).catch(err => alert("Error: " + err.message));
             }
         }
@@ -972,8 +1031,8 @@
                 document.getElementById('tdName').innerText = t.name;
                 document.getElementById('tdPrize').innerHTML = `<i class="fas fa-trophy"></i> ${t.prize || 'TBA'}`;
                 document.getElementById('tdDate').innerHTML = `<i class="far fa-calendar-alt"></i> ${t.date || 'TBA'}`;
-                document.getElementById('tdSlots').innerHTML = `<i class="fas fa-users"></i> ${t.slots}`;
-                document.getElementById('tdFormat').innerHTML = `<i class="fas fa-gamepad"></i> ${t.type}`;
+                document.getElementById('tdSlots').innerHTML = `<i class="fas fa-users"></i> ${t.slots || 'Unlimited'}`;
+                document.getElementById('tdFormat').innerHTML = `<i class="fas fa-gamepad"></i> ${t.type || 'Knockout'}`;
 
                 const tdAdmin = document.getElementById('tdAdminControls');
                 if (currentUserRole === 'admin' && t.type === 'Group Stage') tdAdmin.style.display = 'block';
