@@ -528,35 +528,9 @@
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
         
-        <!-- Create Tournament System -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.4);">
-            <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display);">Create Tournament</h3>
-            <input type="text" id="tName" placeholder="Tournament Name">
-            
-            <label style="font-size:11px; color:var(--text-muted); margin-top:8px; display:block;">Format Settings:</label>
-            <select id="tFormatType" onchange="toggleGroupOptions()">
-                <option value="Group Stage">Group Stage System</option>
-                <option value="Knockout">Knockout (Elimination)</option>
-            </select>
-            
-            <div id="groupOptions" style="display:flex; gap:10px; margin-top:8px;">
-                <input type="number" id="tNumGroups" placeholder="Total Groups (e.g. 4)">
-                <input type="number" id="tQualifiers" placeholder="Qualify Per Group (e.g. 2)">
-            </div>
-
-            <select id="tFormat" style="margin-top: 8px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
-            <div style="display:flex; gap:10px;">
-                <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32)">
-                <input type="text" id="tFee" placeholder="Entry Fee">
-            </div>
-            <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
-            <input type="date" id="tDate" style="color:var(--text-muted);">
-            <input type="text" id="tImage" placeholder="Banner Image URL">
-            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
-        </div>
-
         <!-- Manage Tournament Players UI (Admins & Moderators) -->
-        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-top: 15px;">
+        <!-- Moved this to the top of Admin Tab so it's easily visible when opened -->
+        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-bottom: 20px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px; margin:0;">Manage Registrations</h3>
                 <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:10px; font-weight:700;"></span>
@@ -572,6 +546,33 @@
             <div id="tPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:15px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
             
             <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:10px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
+        </div>
+
+        <!-- Create Tournament System -->
+        <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.4);">
+            <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display);">Create Tournament</h3>
+            <input type="text" id="tName" placeholder="Tournament Name">
+            
+            <label style="font-size:11px; color:var(--text-muted); margin-top:8px; display:block;">Format Settings:</label>
+            <select id="tFormatType" onchange="toggleGroupOptions()">
+                <option value="Knockout">Knockout (Elimination)</option>
+                <option value="Group Stage">Group Stage System</option>
+            </select>
+            
+            <div id="groupOptions" style="display:none; gap:10px; margin-top:8px;">
+                <input type="number" id="tNumGroups" placeholder="Total Groups (e.g. 4)">
+                <input type="number" id="tQualifiers" placeholder="Qualify Per Group (e.g. 2)">
+            </div>
+
+            <select id="tFormat" style="margin-top: 8px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32 or Unlimited)">
+                <input type="text" id="tFee" placeholder="Entry Fee">
+            </div>
+            <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
+            <input type="date" id="tDate" style="color:var(--text-muted);">
+            <input type="text" id="tImage" placeholder="Banner Image URL">
+            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
         </div>
 
         <!-- Player Management -->
@@ -821,10 +822,10 @@
         function createTournament() {
             const data = {
                 name: document.getElementById('tName').value,
-                type: document.getElementById('tFormatType').value,
+                type: document.getElementById('tFormatType').value || 'Knockout',
                 status: document.getElementById('tFormat').value,
                 slots: document.getElementById('tSlots').value || 'Unlimited',
-                fee: document.getElementById('tFee').value,
+                fee: document.getElementById('tFee').value || 'Free',
                 prize: document.getElementById('tPrize').value || 'TBA',
                 date: document.getElementById('tDate').value || 'TBA',
                 image: document.getElementById('tImage').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg",
@@ -864,7 +865,7 @@
                     </div>
                     <div class="t-card-info" style="border-bottom: none;">
                         <div class="t-stat"><span>SLOTS</span><strong>${t.slots || 'Unlimited'}</strong></div>
-                        <div class="t-stat"><span>FEE</span><strong style="color: var(--gold);">${t.fee}</strong></div>
+                        <div class="t-stat"><span>FEE</span><strong style="color: var(--gold);">${t.fee || 'Free'}</strong></div>
                         <div class="t-stat"><span>FORMAT</span><strong style="color: var(--logo-blue);">${tFormat}</strong></div>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 16px 13px; background: var(--card-bg-soft);">
@@ -939,11 +940,21 @@
 
         /* --- ADD/REMOVE PLAYERS FROM TOURNEY --- */
         function openManageTPlayers(docId, slots) {
-            document.getElementById('adminTournamentPlayersCard').style.display = 'block';
+            // ১. অ্যাডমিন ট্যাবে সুইচ করুন যাতে কার্ডটি দেখা যায়
+            switchTab('admin', document.getElementById('navAdmin'));
+            
+            const card = document.getElementById('adminTournamentPlayersCard');
+            card.style.display = 'block';
             document.getElementById('manageTid').value = docId;
             document.getElementById('manageTSlotsDisplay').innerText = `Slots: ${slots}`;
             document.getElementById('searchSiteUserForTourney').value = "";
             document.getElementById('tourneyUserSearchResults').style.display = 'none';
+            
+            // ২. স্ক্রল করে কার্ডের কাছে নিয়ে যান
+            setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+
             loadTPlayers(docId);
         }
 
@@ -978,6 +989,7 @@
             }).then(() => {
                 document.getElementById('searchSiteUserForTourney').value = "";
                 document.getElementById('tourneyUserSearchResults').style.display = "none";
+                alert(name + " has been added to the tournament!");
             }).catch(err => alert("Error: " + err.message));
         }
 
