@@ -82,7 +82,7 @@
         @keyframes slideInRight { from { transform: translateX(150px) scale(0.5); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* UNIFORM PROFILE STYLES (Used for both Modal and Main Section) */
+        /* UNIFORM PROFILE STYLES */
         #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
         .pub-header { display: flex; align-items: center; padding: 15px; width: 100%; background: var(--glass-bg); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
         .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 8px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
@@ -615,11 +615,19 @@
                 <input type="text" id="editPlayerKonami" placeholder="Konami UID">
                 <input type="text" id="editPlayerDevice" placeholder="Device Model">
                 <input type="url" id="editPlayerFb" placeholder="Facebook Link">
+                <input type="text" id="editPlayerPhone" placeholder="Phone Number (Optional)">
                 <label style="font-size:10px; color:gray; display:block; margin:5px 0;">Account Role:</label>
                 <select id="editPlayerRole" style="margin-bottom:10px;">
                     <option value="user">Normal Player</option>
                     <option value="moderator">Moderator</option>
                 </select>
+
+                <!-- ADMIN: LATEST MATCH DELETE SYSTEM -->
+                <div id="adminPlayerMatchHistory" style="margin-top: 10px; margin-bottom:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; border:1px solid var(--card-border);">
+                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px; font-weight:bold;">Player Match History (Latest)</p>
+                    <div id="adminPlayerMatchList" style="max-height:150px; overflow-y:auto;"></div>
+                </div>
+
                 <div style="display:flex; gap:10px; margin-top:10px;">
                     <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin-top:0;" onclick="savePlayerEdit()">Save Updates</button>
                     <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin-top:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
@@ -960,9 +968,36 @@
         function openPlayerEdit(uid) {
             const p = allUsersData.find(x => x.uid === uid);
             if(!p) return;
-            document.getElementById('editPlayerUid').value = p.uid; document.getElementById('editPlayerName').value = p.name || "";
-            document.getElementById('editPlayerKonami').value = p.konamiUid || ""; document.getElementById('editPlayerDevice').value = p.device || ""; document.getElementById('editPlayerFb').value = p.fbLink || ""; document.getElementById('editPlayerPhone').value = p.phone || "";
+            document.getElementById('editPlayerUid').value = p.uid; 
+            document.getElementById('editPlayerName').value = p.name || "";
+            document.getElementById('editPlayerKonami').value = p.konamiUid || ""; 
+            document.getElementById('editPlayerDevice').value = p.device || ""; 
+            document.getElementById('editPlayerFb').value = p.fbLink || ""; 
+            document.getElementById('editPlayerPhone').value = p.phone || "";
             if(document.getElementById('editPlayerRole')) document.getElementById('editPlayerRole').value = p.role || "user";
+            
+            document.getElementById('adminPlayerMatchList').innerHTML = "<p style='font-size:10px; color:gray;'>Loading matches...</p>";
+            db.collection("playerStats").doc(uid).get().then(doc => {
+                const list = document.getElementById('adminPlayerMatchList');
+                if(!doc.exists || !doc.data().matches || doc.data().matches.length === 0) {
+                    list.innerHTML = "<p style='font-size:10px; color:gray;'>No match records found.</p>"; return;
+                }
+                let matches = doc.data().matches; let html = "";
+                matches.slice().reverse().forEach((m, reversedIdx) => {
+                    let actualIdx = matches.length - 1 - reversedIdx;
+                    let color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#f87171';
+                    html += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card-bg-soft); padding:6px 10px; border-radius:6px; margin-bottom:5px; border:1px solid var(--card-border);">
+                        <div style="font-size:11px; color:white;">
+                            <strong style="color:${color}; width:20px; display:inline-block;">[${m.result}]</strong> 
+                            vs ${m.opp || 'Unknown'} <span style="color:var(--gold); margin-left:5px;">(${m.myScore}-${m.oppScore})</span>
+                        </div>
+                        <button onclick="adminDeletePlayerMatch('${uid}', ${actualIdx})" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:4px; font-size:9px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </div>`;
+                });
+                list.innerHTML = html;
+            });
+
             document.getElementById('adminEditPlayerForm').style.display = 'block';
         }
         function cancelPlayerEdit() { document.getElementById('adminEditPlayerForm').style.display = 'none'; }
@@ -972,6 +1007,45 @@
             let data = { name: document.getElementById('editPlayerName').value, konamiUid: document.getElementById('editPlayerKonami').value, device: document.getElementById('editPlayerDevice').value, fbLink: document.getElementById('editPlayerFb').value, phone: document.getElementById('editPlayerPhone').value };
             let roleElem = document.getElementById('editPlayerRole'); if(roleElem && currentUserRole === 'admin') data.role = roleElem.value;
             db.collection("users").doc(uid).update(data).then(() => { alert("Player details updated!"); cancelPlayerEdit(); });
+        }
+
+        // NEW: ADMIN MATCH DELETION FUNCTION FROM PLAYER PROFILE
+        async function adminDeletePlayerMatch(uid, matchIndex) {
+            if(!confirm("Delete this match? It will deduct points and goals from this player's stats/ranking.")) return;
+            try {
+                const statRef = db.collection("playerStats").doc(uid);
+                const statDoc = await statRef.get();
+                if(!statDoc.exists) return;
+                
+                let d = statDoc.data();
+                if(!d.matches || !d.matches[matchIndex]) return;
+
+                let m = d.matches[matchIndex];
+                
+                d.played = Math.max(0, (d.played || 0) - 1);
+                d.gf = Math.max(0, (d.gf || 0) - m.myScore);
+                d.ga = Math.max(0, (d.ga || 0) - m.oppScore);
+                
+                let ptsToRemove = 0;
+                if(m.result === 'W') { d.wins = Math.max(0, (d.wins || 0) - 1); ptsToRemove = 3; }
+                else if(m.result === 'D') { d.draws = Math.max(0, (d.draws || 0) - 1); ptsToRemove = 1; }
+                else if(m.result === 'L') { d.losses = Math.max(0, (d.losses || 0) - 1); }
+
+                d.matches.splice(matchIndex, 1);
+                await statRef.update(d);
+
+                const lbRef = db.collection("leaderboard").doc(uid);
+                const lbDoc = await lbRef.get();
+                if(lbDoc.exists) {
+                    let lb = lbDoc.data();
+                    lb.points = Math.max(0, (lb.points || 0) - ptsToRemove);
+                    lb.played = Math.max(0, (lb.played || 0) - 1);
+                    if(m.result === 'W') lb.wins = Math.max(0, (lb.wins || 0) - 1);
+                    lb.winRate = lb.played > 0 ? Math.round((lb.wins / lb.played) * 100) : 0;
+                    await lbRef.update({ points: lb.points, played: lb.played, wins: lb.wins, winRate: lb.winRate });
+                }
+                alert("Match removed and stats adjusted successfully!"); openPlayerEdit(uid);
+            } catch(e) { alert("Error: " + e.message); }
         }
 
         /* --- TOURNAMENT CREATION (WITH IMAGE UPLOAD) --- */
@@ -1176,7 +1250,7 @@
             }); 
         }
 
-        /* --- TOURNAMENT DETAILS --- */
+        /* --- TOURNAMENT DETAILS (REAL-TIME ON SNAPSHOT) --- */
         function switchTdTab(tabId, btn) {
             document.querySelectorAll('.td-content').forEach(el => el.classList.remove('active')); 
             document.querySelectorAll('.td-tab').forEach(el => el.classList.remove('active'));
