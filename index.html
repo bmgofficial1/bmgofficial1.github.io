@@ -6,7 +6,8 @@
     <title>BMG Official - eFootball Community</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Orbitron:wght@600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Modern Icons: Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -16,10 +17,10 @@
     <style>
         :root {
             --bg-dark: #050814;
-            --card-bg: #10162a;
-            --card-bg-soft: #0c1120;
-            --card-border: rgba(148, 163, 184, 0.10);
-            --nav-bg: #0a0e1c;
+            --card-bg: rgba(16, 22, 42, 0.55);
+            --card-bg-soft: rgba(12, 17, 32, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --nav-bg: rgba(10, 14, 28, 0.85);
             --gold: #ffd700;
             --gold-deep: #c9970a;
             --accent: #a3e635;
@@ -28,17 +29,25 @@
             --logo-blue-deep: #0284c7;
             --danger: #ef4444;
             --text-main: #ffffff;
-            --text-muted: #8a94b5;
-            --text-dim: #576088;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
             --signature: linear-gradient(90deg, var(--logo-blue), var(--gold) 50%, var(--accent));
-            --glass-bg: rgba(8, 12, 26, 0.72);
-            --glass-border: rgba(255, 255, 255, 0.06);
+            --glass-bg: rgba(8, 12, 26, 0.65);
             --font-body: 'Poppins', sans-serif;
             --font-display: 'Orbitron', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-dark); color: var(--text-main); padding-bottom: 92px; overflow-x: hidden; }
+        
+        /* Modern Background with subtle glow */
+        body { 
+            background-color: var(--bg-dark); 
+            background-image: radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.04), transparent 25%), radial-gradient(circle at 85% 30%, rgba(163, 230, 53, 0.03), transparent 25%);
+            background-attachment: fixed;
+            color: var(--text-main); 
+            padding-bottom: 110px; 
+            overflow-x: hidden; 
+        }
 
         ::selection { background: var(--logo-blue); color: #000; }
         ::-webkit-scrollbar { width: 4px; height: 0; }
@@ -63,17 +72,18 @@
         @keyframes preloaderPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.07); opacity: 0.85; } }
 
         /* MODALS & OVERLAYS */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.3s ease; }
-        .modal-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; width: 90%; max-width: 350px; position: relative; box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
-        .modal-close { position: absolute; top: 12px; right: 15px; background: rgba(255,255,255,0.05); border: none; color: var(--text-muted); font-size: 16px; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .modal-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 24px; padding: 25px; width: 90%; max-width: 350px; position: relative; box-shadow: 0 25px 50px rgba(0,0,0,0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 20px; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.3s;}
+        .modal-close:hover { background: rgba(255,255,255,0.1); color: white; }
         
         #drawOverlay { background: radial-gradient(circle at center, #0a0e1c 0%, #000000 100%); z-index: 999999; }
         .draw-arena { display: flex; align-items: center; justify-content: space-around; width: 100%; height: 180px; position: relative; overflow: hidden; margin-top: 20px; }
         .draw-player { display: flex; flex-direction: column; align-items: center; opacity: 0; width: 40%; text-align: center; }
-        .draw-player img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--logo-blue); margin-bottom: 10px; box-shadow: 0 0 20px rgba(56,189,248,0.5); }
+        .draw-player img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--logo-blue); margin-bottom: 10px; box-shadow: 0 0 20px rgba(56,189,248,0.5); object-fit: cover;}
         .draw-player span { font-size: 12px; font-weight: 700; color: white; word-break: break-word; }
-        .draw-vs { font-family: var(--font-display); font-size: 30px; color: var(--gold); font-weight: 900; opacity: 0; text-shadow: 0 0 20px rgba(255,215,0,0.8); }
+        .draw-vs { font-family: var(--font-display); font-size: 30px; color: var(--gold); font-weight: 900; opacity: 0; text-shadow: 0 0 20px rgba(255,215,0,0.8); display:flex; align-items:center; }
         .animate-draw .draw-p1 { animation: slideInLeft 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         .animate-draw .draw-vs { animation: popIn 0.5s ease 0.6s forwards; }
         .animate-draw .draw-p2 { animation: slideInRight 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s forwards; }
@@ -84,236 +94,243 @@
 
         /* UNIFORM PROFILE STYLES */
         #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
-        .pub-header { display: flex; align-items: center; padding: 15px; width: 100%; background: var(--glass-bg); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
-        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 8px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
-        .pub-title { flex: 1; text-align: center; font-family: var(--font-display); color: var(--gold); font-size: 14px; letter-spacing: 1.5px; margin-right: 34px; font-weight: 800; }
+        .pub-header { display: flex; align-items: center; padding: 15px; width: 100%; background: rgba(10, 14, 28, 0.8); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
+        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 36px; height: 36px; border-radius: 12px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px;}
+        .pub-title { flex: 1; text-align: center; font-family: var(--font-display); color: var(--gold); font-size: 14px; letter-spacing: 1.5px; margin-right: 36px; font-weight: 800; }
         
         .pub-body { padding: 15px; width: 100%; max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
         .pub-avatar-box { text-align: center; margin-bottom: 20px; }
-        .pub-avatar-box img { width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--card-border); padding: 4px; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: cover; }
+        .pub-avatar-box img { width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--card-border); padding: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); object-fit: cover; }
         .pub-avatar-box h2 { font-family: var(--font-display); font-size: 22px; font-weight: 800; margin-top: 12px; color: white; text-transform: capitalize; }
         
         .pub-rank-row { display: flex; justify-content: space-around; border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); padding: 15px 0; margin-bottom: 20px; }
         .pub-rank-item { text-align: center; flex: 1; }
         .pub-rank-item:first-child { border-right: 1px solid var(--card-border); }
         .pub-rank-lbl { font-size: 10px; color: var(--text-muted); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
-        .pub-rank-val { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: white; }
+        .pub-rank-val { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: white; display: flex; align-items: center; justify-content: center; gap: 5px;}
         
-        .pub-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--card-bg); border-radius: 12px; border: 1px solid var(--card-border); margin-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .pub-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); backdrop-filter: blur(10px); }
         .pub-stat-box { text-align: center; padding: 15px 5px; border-right: 1px solid var(--card-border); }
         .pub-stat-box:last-child { border-right: none; }
         .pub-stat-num { font-size: 18px; font-weight: 800; color: white; }
         .pub-stat-lbl { font-size: 9px; color: var(--text-dim); font-weight: 700; margin-top: 4px; text-transform: uppercase; }
         
-        .pub-tabs-wrap { display: flex; background: var(--card-bg-soft); border-radius: 12px; padding: 4px; margin-bottom: 20px; border: 1px solid var(--card-border); }
-        .pub-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 10px 0; font-size: 12px; font-weight: 700; border-radius: 10px; cursor: pointer; transition: 0.3s; }
-        .pub-tab.active { background: var(--gold); color: #000; box-shadow: 0 4px 10px rgba(255,215,0,0.3); }
+        .pub-tabs-wrap { display: flex; background: var(--card-bg-soft); border-radius: 14px; padding: 5px; margin-bottom: 20px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
+        .pub-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 10px 0; font-size: 12px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .pub-tab.active { background: var(--gold); color: #000; font-weight: 700; box-shadow: 0 4px 10px rgba(255,215,0,0.3); }
         .pub-content { display: none; animation: fadeIn 0.3s ease; }
         .pub-content.active { display: block; }
         
-        .pub-card { background: var(--card-bg); border-radius: 14px; padding: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .pub-card-title { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
-        .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .pub-list-item:last-child { border-bottom: none; }
-        .pub-list-lbl { font-size: 13px; font-weight: 600; color: white; display: flex; align-items: center; }
-        .pub-list-val { font-size: 13px; font-weight: 700; color: var(--text-muted); }
+        .pub-card { background: var(--card-bg); border-radius: 16px; padding: 18px; border: 1px solid var(--card-border); box-shadow: 0 10px 30px rgba(0,0,0,0.3); backdrop-filter: blur(16px); }
+        .pub-card-title { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1.5px; margin-bottom: 12px; text-transform: uppercase; }
+        .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .pub-list-item:last-child { border-bottom: none; padding-bottom: 0;}
+        .pub-list-lbl { font-size: 13px; font-weight: 500; color: white; display: flex; align-items: center; gap: 8px;}
+        .pub-list-lbl i { font-size: 18px; color: var(--text-dim); }
+        .pub-list-val { font-size: 13px; font-weight: 600; color: var(--text-muted); display:flex; align-items:center; gap:5px;}
         .pub-list-val.copyable { color: var(--logo-blue); cursor: pointer; }
 
         /* FORM CALCULATION STYLES */
-        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 15px; }
+        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 15px; }
         .form-grade-left { display: flex; align-items: center; gap: 12px; }
-        .form-grade-badge { font-family: var(--font-display); font-size: 16px; font-weight: 900; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .grade-a-plus, .grade-a { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; border: 1.5px solid #4ade80; box-shadow: 0 0 15px rgba(34,197,94,0.4); }
-        .grade-b-plus, .grade-b { background: linear-gradient(135deg, #38bdf8, #0284c7); color: #fff; border: 1.5px solid #7dd3fc; box-shadow: 0 0 15px rgba(56,189,248,0.4); }
-        .grade-c-plus, .grade-c, .grade-c-minus { background: linear-gradient(135deg, #eab308, #a16207); color: #fff; border: 1.5px solid #fde047; box-shadow: 0 0 15px rgba(234,179,8,0.3); }
-        .grade-d-minus { background: linear-gradient(135deg, #f97316, #c2410c); color: #fff; border: 1.5px solid #fdba74; }
-        .grade-e-minus { background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: 1.5px solid #f87171; }
-        .form-history-list { display: flex; flex-direction: column; gap: 7px; max-height: 280px; overflow-y: auto; }
-        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 7px 10px; }
+        .form-grade-badge { font-family: var(--font-display); font-size: 16px; font-weight: 900; width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .grade-a-plus, .grade-a { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; border: 1px solid #4ade80; box-shadow: 0 4px 15px rgba(34,197,94,0.3); }
+        .grade-b-plus, .grade-b { background: linear-gradient(135deg, #38bdf8, #0284c7); color: #fff; border: 1px solid #7dd3fc; box-shadow: 0 4px 15px rgba(56,189,248,0.3); }
+        .grade-c-plus, .grade-c, .grade-c-minus { background: linear-gradient(135deg, #eab308, #a16207); color: #fff; border: 1px solid #fde047; box-shadow: 0 4px 15px rgba(234,179,8,0.2); }
+        .grade-d-minus { background: linear-gradient(135deg, #f97316, #c2410c); color: #fff; border: 1px solid #fdba74; }
+        .grade-e-minus { background: linear-gradient(135deg, #ef4444, #b91c1c); color: #fff; border: 1px solid #f87171; }
+        .form-history-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; }
         .form-history-item.win { border-left: 3px solid #22c55e; }
         .form-history-item.draw { border-left: 3px solid #94a3b8; }
         .form-history-item.loss { border-left: 3px solid #ef4444; }
 
-        /* HEADER & SIDE MENU */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 16px 15px; background: var(--glass-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease; }
-        .header::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--signature); opacity: 0.55; }
-        .header.scrolled { background: rgba(6, 9, 20, 0.92); box-shadow: 0 12px 30px -18px rgba(0,0,0,0.85); }
-        .header-brand { display: flex; align-items: center; gap: 9px; }
-        .header-mark { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.35), rgba(56,189,248,0.05)); border: 1px solid rgba(56,189,248,0.35); color: var(--logo-blue); font-size: 13px; }
-        .header h2 { font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 2.5px; }
+        /* HEADER & SIDE MENU - MODERNIZED */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: rgba(10, 14, 28, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; transition: box-shadow 0.3s ease, background 0.3s ease; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .header.scrolled { background: rgba(6, 9, 20, 0.95); box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-bottom-color: rgba(255,255,255,0.08); }
+        .header-brand { display: flex; align-items: center; gap: 10px; }
+        .header-mark { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top left, rgba(56,189,248,0.2), transparent); border: 1px solid rgba(56,189,248,0.3); color: var(--logo-blue); font-size: 18px; box-shadow: 0 4px 10px rgba(56,189,248,0.2); }
+        .header h2 { font-family: var(--font-display); font-size: 17px; font-weight: 800; letter-spacing: 2px; }
         .header span { color: var(--logo-blue); }
         
-        /* MODERN HEADER ACTIONS */
-        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
         .header-btn {
-            width: 38px; height: 38px;
+            width: 40px; height: 40px;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-main);
             display: flex; align-items: center; justify-content: center;
-            font-size: 15px;
+            font-size: 20px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
         }
         .header-btn:active { transform: scale(0.92); }
-        .header-btn.prof { 
-            color: var(--logo-blue); 
-            background: radial-gradient(circle at top left, rgba(56,189,248,0.1), rgba(0,0,0,0));
-            border-color: rgba(56,189,248,0.25);
-        }
+        .header-btn.prof { color: var(--logo-blue); }
         .header-btn.menu { color: var(--text-muted); }
         .modern-dots { display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; }
         .modern-dots span { display: block; width: 4.5px; height: 4.5px; background-color: var(--text-muted); border-radius: 50%; transition: 0.3s; }
-        .header-btn.menu:hover .modern-dots span { background-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
+        .header-btn.menu:hover .modern-dots span { background-color: var(--gold); box-shadow: 0 0 6px var(--gold); }
 
-        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(4px); }
+        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(5px); }
         .side-menu-overlay.open { display: block; opacity: 1; }
-        .side-menu { position: fixed; top: 0; right: -300px; width: 270px; height: 100%; background: var(--bg-dark); z-index: 99999; transition: right 0.3s ease; padding: 25px 20px; border-left: 1px solid var(--glass-border); overflow-y: auto; display: flex; flex-direction: column; }
+        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: rgba(10,14,28,0.95); backdrop-filter: blur(20px); z-index: 99999; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); padding: 25px 20px; border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
         .side-menu.open { right: 0; }
         .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-        .sm-header h3 { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: white; letter-spacing: 1px; }
-        .sm-close { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-muted); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+        .sm-header h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: white; letter-spacing: 1.5px; }
+        .sm-close { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-muted); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 22px; }
+        .sm-close:hover { background: rgba(255,255,255,0.1); color: white; }
         .sm-group-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin: 20px 0 10px 5px; }
-        .sm-item { display: flex; align-items: center; gap: 14px; padding: 12px 15px; font-size: 13px; font-weight: 600; color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 4px; }
-        .sm-item i { font-size: 16px; width: 20px; text-align: center; color: var(--text-muted); }
-        .sm-item.highlight { background: rgba(163,230,53,0.1); color: var(--accent); border: 1px solid rgba(163,230,53,0.2); }
+        .sm-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; font-size: 13px; font-weight: 500; color: #e2e8f0; border-radius: 14px; cursor: pointer; transition: 0.2s; margin-bottom: 6px; }
+        .sm-item:hover { background: rgba(255,255,255,0.03); }
+        .sm-item i { font-size: 20px; width: 22px; text-align: center; color: var(--text-dim); transition: 0.2s;}
+        .sm-item.highlight { background: linear-gradient(90deg, rgba(163,230,53,0.15), rgba(163,230,53,0.05)); color: var(--accent); border: 1px solid rgba(163,230,53,0.2); font-weight: 600;}
+        .sm-item.highlight i { color: var(--accent); }
 
-        .page-section { display: none; padding: 16px 15px 0; animation: fadeIn 0.35s ease; }
+        .page-section { display: none; padding: 20px 15px 0; animation: fadeIn 0.4s ease; }
         .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .section-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; padding-left: 11px; position: relative; }
-        .section-title::before { content: ''; position: absolute; left: 0; top: 2px; bottom: 2px; width: 4px; border-radius: 3px; background: var(--signature); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .section-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 18px; padding-left: 12px; position: relative; }
+        .section-title::before { content: ''; position: absolute; left: 0; top: 2px; bottom: 2px; width: 4px; border-radius: 4px; background: var(--signature); }
 
         /* HERO SLIDER */
-        .hero-banner-slider { position: relative; width: 100%; height: 190px; border-radius: 18px; overflow: hidden; margin-bottom: 28px; border: 1px solid var(--card-border); box-shadow: 0 18px 40px -12px rgba(0,0,0,0.65); }
-        .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 22px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
+        .hero-banner-slider { position: relative; width: 100%; height: 200px; border-radius: 24px; overflow: hidden; margin-bottom: 30px; border: 1px solid var(--card-border); box-shadow: 0 15px 40px -10px rgba(0,0,0,0.6); }
+        .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 25px; opacity: 0; transition: opacity 1s ease-in-out; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
         .hero-content { z-index: 3; width: 65%; position: relative; }
-        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 11px; border-radius: 12px; display: inline-block; margin-bottom: 9px; letter-spacing: 1.5px; border: 1px solid; backdrop-filter: blur(4px); }
-        .hero-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; line-height: 1.18; margin-bottom: 7px; text-transform: uppercase; text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
-        .hero-desc { font-size: 9.5px; color: #cbd5e1; margin-bottom: 13px; line-height: 1.5; }
-        .hero-btn { border: none; padding: 9px 14px; border-radius: 9px; font-size: 10.5px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; width: fit-content; letter-spacing: 0.4px; }
+        .hero-badge { font-size: 9px; font-weight: 700; padding: 5px 12px; border-radius: 12px; display: inline-block; margin-bottom: 10px; letter-spacing: 1.5px; border: 1px solid; backdrop-filter: blur(4px); }
+        .hero-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; line-height: 1.15; margin-bottom: 8px; text-transform: uppercase; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .hero-desc { font-size: 10px; color: rgba(255,255,255,0.7); margin-bottom: 15px; line-height: 1.5; }
+        .hero-btn { border: none; padding: 10px 16px; border-radius: 12px; font-size: 11px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 6px; width: fit-content; letter-spacing: 0.5px; transition: 0.3s; }
+        .hero-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
         .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 65%; object-fit: cover; z-index: 1; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%); }
-        .hero-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
+        .hero-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 4; }
         .hero-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
-        .hero-dots .dot.active { width: 18px; border-radius: 4px; background: var(--logo-blue); }
+        .hero-dots .dot.active { width: 20px; border-radius: 4px; background: var(--logo-blue); box-shadow: 0 0 8px rgba(56,189,248,0.5);}
 
-        .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px; }
-        .sec-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding-left: 11px; position: relative; }
-        .sec-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
-        .sec-link { font-size: 11px; color: var(--logo-blue); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        .sec-badge.live { background: rgba(255, 215, 0, 0.1); color: var(--gold); border-color: rgba(255, 215, 0, 0.3); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.3); font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+        .sec-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+        .sec-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding-left: 12px; position: relative; }
+        .sec-title::before { content: ''; position: absolute; left: 0; top: 2px; bottom: 2px; width: 4px; border-radius: 4px; background: var(--signature); }
+        .sec-link { font-size: 11px; color: var(--logo-blue); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.2s;}
+        .sec-link:hover { color: white; }
+        .sec-badge.live { background: rgba(255, 215, 0, 0.1); color: var(--gold); border-color: rgba(255, 215, 0, 0.3); padding: 5px 12px; border-radius: 12px; border: 1px solid rgba(255, 215, 0, 0.3); font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(255,215,0,0.1); }
         .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); animation: livepulse 1.6s infinite; }
-        @keyframes livepulse { 0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.55); } 70% { box-shadow: 0 0 0 6px rgba(255,215,0,0); } 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); } }
+        @keyframes livepulse { 0% { box-shadow: 0 0 0 0 rgba(255,215,0,0.6); } 70% { box-shadow: 0 0 0 6px rgba(255,215,0,0); } 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); } }
 
         /* TOURNAMENT SLIDER */
-        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 6px; scrollbar-width: none; }
+        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 16px; padding-bottom: 10px; scrollbar-width: none; }
         .t-slider::-webkit-scrollbar { display: none; }
-        .t-card { min-width: 90%; scroll-snap-align: center; border-radius: 18px; overflow: hidden; box-shadow: 0 14px 30px -14px rgba(0,0,0,0.7); background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box, linear-gradient(135deg, rgba(56,189,248,0.35), rgba(255,215,0,0.12) 55%, rgba(163,230,53,0.25)) border-box; border: 1px solid transparent; }
-        .t-card-img { height: 148px; background-size: cover; background-position: center; position: relative; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
-        .t-card-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(3,6,15,0.95), rgba(3,6,15,0.15) 60%); }
-        .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 4px 9px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 5px; }
+        .t-card { min-width: 90%; scroll-snap-align: center; border-radius: 20px; overflow: hidden; box-shadow: 0 15px 35px -10px rgba(0,0,0,0.6); background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(16px); }
+        .t-card-img { height: 160px; background-size: cover; background-position: center; position: relative; padding: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .t-card-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,14,28,0.95) 0%, rgba(10,14,28,0.2) 60%); }
+        .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 12px; align-self: flex-start; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(255,215,0,0.3);}
         .t-status::before { content:''; width: 6px; height: 6px; background: #000; border-radius: 50%; }
         .t-card-titles { position: relative; z-index: 2; }
-        .t-prize { font-family: var(--font-display); color: var(--gold); font-size: 11px; font-weight: 700; margin-bottom: 3px; text-transform: uppercase;}
-        .t-name { font-family: var(--font-display); font-size: 16px; font-weight: 800; text-transform: uppercase; line-height: 1.25; }
-        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; background: var(--card-bg-soft); border-top: 1px solid var(--card-border); }
+        .t-prize { font-family: var(--font-display); color: var(--gold); font-size: 12px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        .t-name { font-family: var(--font-display); font-size: 18px; font-weight: 800; text-transform: uppercase; line-height: 1.25; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: rgba(255,255,255,0.02); border-top: 1px solid var(--card-border); }
         .t-stat { text-align: center; }
-        .t-stat span { display: block; font-size: 8.5px; color: var(--text-dim); font-weight: 700; margin-bottom: 3px; text-transform: uppercase; }
-        .t-stat strong { font-family: var(--font-display); font-size: 13px; font-weight: 700; }
-        .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 8px 13px; border-radius: 9px; font-size: 11px; font-weight: 700; cursor: pointer; flex:1;}
+        .t-stat span { display: block; font-size: 9px; color: var(--text-dim); font-weight: 700; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .t-stat strong { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: white;}
+        .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 10px 15px; border-radius: 12px; font-size: 11.5px; font-weight: 700; cursor: pointer; flex:1; transition: 0.3s; box-shadow: 0 4px 15px rgba(56,189,248,0.3); display: flex; align-items: center; justify-content: center; gap: 6px;}
+        .t-reg-btn:hover { transform: translateY(-2px); }
 
         /* TOURNAMENT DETAILS UI */
-        .td-tabs-container { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; }
+        .td-tabs-container { display: flex; gap: 10px; margin-bottom: 18px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--card-border); padding-bottom: 12px; }
         .td-tabs-container::-webkit-scrollbar { display: none; }
-        .td-tab { background: transparent; border: 1px solid var(--card-border); color: var(--text-muted); padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; }
-        .td-tab.active { background: rgba(56,189,248,0.1); color: var(--logo-blue); border-color: rgba(56,189,248,0.4); }
+        .td-tab { background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); color: var(--text-muted); padding: 10px 18px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.3s;}
+        .td-tab.active { background: rgba(56,189,248,0.1); color: var(--logo-blue); border-color: rgba(56,189,248,0.4); font-weight: 700; box-shadow: 0 4px 10px rgba(56,189,248,0.15);}
         .td-content { display: none; animation: fadeIn 0.3s ease; }
         .td-content.active { display: block; }
         
         /* NEW GROUP TABLE UI WITH STATS */
-        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
-        .td-group-head { background: var(--card-bg-soft); padding: 10px 15px; border-bottom: 1px solid var(--card-border); font-family: var(--font-display); font-size: 13px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
+        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); backdrop-filter: blur(16px); }
+        .td-group-head { background: rgba(255,255,255,0.03); padding: 12px 18px; border-bottom: 1px solid var(--card-border); font-family: var(--font-display); font-size: 14px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
         .g-table-wrap { width: 100%; overflow-x: auto; scrollbar-width: none; padding-bottom: 5px; }
         .g-table-wrap::-webkit-scrollbar { display: none; }
-        .g-table-header { display: flex; padding: 10px 15px 6px; border-bottom: 1px solid var(--card-border); font-size: 9px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; min-width: 420px; }
-        .g-table-row { display: flex; padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; min-width: 420px; transition: background 0.2s; }
+        .g-table-header { display: flex; padding: 12px 18px 8px; border-bottom: 1px solid var(--card-border); font-size: 9.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; min-width: 440px; }
+        .g-table-row { display: flex; padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; min-width: 440px; transition: background 0.2s; }
         .g-table-row:last-child { border-bottom: none; }
-        .g-table-row.qualify-spot { border-left: 2px solid var(--accent); background: linear-gradient(90deg, rgba(163,230,53,0.05), transparent 40%); padding-left: 13px; }
+        .g-table-row.qualify-spot { border-left: 3px solid var(--accent); background: linear-gradient(90deg, rgba(163,230,53,0.05), transparent 40%); padding-left: 15px; }
         
-        .g-col-team-head { flex: 1; min-width: 150px; }
-        .g-col-stat-head { width: 28px; text-align: center; }
-        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 150px; }
-        .g-col-stat { width: 28px; text-align: center; font-size: 11px; font-weight: 600; color: white; font-family: var(--font-display); }
+        .g-col-team-head { flex: 1; min-width: 160px; }
+        .g-col-stat-head { width: 30px; text-align: center; }
+        .g-col-team { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 160px; }
+        .g-col-stat { width: 30px; text-align: center; font-size: 12px; font-weight: 600; color: white; font-family: var(--font-display); }
         .g-rank { font-size: 11px; color: var(--text-dim); font-weight: 700; width: 15px; text-align: center; }
-        .g-name { font-size: 11.5px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; cursor: pointer; transition: 0.2s;}
+        .g-name { font-size: 12px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 115px; cursor: pointer; transition: 0.2s;}
         .g-name:hover { color: var(--logo-blue); }
-        .g-col-team img { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--card-border); cursor: pointer; object-fit: cover;}
+        .g-col-team img { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--card-border); cursor: pointer; object-fit: cover;}
         
         .g-col-stat.w { color: #4ade80; }
         .g-col-stat.d { color: #94a3b8; }
         .g-col-stat.l { color: #f87171; }
-        .g-col-stat.pts { color: var(--gold); font-weight: 800; font-size: 12px; }
+        .g-col-stat.pts { color: var(--gold); font-weight: 800; font-size: 13px; }
         .g-col-stat-head.pts { color: var(--gold); }
 
-        .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:10px; padding:10px; margin-bottom:10px; }
-        .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:5px; text-align:center; cursor:pointer; }
-        .td-m-team img { width:30px; height:30px; border-radius:50%; border:1px solid var(--logo-blue); transition: 0.2s; }
+        .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:14px; padding:12px 15px; margin-bottom:12px; transition: 0.3s; }
+        .td-match-box:hover { background: rgba(255,255,255,0.04); }
+        .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:6px; text-align:center; cursor:pointer; }
+        .td-m-team img { width:34px; height:34px; border-radius:50%; border:2px solid var(--logo-blue); transition: 0.2s; box-shadow: 0 4px 10px rgba(56,189,248,0.2);}
         .td-m-team:active img { transform: scale(0.9); }
-        .td-m-team span { font-size:10px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
-        .td-m-vs { font-family:var(--font-display); font-size:14px; color:var(--gold); font-weight:800; background:rgba(255,215,0,0.1); padding:4px 10px; border-radius:6px; text-align: center; }
+        .td-m-team span { font-size:10.5px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+        .td-m-vs { font-family:var(--font-display); font-size:15px; color:var(--gold); font-weight:800; background:rgba(255,215,0,0.1); padding:5px 12px; border-radius:8px; text-align: center; border: 1px solid rgba(255,215,0,0.2); }
 
         /* MY MATCHES UI */
-        .mm-card { background: var(--card-bg); border-radius: 14px; padding: 14px; margin-bottom: 15px; border: 1px solid var(--card-border); box-shadow: 0 10px 20px -10px rgba(0,0,0,0.5); }
-        .mm-top { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 15px; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; align-items: center; }
-        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(163,230,53,0.1); padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(163,230,53,0.2); }
-        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .mm-player { display: flex; align-items: center; gap: 8px; width: 40%; cursor: pointer; }
+        .mm-card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 25px rgba(0,0,0,0.3); backdrop-filter: blur(16px); }
+        .mm-top { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 15px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px; align-items: center; }
+        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(163,230,53,0.1); padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(163,230,53,0.2); letter-spacing: 0.5px;}
+        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .mm-player { display: flex; align-items: center; gap: 10px; width: 40%; cursor: pointer; }
         .mm-player.right { flex-direction: row-reverse; text-align: right; }
-        .mm-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-bg); box-shadow: 0 0 0 2px var(--text-dim); }
-        .mm-name { font-size: 12px; font-weight: 700; color: white; line-height: 1.2; word-break: break-word; }
-        .mm-vs-badge { font-family: var(--font-display); font-size: 11px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 8px; }
+        .mm-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-bg); box-shadow: 0 0 0 2px var(--text-dim); }
+        .mm-name { font-size: 13px; font-weight: 600; color: white; line-height: 1.2; word-break: break-word; }
+        .mm-vs-badge { font-family: var(--font-display); font-size: 12px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 5px 10px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.2); }
         .mm-bot { display: flex; justify-content: space-between; align-items: center; }
-        .mm-btn { background: linear-gradient(135deg, var(--gold), var(--gold-deep)); color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px -4px rgba(255,215,0,0.5); }
-        .mm-status { font-size: 9px; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid; }
+        .mm-btn { background: linear-gradient(135deg, var(--gold), var(--gold-deep)); color: #000; border: none; padding: 10px 16px; border-radius: 10px; font-size: 10.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(255,215,0,0.4); transition: 0.3s; }
+        .mm-btn:hover { transform: translateY(-2px); }
+        .mm-status { font-size: 10px; padding: 5px 10px; border-radius: 8px; font-weight: 700; border: 1px solid; display: flex; align-items: center; gap: 5px;}
         .mm-status.pending { color: #f87171; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
         .mm-status.submitted { color: var(--logo-blue); background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.2); }
         .mm-status.approved { color: var(--accent); background: rgba(163,230,53,0.1); border-color: rgba(163,230,53,0.2); }
 
         /* General UI Elements */
-        .card { background: var(--card-bg); border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: 0 10px 26px -18px rgba(0,0,0,0.8); }
-        input, select { width: 100%; margin: 8px 0; padding: 11px 12px; border-radius: 8px; border: 1px solid var(--card-border); background: #161d33; color: white; font-size: 13px; font-weight: 500; transition: border-color 0.2s; }
-        input:focus, select:focus { outline: none; border-color: var(--logo-blue); box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
-        .submit-btn { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #04210a; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: 800; margin-top: 10px; transition: 0.25s; }
-        .submit-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
-        .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; text-align: center; }
+        .card { background: var(--card-bg); border-radius: 20px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--card-border); box-shadow: 0 10px 30px rgba(0,0,0,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        input, select { width: 100%; margin: 8px 0; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: white; font-size: 13px; font-weight: 500; transition: all 0.3s ease; }
+        input:focus, select:focus { outline: none; border-color: var(--logo-blue); background: rgba(255,255,255,0.08); box-shadow: 0 0 0 4px rgba(56,189,248,0.1); }
+        input::placeholder { color: var(--text-dim); }
+        
+        .submit-btn { background: linear-gradient(135deg, var(--accent), var(--accent-deep)); color: #04210a; border: none; padding: 14px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: 800; margin-top: 10px; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(163,230,53,0.3); font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(163,230,53,0.4); }
+        .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 18px; cursor: pointer; font-weight: 600; text-align: center; transition: 0.2s;}
+        .link-text:hover { color: white; }
 
         /* LEADERBOARD LIST */
-        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding: 4px 8px 12px 10px; border-left: 3px solid transparent; border-radius: 6px; }
-        .leaderboard-row:nth-child(1) { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.06), transparent 60%); }
-        .leaderboard-row:nth-child(2) { border-left-color: #cbd5e1; background: linear-gradient(90deg, rgba(203,213,225,0.05), transparent 60%); }
-        .leaderboard-row:nth-child(3) { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205,127,50,0.06), transparent 60%); }
-        .rank { color: var(--gold); font-family: var(--font-display); font-weight: 700; width: 26px; font-size: 15px; text-align: center;}
-        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 26px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 5px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px -3px rgba(255,215,0,0.55);}
-        .rank-badge::after { content:''; position: absolute; bottom: -5px; left: 0; width: 0; height: 0; border-left: 13px solid transparent; border-right: 13px solid transparent; border-top: 5px solid var(--gold-deep);}
-        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 11px; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,215,0,0.5); }
+        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03); padding: 8px 12px 16px 12px; border-left: 3px solid transparent; border-radius: 10px; transition: 0.3s; }
+        .leaderboard-row:hover { background: rgba(255,255,255,0.02); }
+        .leaderboard-row:nth-child(1) { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.08), transparent 60%); }
+        .leaderboard-row:nth-child(2) { border-left-color: #cbd5e1; background: linear-gradient(90deg, rgba(203,213,225,0.08), transparent 60%); }
+        .leaderboard-row:nth-child(3) { border-left-color: #cd7f32; background: linear-gradient(90deg, rgba(205,127,50,0.08), transparent 60%); }
+        .rank { color: var(--gold); font-family: var(--font-display); font-weight: 700; width: 28px; font-size: 16px; text-align: center;}
+        .rank-badge { font-family: var(--font-display); background: linear-gradient(160deg, #ffe27a, var(--gold-deep)); width: 28px; height: 32px; display: flex; justify-content: center; align-items: center; border-radius: 6px; color: #221900; font-weight: 800; position: relative; box-shadow: 0 4px 10px rgba(255,215,0,0.5);}
+        .rank-badge::after { content:''; position: absolute; bottom: -6px; left: 0; width: 0; height: 0; border-left: 14px solid transparent; border-right: 14px solid transparent; border-top: 6px solid var(--gold-deep);}
+        .lb-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; margin: 0 14px; box-shadow: 0 0 0 2px var(--card-bg), 0 0 0 3px rgba(255,215,0,0.5); }
         .player-info { flex: 1; }
-        .player-name { font-weight: 700; font-size: 14px; margin-bottom: 3px;}
-        .points { font-size: 11px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 5px; font-family: var(--font-display); }
+        .player-name { font-weight: 600; font-size: 15px; margin-bottom: 4px; color: white;}
+        .points { font-size: 11.5px; color: var(--accent); font-weight: 600; display: flex; align-items: center; gap: 5px; font-family: var(--font-display); }
         .win-rate-box { text-align: right; }
-        .win-rate-val { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--accent); }
-        .win-rate-lbl { font-size: 9.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; }
+        .win-rate-val { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: var(--accent); }
+        .win-rate-lbl { font-size: 9.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; justify-content: space-around; padding: 10px 0 12px; z-index: 1000; border-radius: 20px 20px 0 0; border-top: 1px solid var(--glass-border); box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
-        .bottom-nav::before { content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 2px; background: var(--signature); border-radius: 2px; opacity: 0.6; }
-        .nav-item { color: var(--text-muted); text-align: center; font-size: 10.5px; cursor: pointer; font-weight: 600; padding: 6px 12px; border-radius: 14px; transition: 0.25s; }
-        .nav-item i { font-size: 17px; margin-bottom: 5px; display:block; }
+        /* FLOATING BOTTOM NAV (Modern Apple Style) */
+        .bottom-nav { position: fixed; bottom: 15px; left: 15px; right: 15px; background: rgba(10, 14, 28, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 10px 5px 12px; z-index: 1000; border-radius: 24px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+        .nav-item { color: var(--text-muted); text-align: center; font-size: 10px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 16px; transition: 0.3s; display: flex; flex-direction: column; align-items: center;}
+        .nav-item i { font-size: 24px; margin-bottom: 4px; display:block; transition: 0.3s; }
         .nav-admin { display: none; color: #f87171; }
-        .nav-admin.show { display: block; }
-        .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); }
+        .nav-admin.show { display: flex; }
+        .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); font-weight: 600; box-shadow: 0 4px 15px rgba(56,189,248,0.1);}
+        .nav-item.active i { transform: translateY(-2px); }
     </style>
 </head>
 <body>
@@ -340,7 +357,7 @@
                 <div class="draw-player draw-p2"><img id="drawImg2" src=""><span id="drawName2">Player 2</span></div>
             </div>
             
-            <button id="drawNextBtn" class="submit-btn" style="background:var(--accent); color:#000; width:80%; margin:30px auto;" onclick="animateNextDraw()">NEXT MATCH DRAW <i class="fas fa-random"></i></button>
+            <button id="drawNextBtn" class="submit-btn" style="background:var(--accent); color:#000; width:80%; margin:30px auto;" onclick="animateNextDraw()">NEXT MATCH DRAW <i class='bx bx-shuffle'></i></button>
             <button id="drawFinishBtn" class="submit-btn" style="background:linear-gradient(135deg, #f97316, #ef4444); color:#fff; width:80%; margin:30px auto; display:none;" onclick="finishDraw()">SAVE ALL FIXTURES</button>
         </div>
     </div>
@@ -348,14 +365,14 @@
     <!-- PUBLIC PROFILE MODAL -->
     <div id="publicProfileModal" class="modal-overlay">
         <div class="pub-header">
-            <button class="pub-back-btn" onclick="closeModal('publicProfileModal')"><i class="fas fa-chevron-left"></i></button>
+            <button class="pub-back-btn" onclick="closeModal('publicProfileModal')"><i class='bx bx-chevron-left'></i></button>
             <h3 class="pub-title">PLAYER OVERVIEW</h3>
         </div>
         <div class="pub-body">
             <div class="pub-avatar-box"><img id="pubProfAvatar" src=""><h2 id="pubProfName">Player Name</h2></div>
             <div class="pub-rank-row">
                 <div class="pub-rank-item"><div class="pub-rank-lbl">Current Rank</div><div id="pubProfRank" class="pub-rank-val">#--</div></div>
-                <div class="pub-rank-item"><div class="pub-rank-lbl">Trophies Won</div><div id="pubProfTrophies" class="pub-rank-val"><i class="fas fa-trophy" style="color:var(--gold); font-size:16px;"></i> 0</div></div>
+                <div class="pub-rank-item"><div class="pub-rank-lbl">Trophies Won</div><div id="pubProfTrophies" class="pub-rank-val"><i class='bx bxs-trophy' style="color:var(--gold);"></i> 0</div></div>
             </div>
             
             <div class="pub-stats-grid">
@@ -374,13 +391,13 @@
 
             <div id="pubInfo" class="pub-content active pub-card">
                 <div class="pub-card-title">Player Information</div>
-                <div class="pub-list-item"><span class="pub-list-lbl">eFootball UID</span><span id="pubInfoUid" class="pub-list-val copyable" onclick="copyUID('pubInfoUid')">N/A</span></div>
-                <div class="pub-list-item"><span class="pub-list-lbl">Device Model</span><span id="pubInfoDevice" class="pub-list-val">N/A</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-id-card'></i> eFootball UID</span><span id="pubInfoUid" class="pub-list-val copyable" onclick="copyUID('pubInfoUid')">N/A <i class='bx bx-copy'></i></span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-mobile-alt'></i> Device Model</span><span id="pubInfoDevice" class="pub-list-val">N/A</span></div>
                 
-                <div class="pub-card-title" style="margin-top:15px; border-top:1px solid var(--card-border); padding-top:15px;">Social</div>
+                <div class="pub-card-title" style="margin-top:20px; border-top:1px solid var(--card-border); padding-top:20px;">Social Links</div>
                 <div class="pub-list-item" style="border:none;">
-                    <span class="pub-list-lbl"><i class="fab fa-facebook" style="color:#1877F2; font-size:16px; margin-right:8px;"></i> Facebook</span>
-                    <a href="#" id="pubInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i></a>
+                    <span class="pub-list-lbl"><i class='bx bxl-facebook-circle' style="color:#1877F2;"></i> Facebook</span>
+                    <a href="#" id="pubInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Profile <i class='bx bx-link-external'></i></a>
                 </div>
             </div>
 
@@ -393,7 +410,7 @@
             <div id="pubForm" class="pub-content pub-card"></div>
             <div id="pubTrophy" class="pub-content pub-card">
                 <div class="pub-card-title">Trophy Cabinet</div>
-                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:10px;"><i class="fas fa-box-open" style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:12px;"><i class='bx bx-box' style="font-size:40px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
             </div>
         </div>
     </div>
@@ -408,7 +425,7 @@
             
             <div class="pub-rank-row">
                 <div class="pub-rank-item"><div class="pub-rank-lbl">Current Rank</div><div id="myProfRank" class="pub-rank-val">#--</div></div>
-                <div class="pub-rank-item"><div class="pub-rank-lbl">Trophies Won</div><div id="myProfTrophies" class="pub-rank-val"><i class="fas fa-trophy" style="color:var(--gold); font-size:16px;"></i> 0</div></div>
+                <div class="pub-rank-item"><div class="pub-rank-lbl">Trophies Won</div><div id="myProfTrophies" class="pub-rank-val"><i class='bx bxs-trophy' style="color:var(--gold);"></i> 0</div></div>
             </div>
             
             <div class="pub-stats-grid">
@@ -427,13 +444,13 @@
 
             <div id="myInfo" class="pub-content active pub-card">
                 <div class="pub-card-title">Player Information</div>
-                <div class="pub-list-item"><span class="pub-list-lbl">eFootball UID</span><span id="myInfoUid" class="pub-list-val copyable" onclick="copyUID('myInfoUid')">N/A</span></div>
-                <div class="pub-list-item"><span class="pub-list-lbl">Device Model</span><span id="myInfoDevice" class="pub-list-val">N/A</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-id-card'></i> eFootball UID</span><span id="myInfoUid" class="pub-list-val copyable" onclick="copyUID('myInfoUid')">N/A <i class='bx bx-copy'></i></span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-mobile-alt'></i> Device Model</span><span id="myInfoDevice" class="pub-list-val">N/A</span></div>
                 
-                <div class="pub-card-title" style="margin-top:15px; border-top:1px solid var(--card-border); padding-top:15px;">Social</div>
+                <div class="pub-card-title" style="margin-top:20px; border-top:1px solid var(--card-border); padding-top:20px;">Social Links</div>
                 <div class="pub-list-item" style="border:none;">
-                    <span class="pub-list-lbl"><i class="fab fa-facebook" style="color:#1877F2; font-size:16px; margin-right:8px;"></i> Facebook</span>
-                    <a href="#" id="myInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i></a>
+                    <span class="pub-list-lbl"><i class='bx bxl-facebook-circle' style="color:#1877F2;"></i> Facebook</span>
+                    <a href="#" id="myInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Profile <i class='bx bx-link-external'></i></a>
                 </div>
             </div>
 
@@ -446,11 +463,11 @@
             <div id="myForm" class="pub-content pub-card"></div>
             <div id="myTrophy" class="pub-content pub-card">
                 <div class="pub-card-title">Trophy Cabinet</div>
-                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:10px;"><i class="fas fa-box-open" style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:12px;"><i class='bx bx-box' style="font-size:40px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
             </div>
             
             <div style="text-align:center; margin-top:25px;">
-                <button onclick="logOut()" class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin:0 auto; width:80%;">Logout Account</button>
+                <button onclick="logOut()" class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin:0 auto; width:85%;"><i class='bx bx-log-out'></i> Logout Account</button>
             </div>
         </div>
     </div>
@@ -458,9 +475,9 @@
     <!-- SUBMIT SCORE MODAL -->
     <div id="submitScoreModal" class="modal-overlay" onclick="closeModal('submitScoreModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModal('submitScoreModal')"><i class="fas fa-times"></i></button>
-            <h3 style="color:var(--accent); font-family:var(--font-display); font-size:16px; margin-bottom:15px; text-align:center;">Submit Result</h3>
-            <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:15px;">Enter correct goals. False submission may result in a ban.</p>
+            <button class="modal-close" onclick="closeModal('submitScoreModal')"><i class='bx bx-x'></i></button>
+            <h3 style="color:var(--accent); font-family:var(--font-display); font-size:17px; margin-bottom:15px; text-align:center;">Submit Result</h3>
+            <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:20px; line-height:1.4;">Enter correct goals. False submission may result in a strict ban.</p>
             
             <input type="hidden" id="submitTid">
             <input type="hidden" id="submitGroupRound">
@@ -468,18 +485,18 @@
             <input type="hidden" id="submitMyUid">
             <input type="hidden" id="submitOppUid">
             
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreMyName" style="color:white; font-size:12px; font-weight:bold; display:block; margin-bottom:5px;">Me</span>
-                    <input type="number" id="scoreMyGoals" placeholder="Goals" style="text-align:center; font-size:18px; font-weight:bold;">
+                    <span id="scoreMyName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:8px;">Me</span>
+                    <input type="number" id="scoreMyGoals" placeholder="0" style="text-align:center; font-size:22px; font-weight:bold; padding:10px;">
                 </div>
-                <div style="font-family:var(--font-display); color:var(--gold); font-size:16px; padding:0 15px;">VS</div>
+                <div style="font-family:var(--font-display); color:var(--gold); font-size:18px; padding:0 15px; font-weight: 800;">VS</div>
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreOppName" style="color:white; font-size:12px; font-weight:bold; display:block; margin-bottom:5px;">Opponent</span>
-                    <input type="number" id="scoreOppGoals" placeholder="Goals" style="text-align:center; font-size:18px; font-weight:bold;">
+                    <span id="scoreOppName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:8px;">Opponent</span>
+                    <input type="number" id="scoreOppGoals" placeholder="0" style="text-align:center; font-size:22px; font-weight:bold; padding:10px;">
                 </div>
             </div>
-            <button class="submit-btn" onclick="submitScoreFinal()">Send For Approval</button>
+            <button class="submit-btn" onclick="submitScoreFinal()"><i class='bx bx-send'></i> Send For Approval</button>
         </div>
     </div>
 
@@ -490,36 +507,36 @@
     <div id="sideMenu" class="side-menu">
         <div class="sm-header">
             <h3>MENU</h3>
-            <button class="sm-close" onclick="closeSideMenu()"><i class="fas fa-times"></i></button>
+            <button class="sm-close" onclick="closeSideMenu()"><i class='bx bx-x'></i></button>
         </div>
         
         <div id="smLoginSection">
-            <div class="sm-item" onclick="switchMenuTab('authPage')"><i class="far fa-user"></i> LOGIN / SIGN UP</div>
+            <div class="sm-item highlight" onclick="switchMenuTab('authPage')"><i class='bx bx-log-in-circle'></i> LOGIN / SIGN UP</div>
         </div>
-        <div id="smProfileSection" style="display:none; border-bottom:1px solid var(--card-border); padding-bottom:15px; margin-bottom:10px;">
-            <div class="sm-item" onclick="switchMenuTab('profile')" style="background: rgba(255,255,255,0.03); border: 1px solid var(--card-border);">
-                <img id="smAvatar" src="" style="width:26px; height:26px; border-radius:50%; object-fit:cover; margin-left:-4px; border:1px solid var(--logo-blue);">
-                <span id="smName" style="color:white; font-weight:700;">Player Name</span>
+        <div id="smProfileSection" style="display:none; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:20px; margin-bottom:15px;">
+            <div class="sm-item" onclick="switchMenuTab('profile')" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px;">
+                <img id="smAvatar" src="" style="width:32px; height:32px; border-radius:50%; object-fit:cover; margin-left:-4px; border:2px solid var(--logo-blue);">
+                <span id="smName" style="color:white; font-weight:600;">Player Name</span>
             </div>
         </div>
 
         <div class="sm-group-title">Navigate</div>
-        <div class="sm-item" onclick="switchMenuTab('home')"><i class="fas fa-home"></i> Home</div>
-        <div class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class="fas fa-plus-circle"></i> MY MATCHES</div>
-        <div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class="fas fa-ribbon"></i> Tournaments</div>
-        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class="fas fa-chart-line"></i> Rankings</div>
-        <div class="sm-item" onclick="switchMenuTab('profile')"><i class="far fa-user-circle"></i> Profile</div>
+        <div class="sm-item" onclick="switchMenuTab('home')"><i class='bx bxs-home'></i> Home</div>
+        <div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class='bx bxs-trophy'></i> Tournaments</div>
+        <div class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class='bx bxs-joystick'></i> My Matches</div>
+        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class='bx bx-line-chart'></i> Rankings</div>
+        <div class="sm-item" onclick="switchMenuTab('profile')"><i class='bx bxs-user-circle'></i> Profile</div>
     </div>
 
     <!-- HEADER -->
     <div class="header">
         <div class="header-brand">
-            <div class="header-mark"><i class="fas fa-bolt"></i></div>
+            <div class="header-mark"><i class='bx bxs-zap'></i></div>
             <h2>BMG <span>OFFICIAL</span></h2>
         </div>
         <!-- MODERN HEADER ACTIONS -->
         <div class="header-actions">
-            <button id="loginBtn" class="header-btn prof" onclick="switchTab('authPage')"><i class="far fa-user"></i></button>
+            <button id="loginBtn" class="header-btn prof" onclick="switchTab('authPage')"><i class='bx bx-user'></i></button>
             <button class="header-btn menu" onclick="openSideMenu()">
                 <div class="modern-dots"><span></span><span></span><span></span></div>
             </button>
@@ -529,24 +546,24 @@
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
         <div class="card" id="loginBox" style="text-align: center; margin-top: 20px;">
-            <h2 style="color: var(--logo-blue); margin-bottom: 15px; font-weight:800; font-family: var(--font-display);">Player Login</h2>
+            <h2 style="color: var(--logo-blue); margin-bottom: 20px; font-weight:800; font-family: var(--font-display);">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
             <input type="password" id="loginPassword" placeholder="Password">
-            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="loginWithEmail()">Log In</button>
-            <p class="link-text" onclick="toggleAuth('signup')">Don't have an account? Sign Up</p>
+            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:15px;" onclick="loginWithEmail()">Log In</button>
+            <p class="link-text" onclick="toggleAuth('signup')">Don't have an account? <b>Sign Up</b></p>
         </div>
 
         <div class="card" id="signupBox" style="text-align: center; margin-top: 20px; display: none;">
-            <h2 style="color: var(--gold); margin-bottom: 15px; font-weight:800; font-family: var(--font-display);">Create Account</h2>
+            <h2 style="color: var(--gold); margin-bottom: 20px; font-weight:800; font-family: var(--font-display);">Create Account</h2>
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name">
             <input type="url" id="regFb" placeholder="Facebook Profile Link (Optional)">
-            <input type="file" id="regAvatarFile" accept="image/*">
+            <input type="file" id="regAvatarFile" accept="image/*" style="padding:10px;">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
-            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="signUpWithEmail()">Sign Up</button>
-            <p class="link-text" onclick="toggleAuth('login')">Already have an account? Log In</p>
+            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:15px;" onclick="signUpWithEmail()">Sign Up</button>
+            <p class="link-text" onclick="toggleAuth('login')">Already have an account? <b>Log In</b></p>
         </div>
     </div>
 
@@ -556,64 +573,64 @@
             <div class="hero-slide active" style="background: linear-gradient(135deg, #0f172a 0%, #064e3b 100%);">
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.14); border-color: var(--accent);">SEASON 1</span>
+                    <span class="hero-badge" style="color: var(--accent); background: rgba(163,230,53,0.14); border-color: rgba(163,230,53,0.3);">SEASON 1</span>
                     <h1 class="hero-title">NEW ERA<br><span style="color:var(--accent)">OF GREATNESS</span></h1>
-                    <button class="hero-btn" style="background:var(--accent); color:#04210a;" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class="fas fa-chevron-right"></i></button>
+                    <button class="hero-btn" style="background:var(--accent); color:#04210a;" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class='bx bx-chevron-right' style="font-size:16px;"></i></button>
                 </div>
             </div>
             <div class="hero-slide" style="background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%);">
                 <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.08); border-color: var(--gold);">ELITE</span>
+                    <span class="hero-badge" style="color: var(--gold); background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.3);">ELITE</span>
                     <h1 class="hero-title">BECOME A<br><span style="color:var(--gold)">LEGEND</span></h1>
-                    <button class="hero-btn" style="background:var(--gold); color:#241b00;" onclick="switchTab('leaderboard')">RANKINGS <i class="fas fa-chevron-right"></i></button>
+                    <button class="hero-btn" style="background:var(--gold); color:#241b00;" onclick="switchTab('leaderboard')">RANKINGS <i class='bx bx-chevron-right' style="font-size:16px;"></i></button>
                 </div>
             </div>
             <div class="hero-dots" id="heroDots"><span class="dot active"></span><span class="dot"></span></div>
         </div>
 
         <div class="sec-head">
-            <div class="sec-title">Featured Tournaments</div>
-            <div class="sec-link" onclick="switchTab('tournamentsTab')">View All <i class="fas fa-chevron-right"></i></div>
+            <div class="sec-title">Featured Events</div>
+            <div class="sec-link" onclick="switchTab('tournamentsTab')">View All <i class='bx bx-chevron-right'></i></div>
         </div>
-        <div class="t-slider" id="homeTournamentsList"><p style="font-size:12px; color:gray; padding: 10px;">Loading...</p></div>
+        <div class="t-slider" id="homeTournamentsList"><p style="font-size:12px; color:var(--text-dim); padding: 10px;">Loading...</p></div>
 
-        <div class="sec-head" style="margin-top: 26px;">
+        <div class="sec-head" style="margin-top: 30px;">
             <div class="sec-title">Top Players</div>
-            <div class="sec-badge live"><span class="live-dot"></span> Live Leaderboard</div>
+            <div class="sec-badge live"><span class="live-dot"></span> Live Rank</div>
         </div>
-        <div class="card" style="padding: 12px; border-radius: 16px;">
-            <div id="homeLeaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
+        <div class="card" style="padding: 12px; border-radius: 20px;">
+            <div id="homeLeaderboardList"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
         </div>
     </div>
 
     <!-- 2. TOURNAMENTS TAB -->
     <div id="tournamentsTab" class="page-section">
         <div class="section-title">All Tournaments</div>
-        <div id="allTournamentsList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
+        <div id="allTournamentsList"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
     </div>
 
     <!-- 3. MY MATCHES TAB -->
     <div id="myMatchesTab" class="page-section">
         <div class="section-title" style="color: var(--text-dim);">Your Schedule</div>
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:16px;">
-            <h3 style="font-family: var(--font-display); font-size: 20px; font-weight: 800; line-height: 1.2;">UPCOMING <br><span style="color:var(--accent);">MATCHES</span></h3>
-            <div style="background: rgba(255,215,0,0.1); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; display:flex; align-items:center; gap:5px;" id="myMatchCountText"><span class="dot" style="width:6px; height:6px; background:var(--gold); border-radius:50%;"></span> 0 Upcoming</div>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px;">
+            <h3 style="font-family: var(--font-display); font-size: 22px; font-weight: 800; line-height: 1.2;">UPCOMING <br><span style="color:var(--accent);">MATCHES</span></h3>
+            <div style="background: rgba(255,215,0,0.1); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); padding: 6px 12px; border-radius: 12px; font-size: 10px; font-weight: 700; display:flex; align-items:center; gap:6px; box-shadow: 0 4px 10px rgba(255,215,0,0.1);" id="myMatchCountText"><span class="dot" style="width:6px; height:6px; background:var(--gold); border-radius:50%;"></span> 0 Upcoming</div>
         </div>
         <div id="myMatchesList"></div>
     </div>
 
     <!-- 4. TOURNAMENT DETAILS (TABS UI) -->
     <div id="tournamentDetails" class="page-section">
-        <div class="card" style="padding:20px 15px; position:relative; overflow:hidden;">
-            <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:11px; cursor:pointer; margin-bottom:12px; font-weight:600;"><i class="fas fa-arrow-left"></i> Back to Tournaments</button>
-            <h2 id="tdName" style="color:white; font-family:var(--font-display); font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:10px;">Tournament Name</h2>
+        <div class="card" style="padding:22px 18px; position:relative; overflow:hidden;">
+            <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:12px; cursor:pointer; margin-bottom:15px; font-weight:500; display:flex; align-items:center; gap:5px;"><i class='bx bx-arrow-back'></i> Back to Events</button>
+            <h2 id="tdName" style="color:white; font-family:var(--font-display); font-size:20px; font-weight:800; text-transform:uppercase; margin-bottom:12px; text-shadow: 0 2px 5px rgba(0,0,0,0.5);">Tournament Name</h2>
             <div style="display:flex; flex-wrap:wrap; gap:12px; font-size:10px; color:var(--text-muted); font-weight:600;">
-                <span style="background:rgba(255,215,0,0.1); color:var(--gold); padding:4px 8px; border-radius:6px; border:1px solid rgba(255,215,0,0.2);" id="tdPrize"><i class="fas fa-trophy"></i> Prize</span>
-                <span style="background:rgba(255,255,255,0.05); padding:4px 8px; border-radius:6px;" id="tdFormat"><i class="fas fa-gamepad"></i> Format</span>
+                <span style="background:rgba(255,215,0,0.1); color:var(--gold); padding:5px 10px; border-radius:8px; border:1px solid rgba(255,215,0,0.2);" id="tdPrize"><i class='bx bxs-trophy'></i> Prize</span>
+                <span style="background:rgba(255,255,255,0.05); padding:5px 10px; border-radius:8px;" id="tdFormat"><i class='bx bxs-joystick'></i> Format</span>
             </div>
-            <div class="admin-controls" id="tdAdminControls" style="margin-top:15px; display:none;">
-                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:8px 12px; border-radius:8px; font-size:10px; font-weight:800; cursor:pointer; width:100%;" onclick="advanceToKnockout()"><i class="fas fa-bolt"></i> START KNOCKOUT STAGE</button>
+            <div class="admin-controls" id="tdAdminControls" style="margin-top:18px; display:none;">
+                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:12px; border-radius:12px; font-size:11px; font-weight:800; cursor:pointer; width:100%; box-shadow: 0 4px 15px rgba(239,68,68,0.3); display:flex; justify-content:center; align-items:center; gap:5px;" onclick="advanceToKnockout()"><i class='bx bxs-zap'></i> START KNOCKOUT STAGE</button>
             </div>
         </div>
 
@@ -631,7 +648,7 @@
     <!-- 5. LEADERBOARD -->
     <div id="leaderboard" class="page-section">
         <div class="section-title">Global Ranking</div>
-        <div class="card" id="leaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
+        <div class="card" id="leaderboardList" style="padding:15px;"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
     </div>
 
     <!-- 7. ADMIN DASHBOARD -->
@@ -639,39 +656,39 @@
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
         
         <!-- PENDING RESULTS APPROVAL -->
-        <div class="card admin-controls" style="border: 1px solid rgba(239,68,68,0.4); flex-direction:column; margin-bottom: 20px;">
-            <h3 style="color: var(--danger); font-size: 16px; font-weight:800; font-family: var(--font-display);"><i class="fas fa-tasks"></i> Pending Results</h3>
-            <div id="adminPendingResultsList" style="margin-top:10px; max-height: 250px; overflow-y: auto;">
+        <div class="card admin-controls" style="border: 1px solid rgba(239,68,68,0.3); flex-direction:column; margin-bottom: 20px;">
+            <h3 style="color: var(--danger); font-size: 16px; font-weight:800; font-family: var(--font-display); display:flex; align-items:center; gap:6px;"><i class='bx bx-list-check'></i> Pending Results</h3>
+            <div id="adminPendingResultsList" style="margin-top:15px; max-height: 250px; overflow-y: auto;">
                 <p style="color:var(--text-dim); font-size:11px; text-align:center;">Checking pending submissions...</p>
             </div>
         </div>
 
         <!-- FULL PLAYER MANAGEMENT SYSTEM -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(163,230,53,0.4); margin-bottom: 20px;">
-            <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display);"><i class="fas fa-users-cog"></i> Player Mgmt</h3>
-            <input type="text" id="adminPlayerSearch" placeholder="Search by Name..." onkeyup="filterAdminPlayers()" style="margin-top: 10px;">
-            <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
+        <div class="card main-admin-only" style="border: 1px solid rgba(163,230,53,0.3); margin-bottom: 20px;">
+            <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); display:flex; align-items:center; gap:6px;"><i class='bx bxs-user-circle'></i> Player Mgmt</h3>
+            <input type="text" id="adminPlayerSearch" placeholder="Search by Name..." onkeyup="filterAdminPlayers()" style="margin-top: 15px;">
+            <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:12px; padding:10px; background:rgba(255,255,255,0.02);"></div>
             
-            <div id="adminEditPlayerForm" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed var(--card-border);">
+            <div id="adminEditPlayerForm" style="display:none; margin-top:20px; padding-top:20px; border-top:1px dashed var(--card-border);">
                 <input type="hidden" id="editPlayerUid">
                 <input type="text" id="editPlayerName" placeholder="Full Name">
                 <input type="text" id="editPlayerKonami" placeholder="Konami UID">
                 <input type="text" id="editPlayerDevice" placeholder="Device Model">
                 <input type="url" id="editPlayerFb" placeholder="Facebook Link">
                 <input type="text" id="editPlayerPhone" placeholder="Phone Number (Optional)">
-                <label style="font-size:10px; color:gray; display:block; margin:5px 0;">Account Role:</label>
-                <select id="editPlayerRole" style="margin-bottom:10px;">
+                <label style="font-size:11px; color:var(--text-dim); display:block; margin:8px 0 5px;">Account Role:</label>
+                <select id="editPlayerRole" style="margin-bottom:15px;">
                     <option value="user">Normal Player</option>
                     <option value="moderator">Moderator</option>
                 </select>
 
                 <!-- ADMIN: LATEST MATCH DELETE SYSTEM -->
-                <div id="adminPlayerMatchHistory" style="margin-top: 10px; margin-bottom:15px; background:rgba(0,0,0,0.2); padding:10px; border-radius:8px; border:1px solid var(--card-border);">
-                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px; font-weight:bold;">Player Match History (Latest)</p>
+                <div id="adminPlayerMatchHistory" style="margin-top: 10px; margin-bottom:15px; background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid var(--card-border);">
+                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px; font-weight:600;">Player Match History (Latest)</p>
                     <div id="adminPlayerMatchList" style="max-height:150px; overflow-y:auto;"></div>
                 </div>
 
-                <div style="display:flex; gap:10px; margin-top:10px;">
+                <div style="display:flex; gap:10px; margin-top:15px;">
                     <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin-top:0;" onclick="savePlayerEdit()">Save Updates</button>
                     <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin-top:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
                 </div>
@@ -681,24 +698,40 @@
         <!-- Manage Tournament Players UI -->
         <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(163,230,53,0.4); margin-bottom: 20px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px; margin:0;">Manage Registrations</h3>
+                <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display); letter-spacing: 0.5px; margin:0; display:flex; align-items:center; gap:6px;"><i class='bx bxs-group'></i> Registrations</h3>
                 <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:10px; font-weight:700;"></span>
             </div>
             <input type="hidden" id="manageTid">
             
-            <div style="margin-top:12px;">
-                <input type="text" id="searchSiteUserForTourney" placeholder="Search site user by name..." onkeyup="filterSiteUsersForTourney()" style="margin:0;">
-                <div id="tourneyUserSearchResults" style="max-height: 140px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 8px; margin-top: 5px; display: none;"></div>
+            <div style="margin-top:15px;">
+                <label style="font-size:10px; color:var(--text-dim); text-transform:uppercase; margin-bottom:5px; display:block;">Add Registered Site User</label>
+                <input type="text" id="searchSiteUserForTourney" placeholder="Search registered user..." onkeyup="filterSiteUsersForTourney()" style="margin:0;">
+                <div id="tourneyUserSearchResults" style="max-height: 140px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 12px; margin-top: 8px; display: none;"></div>
+            </div>
+
+            <!-- NEW: MANUALLY ADD CUSTOM PLAYER -->
+            <div style="margin-top:18px; padding-top:15px; border-top:1px dashed var(--card-border);">
+                <label style="font-size:10px; color:var(--text-dim); text-transform:uppercase; margin-bottom:8px; display:block;">Manually Add Custom Player</label>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <input type="text" id="customPlayerName" placeholder="Player Name" style="margin:0; flex:1;">
+                    <select id="customPlayerPot" style="margin:0; width:100px;">
+                        <option value="Unassigned">No Pot</option>
+                        <option value="Pot 1">Pot 1</option>
+                        <option value="Pot 2">Pot 2</option>
+                        <option value="Pot 3">Pot 3</option>
+                    </select>
+                    <button class="submit-btn" style="margin:0; padding:14px; width:auto; border-radius:12px;" onclick="addCustomPlayerToTourney()"><i class='bx bx-plus' style="font-size:18px;"></i></button>
+                </div>
             </div>
             
-            <div id="tPlayerList" style="max-height: 250px; overflow-y: auto; margin-top:15px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
-            <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:10px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
+            <div id="tPlayerList" style="max-height: 250px; overflow-y: auto; margin-top:20px; border:1px solid var(--card-border); border-radius:12px; padding:10px; background:rgba(255,255,255,0.02);"></div>
+            <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:15px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
         </div>
 
         <!-- Create Tournament System -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.4);">
-            <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display);">Create Tournament</h3>
-            <input type="text" id="tName" placeholder="Tournament Name">
+        <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.3);">
+            <h3 style="color: var(--logo-blue); font-size: 16px; font-weight:800; font-family: var(--font-display); display:flex; align-items:center; gap:6px;"><i class='bx bx-plus-circle'></i> Create Event</h3>
+            <input type="text" id="tName" placeholder="Tournament Name" style="margin-top:15px;">
             <select id="tFormatType" onchange="toggleGroupOptions()">
                 <option value="Knockout">Knockout (Elimination)</option>
                 <option value="Group Stage">Group Stage System</option>
@@ -712,29 +745,29 @@
             <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
             
             <input type="text" id="tImageLink" placeholder="Paste Image Link Here (Optional)">
-            <label style="font-size:11px; color:var(--text-muted); margin-top:8px; display:block;">Upload Thumbnail (Auto Fits):</label>
-            <input type="file" id="tImageFile" accept="image/*">
+            <label style="font-size:11px; color:var(--text-muted); margin-top:10px; display:block;">Or Upload Thumbnail:</label>
+            <input type="file" id="tImageFile" accept="image/*" style="padding:10px;">
             
-            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
+            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:15px;" onclick="createTournament()"><i class='bx bx-cloud-upload'></i> Publish Tournament</button>
         </div>
 
         <!-- Manual Leaderboard Override -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(255,215,0,0.4);">
-            <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display);">Manual Leaderboard Override</h3>
-            <input type="text" id="lbPlayerUid" placeholder="Enter Player Name or UID">
+        <div class="card main-admin-only" style="border: 1px solid rgba(255,215,0,0.3);">
+            <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display); display:flex; align-items:center; gap:6px;"><i class='bx bxs-star'></i> Manual LB Override</h3>
+            <input type="text" id="lbPlayerUid" placeholder="Enter Player Name or UID" style="margin-top:15px;">
             <input type="number" id="lbPoints" placeholder="Total Points to Set">
-            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="updateLeaderboard()">Update Leaderboard</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:15px;" onclick="updateLeaderboard()">Update Leaderboard</button>
         </div>
     </div>
 
-    <!-- BOTTOM NAV -->
+    <!-- FLOATING BOTTOM NAV -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-home"></i>Home</div>
-        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class="fas fa-trophy"></i>Events</div>
-        <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class="fas fa-gamepad"></i>Matches</div>
-        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class="fas fa-chart-bar"></i>Ranking</div>
-        <div class="nav-item" onclick="switchTab('profile', this)"><i class="far fa-user"></i>Profile</div>
-        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class="fas fa-cog"></i>Admin</div>
+        <div class="nav-item active" onclick="switchTab('home', this)"><i class='bx bxs-home'></i>Home</div>
+        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class='bx bxs-trophy'></i>Events</div>
+        <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class='bx bxs-joystick'></i>Matches</div>
+        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class='bx bx-line-chart'></i>Ranking</div>
+        <div class="nav-item" onclick="switchTab('profile', this)"><i class='bx bxs-user-circle'></i>Profile</div>
+        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class='bx bxs-cog'></i>Admin</div>
     </div>
 
     <!-- JAVASCRIPT -->
@@ -767,7 +800,7 @@
         
         function copyUID(elementId) {
             const uidText = document.getElementById(elementId).innerText;
-            if(uidText && !uidText.includes("N/A")) { navigator.clipboard.writeText(uidText.trim()).then(() => { alert("UID Copied!"); }); }
+            if(uidText && !uidText.includes("N/A")) { navigator.clipboard.writeText(uidText.trim().replace("N/A", "")).then(() => { alert("UID Copied!"); }); }
         }
 
         let fullLeaderboardData = []; 
@@ -795,7 +828,7 @@
         function renderFormTab(matches, containerId) {
             const container = document.getElementById(containerId);
             if(!matches || matches.length === 0) {
-                container.innerHTML = `<div class="pub-card-title">Recent Form</div><div style="text-align:center; padding:20px 10px;"><i class="far fa-chart-bar" style="font-size:30px; color:var(--text-dim); margin-bottom:8px;"></i><p style="color:var(--text-muted); font-size:12px;">No matches recorded yet.</p></div>`; return;
+                container.innerHTML = `<div class="pub-card-title">Recent Form</div><div style="text-align:center; padding:20px 10px;"><i class='bx bx-bar-chart-alt-2' style="font-size:35px; color:var(--text-dim); margin-bottom:8px;"></i><p style="color:var(--text-muted); font-size:12px;">No matches recorded yet.</p></div>`; return;
             }
             
             const formInfo = getFormDetails(matches);
@@ -817,17 +850,17 @@
                 
                 return `
                 <div class="form-history-item ${cls}">
-                    <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="openPublicProfile('${oppUid}')">
+                    <div style="display:flex; align-items:center; gap:10px; cursor:pointer;" onclick="openPublicProfile('${oppUid}')">
                         <span style="font-size:10px; font-weight:800; color:var(--text-dim); width:18px;">#${last10Desc.length - idx}</span>
-                        <img src="${oppAv}" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
+                        <img src="${oppAv}" style="width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
                         <div>
-                            <div style="font-size:11.5px; font-weight:700; color:white; max-width:115px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${oppName}</div>
-                            <span style="font-size:8.5px; color:var(--text-dim);"><i class="fas fa-external-link-alt"></i> View Profile</span>
+                            <div style="font-size:12px; font-weight:600; color:white; max-width:110px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${oppName}</div>
+                            <span style="font-size:9px; color:var(--text-dim);"><i class='bx bx-link-external'></i> View Profile</span>
                         </div>
                     </div>
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <div style="font-family:var(--font-display); font-size:13px; font-weight:800; color:white;">${m.myScore} - ${m.oppScore}</div>
-                        <span style="display:inline-block; padding:3px 7px; border-radius:6px; background:${tagBg}; color:${tagColor}; font-size:9px; font-weight:800; text-transform:uppercase;">${m.result === 'W' ? 'WIN' : m.result === 'D' ? 'DRAW' : 'LOSS'}</span>
+                        <div style="font-family:var(--font-display); font-size:14px; font-weight:800; color:white;">${m.myScore} - ${m.oppScore}</div>
+                        <span style="display:inline-block; padding:4px 8px; border-radius:6px; background:${tagBg}; color:${tagColor}; font-size:9px; font-weight:800; text-transform:uppercase;">${m.result === 'W' ? 'WIN' : m.result === 'D' ? 'DRAW' : 'LOSS'}</span>
                     </div>
                 </div>`;
             }).join('');
@@ -839,12 +872,12 @@
                         <div class="form-grade-badge ${formInfo.class}">${formInfo.grade}</div>
                         <div>
                             <div style="font-size:13px; font-weight:800; color:white; line-height:1.2;">${formInfo.desc}</div>
-                            <div style="font-size:10px; color:var(--text-dim); margin-top:3px;">Points Rate: <span style="color:var(--gold); font-weight:700;">${formInfo.pct}%</span> (Last ${last10Desc.length} Games)</div>
+                            <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">Points Rate: <span style="color:var(--gold); font-weight:700;">${formInfo.pct}%</span> (Last ${last10Desc.length} Games)</div>
                         </div>
                     </div>
-                    <div style="display:flex; gap:4px;">${sequenceHTML}</div>
+                    <div style="display:flex; gap:5px;">${sequenceHTML}</div>
                 </div>
-                <div style="font-size:10px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">Latest ${last10Desc.length} Matches History</div>
+                <div style="font-size:10px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:10px; letter-spacing:0.5px;">Latest ${last10Desc.length} Matches History</div>
                 <div class="form-history-list">${matchesListHTML}</div>
             `;
         }
@@ -857,12 +890,12 @@
                 if(doc.exists) {
                     const p = doc.data();
                     document.getElementById('pubProfName').innerText = p.name;
-                    document.getElementById('pubInfoUid').innerHTML = `<i class="far fa-copy"></i> ${p.konamiUid || "N/A"}`;
+                    document.getElementById('pubInfoUid').innerHTML = `${p.konamiUid || "N/A"} <i class='bx bx-copy'></i>`;
                     document.getElementById('pubInfoDevice').innerText = p.device || "N/A";
                     document.getElementById('pubProfAvatar').src = p.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                     
                     const fbLink = p.fbLink || ""; const fbEl = document.getElementById('pubInfoFb');
-                    if(fbLink) { fbEl.href = fbLink; fbEl.innerHTML = `View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i>`; fbEl.style.pointerEvents = "auto"; } 
+                    if(fbLink) { fbEl.href = fbLink; fbEl.innerHTML = `View Profile <i class='bx bx-link-external'></i>`; fbEl.style.pointerEvents = "auto"; } 
                     else { fbEl.href = "#"; fbEl.innerHTML = "Not Provided"; fbEl.style.pointerEvents = "none"; }
 
                     let userRank = "#--";
@@ -901,7 +934,7 @@
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
             if(element && element.classList) { document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active')); if(element.classList.contains('nav-item')) element.classList.add('active'); }
-            window.scrollTo(0,0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             if(tabId === 'myMatchesTab') loadMyMatches();
             if(tabId === 'profile') loadPlayerStats();
             if(tabId === 'admin') loadPendingResults(); 
@@ -944,7 +977,7 @@
             const name = document.getElementById('regName').value; const konami = document.getElementById('regKonami').value; const device = document.getElementById('regDevice').value; const email = document.getElementById('regEmail').value; const password = document.getElementById('regPassword').value; const avatarFile = document.getElementById('regAvatarFile').files[0];
             const fbLink = document.getElementById('regFb').value;
             if(!avatarFile || !name || !email || password.length < 6) return alert("Fill required fields correctly!");
-            const btn = document.getElementById('regBtn'); btn.innerText = "Processing..."; btn.disabled = true;
+            const btn = document.getElementById('regBtn'); btn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Processing..."; btn.disabled = true;
             try {
                 const compressedImage = await compressImage(avatarFile);
                 const photoURL = await uploadToImgBB(compressedImage);
@@ -997,9 +1030,9 @@
 
         function renderAdminPlayers(list) {
             document.getElementById('adminPlayerList').innerHTML = list.map(p => `
-                <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--card-border);" onclick="openPlayerEdit('${p.uid}')">
-                    <span style="color:white; font-size:13px; cursor:pointer;">${p.name} ${p.role==='moderator'?'<i class="fas fa-shield-alt" style="color:var(--accent);font-size:10px;margin-left:5px;"></i>':''}</span> 
-                    <i class="fas fa-edit" style="color:var(--accent); cursor:pointer;"></i>
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.03);" onclick="openPlayerEdit('${p.uid}')">
+                    <span style="color:white; font-size:13px; font-weight:500; cursor:pointer; display:flex; align-items:center; gap:5px;">${p.name} ${p.role==='moderator'?'<i class="bx bxs-shield" style="color:var(--accent);font-size:14px;"></i>':''}</span> 
+                    <i class='bx bx-edit-alt' style="color:var(--accent); cursor:pointer; font-size:18px;"></i>
                 </div>`).join('');
         }
 
@@ -1023,19 +1056,19 @@
             db.collection("playerStats").doc(uid).get().then(doc => {
                 const list = document.getElementById('adminPlayerMatchList');
                 if(!doc.exists || !doc.data().matches || doc.data().matches.length === 0) {
-                    list.innerHTML = "<p style='font-size:10px; color:gray;'>No match records found.</p>"; return;
+                    list.innerHTML = "<p style='font-size:10px; color:var(--text-dim);'>No match records found.</p>"; return;
                 }
                 let matches = doc.data().matches; let html = "";
                 matches.slice().reverse().forEach((m, reversedIdx) => {
                     let actualIdx = matches.length - 1 - reversedIdx;
                     let color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#f87171';
                     html += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card-bg-soft); padding:6px 10px; border-radius:6px; margin-bottom:5px; border:1px solid var(--card-border);">
-                        <div style="font-size:11px; color:white;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:10px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size:11.5px; color:white; font-weight:500;">
                             <strong style="color:${color}; width:20px; display:inline-block;">[${m.result}]</strong> 
-                            vs ${m.opp || 'Unknown'} <span style="color:var(--gold); margin-left:5px;">(${m.myScore}-${m.oppScore})</span>
+                            vs ${m.opp || 'Unknown'} <span style="color:var(--gold); margin-left:5px; font-family:var(--font-display); font-weight:700;">(${m.myScore}-${m.oppScore})</span>
                         </div>
-                        <button onclick="adminDeletePlayerMatch('${uid}', ${actualIdx})" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:4px; font-size:9px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                        <button onclick="adminDeletePlayerMatch('${uid}', ${actualIdx})" style="background:var(--danger); color:white; border:none; padding:5px 10px; border-radius:6px; font-size:11px; cursor:pointer;"><i class='bx bx-trash'></i></button>
                     </div>`;
                 });
                 list.innerHTML = html;
@@ -1095,7 +1128,7 @@
         
         async function createTournament() {
             const btn = document.getElementById('btnCreateTourney');
-            btn.innerText = "Publishing..."; btn.disabled = true;
+            btn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Publishing..."; btn.disabled = true;
             
             let imgUrl = document.getElementById('tImageLink').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
             const fileInput = document.getElementById('tImageFile');
@@ -1125,7 +1158,7 @@
                     document.getElementById('tName').value = ""; document.getElementById('tImageLink').value = ""; fileInput.value = "";
                 } else { alert("Tournament name is required!"); }
             } catch(e) { alert("Error: " + e.message); } 
-            finally { btn.innerText = "Publish Tournament"; btn.disabled = false; }
+            finally { btn.innerHTML = "<i class='bx bx-cloud-upload'></i> Publish Tournament"; btn.disabled = false; }
         }
 
         let currentActiveTournamentId = null;
@@ -1135,7 +1168,7 @@
             list1.innerHTML = ""; list2.innerHTML = "";
             snapshot.forEach(doc => {
                 const t = doc.data(); const tFormat = t.type || 'Knockout';
-                let actionBtnHtml = t.status === 'Live' ? `<button class="t-reg-btn" style="background:var(--card-bg-soft); color:var(--logo-blue); border:1px solid var(--logo-blue); box-shadow:none;" onclick="openTournamentDetails('${doc.id}')">VIEW DETAILS <i class="fas fa-arrow-right"></i></button>` : `<button id="reg-btn-all-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER <i class="fas fa-chevron-right"></i></button>`;
+                let actionBtnHtml = t.status === 'Live' ? `<button class="t-reg-btn" style="background:var(--card-bg-soft); color:var(--logo-blue); border:1px solid var(--logo-blue); box-shadow:none;" onclick="openTournamentDetails('${doc.id}')">VIEW DETAILS <i class='bx bx-right-arrow-alt'></i></button>` : `<button id="reg-btn-all-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER <i class='bx bx-chevron-right'></i></button>`;
                 const createCard = (btnHtml) => `
                 <div class="t-card">
                     <div class="t-card-img" style="background-image: url('${t.image}');">
@@ -1143,17 +1176,17 @@
                         <div class="t-card-titles"><div class="t-prize">${t.prize || 'PRIZE: TBA'}</div><div class="t-name">${t.name}</div></div>
                     </div>
                     <div class="t-card-info" style="border-bottom: none;"><div class="t-stat"><span>SLOTS</span><strong>${t.slots || 'Unlimited'}</strong></div><div class="t-stat"><span>FORMAT</span><strong style="color: var(--logo-blue);">${tFormat}</strong></div></div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 16px 13px; background: var(--card-bg-soft);">${btnHtml}</div>
-                    <div class="admin-controls" style="gap:6px; padding: 0 16px 13px; background: var(--card-bg-soft); flex-wrap: wrap;">
-                        <button style="flex:1 1 45%; background:var(--gold); color:#000; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class="fas fa-users"></i> Players & Pots</button>
-                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class="fas fa-cogs"></i> Logic</button>
-                        <button class="main-admin-only" style="flex:1 1 100%; background:var(--danger); color:white; border:none; padding:8px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:10px;" onclick="db.collection('tournaments').doc('${doc.id}').delete()"><i class="fas fa-trash-alt"></i> Delete Tournament</button>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 18px 15px; background: rgba(255,255,255,0.02);">${btnHtml}</div>
+                    <div class="admin-controls" style="gap:8px; padding: 0 18px 15px; background: rgba(255,255,255,0.02); flex-wrap: wrap;">
+                        <button style="flex:1 1 45%; background:var(--gold); color:#000; border:none; padding:10px; border-radius:10px; font-weight:700; cursor:pointer; font-size:11px; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bxs-group'></i> Players & Pots</button>
+                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--logo-blue); color:white; border:none; padding:10px; border-radius:10px; font-weight:700; cursor:pointer; font-size:11px; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bxs-cog'></i> Logic</button>
+                        <button class="main-admin-only" style="flex:1 1 100%; background:var(--danger); color:white; border:none; padding:10px; border-radius:10px; font-weight:700; cursor:pointer; font-size:11px; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="if(confirm('Delete tournament?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete Tournament</button>
                     </div>
                 </div>`;
                 list1.innerHTML += createCard(actionBtnHtml.replace('all-', 'home-')); list2.innerHTML += createCard(actionBtnHtml);
                 if (t.status !== 'Live' && auth.currentUser) {
                     db.collection("tournaments").doc(doc.id).collection("players").doc(auth.currentUser.uid).get().then(pDoc => {
-                        if (pDoc.exists) { ['reg-btn-home-', 'reg-btn-all-'].forEach(prefix => { const btn = document.getElementById(prefix + doc.id); if(btn) { btn.innerHTML = 'REGISTERED <i class="fas fa-check-circle"></i>'; btn.style.background = "var(--card-bg)"; btn.style.border = "1px solid var(--card-border)"; btn.style.color = "var(--accent)"; btn.style.boxShadow = "none"; btn.onclick = () => alert("You are already registered!"); } }); }
+                        if (pDoc.exists) { ['reg-btn-home-', 'reg-btn-all-'].forEach(prefix => { const btn = document.getElementById(prefix + doc.id); if(btn) { btn.innerHTML = 'REGISTERED <i class="bx bxs-check-circle"></i>'; btn.style.background = "rgba(255,255,255,0.05)"; btn.style.border = "1px solid var(--card-border)"; btn.style.color = "var(--accent)"; btn.style.boxShadow = "none"; btn.onclick = () => alert("You are already registered!"); } }); }
                     });
                 }
             });
@@ -1162,39 +1195,62 @@
 
         function registerForTournament(docId, btnElement) {
             const user = auth.currentUser; if(!user) return switchTab('authPage');
-            btnElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> WAIT...'; btnElement.disabled = true;
+            btnElement.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> WAIT...'; btnElement.disabled = true;
             db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ uid: user.uid, name: user.displayName || user.email, avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png", pot: "Unassigned", time: firebase.firestore.FieldValue.serverTimestamp() }).then(() => { alert("Registration Successful!"); }).catch(e => alert(e.message));
         }
 
         /* --- ADD/REMOVE PLAYERS & POTS --- */
         function openManageTPlayers(docId, slots) {
             switchTab('admin', document.getElementById('navAdmin')); const card = document.getElementById('adminTournamentPlayersCard'); card.style.display = 'block'; document.getElementById('manageTid').value = docId; document.getElementById('manageTSlotsDisplay').innerText = `Slots: ${slots}`;
-            setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); loadTPlayers(docId);
+            setTimeout(() => window.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' }), 100); loadTPlayers(docId);
         }
         function filterSiteUsersForTourney() {
             const query = document.getElementById('searchSiteUserForTourney').value.toLowerCase(); const resultsDiv = document.getElementById('tourneyUserSearchResults');
             if(!query) { resultsDiv.style.display = 'none'; return; }
             const filtered = allUsersData.filter(p => p.name && p.name.toLowerCase().includes(query));
-            resultsDiv.innerHTML = filtered.map(p => `<div style="display:flex; justify-content:space-between; align-items:center; padding:6px 10px; border-bottom:1px solid var(--card-border);"><div style="display:flex; align-items:center; gap:8px;"><img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:20px; height:20px; border-radius:50%;"><span style="font-size:11px; color:white;">${p.name}</span></div><button onclick="addSiteUserToTourney('${p.uid}', '${p.name.replace(/'/g, "\\'")}', '${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}')" style="background:var(--accent); color:#000; border:none; padding:4px 8px; border-radius:4px; font-size:9px; cursor:pointer;">Add</button></div>`).join('');
+            resultsDiv.innerHTML = filtered.map(p => `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid var(--card-border);"><div style="display:flex; align-items:center; gap:10px;"><img src="${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" style="width:24px; height:24px; border-radius:50%;"><span style="font-size:11.5px; color:white; font-weight:500;">${p.name}</span></div><button onclick="addSiteUserToTourney('${p.uid}', '${p.name.replace(/'/g, "\\'")}', '${p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}')" style="background:var(--accent); color:#000; border:none; padding:5px 12px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">Add</button></div>`).join('');
             resultsDiv.style.display = 'block';
         }
         function addSiteUserToTourney(uid, name, avatar) {
             const docId = document.getElementById('manageTid').value; if(!docId) return;
             db.collection("tournaments").doc(docId).collection("players").doc(uid).set({ uid: uid, name: name, avatar: avatar, pot: "Unassigned", time: firebase.firestore.FieldValue.serverTimestamp() }).then(() => { document.getElementById('tourneyUserSearchResults').style.display = "none"; alert("Added!"); });
         }
+        
+        // MANUALLY ADD CUSTOM PLAYER
+        function addCustomPlayerToTourney() {
+            const docId = document.getElementById('manageTid').value;
+            const name = document.getElementById('customPlayerName').value.trim();
+            const pot = document.getElementById('customPlayerPot').value;
+            if(!docId) return;
+            if(!name) return alert("Please enter a player name!");
+
+            const uid = 'custom_' + Date.now() + Math.floor(Math.random()*1000);
+            
+            db.collection("tournaments").doc(docId).collection("players").doc(uid).set({ 
+                uid: uid, 
+                name: name, 
+                avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png", 
+                pot: pot, 
+                time: firebase.firestore.FieldValue.serverTimestamp() 
+            }).then(() => { 
+                document.getElementById('customPlayerName').value = "";
+                alert("Custom Player Added Successfully!"); 
+            }).catch(e => alert(e.message));
+        }
+
         function loadTPlayers(docId) {
             const list = document.getElementById('tPlayerList');
             db.collection("tournaments").doc(docId).collection("players").onSnapshot(snap => {
-                list.innerHTML = snap.empty ? "<p style='color:gray; font-size:11px;'>No players registered yet.</p>" : "";
+                list.innerHTML = snap.empty ? "<p style='color:var(--text-dim); font-size:11px; text-align:center;'>No players registered yet.</p>" : "";
                 snap.forEach(doc => {
                     const p = doc.data();
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--card-border);"><span style="font-size:12px; color:white; width:35%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</span><select onchange="updatePlayerPot('${docId}', '${doc.id}', this.value)" style="width:70px; margin:0; padding:4px; font-size:10px; background:var(--card-bg-soft);"><option value="Unassigned" ${p.pot === 'Unassigned' ? 'selected' : ''}>Unassigned</option><option value="Pot 1" ${p.pot === 'Pot 1' ? 'selected' : ''}>Pot 1</option><option value="Pot 2" ${p.pot === 'Pot 2' ? 'selected' : ''}>Pot 2</option><option value="Pot 3" ${p.pot === 'Pot 3' ? 'selected' : ''}>Pot 3</option></select><button onclick="db.collection('tournaments').doc('${docId}').collection('players').doc('${doc.id}').delete()" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:4px; font-size:10px; cursor:pointer;">Del</button></div>`;
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.03);"><span style="font-size:12.5px; font-weight:500; color:white; width:35%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</span><select onchange="updatePlayerPot('${docId}', '${doc.id}', this.value)" style="width:90px; margin:0; padding:6px; font-size:11px; background:rgba(255,255,255,0.05); border-radius:6px;"><option value="Unassigned" ${p.pot === 'Unassigned' ? 'selected' : ''}>No Pot</option><option value="Pot 1" ${p.pot === 'Pot 1' ? 'selected' : ''}>Pot 1</option><option value="Pot 2" ${p.pot === 'Pot 2' ? 'selected' : ''}>Pot 2</option><option value="Pot 3" ${p.pot === 'Pot 3' ? 'selected' : ''}>Pot 3</option></select><button onclick="db.collection('tournaments').doc('${docId}').collection('players').doc('${doc.id}').delete()" style="background:var(--danger); color:white; border:none; padding:6px 12px; border-radius:6px; font-size:11px; cursor:pointer;"><i class='bx bx-trash'></i></button></div>`;
                 });
             });
         }
         function updatePlayerPot(tId, pId, potVal) { db.collection("tournaments").doc(tId).collection("players").doc(pId).update({ pot: potVal }); }
 
-        /* --- DRAW CEREMONY (Pot wise assignment added) --- */
+        /* --- DRAW CEREMONY --- */
         let pendingDrawFixtures = {}; let drawQueue = []; let currentDrawIndex = 0; let pendingDrawTid = null;
         async function generateFixturesAnimated(docId, format) {
             try {
@@ -1317,7 +1373,7 @@
                 name2El.style.color = "var(--gold)";
                 name2El.style.fontFamily = "var(--font-display)";
                 
-                vsEl.innerHTML = '<i class="fas fa-angle-double-right"></i>';
+                vsEl.innerHTML = "<i class='bx bx-chevrons-right'></i>";
             } else {
                 document.getElementById('drawStatusTxt').innerText = `Drawing for ${item.round}`; 
                 document.getElementById('drawName1').innerText = item.player1.name; 
@@ -1361,19 +1417,18 @@
                 if(!doc.exists) return;
                 const t = doc.data(); 
                 document.getElementById('tdName').innerText = t.name;
-                document.getElementById('tdPrize').innerHTML = `<i class="fas fa-trophy"></i> ${t.prize || 'TBA'}`;
-                document.getElementById('tdFormat').innerHTML = `<i class="fas fa-gamepad"></i> ${t.type || 'Knockout'}`;
+                document.getElementById('tdPrize').innerHTML = `<i class='bx bxs-trophy'></i> ${t.prize || 'TBA'}`;
+                document.getElementById('tdFormat').innerHTML = `<i class='bx bxs-joystick'></i> ${t.type || 'Knockout'}`;
                 const tdAdmin = document.getElementById('tdAdminControls');
                 if ((currentUserRole === 'admin' || currentUserRole === 'moderator') && t.type === 'Group Stage') tdAdmin.style.display = 'block'; else tdAdmin.style.display = 'none';
                 renderTdData(t, docId);
             });
         }
 
-        /* Update to dynamically generate Stats Table for Group Stage */
         function renderTdData(t, docId) {
             const divG = document.getElementById('tdGroups'); const divB = document.getElementById('tdBracket'); const divM = document.getElementById('tdMatches');
             divG.innerHTML = ''; divB.innerHTML = ''; divM.innerHTML = '';
-            if(!t.fixtures) { divG.innerHTML = "<p style='color:gray; font-size:12px; text-align:center;'>Fixtures not generated yet.</p>"; return; }
+            if(!t.fixtures) { divG.innerHTML = "<p style='color:var(--text-dim); font-size:12px; text-align:center;'>Fixtures not generated yet.</p>"; return; }
 
             let allMatchesHtml = "";
 
@@ -1381,12 +1436,7 @@
                 document.getElementById('tabBtnGroups').style.display = 'block'; switchTdTab('tdGroups', document.getElementById('tabBtnGroups'));
                 if(t.fixtures.standings) {
                     Object.keys(t.fixtures.standings).forEach(gName => {
-                        // 1. Initialise player stats
-                        let groupPlayers = t.fixtures.standings[gName].map(p => ({
-                            ...p, MP: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, PTS: 0
-                        }));
-
-                        // 2. Calculate dynamically from played matches
+                        let groupPlayers = t.fixtures.standings[gName].map(p => ({ ...p, MP: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, PTS: 0 }));
                         let groupMatches = t.fixtures[gName] || [];
                         groupMatches.forEach(m => {
                             if(m.myScore !== undefined && m.oppScore !== undefined) {
@@ -1403,7 +1453,6 @@
                             }
                         });
 
-                        // 3. Sort standard (PTS > GD > GF)
                         groupPlayers.sort((a, b) => {
                             if(b.PTS !== a.PTS) return b.PTS - a.PTS;
                             let gdA = a.GF - a.GA; let gdB = b.GF - b.GA;
@@ -1411,7 +1460,6 @@
                             return b.GF - a.GF;
                         });
 
-                        // 4. Build Table
                         let rows = "";
                         groupPlayers.forEach((p, idx) => {
                             let qualifyClass = (idx < (t.qualifiers || 2)) ? 'qualify-spot' : '';
@@ -1434,7 +1482,7 @@
                         
                         divG.innerHTML += `
                         <div class="td-group-box">
-                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9px; font-weight:600;">Top ${t.qualifiers||2} Qualify</span></div>
+                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9.5px; font-weight:600; text-transform:uppercase;">Top ${t.qualifiers||2} Qualify</span></div>
                             <div class="g-table-wrap">
                                 <div class="g-table-header">
                                     <div class="g-col-team-head">Club / Player</div>
@@ -1455,7 +1503,7 @@
                     if(key !== 'standings' && !key.includes('Round') && !key.includes('Final')) {
                         const matches = t.fixtures[key];
                         if(Array.isArray(matches)) {
-                            allMatchesHtml += `<div style="font-size:12px; color:var(--logo-blue); font-weight:700; margin:15px 0 5px;">${key}</div>`;
+                            allMatchesHtml += `<div style="font-size:12px; color:var(--logo-blue); font-weight:700; margin:20px 0 8px; letter-spacing:1px; text-transform:uppercase;">${key}</div>`;
                             matches.forEach(m => allMatchesHtml += buildMatchBox(m, key, docId));
                         }
                     }
@@ -1467,11 +1515,11 @@
             let bracketHtml = ""; let hasBracket = false;
             Object.keys(t.fixtures).forEach(key => {
                 if(key.includes('Round') || key.includes('Final')) {
-                    hasBracket = true; bracketHtml += `<div style="font-size:12px; color:var(--gold); font-weight:800; margin:15px 0 5px; text-transform:uppercase;">${key}</div>`;
+                    hasBracket = true; bracketHtml += `<div style="font-size:13px; color:var(--gold); font-weight:800; margin:20px 0 8px; text-transform:uppercase; letter-spacing:1px;">${key}</div>`;
                     t.fixtures[key].forEach(m => { bracketHtml += buildMatchBox(m, key, docId); allMatchesHtml += buildMatchBox(m, key, docId); });
                 }
             });
-            if(hasBracket) divB.innerHTML = bracketHtml; else divB.innerHTML = "<p style='color:var(--text-dim); font-size:11px; text-align:center; margin-top:20px;'><i class='fas fa-lock'></i> Knockout bracket unlocked after Groups.</p>";
+            if(hasBracket) divB.innerHTML = bracketHtml; else divB.innerHTML = "<p style='color:var(--text-dim); font-size:12px; text-align:center; margin-top:20px;'><i class='bx bxs-lock-alt'></i> Knockout bracket unlocked after Groups.</p>";
             divM.innerHTML = allMatchesHtml;
         }
 
@@ -1483,9 +1531,9 @@
             let adminButtons = '';
             if(currentUserRole === 'admin' || currentUserRole === 'moderator') {
                 adminButtons = `
-                <div style="display:flex; justify-content:center; gap:8px; margin-top:8px; width:100%; border-top:1px dashed var(--card-border); padding-top:8px;">
-                    <button onclick="adminEditScore('${tId}', '${round}', ${m.match})" style="background:var(--logo-blue); color:white; border:none; padding:4px 12px; border-radius:4px; font-size:10px; cursor:pointer;"><i class="fas fa-edit"></i> Edit Result</button>
-                    <button onclick="adminClearScore('${tId}', '${round}', ${m.match})" style="background:transparent; border:1px solid var(--danger); color:var(--danger); padding:4px 12px; border-radius:4px; font-size:10px; cursor:pointer;"><i class="fas fa-eraser"></i> Clear</button>
+                <div style="display:flex; justify-content:center; gap:10px; margin-top:12px; width:100%; border-top:1px dashed var(--card-border); padding-top:12px;">
+                    <button onclick="adminEditScore('${tId}', '${round}', ${m.match})" style="background:var(--logo-blue); color:white; border:none; padding:6px 14px; border-radius:8px; font-size:11px; font-weight:600; cursor:pointer; transition:0.2s;"><i class='bx bxs-edit-alt'></i> Edit Result</button>
+                    <button onclick="adminClearScore('${tId}', '${round}', ${m.match})" style="background:transparent; border:1px solid var(--danger); color:var(--danger); padding:6px 14px; border-radius:8px; font-size:11px; font-weight:600; cursor:pointer; transition:0.2s;"><i class='bx bxs-eraser'></i> Clear</button>
                 </div>`;
             }
 
@@ -1583,7 +1631,7 @@
             const list = document.getElementById('myMatchesList'); const countBadge = document.getElementById('myMatchCountText');
             if(!user) return list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">Please log in to see matches.</p>`;
             
-            list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;"><i class="fas fa-spinner fa-spin"></i> Checking arena...</p>`;
+            list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;"><i class='bx bx-loader-alt bx-spin'></i> Checking arena...</p>`;
             
             db.collection("tournaments").where("status", "==", "Live").get().then(snap => {
                 let html = ""; let count = 0; let fetchPromises = [];
@@ -1602,7 +1650,7 @@
                                         if(!opp || opp.name.includes("BYE") || opp.name==="TBD") opp = { name: opp?opp.name:"TBD", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png", uid:'bye' };
 
                                         let p = db.collection("pending_results").where("tournamentId", "==", tId).where("matchId", "==", m.match).get().then(resSnap => {
-                                            let statusHtml = `<span class="mm-status pending">Not Played</span>`;
+                                            let statusHtml = `<span class="mm-status pending"><i class='bx bx-time-five'></i> Not Played</span>`;
                                             let btnHtml = `<button class="mm-btn" onclick="openScoreSubmit('${tId}', '${groupOrRound}', '${m.match}', '${me.uid}', '${opp.uid}')">SUBMIT SCORE</button>`;
                                             
                                             let isFinished = (m.myScore !== undefined); 
@@ -1616,14 +1664,14 @@
 
                                             if(isFinished) {
                                                 let myGoals = isP1 ? m.myScore : m.oppScore; let oppGoals = isP1 ? m.oppScore : m.myScore;
-                                                statusHtml = `<span class="mm-status approved">Finished</span>`;
+                                                statusHtml = `<span class="mm-status approved"><i class='bx bxs-check-circle'></i> Finished</span>`;
                                                 btnHtml = `<button class="mm-btn" style="background:rgba(163,230,53,0.1); color:var(--accent); border:1px solid var(--accent); box-shadow:none;" disabled>${myGoals} - ${oppGoals}</button>`;
                                             } else if (isPending) {
-                                                statusHtml = `<span class="mm-status submitted">Pending Admin</span>`;
-                                                btnHtml = `<button class="mm-btn" style="background:var(--card-bg-soft); color:var(--text-muted); box-shadow:none;" disabled>WAITING APPROVAL</button>`;
+                                                statusHtml = `<span class="mm-status submitted"><i class='bx bx-time-five'></i> Pending Admin</span>`;
+                                                btnHtml = `<button class="mm-btn" style="background:rgba(255,255,255,0.05); color:var(--text-muted); box-shadow:none;" disabled>WAITING APPROVAL</button>`;
                                             }
 
-                                            return `<div class="mm-card"><div class="mm-top"><span class="mm-tag">${t.name.substring(0,20)} • ${groupOrRound}</span><span><i class="far fa-clock"></i> ${statusHtml}</span></div><div class="mm-vs-row"><div class="mm-player" onclick="openPublicProfile('${me.uid}')"><img src="${me.avatar}" class="mm-avatar"><span class="mm-name">You</span></div><div class="mm-vs-badge">VS</div><div class="mm-player right" onclick="openPublicProfile('${opp.uid}')"><span class="mm-name">${opp.name}</span><img src="${opp.avatar}" class="mm-avatar"></div></div><div class="mm-bot">${btnHtml}</div></div>`;
+                                            return `<div class="mm-card"><div class="mm-top"><span class="mm-tag">${t.name.substring(0,20)} • ${groupOrRound}</span><span>${statusHtml}</span></div><div class="mm-vs-row"><div class="mm-player" onclick="openPublicProfile('${me.uid}')"><img src="${me.avatar}" class="mm-avatar"><span class="mm-name">You</span></div><div class="mm-vs-badge">VS</div><div class="mm-player right" onclick="openPublicProfile('${opp.uid}')"><span class="mm-name">${opp.name}</span><img src="${opp.avatar}" class="mm-avatar"></div></div><div class="mm-bot">${btnHtml}</div></div>`;
                                         });
                                         fetchPromises.push(p);
                                     }
@@ -1662,21 +1710,21 @@
         function loadPendingResults() {
             const list = document.getElementById('adminPendingResultsList');
             db.collection("pending_results").where("status", "==", "Pending").onSnapshot(snap => {
-                if(snap.empty) { list.innerHTML = "<p style='color:gray; font-size:11px; text-align:center; padding:10px;'>No pending results.</p>"; return; }
+                if(snap.empty) { list.innerHTML = "<p style='color:var(--text-dim); font-size:11px; text-align:center; padding:10px;'>No pending results.</p>"; return; }
                 let html = "";
                 snap.forEach(doc => {
                     const r = doc.data();
                     html += `
-                    <div style="background:var(--card-bg-soft); border:1px solid var(--card-border); padding:10px; border-radius:8px; margin-bottom:10px;">
-                        <div style="font-size:10px; color:var(--text-muted); margin-bottom:5px;">Match ID: ${r.matchId} • ${r.groupRound}</div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:bold;">
+                    <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:12px; border-radius:12px; margin-bottom:12px;">
+                        <div style="font-size:10px; color:var(--text-muted); margin-bottom:8px;">Match ID: ${r.matchId} • ${r.groupRound}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:600;">
                             <span style="color:var(--accent);">${r.submittedBy.substring(0,5)}...</span>
-                            <span>${r.myScore} - ${r.oppScore}</span>
+                            <span style="font-family:var(--font-display); color:var(--gold);">${r.myScore} - ${r.oppScore}</span>
                             <span style="color:white;">${r.oppUid.substring(0,5)}...</span>
                         </div>
-                        <div style="display:flex; gap:10px; margin-top:10px;">
-                            <button onclick="approveResult('${doc.id}')" style="flex:1; background:var(--accent); color:#000; border:none; padding:6px; border-radius:4px; font-weight:bold; font-size:10px; cursor:pointer;">Approve</button>
-                            <button onclick="rejectResult('${doc.id}')" style="flex:1; background:transparent; border:1px solid var(--danger); color:var(--danger); padding:6px; border-radius:4px; font-weight:bold; font-size:10px; cursor:pointer;">Reject</button>
+                        <div style="display:flex; gap:10px; margin-top:12px;">
+                            <button onclick="approveResult('${doc.id}')" style="flex:1; background:var(--accent); color:#000; border:none; padding:8px; border-radius:8px; font-weight:700; font-size:11px; cursor:pointer;"><i class='bx bx-check'></i> Approve</button>
+                            <button onclick="rejectResult('${doc.id}')" style="flex:1; background:transparent; border:1px solid var(--danger); color:var(--danger); padding:8px; border-radius:8px; font-weight:700; font-size:11px; cursor:pointer;"><i class='bx bx-x'></i> Reject</button>
                         </div>
                     </div>`;
                 });
@@ -1799,7 +1847,7 @@
                 const list = document.getElementById(id); list.innerHTML=""; let r=1;
                 snapshot.forEach(doc => {
                     if(lim && r>lim) return; const p=doc.data();
-                    list.innerHTML += `<div class="leaderboard-row" onclick="openPublicProfile('${doc.id}')" style="cursor:pointer;"><div class="rank">#${r}</div><img src="${p.avatar||'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="lb-avatar"><div class="player-info"><div class="player-name">${p.name}</div><div class="points"><i class="fas fa-star" style="font-size:10px;"></i> ${p.points} Points</div></div><div class="win-rate-box"><div class="win-rate-val">${p.winRate || 0}%</div><div class="win-rate-lbl">Win Rate</div></div></div>`;
+                    list.innerHTML += `<div class="leaderboard-row" onclick="openPublicProfile('${doc.id}')" style="cursor:pointer;"><div class="rank">#${r}</div><img src="${p.avatar||'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="lb-avatar"><div class="player-info"><div class="player-name">${p.name}</div><div class="points"><i class='bx bxs-star'></i> ${p.points} Points</div></div><div class="win-rate-box"><div class="win-rate-val">${p.winRate || 0}%</div><div class="win-rate-lbl">Win Rate</div></div></div>`;
                     r++;
                 });
             };
@@ -1814,12 +1862,12 @@
                 if(uDoc.exists) {
                     const uData = uDoc.data();
                     document.getElementById('myProfName').innerText = uData.name;
-                    document.getElementById('myInfoUid').innerHTML = `<i class="far fa-copy"></i> ${uData.konamiUid || "N/A"}`;
+                    document.getElementById('myInfoUid').innerHTML = `${uData.konamiUid || "N/A"} <i class='bx bx-copy'></i>`;
                     document.getElementById('myInfoDevice').innerText = uData.device || "N/A";
                     document.getElementById('myProfAvatar').src = uData.avatar || user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                     
                     const fbLink = uData.fbLink || ""; const fbEl = document.getElementById('myInfoFb');
-                    if(fbLink) { fbEl.href = fbLink; fbEl.innerHTML = `View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i>`; fbEl.style.pointerEvents = "auto"; } 
+                    if(fbLink) { fbEl.href = fbLink; fbEl.innerHTML = `View Profile <i class='bx bx-link-external'></i>`; fbEl.style.pointerEvents = "auto"; } 
                     else { fbEl.href = "#"; fbEl.innerHTML = "Not Provided"; fbEl.style.pointerEvents = "none"; }
 
                     let userRank = "#--";
