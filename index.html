@@ -82,13 +82,13 @@
         @keyframes slideInRight { from { transform: translateX(150px) scale(0.5); opacity: 0; } to { transform: translateX(0) scale(1); opacity: 1; } }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* PUBLIC PROFILE REDESIGN */
+        /* UNIFORM PROFILE STYLES (Used for both Modal and Main Section) */
         #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
         .pub-header { display: flex; align-items: center; padding: 15px; width: 100%; background: var(--glass-bg); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
         .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 8px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; }
         .pub-title { flex: 1; text-align: center; font-family: var(--font-display); color: var(--gold); font-size: 14px; letter-spacing: 1.5px; margin-right: 34px; font-weight: 800; }
         
-        .pub-body { padding: 20px; width: 100%; max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
+        .pub-body { padding: 15px; width: 100%; max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
         .pub-avatar-box { text-align: center; margin-bottom: 20px; }
         .pub-avatar-box img { width: 96px; height: 96px; border-radius: 50%; border: 3px solid var(--card-border); padding: 4px; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: cover; }
         .pub-avatar-box h2 { font-family: var(--font-display); font-size: 22px; font-weight: 800; margin-top: 12px; color: white; text-transform: capitalize; }
@@ -115,11 +115,11 @@
         .pub-card-title { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
         .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
         .pub-list-item:last-child { border-bottom: none; }
-        .pub-list-lbl { font-size: 13px; font-weight: 600; color: white; }
+        .pub-list-lbl { font-size: 13px; font-weight: 600; color: white; display: flex; align-items: center; }
         .pub-list-val { font-size: 13px; font-weight: 700; color: var(--text-muted); }
         .pub-list-val.copyable { color: var(--logo-blue); cursor: pointer; }
 
-        /* FORM CALCULATION & LATEST 10 MATCHES STYLES */
+        /* FORM CALCULATION STYLES */
         .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 15px; }
         .form-grade-left { display: flex; align-items: center; gap: 12px; }
         .form-grade-badge { font-family: var(--font-display); font-size: 16px; font-weight: 900; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -250,29 +250,6 @@
         .submit-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
         .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 15px; cursor: pointer; font-weight: 600; text-align: center; }
 
-        /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-bottom: 14px; }
-        .stat-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 6px 10px; text-align: center; position: relative; overflow: hidden; transition: transform 0.2s; }
-        .stat-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
-        .stat-box.win::before   { background: linear-gradient(90deg, #22c55e, #16a34a); }
-        .stat-box.played::before{ background: linear-gradient(90deg, var(--logo-blue), #0284c7); }
-        .stat-box.draw::before  { background: linear-gradient(90deg, #94a3b8, #64748b); }
-        .stat-box.loss::before  { background: linear-gradient(90deg, #ef4444, #b91c1c); }
-        .stat-box.wr::before    { background: linear-gradient(90deg, var(--accent), var(--accent-deep)); }
-        .stat-box.gf::before    { background: linear-gradient(90deg, var(--gold), var(--gold-deep)); }
-        .stat-box.ga::before    { background: linear-gradient(90deg, #f97316, #ea580c); }
-        .stat-box.motm::before  { background: linear-gradient(90deg, #a78bfa, #7c3aed); }
-        .stat-box-val { font-family: var(--font-display); font-size: 20px; font-weight: 800; display: block; line-height: 1.1; margin-bottom: 4px; }
-        .stat-box.win   .stat-box-val { color: #4ade80; }
-        .stat-box.played .stat-box-val { color: var(--logo-blue); }
-        .stat-box.draw  .stat-box-val { color: #94a3b8; }
-        .stat-box.loss  .stat-box-val { color: #f87171; }
-        .stat-box.wr    .stat-box-val { color: var(--accent); }
-        .stat-box.gf    .stat-box-val { color: var(--gold); }
-        .stat-box.ga    .stat-box-val { color: #fb923c; }
-        .stat-box.motm  .stat-box-val { color: #c4b5fd; }
-        .stat-box-lbl { font-size: 8.5px; color: var(--text-dim); font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; }
-
         /* LEADERBOARD LIST */
         .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding: 4px 8px 12px 10px; border-left: 3px solid transparent; border-radius: 6px; }
         .leaderboard-row:nth-child(1) { border-left-color: var(--gold); background: linear-gradient(90deg, rgba(255,215,0,0.06), transparent 60%); }
@@ -288,13 +265,6 @@
         .win-rate-box { text-align: right; }
         .win-rate-val { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--accent); }
         .win-rate-lbl { font-size: 9.5px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.4px; }
-
-        .prof-top-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; padding-left: 11px; position: relative; }
-        .prof-top-title::before { content: ''; position: absolute; left: 0; top: 1px; bottom: 1px; width: 4px; border-radius: 3px; background: var(--signature); }
-        .prof-header { display: flex; align-items: center; gap: 14px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 16px; }
-        .prof-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 3px var(--card-bg), 0 0 0 5px var(--logo-blue); }
-        .prof-name { font-size: 16px; font-weight: 700; }
-        .prof-country { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
 
         /* BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); display: flex; justify-content: space-around; padding: 10px 0 12px; z-index: 1000; border-radius: 20px 20px 0 0; border-top: 1px solid var(--glass-border); box-shadow: 0 -10px 30px rgba(0,0,0,0.4); }
@@ -335,98 +305,113 @@
         </div>
     </div>
 
-    <!-- PUBLIC PROFILE REDESIGN -->
+    <!-- PUBLIC PROFILE MODAL (Used for clicking on profiles) -->
     <div id="publicProfileModal" class="modal-overlay">
         <div class="pub-header">
             <button class="pub-back-btn" onclick="closeModal('publicProfileModal')"><i class="fas fa-chevron-left"></i></button>
             <h3 class="pub-title">PLAYER OVERVIEW</h3>
         </div>
         <div class="pub-body">
-            
-            <div class="pub-avatar-box">
-                <img id="pubProfAvatar" src="">
-                <h2 id="pubProfName">Player Name</h2>
-            </div>
-            
+            <div class="pub-avatar-box"><img id="pubProfAvatar" src=""><h2 id="pubProfName">Player Name</h2></div>
             <div class="pub-rank-row">
-                <div class="pub-rank-item">
-                    <div class="pub-rank-lbl">Current Rank</div>
-                    <div id="pubProfRank" class="pub-rank-val">#--</div>
-                </div>
-                <div class="pub-rank-item">
-                    <div class="pub-rank-lbl">Trophies Won</div>
-                    <div id="pubProfTrophies" class="pub-rank-val"><i class="fas fa-trophy" style="color:var(--gold); font-size:16px;"></i> 0</div>
-                </div>
+                <div class="pub-rank-item"><div class="pub-rank-lbl">Current Rank</div><div id="pubProfRank" class="pub-rank-val">#--</div></div>
+                <div class="pub-rank-item"><div class="pub-rank-lbl">Trophies Won</div><div id="pubProfTrophies" class="pub-rank-val"><i class="fas fa-trophy" style="color:var(--gold); font-size:16px;"></i> 0</div></div>
             </div>
             
             <div class="pub-stats-grid">
-                <div class="pub-stat-box">
-                    <div id="pubProfMatches" class="pub-stat-num">0</div>
-                    <div class="pub-stat-lbl">Matches</div>
-                </div>
-                <div class="pub-stat-box">
-                    <div id="pubProfWins" class="pub-stat-num">0</div>
-                    <div class="pub-stat-lbl">Wins</div>
-                </div>
-                <div class="pub-stat-box">
-                    <div id="pubProfGoals" class="pub-stat-num">0</div>
-                    <div class="pub-stat-lbl">Goals</div>
-                </div>
-                <div class="pub-stat-box">
-                    <div id="pubProfWR" class="pub-stat-num">0%</div>
-                    <div class="pub-stat-lbl">Win Rate</div>
-                </div>
+                <div class="pub-stat-box"><div id="pubProfMatches" class="pub-stat-num">0</div><div class="pub-stat-lbl">Matches</div></div>
+                <div class="pub-stat-box"><div id="pubProfWins" class="pub-stat-num">0</div><div class="pub-stat-lbl">Wins</div></div>
+                <div class="pub-stat-box"><div id="pubProfGoals" class="pub-stat-num">0</div><div class="pub-stat-lbl">Goals</div></div>
+                <div class="pub-stat-box"><div id="pubProfWR" class="pub-stat-num">0%</div><div class="pub-stat-lbl">Win Rate</div></div>
             </div>
 
             <div class="pub-tabs-wrap">
-                <button class="pub-tab active" onclick="switchPubTab('pubInfo', this)">Info</button>
-                <button class="pub-tab" onclick="switchPubTab('pubStats', this)">Stats</button>
-                <button class="pub-tab" onclick="switchPubTab('pubForm', this)">Form</button>
-                <button class="pub-tab" onclick="switchPubTab('pubTrophy', this)">Trophy</button>
+                <button class="pub-tab active" onclick="switchTabBox('pubInfo', this)">Info</button>
+                <button class="pub-tab" onclick="switchTabBox('pubStats', this)">Stats</button>
+                <button class="pub-tab" onclick="switchTabBox('pubForm', this)">Form</button>
+                <button class="pub-tab" onclick="switchTabBox('pubTrophy', this)">Trophy</button>
             </div>
 
             <div id="pubInfo" class="pub-content active pub-card">
                 <div class="pub-card-title">Player Information</div>
-                <div class="pub-list-item">
-                    <span class="pub-list-lbl">eFootball UID</span>
-                    <span id="pubInfoUid" class="pub-list-val copyable" onclick="copyUID()"><i class="far fa-copy"></i> N/A</span>
-                </div>
-                <div class="pub-list-item">
-                    <span class="pub-list-lbl">Device Model</span>
-                    <span id="pubInfoDevice" class="pub-list-val">N/A</span>
-                </div>
-                <div class="pub-list-item" style="margin-top:10px;">
-                    <span class="pub-list-lbl">Registered On</span>
-                    <span class="pub-list-val">Season 1</span>
+                <div class="pub-list-item"><span class="pub-list-lbl">eFootball UID</span><span id="pubInfoUid" class="pub-list-val copyable" onclick="copyUID('pubInfoUid')">N/A</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Device Model</span><span id="pubInfoDevice" class="pub-list-val">N/A</span></div>
+                
+                <div class="pub-card-title" style="margin-top:15px; border-top:1px solid var(--card-border); padding-top:15px;">Social</div>
+                <div class="pub-list-item" style="border:none;">
+                    <span class="pub-list-lbl"><i class="fab fa-facebook" style="color:#1877F2; font-size:16px; margin-right:8px;"></i> Facebook</span>
+                    <a href="#" id="pubInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i></a>
                 </div>
             </div>
 
             <div id="pubStats" class="pub-content pub-card">
                 <div class="pub-card-title">Additional Stats</div>
-                <div class="pub-list-item">
-                    <span class="pub-list-lbl">Matches Drawn</span>
-                    <span id="pubStatDraws" class="pub-list-val" style="color:white;">0</span>
-                </div>
-                <div class="pub-list-item">
-                    <span class="pub-list-lbl">Matches Lost</span>
-                    <span id="pubStatLosses" class="pub-list-val" style="color:#f87171;">0</span>
-                </div>
-                <div class="pub-list-item">
-                    <span class="pub-list-lbl">Goals Conceded</span>
-                    <span id="pubStatGA" class="pub-list-val" style="color:#fb923c;">0</span>
-                </div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Matches Drawn</span><span id="pubStatDraws" class="pub-list-val" style="color:white;">0</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Matches Lost</span><span id="pubStatLosses" class="pub-list-val" style="color:#f87171;">0</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Goals Conceded</span><span id="pubStatGA" class="pub-list-val" style="color:#fb923c;">0</span></div>
             </div>
-
             <div id="pubForm" class="pub-content pub-card"></div>
-
             <div id="pubTrophy" class="pub-content pub-card">
                 <div class="pub-card-title">Trophy Cabinet</div>
-                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:10px;">
-                    <i class="fas fa-box-open" style="font-size:30px; color:var(--text-dim);"></i>
-                    <p style="color:var(--text-muted); font-size:12px; text-align:center;">No trophies yet.</p>
-                </div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:10px;"><i class="fas fa-box-open" style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MY PROFILE PAGE SECTION (IDENTICAL DESIGN) -->
+    <div id="profile" class="page-section">
+        <div class="pub-body" style="padding:0; padding-top:10px;">
+            <div class="pub-avatar-box" style="margin-bottom:15px;">
+                <img id="myProfAvatar" src="">
+                <h2 id="myProfName">Player Name</h2>
             </div>
             
+            <div class="pub-rank-row">
+                <div class="pub-rank-item"><div class="pub-rank-lbl">Current Rank</div><div id="myProfRank" class="pub-rank-val">#--</div></div>
+                <div class="pub-rank-item"><div class="pub-rank-lbl">Trophies Won</div><div id="myProfTrophies" class="pub-rank-val"><i class="fas fa-trophy" style="color:var(--gold); font-size:16px;"></i> 0</div></div>
+            </div>
+            
+            <div class="pub-stats-grid">
+                <div class="pub-stat-box"><div id="myProfMatches" class="pub-stat-num">0</div><div class="pub-stat-lbl">Matches</div></div>
+                <div class="pub-stat-box"><div id="myProfWins" class="pub-stat-num">0</div><div class="pub-stat-lbl">Wins</div></div>
+                <div class="pub-stat-box"><div id="myProfGoals" class="pub-stat-num">0</div><div class="pub-stat-lbl">Goals</div></div>
+                <div class="pub-stat-box"><div id="myProfWR" class="pub-stat-num">0%</div><div class="pub-stat-lbl">Win Rate</div></div>
+            </div>
+
+            <div class="pub-tabs-wrap">
+                <button class="pub-tab active" onclick="switchTabBox('myInfo', this)">Info</button>
+                <button class="pub-tab" onclick="switchTabBox('myStats', this)">Stats</button>
+                <button class="pub-tab" onclick="switchTabBox('myForm', this)">Form</button>
+                <button class="pub-tab" onclick="switchTabBox('myTrophy', this)">Trophy</button>
+            </div>
+
+            <div id="myInfo" class="pub-content active pub-card">
+                <div class="pub-card-title">Player Information</div>
+                <div class="pub-list-item"><span class="pub-list-lbl">eFootball UID</span><span id="myInfoUid" class="pub-list-val copyable" onclick="copyUID('myInfoUid')">N/A</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Device Model</span><span id="myInfoDevice" class="pub-list-val">N/A</span></div>
+                
+                <div class="pub-card-title" style="margin-top:15px; border-top:1px solid var(--card-border); padding-top:15px;">Social</div>
+                <div class="pub-list-item" style="border:none;">
+                    <span class="pub-list-lbl"><i class="fab fa-facebook" style="color:#1877F2; font-size:16px; margin-right:8px;"></i> Facebook</span>
+                    <a href="#" id="myInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i></a>
+                </div>
+            </div>
+
+            <div id="myStats" class="pub-content pub-card">
+                <div class="pub-card-title">Additional Stats</div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Matches Drawn</span><span id="myStatDraws" class="pub-list-val" style="color:white;">0</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Matches Lost</span><span id="myStatLosses" class="pub-list-val" style="color:#f87171;">0</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl">Goals Conceded</span><span id="myStatGA" class="pub-list-val" style="color:#fb923c;">0</span></div>
+            </div>
+            <div id="myForm" class="pub-content pub-card"></div>
+            <div id="myTrophy" class="pub-content pub-card">
+                <div class="pub-card-title">Trophy Cabinet</div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:10px;"><i class="fas fa-box-open" style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+            </div>
+            
+            <div style="text-align:center; margin-top:25px;">
+                <button onclick="logOut()" class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin:0 auto; width:80%;">Logout Account</button>
+            </div>
         </div>
     </div>
 
@@ -513,6 +498,7 @@
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name">
+            <input type="url" id="regFb" placeholder="Facebook Profile Link (Optional)">
             <input type="file" id="regAvatarFile" accept="image/*">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
@@ -605,45 +591,6 @@
         <div class="card" id="leaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
     </div>
 
-    <!-- 6. PROFILE SECTION (MY STATS) -->
-    <div id="profile" class="page-section">
-        <div class="prof-top-title">Player Overview</div>
-        <div class="prof-header" id="profileHeader" style="display:none;">
-            <img id="profAvatar" src="" class="prof-avatar">
-            <div class="prof-details">
-                <div class="prof-name" id="profName">Player Name</div>
-                <div class="prof-country">🇧🇩 Bangladesh</div>
-                <p id="profEmailTxt" style="color: var(--accent); font-size: 10px; margin-top: 5px; font-weight:500;"></p>
-            </div>
-        </div>
-        <div class="card" style="margin-top: 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--card-border); margin-bottom:10px;">
-                <span style="color: var(--text-muted); font-size: 12px; font-weight:500;">eFootball UID</span>
-                <strong style="color: white; font-size: 13px;" id="profKonamiTxt">N/A</strong>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
-                <span style="color: var(--text-muted); font-size: 12px; font-weight:500;">Device Model</span>
-                <strong style="color: white; font-size: 13px;" id="profDeviceTxt">N/A</strong>
-            </div>
-        </div>
-
-        <div class="stats-section-title">Season Stats</div>
-        <div class="stats-grid" id="statsGrid">
-            <div class="stat-box win"><span class="stat-box-val" id="statW">0</span><span class="stat-box-lbl">Won</span></div>
-            <div class="stat-box played"><span class="stat-box-val" id="statP">0</span><span class="stat-box-lbl">Played</span></div>
-            <div class="stat-box draw"><span class="stat-box-val" id="statD">0</span><span class="stat-box-lbl">Draw</span></div>
-            <div class="stat-box loss"><span class="stat-box-val" id="statL">0</span><span class="stat-box-lbl">Lost</span></div>
-            <div class="stat-box wr"><span class="stat-box-val" id="statWR">0%</span><span class="stat-box-lbl">Win Rate</span></div>
-            <div class="stat-box gf"><span class="stat-box-val" id="statGF">0</span><span class="stat-box-lbl">GF</span></div>
-            <div class="stat-box ga"><span class="stat-box-val" id="statGA">0</span><span class="stat-box-lbl">GA</span></div>
-            <div class="stat-box motm"><span class="stat-box-val" id="statMOTM">0</span><span class="stat-box-lbl">MOTM</span></div>
-        </div>
-
-        <div style="text-align: center; margin-top: 28px; margin-bottom: 8px;">
-            <button onclick="logOut()" style="background: transparent; color: var(--danger); border: 1px solid var(--danger); padding: 9px 26px; border-radius: 8px; cursor: pointer; font-weight: 800;">Logout Account</button>
-        </div>
-    </div>
-
     <!-- 7. ADMIN DASHBOARD -->
     <div id="admin" class="page-section">
         <div class="section-title" style="color: var(--danger);">Admin Dashboard</div>
@@ -667,7 +614,7 @@
                 <input type="text" id="editPlayerName" placeholder="Full Name">
                 <input type="text" id="editPlayerKonami" placeholder="Konami UID">
                 <input type="text" id="editPlayerDevice" placeholder="Device Model">
-                <input type="text" id="editPlayerPhone" placeholder="Phone Number (Optional)">
+                <input type="url" id="editPlayerFb" placeholder="Facebook Link">
                 <label style="font-size:10px; color:gray; display:block; margin:5px 0;">Account Role:</label>
                 <select id="editPlayerRole" style="margin-bottom:10px;">
                     <option value="user">Normal Player</option>
@@ -760,15 +707,16 @@
         window.addEventListener('load', () => setTimeout(() => { document.getElementById('preloader').classList.add('hide'); }, 700));
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
         
-        function switchPubTab(tabId, btn) {
-            document.querySelectorAll('.pub-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.pub-tab').forEach(el => el.classList.remove('active'));
+        function switchTabBox(tabId, btn) {
+            const parent = btn.closest('.pub-body');
+            parent.querySelectorAll('.pub-content').forEach(el => el.classList.remove('active'));
+            parent.querySelectorAll('.pub-tab').forEach(el => el.classList.remove('active'));
             document.getElementById(tabId).classList.add('active'); btn.classList.add('active');
         }
         
-        function copyUID() {
-            const uidText = document.getElementById('pubInfoUid').innerText;
-            if(uidText && uidText !== "N/A") { navigator.clipboard.writeText(uidText.trim()).then(() => { alert("UID Copied!"); }); }
+        function copyUID(elementId) {
+            const uidText = document.getElementById(elementId).innerText;
+            if(uidText && !uidText.includes("N/A")) { navigator.clipboard.writeText(uidText.trim()).then(() => { alert("UID Copied!"); }); }
         }
 
         let fullLeaderboardData = []; 
@@ -793,8 +741,8 @@
             return { grade, class: cls, desc, pct, recent: last10 };
         }
 
-        function renderPubFormTab(matches) {
-            const container = document.getElementById('pubForm');
+        function renderFormTab(matches, containerId) {
+            const container = document.getElementById(containerId);
             if(!matches || matches.length === 0) {
                 container.innerHTML = `<div class="pub-card-title">Recent Form</div><div style="text-align:center; padding:20px 10px;"><i class="far fa-chart-bar" style="font-size:30px; color:var(--text-dim); margin-bottom:8px;"></i><p style="color:var(--text-muted); font-size:12px;">No matches recorded yet.</p></div>`; return;
             }
@@ -850,16 +798,22 @@
             `;
         }
 
+        // FETCH DATA FOR MODAL (PUBLIC PROFILE)
         function openPublicProfile(uid) {
             if(!uid || uid === 'bye' || uid === 'undefined' || uid === 'tbd') return;
+            
             db.collection("users").doc(uid).get().then(doc => {
                 if(doc.exists) {
                     const p = doc.data();
                     document.getElementById('pubProfName').innerText = p.name;
-                    document.getElementById('pubInfoUid').innerHTML = p.konamiUid || "N/A";
+                    document.getElementById('pubInfoUid').innerHTML = `<i class="far fa-copy"></i> ${p.konamiUid || "N/A"}`;
                     document.getElementById('pubInfoDevice').innerText = p.device || "N/A";
                     document.getElementById('pubProfAvatar').src = p.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                     
+                    const fbLink = p.fbLink || ""; const fbEl = document.getElementById('pubInfoFb');
+                    if(fbLink) { fbEl.href = fbLink; fbEl.innerHTML = `View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i>`; fbEl.style.pointerEvents = "auto"; } 
+                    else { fbEl.href = "#"; fbEl.innerHTML = "Not Provided"; fbEl.style.pointerEvents = "none"; }
+
                     let userRank = "#--";
                     const lbIndex = fullLeaderboardData.findIndex(x => x.name === p.name || x.uid === uid);
                     if(lbIndex !== -1) userRank = `#${lbIndex + 1}`;
@@ -876,8 +830,8 @@
                         document.getElementById('pubProfMatches').innerText = played; document.getElementById('pubProfWins').innerText = w; document.getElementById('pubProfGoals').innerText = gf; document.getElementById('pubProfWR').innerText = wr + '%';
                         document.getElementById('pubStatDraws').innerText = d; document.getElementById('pubStatLosses').innerText = l; document.getElementById('pubStatGA').innerText = ga;
                         
-                        renderPubFormTab(matches);
-                        switchPubTab('pubInfo', document.querySelectorAll('.pub-tab')[0]);
+                        renderFormTab(matches, 'pubForm');
+                        switchTabBox('pubInfo', document.querySelector('#publicProfileModal .pub-tab'));
                         document.getElementById('publicProfileModal').classList.add('active');
                     });
                 }
@@ -937,6 +891,7 @@
         /* --- AUTHENTICATION & USERS DATA --- */
         async function signUpWithEmail() {
             const name = document.getElementById('regName').value; const konami = document.getElementById('regKonami').value; const device = document.getElementById('regDevice').value; const email = document.getElementById('regEmail').value; const password = document.getElementById('regPassword').value; const avatarFile = document.getElementById('regAvatarFile').files[0];
+            const fbLink = document.getElementById('regFb').value;
             if(!avatarFile || !name || !email || password.length < 6) return alert("Fill required fields correctly!");
             const btn = document.getElementById('regBtn'); btn.innerText = "Processing..."; btn.disabled = true;
             try {
@@ -944,7 +899,7 @@
                 const photoURL = await uploadToImgBB(compressedImage);
                 const userCred = await auth.createUserWithEmailAndPassword(email, password);
                 await userCred.user.updateProfile({ displayName: name, photoURL: photoURL });
-                await db.collection("users").doc(userCred.user.uid).set({ name: name, konamiUid: konami, device: device, avatar: photoURL, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp(), role: "user" });
+                await db.collection("users").doc(userCred.user.uid).set({ name: name, konamiUid: konami, device: device, fbLink: fbLink, avatar: photoURL, email: email, joinedAt: firebase.firestore.FieldValue.serverTimestamp(), role: "user" });
                 alert("Account Created!"); switchTab('home');
             } catch (e) { alert(e.message); } finally { btn.innerText = "Sign Up"; btn.disabled = false; }
         }
@@ -958,15 +913,13 @@
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                document.getElementById('loginBtn').style.display = 'none'; document.getElementById('profileHeader').style.display = 'flex';
-                document.getElementById('profName').innerText = user.displayName || "Player"; document.getElementById('profEmailTxt').innerText = user.email; document.getElementById('profAvatar').src = user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                document.getElementById('loginBtn').style.display = 'none'; 
                 document.getElementById('smLoginSection').style.display = 'none'; document.getElementById('smProfileSection').style.display = 'block';
                 document.getElementById('smName').innerText = user.displayName; document.getElementById('smAvatar').src = user.photoURL;
 
                 db.collection("users").doc(user.uid).get().then(doc => {
                     currentUserRole = doc.exists ? (doc.data().role || "user") : "user";
                     if(user.email === adminEmail) currentUserRole = "admin";
-                    if(doc.exists) { document.getElementById('profKonamiTxt').innerText = doc.data().konamiUid || "N/A"; document.getElementById('profDeviceTxt').innerText = doc.data().device || "N/A"; }
                     document.body.classList.remove('is-main-admin', 'is-admin');
                     if(currentUserRole === "admin" || currentUserRole === "moderator") { 
                         document.getElementById('navAdmin').classList.add('show'); document.body.classList.add('is-admin');
@@ -975,7 +928,7 @@
                     } else { document.getElementById('navAdmin').classList.remove('show'); }
                 });
             } else {
-                document.getElementById('loginBtn').style.display = 'flex'; document.getElementById('profileHeader').style.display = 'none';
+                document.getElementById('loginBtn').style.display = 'flex'; 
                 document.getElementById('smLoginSection').style.display = 'block'; document.getElementById('smProfileSection').style.display = 'none';
                 document.getElementById('navAdmin').classList.remove('show'); document.body.classList.remove('is-main-admin', 'is-admin');
                 currentUserRole = "user";
@@ -1008,7 +961,7 @@
             const p = allUsersData.find(x => x.uid === uid);
             if(!p) return;
             document.getElementById('editPlayerUid').value = p.uid; document.getElementById('editPlayerName').value = p.name || "";
-            document.getElementById('editPlayerKonami').value = p.konamiUid || ""; document.getElementById('editPlayerDevice').value = p.device || ""; document.getElementById('editPlayerPhone').value = p.phone || "";
+            document.getElementById('editPlayerKonami').value = p.konamiUid || ""; document.getElementById('editPlayerDevice').value = p.device || ""; document.getElementById('editPlayerFb').value = p.fbLink || ""; document.getElementById('editPlayerPhone').value = p.phone || "";
             if(document.getElementById('editPlayerRole')) document.getElementById('editPlayerRole').value = p.role || "user";
             document.getElementById('adminEditPlayerForm').style.display = 'block';
         }
@@ -1016,7 +969,7 @@
         
         function savePlayerEdit() {
             const uid = document.getElementById('editPlayerUid').value; if(!uid) return;
-            let data = { name: document.getElementById('editPlayerName').value, konamiUid: document.getElementById('editPlayerKonami').value, device: document.getElementById('editPlayerDevice').value, phone: document.getElementById('editPlayerPhone').value };
+            let data = { name: document.getElementById('editPlayerName').value, konamiUid: document.getElementById('editPlayerKonami').value, device: document.getElementById('editPlayerDevice').value, fbLink: document.getElementById('editPlayerFb').value, phone: document.getElementById('editPlayerPhone').value };
             let roleElem = document.getElementById('editPlayerRole'); if(roleElem && currentUserRole === 'admin') data.role = roleElem.value;
             db.collection("users").doc(uid).update(data).then(() => { alert("Player details updated!"); cancelPlayerEdit(); });
         }
@@ -1053,12 +1006,8 @@
                 if(data.name) {
                     await db.collection("tournaments").add(data);
                     alert("Created Successfully!");
-                    document.getElementById('tName').value = "";
-                    document.getElementById('tImageLink').value = "";
-                    fileInput.value = "";
-                } else {
-                    alert("Tournament name is required!");
-                }
+                    document.getElementById('tName').value = ""; document.getElementById('tImageLink').value = ""; fileInput.value = "";
+                } else { alert("Tournament name is required!"); }
             } catch(e) { alert("Error: " + e.message); } 
             finally { btn.innerText = "Publish Tournament"; btn.disabled = false; }
         }
@@ -1379,7 +1328,6 @@
                 }
             });
 
-            // Revert Old Stats
             if(oldS1 !== undefined && oldS2 !== undefined && p1Uid && p2Uid && p1Uid !== 'bye' && p2Uid !== 'bye') {
                 await revertPlayerStatsDB(p1Uid, oldS1, oldS2, tId, matchId);
                 await revertPlayerStatsDB(p2Uid, oldS2, oldS1, tId, matchId);
@@ -1387,7 +1335,6 @@
 
             await tRef.update({ fixtures: fixtures });
 
-            // Apply New Stats
             if(s1 !== undefined && s2 !== undefined && p1Uid && p2Uid && p1Uid !== 'bye' && p2Uid !== 'bye') {
                 await updatePlayerStatsDB(p1Uid, s1, s2, p2Name, p2Av, p2Uid, tId, matchId);
                 await updatePlayerStatsDB(p2Uid, s2, s1, p1Name, p1Av, p1Uid, tId, matchId);
@@ -1627,12 +1574,44 @@
         /* --- PLAYER STATS (MY PROFILE) --- */
         function loadPlayerStats() {
             const user = auth.currentUser; if (!user) return;
-            db.collection("playerStats").doc(user.uid).get().then(doc => {
-                let wins=0, played=0, draws=0, losses=0, gf=0, ga=0, motm=0;
-                if (doc.exists) { const d = doc.data(); wins = d.wins||0; played = d.played||0; draws = d.draws||0; losses = d.losses||0; gf = d.gf||0; ga = d.ga||0; motm = d.motm||0; }
-                const wr = played > 0 ? Math.round((wins / played) * 100) : 0;
-                document.getElementById('statW').innerText = wins; document.getElementById('statP').innerText = played; document.getElementById('statD').innerText = draws; document.getElementById('statL').innerText = losses;
-                document.getElementById('statWR').innerText = wr + '%'; document.getElementById('statGF').innerText = gf; document.getElementById('statGA').innerText = ga; document.getElementById('statMOTM').innerText = motm;
+            
+            db.collection("users").doc(user.uid).get().then(uDoc => {
+                if(uDoc.exists) {
+                    const uData = uDoc.data();
+                    document.getElementById('myProfName').innerText = uData.name;
+                    document.getElementById('myInfoUid').innerHTML = `<i class="far fa-copy"></i> ${uData.konamiUid || "N/A"}`;
+                    document.getElementById('myInfoDevice').innerText = uData.device || "N/A";
+                    document.getElementById('myProfAvatar').src = uData.avatar || user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                    
+                    const fbLink = uData.fbLink || ""; const fbEl = document.getElementById('myInfoFb');
+                    if(fbLink) { fbEl.href = fbLink; fbEl.innerHTML = `View Profile <i class="fas fa-external-link-alt" style="font-size:10px;"></i>`; fbEl.style.pointerEvents = "auto"; } 
+                    else { fbEl.href = "#"; fbEl.innerHTML = "Not Provided"; fbEl.style.pointerEvents = "none"; }
+
+                    let userRank = "#--";
+                    const lbIndex = fullLeaderboardData.findIndex(x => x.uid === user.uid);
+                    if(lbIndex !== -1) userRank = `#${lbIndex + 1}`;
+                    document.getElementById('myProfRank').innerText = userRank;
+                }
+                
+                db.collection("playerStats").doc(user.uid).get().then(statDoc => {
+                    let w = 0, d = 0, l = 0, wr = 0, played = 0, gf = 0, ga = 0, matches = [];
+                    if(statDoc.exists) {
+                        const s = statDoc.data();
+                        w = s.wins || 0; d = s.draws || 0; l = s.losses || 0; gf = s.gf || 0; ga = s.ga || 0;
+                        played = s.played || 0; matches = s.matches || [];
+                        wr = played > 0 ? Math.round((w/played)*100) : 0;
+                    }
+                    document.getElementById('myProfMatches').innerText = played; 
+                    document.getElementById('myProfWins').innerText = w; 
+                    document.getElementById('myProfGoals').innerText = gf; 
+                    document.getElementById('myProfWR').innerText = wr + '%';
+                    
+                    document.getElementById('myStatDraws').innerText = d; 
+                    document.getElementById('myStatLosses').innerText = l; 
+                    document.getElementById('myStatGA').innerText = ga;
+                    
+                    renderFormTab(matches, 'myForm');
+                });
             });
         }
     </script>
