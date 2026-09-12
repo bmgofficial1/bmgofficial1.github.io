@@ -20,7 +20,7 @@
             --bg-dark: #070a14;
             --card-bg: rgba(15, 22, 41, 0.7);
             --card-bg-soft: rgba(22, 31, 58, 0.5);
-            --card-border: rgba(255, 255, 255, 0.08);
+            --card-border: rgba(255, 255, 255, 0.06);
             --gold: #fbbf24;
             --gold-glow: rgba(251, 191, 36, 0.3);
             --accent: #22c55e;
@@ -30,7 +30,7 @@
             --danger: #ef4444;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --text-dim: #64748b;
+            --text-dim: #475569;
             --signature: linear-gradient(135deg, #38bdf8, #818cf8 50%, #c084fc);
             --font-body: 'Outfit', -apple-system, sans-serif;
             --font-display: 'Orbitron', sans-serif;
@@ -41,180 +41,184 @@
         body { 
             background-color: var(--bg-dark); 
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.04) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.03) 0%, transparent 40%);
             background-attachment: fixed;
             color: var(--text-main); 
-            padding-bottom: 110px; 
+            padding-bottom: 95px; 
             overflow-x: hidden; 
             -webkit-font-smoothing: antialiased;
+            width: 100vw;
+            max-width: 100%;
         }
 
         ::selection { background: var(--logo-blue); color: #000; }
-        ::-webkit-scrollbar { width: 3px; height: 0; }
+        ::-webkit-scrollbar { width: 3px; height: 3px; }
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
 
         body:not(.is-admin) .admin-controls { display: none !important; }
         body.is-admin .admin-controls { display: flex !important; }
         body:not(.is-main-admin) .main-admin-only { display: none !important; }
+        img { max-width: 100%; }
 
         /* PRELOADER */
         #preloader { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #0e172a 0%, #070a14 100%); transition: opacity 0.4s ease, visibility 0.4s ease; }
         #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-        .preloader-ring-wrap { position: relative; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+        .preloader-ring-wrap { position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
         .preloader-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(56,189,248,0.1); border-top-color: var(--logo-blue); animation: preloaderSpin 0.9s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite; }
-        .preloader-logo-badge { width: 74px; height: 74px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(15,23,42,0.8); border: 1px solid var(--card-border); box-shadow: 0 0 25px rgba(56,189,248,0.25); }
-        .preloader-logo { width: 44px; height: 44px; object-fit: contain; }
-        .preloader-title { font-family: var(--font-display); font-size: 16px; letter-spacing: 3px; font-weight: 800; color: #fff; }
+        .preloader-logo { width: 35px; height: 35px; object-fit: contain; }
+        .preloader-title { font-family: var(--font-display); font-size: 14px; letter-spacing: 3px; font-weight: 800; color: #fff; }
         .preloader-title span { color: var(--logo-blue); }
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
 
-        /* HEADER (iOS Native Style) */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; background: rgba(7, 10, 20, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .header-brand { display: flex; align-items: center; gap: 10px; }
-        .header-mark { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(56,189,248,0.2), rgba(129,140,248,0.05)); border: 1px solid rgba(56,189,248,0.3); color: var(--logo-blue); font-size: 19px; }
-        .header h2 { font-size: 16px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;}
+        /* HEADER (Clean App Native) */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(7, 10, 20, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .header-brand { display: flex; align-items: center; gap: 8px; }
+        .header-mark { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(56,189,248,0.15), transparent); border: 1px solid rgba(56,189,248,0.2); color: var(--logo-blue); font-size: 16px; }
+        .header h2 { font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;}
         .header span { color: var(--logo-blue); }
         
-        .header-actions { display: flex; align-items: center; gap: 10px; }
-        .header-btn { width: 38px; height: 38px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 19px; cursor: pointer; transition: 0.2s; }
-        .header-btn:active { transform: scale(0.93); background: rgba(255, 255, 255, 0.08); }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .header-btn { width: 34px; height: 34px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        .header-btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.08); }
         .header-btn.prof { color: var(--logo-blue); }
-        .modern-dots { display: flex; flex-direction: column; gap: 3.5px; }
+        .modern-dots { display: flex; flex-direction: column; gap: 3px; }
         .modern-dots span { width: 4px; height: 4px; background: var(--text-muted); border-radius: 50%; }
 
         /* MODALS */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
-        .modal-card { background: #0c1222; border: 1px solid var(--card-border); border-radius: 22px; padding: 22px; width: 92%; max-width: 360px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
-        .modal-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.06); border: none; color: var(--text-muted); font-size: 20px; width: 32px; height: 32px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .modal-card { background: #0c1222; border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; width: 90%; max-width: 340px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+        .modal-close { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.06); border: none; color: var(--text-muted); font-size: 20px; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         /* DRAW CEREMONY */
         #drawOverlay { background: radial-gradient(circle at center, #0e172a 0%, #000000 100%); z-index: 999999; }
-        .draw-arena { display: flex; align-items: center; justify-content: space-around; width: 100%; height: 170px; position: relative; overflow: hidden; margin-top: 15px; }
+        .draw-arena { display: flex; align-items: center; justify-content: space-around; width: 100%; height: 160px; position: relative; overflow: hidden; margin-top: 15px; }
         .draw-player { display: flex; flex-direction: column; align-items: center; opacity: 0; width: 42%; text-align: center; }
-        .draw-player img { width: 62px; height: 62px; border-radius: 50%; border: 2px solid var(--logo-blue); margin-bottom: 8px; box-shadow: 0 0 20px rgba(56,189,248,0.4); object-fit: cover;}
-        .draw-player span { font-size: 13px; font-weight: 600; color: white; word-break: break-word; }
-        .draw-vs { font-family: var(--font-display); font-size: 24px; color: var(--gold); font-weight: 900; opacity: 0; }
+        .draw-player img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--logo-blue); margin-bottom: 8px; box-shadow: 0 0 15px rgba(56,189,248,0.3); object-fit: cover;}
+        .draw-player span { font-size: 12px; font-weight: 600; color: white; word-break: break-word; line-height: 1.2;}
+        .draw-vs { font-family: var(--font-display); font-size: 20px; color: var(--gold); font-weight: 900; opacity: 0; }
         .animate-draw .draw-p1 { animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-draw .draw-vs { animation: popIn 0.5s ease 0.5s forwards; }
         .animate-draw .draw-p2 { animation: slideInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; }
-        @keyframes slideInLeft { from { transform: translateX(-100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideInRight { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideInLeft { from { transform: translateX(-80px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideInRight { from { transform: translateX(80px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 
-        /* CLEAN APP PROFILE SYSTEM (BENTO GRID) */
+        /* CLEAN APP PROFILE SYSTEM */
         #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
-        .pub-header { display: flex; align-items: center; padding: 14px 18px; width: 100%; background: rgba(7, 10, 20, 0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
-        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 36px; height: 36px; border-radius: 12px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px;}
-        .pub-title { flex: 1; text-align: center; font-size: 13px; letter-spacing: 2px; margin-right: 36px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;}
+        .pub-header { display: flex; align-items: center; padding: 12px 16px; width: 100%; background: rgba(7, 10, 20, 0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
+        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 10px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px;}
+        .pub-title { flex: 1; text-align: center; font-size: 13px; letter-spacing: 1px; margin-right: 34px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;}
         
-        .pub-body { padding: 18px 16px 50px; width: 100%; max-width: 480px; margin: 0 auto; }
-        .profile-hero { text-align: center; margin-bottom: 22px; position: relative; }
-        .avatar-ring { width: 92px; height: 92px; margin: 0 auto 12px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--logo-blue), var(--gold)); box-shadow: 0 8px 25px rgba(0,0,0,0.5); }
+        .pub-body { padding: 16px 14px 40px; width: 100%; max-width: 480px; margin: 0 auto; overflow-x: hidden; }
+        .profile-hero { text-align: center; margin-bottom: 20px; }
+        .avatar-ring { width: 85px; height: 85px; margin: 0 auto 10px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--logo-blue), var(--gold)); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
         .avatar-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #0c1222; }
-        .profile-hero h2 { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: 0.3px;}
+        .profile-hero h2 { font-size: 18px; font-weight: 800; color: #fff; }
         
-        /* High-End App Stats Deck */
-        .stats-deck-container { margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .stat-banner-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .stat-card-prime { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 12px 10px; text-align: center; backdrop-filter: blur(10px); }
-        .stat-card-prime .num { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px;}
-        .stat-card-prime .lbl { font-size: 9.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 3px; letter-spacing: 0.5px;}
+        /* Premium Stats Matrix */
+        .stats-deck-container { margin-bottom: 18px; }
+        .stat-banner-row { display: flex; gap: 8px; margin-bottom: 8px; justify-content: space-between; }
+        .stat-card-prime { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px 6px; text-align: center; backdrop-filter: blur(10px); }
+        .stat-card-prime .num { font-size: 17px; font-weight: 800; color: #fff; }
+        .stat-card-prime .lbl { font-size: 9px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px; }
         
-        /* MP, W, D, L, GF, GA, GD, PTS Bento Grid */
-        .stats-matrix { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 14px 10px; backdrop-filter: blur(10px); }
-        .matrix-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding: 0 6px; display: flex; justify-content: space-between;}
+        /* 4x2 Grid (MP, W, D, L, GF, GA, GD, PTS) */
+        .stats-matrix { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 12px; backdrop-filter: blur(10px); }
+        .matrix-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; text-align: center; letter-spacing: 1px; }
         .matrix-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .m-item { background: var(--card-bg-soft); border-radius: 12px; padding: 10px 4px; text-align: center; border: 1px solid rgba(255,255,255,0.03); }
-        .m-item .m-val { font-size: 16px; font-weight: 800; color: #fff; }
-        .m-item .m-lbl { font-size: 9px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
+        .m-item { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 10px 0; text-align: center; border: 1px solid rgba(255,255,255,0.02); }
+        .m-item .m-val { font-size: 15px; font-weight: 800; color: #fff; }
+        .m-item .m-lbl { font-size: 8.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 3px; }
         .m-item.win .m-val { color: #4ade80; }
         .m-item.draw .m-val { color: #94a3b8; }
         .m-item.loss .m-val { color: #f87171; }
         .m-item.pts .m-val { color: var(--gold); }
         .m-item.gd .m-val { color: var(--logo-blue); }
 
-        .pub-tabs-wrap { display: flex; background: rgba(15,23,42,0.6); border-radius: 14px; padding: 4px; margin-bottom: 18px; border: 1px solid var(--card-border); }
-        .pub-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 9px 0; font-size: 12px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: 0.2s; }
-        .pub-tab.active { background: #1e293b; color: #fff; font-weight: 700; }
+        .pub-tabs-wrap { display: flex; background: rgba(15,23,42,0.8); border-radius: 12px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--card-border); }
+        .pub-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 8px 0; font-size: 11px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .pub-tab.active { background: rgba(255,255,255,0.08); color: #fff; font-weight: 700; }
         .pub-content { display: none; animation: fadeIn 0.25s ease; }
         .pub-content.active { display: block; }
         
-        .pub-card { background: var(--card-bg); border-radius: 18px; padding: 16px 18px; border: 1px solid var(--card-border); backdrop-filter: blur(15px); }
-        .pub-card-title { font-size: 10.5px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
+        .pub-card { background: var(--card-bg); border-radius: 16px; padding: 15px; border: 1px solid var(--card-border); backdrop-filter: blur(15px); }
+        .pub-card-title { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
         .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .pub-list-item:last-child { border-bottom: none; padding-bottom: 0;}
-        .pub-list-lbl { font-size: 13px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 8px;}
-        .pub-list-lbl i { font-size: 17px; color: var(--text-dim); }
-        .pub-list-val { font-size: 13px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 6px;}
+        .pub-list-lbl { font-size: 12px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 6px;}
+        .pub-list-lbl i { font-size: 16px; color: var(--text-dim); }
+        .pub-list-val { font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 5px;}
         .pub-list-val.copyable { color: var(--logo-blue); cursor: pointer; }
 
-        /* FORM */
-        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; }
-        .form-grade-badge { font-size: 15px; font-weight: 800; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+        /* RECENT FORM LIST */
+        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 12px; }
+        .form-grade-badge { font-size: 14px; font-weight: 800; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
         .grade-a-plus, .grade-a { background: #15803d; color: #fff; border: 1px solid #4ade80; }
         .grade-b-plus, .grade-b { background: #0369a1; color: #fff; border: 1px solid #38bdf8; }
         .grade-c-plus, .grade-c, .grade-c-minus { background: #854d0e; color: #fff; border: 1px solid #facc15; }
         .grade-d-minus, .grade-e-minus { background: #991b1b; color: #fff; border: 1px solid #f87171; }
         .form-history-list { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
-        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px 12px; }
+        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; }
         .form-history-item.win { border-left: 3px solid #22c55e; }
         .form-history-item.draw { border-left: 3px solid #94a3b8; }
         .form-history-item.loss { border-left: 3px solid #ef4444; }
 
-        /* SECTIONS & SLIDERS */
-        .page-section { display: none; padding: 18px 16px 0; animation: fadeIn 0.3s ease; }
+        /* GENERAL UI SECTIONS */
+        .page-section { display: none; padding: 16px 14px 0; animation: fadeIn 0.3s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .section-title { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;}
-        .section-title::before { content: ''; width: 4px; height: 16px; border-radius: 4px; background: var(--signature); }
+        .section-title { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;}
+        .section-title::before { content: ''; width: 4px; height: 14px; border-radius: 4px; background: var(--signature); }
 
-        .hero-banner-slider { position: relative; width: 100%; height: 185px; border-radius: 20px; overflow: hidden; margin-bottom: 24px; border: 1px solid var(--card-border); }
-        .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 22px; opacity: 0; transition: opacity 0.8s ease; z-index: 1; }
+        /* HERO SLIDER */
+        .hero-banner-slider { position: relative; width: 100%; height: 175px; border-radius: 18px; overflow: hidden; margin-bottom: 22px; border: 1px solid var(--card-border); box-sizing: border-box; }
+        .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.6s ease; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
         .hero-content { z-index: 3; width: 68%; }
-        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 10px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
-        .hero-title { font-size: 20px; font-weight: 900; line-height: 1.15; margin-bottom: 8px; text-transform: uppercase; }
-        .hero-btn { border: none; padding: 8px 14px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .hero-badge { font-size: 8.5px; font-weight: 700; padding: 4px 8px; border-radius: 8px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
+        .hero-title { font-size: 18px; font-weight: 900; line-height: 1.15; margin-bottom: 8px; text-transform: uppercase; }
+        .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
         .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 60%; object-fit: cover; -webkit-mask-image: linear-gradient(to right, transparent 0%, black 40%); mask-image: linear-gradient(to right, transparent 0%, black 40%); }
-        .hero-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
+        .hero-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
         .hero-dots .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
-        .hero-dots .dot.active { width: 16px; border-radius: 4px; background: var(--logo-blue); }
+        .hero-dots .dot.active { width: 14px; border-radius: 4px; background: var(--logo-blue); }
 
         /* TOURNAMENT CARD */
-        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding-bottom: 6px; scrollbar-width: none; }
+        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding-bottom: 6px; scrollbar-width: none; margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
         .t-slider::-webkit-scrollbar { display: none; }
-        .t-card { min-width: 90%; scroll-snap-align: center; border-radius: 18px; overflow: hidden; background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(15px); }
-        .t-card-img { height: 145px; background-size: cover; background-position: center; position: relative; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; }
+        .t-card { min-width: 88vw; scroll-snap-align: center; border-radius: 16px; overflow: hidden; background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(15px); }
+        .t-card-img { height: 140px; background-size: cover; background-position: center; position: relative; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; }
         .t-card-img::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #070a14 0%, rgba(7,10,20,0.2) 60%); }
         .t-status { position: relative; z-index: 2; background: var(--gold); color: #000; font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 8px; align-self: flex-start; text-transform: uppercase;}
         .t-card-titles { position: relative; z-index: 2; }
-        .t-prize { color: var(--gold); font-size: 11px; font-weight: 700; margin-bottom: 2px; text-transform: uppercase;}
-        .t-name { font-size: 17px; font-weight: 800; text-transform: uppercase; line-height: 1.2; }
-        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.02); border-top: 1px solid var(--card-border); }
+        .t-prize { color: var(--gold); font-size: 10.5px; font-weight: 700; margin-bottom: 2px; text-transform: uppercase;}
+        .t-name { font-size: 15px; font-weight: 800; text-transform: uppercase; line-height: 1.2; }
+        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: rgba(255,255,255,0.02); border-top: 1px solid var(--card-border); }
         .t-stat { text-align: center; }
-        .t-stat span { display: block; font-size: 8.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
-        .t-stat strong { font-size: 13px; font-weight: 700; }
-        .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 10px 14px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; flex:1;}
+        .t-stat span { display: block; font-size: 8px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+        .t-stat strong { font-size: 12px; font-weight: 700; }
+        .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 10px 14px; border-radius: 10px; font-size: 10.5px; font-weight: 700; cursor: pointer; flex:1;}
 
-        /* CLEAN GROUP TABLE UI */
-        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; }
-        .td-group-head { background: var(--card-bg-soft); padding: 12px 15px; border-bottom: 1px solid var(--card-border); font-size: 13px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
-        .g-table-wrap { width: 100%; overflow-x: auto; scrollbar-width: none; }
+        /* CLEAN GROUP TABLE UI (Responsive Fix) */
+        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; margin-bottom: 16px; overflow: hidden; }
+        .td-group-head { background: var(--card-bg-soft); padding: 12px 14px; border-bottom: 1px solid var(--card-border); font-size: 12.5px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
+        .g-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .g-table-wrap::-webkit-scrollbar { display: none; }
-        .g-table-header { display: flex; padding: 10px 14px 6px; border-bottom: 1px solid var(--card-border); font-size: 9px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; min-width: 440px; }
-        .g-table-row { display: flex; padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; min-width: 440px; }
-        .g-table-row:last-child { border-bottom: none; }
-        .g-table-row.qualify-spot { border-left: 3px solid var(--accent); background: linear-gradient(90deg, rgba(34,197,94,0.05), transparent 40%); }
         
-        .g-col-team-head { flex: 1; min-width: 140px; }
-        .g-col-stat-head { width: 28px; text-align: center; }
-        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 140px; }
-        .g-col-stat { width: 28px; text-align: center; font-size: 11.5px; font-weight: 600; color: #fff; }
-        .g-rank { font-size: 11px; color: var(--text-dim); font-weight: 700; width: 14px; text-align: center; }
-        .g-name { font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; cursor: pointer; }
-        .g-col-team img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+        .g-table-header { display: flex; padding: 10px 12px 6px; border-bottom: 1px solid var(--card-border); font-size: 8.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; width: max-content; min-width: 100%; }
+        .g-table-row { display: flex; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; width: max-content; min-width: 100%; transition: background 0.2s; }
+        .g-table-row:last-child { border-bottom: none; }
+        .g-table-row.qualify-spot { border-left: 3px solid var(--accent); background: linear-gradient(90deg, rgba(34,197,94,0.05), transparent 40%); padding-left: 9px;}
+        
+        .g-col-team-head { flex: 1; min-width: 130px; }
+        .g-col-stat-head { width: 26px; text-align: center; }
+        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 130px; }
+        .g-col-stat { width: 26px; text-align: center; font-size: 11px; font-weight: 600; color: #fff; }
+        .g-rank { font-size: 10px; color: var(--text-dim); font-weight: 700; width: 12px; text-align: center; }
+        .g-name { font-size: 11.5px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; cursor: pointer; }
+        .g-col-team img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
         .g-col-stat.w { color: #4ade80; }
         .g-col-stat.d { color: #94a3b8; }
         .g-col-stat.l { color: #f87171; }
@@ -222,51 +226,51 @@
         .g-col-stat.gd { color: var(--logo-blue); }
 
         /* MATCH BOX */
-        .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:12px; padding:12px; margin-bottom:10px; }
-        .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:5px; text-align:center; cursor:pointer; }
-        .td-m-team img { width:32px; height:32px; border-radius:50%; border:1px solid var(--logo-blue); object-fit: cover;}
-        .td-m-team span { font-size:11px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
-        .td-m-vs { font-size:13px; color:var(--gold); font-weight:800; background:rgba(251,191,36,0.1); padding:4px 10px; border-radius:8px; }
+        .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:12px; padding:10px 12px; margin-bottom:10px; }
+        .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:4px; text-align:center; cursor:pointer; }
+        .td-m-team img { width:30px; height:30px; border-radius:50%; border:1px solid var(--logo-blue); object-fit: cover;}
+        .td-m-team span { font-size:10.5px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+        .td-m-vs { font-size:12px; color:var(--gold); font-weight:800; background:rgba(251,191,36,0.1); padding:4px 8px; border-radius:6px; }
 
         /* MY MATCHES */
-        .mm-card { background: var(--card-bg); border-radius: 16px; padding: 14px; margin-bottom: 14px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
-        .mm-top { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 12px; border-bottom: 1px solid var(--card-border); padding-bottom: 8px; align-items: center; }
-        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(34,197,94,0.1); padding: 4px 8px; border-radius: 6px; }
-        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .mm-card { background: var(--card-bg); border-radius: 14px; padding: 12px; margin-bottom: 12px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
+        .mm-top { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-muted); margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding-bottom: 6px; align-items: center; }
+        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(34,197,94,0.1); padding: 4px 6px; border-radius: 6px; }
+        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .mm-player { display: flex; align-items: center; gap: 8px; width: 40%; cursor: pointer; }
         .mm-player.right { flex-direction: row-reverse; text-align: right; }
-        .mm-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
-        .mm-name { font-size: 12.5px; font-weight: 600; color: white; }
-        .mm-vs-badge { font-size: 11px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 6px; }
+        .mm-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
+        .mm-name { font-size: 11.5px; font-weight: 600; color: white; }
+        .mm-vs-badge { font-size: 10px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 4px 6px; border-radius: 6px; }
         .mm-bot { display: flex; justify-content: space-between; align-items: center; }
-        .mm-btn { background: linear-gradient(135deg, var(--gold), #d97706); color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-size: 10.5px; font-weight: 800; cursor: pointer; }
-        .mm-status { font-size: 9.5px; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid; }
+        .mm-btn { background: linear-gradient(135deg, var(--gold), #d97706); color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .mm-status { font-size: 9px; padding: 4px 6px; border-radius: 6px; font-weight: 700; border: 1px solid; }
         .mm-status.pending { color: #f87171; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
         .mm-status.submitted { color: var(--logo-blue); background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.2); }
         .mm-status.approved { color: var(--accent); background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); }
 
-        /* FORM ELEMENTS */
-        .card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin-bottom: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(15px); }
-        input, select { width: 100%; margin: 8px 0; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: white; font-size: 13px; font-weight: 500; }
+        /* FORM ELEMENTS & INPUTS */
+        .card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(15px); box-sizing: border-box; width: 100%; }
+        input, select { width: 100%; margin: 6px 0; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: white; font-size: 12.5px; font-weight: 500; box-sizing: border-box;}
         input:focus, select:focus { outline: none; border-color: var(--logo-blue); background: rgba(255,255,255,0.06); }
-        .submit-btn { background: linear-gradient(135deg, var(--accent), #15803d); color: #04210a; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: 800; margin-top: 10px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;}
-        .link-text { color: var(--logo-blue); font-size: 12px; margin-top: 16px; cursor: pointer; font-weight: 600; text-align: center; }
+        .submit-btn { background: linear-gradient(135deg, var(--accent), #15803d); color: #04210a; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: 800; margin-top: 10px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; box-sizing: border-box;}
+        .link-text { color: var(--logo-blue); font-size: 11px; margin-top: 14px; cursor: pointer; font-weight: 600; text-align: center; }
 
         /* LEADERBOARD */
         .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 10px; }
         .leaderboard-row:nth-child(1) { background: linear-gradient(90deg, rgba(251,191,36,0.08), transparent); border-left: 3px solid var(--gold); }
-        .rank { color: var(--gold); font-weight: 800; width: 24px; font-size: 14px; text-align: center;}
-        .lb-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; margin: 0 10px; }
+        .rank { color: var(--gold); font-weight: 800; width: 22px; font-size: 13px; text-align: center;}
+        .lb-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; margin: 0 8px; }
         .player-info { flex: 1; }
-        .player-name { font-weight: 600; font-size: 13.5px; color: white;}
-        .points { font-size: 11px; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 4px; }
-        .win-rate-val { font-size: 15px; font-weight: 800; color: var(--accent); text-align: right;}
-        .win-rate-lbl { font-size: 9px; color: var(--text-dim); text-transform: uppercase; text-align: right;}
+        .player-name { font-weight: 600; font-size: 12.5px; color: white;}
+        .points { font-size: 10.5px; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 4px; }
+        .win-rate-val { font-size: 14px; font-weight: 800; color: var(--accent); text-align: right;}
+        .win-rate-lbl { font-size: 8.5px; color: var(--text-dim); text-transform: uppercase; text-align: right;}
 
-        /* FLOATING BOTTOM NAV (PILL DESIGN) */
-        .bottom-nav { position: fixed; bottom: 16px; left: 16px; right: 16px; background: rgba(12, 18, 34, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; justify-content: space-around; padding: 10px 6px; z-index: 1000; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-        .nav-item { color: var(--text-muted); text-align: center; font-size: 10px; cursor: pointer; font-weight: 500; padding: 6px 12px; border-radius: 14px; transition: 0.2s; display: flex; flex-direction: column; align-items: center;}
-        .nav-item i { font-size: 20px; margin-bottom: 3px; }
+        /* FLOATING BOTTOM NAV (PILL DESIGN - PERFECT MOBILE FIT) */
+        .bottom-nav { position: fixed; bottom: 12px; left: 12px; right: 12px; background: rgba(12, 18, 34, 0.88); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); display: flex; justify-content: space-between; padding: 6px 8px 8px; z-index: 1000; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
+        .nav-item { color: var(--text-muted); text-align: center; font-size: 9.5px; cursor: pointer; font-weight: 500; padding: 4px 6px; border-radius: 12px; transition: 0.2s; display: flex; flex-direction: column; align-items: center; flex: 1;}
+        .nav-item i { font-size: 20px; margin-bottom: 2px; }
         .nav-admin { display: none; color: #f87171; }
         .nav-admin.show { display: flex; }
         .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); font-weight: 700; }
@@ -285,9 +289,9 @@
     
     <!-- DRAW ANIMATION OVERLAY -->
     <div id="drawOverlay" class="modal-overlay">
-        <div style="width:100%; max-width:380px; text-align:center;">
-            <h2 style="color:var(--gold); font-size:22px; letter-spacing:1px; margin-bottom:8px; font-weight:800;">DRAW CEREMONY</h2>
-            <p id="drawStatusTxt" style="color:var(--logo-blue); font-size:12px; font-weight:700; margin-bottom:15px; text-transform:uppercase;">Preparing Matches...</p>
+        <div style="width:100%; max-width:320px; text-align:center;">
+            <h2 style="color:var(--gold); font-size:20px; letter-spacing:1px; margin-bottom:8px; font-weight:800;">DRAW CEREMONY</h2>
+            <p id="drawStatusTxt" style="color:var(--logo-blue); font-size:11px; font-weight:700; margin-bottom:15px; text-transform:uppercase;">Preparing...</p>
             
             <div id="drawArena" class="draw-arena">
                 <div class="draw-player draw-p1"><img id="drawImg1" src=""><span id="drawName1">Player 1</span></div>
@@ -295,12 +299,12 @@
                 <div class="draw-player draw-p2"><img id="drawImg2" src=""><span id="drawName2">Player 2</span></div>
             </div>
             
-            <button id="drawNextBtn" class="submit-btn" style="background:var(--accent); color:#000; width:80%; margin:25px auto;" onclick="animateNextDraw()">NEXT DRAW <i class='bx bx-shuffle'></i></button>
-            <button id="drawFinishBtn" class="submit-btn" style="background:linear-gradient(135deg, #f97316, #ef4444); color:#fff; width:80%; margin:25px auto; display:none;" onclick="finishDraw()">SAVE ALL FIXTURES</button>
+            <button id="drawNextBtn" class="submit-btn" style="background:var(--accent); color:#000; width:80%; margin:20px auto;" onclick="animateNextDraw()">NEXT DRAW <i class='bx bx-shuffle'></i></button>
+            <button id="drawFinishBtn" class="submit-btn" style="background:linear-gradient(135deg, #f97316, #ef4444); color:#fff; width:80%; margin:20px auto; display:none;" onclick="finishDraw()">SAVE ALL FIXTURES</button>
         </div>
     </div>
 
-    <!-- PUBLIC PROFILE MODAL (Used for clicking on users) -->
+    <!-- PUBLIC PROFILE MODAL -->
     <div id="publicProfileModal" class="modal-overlay">
         <div class="pub-header">
             <button class="pub-back-btn" onclick="closeModal('publicProfileModal')"><i class='bx bx-chevron-left'></i></button>
@@ -312,7 +316,7 @@
                 <h2 id="pubProfName">Player Name</h2>
             </div>
             
-            <!-- Bento Stats System -->
+            <!-- Modern Responsive Stats System -->
             <div class="stats-deck-container">
                 <div class="stat-banner-row">
                     <div class="stat-card-prime"><div id="pubProfRank" class="num">#--</div><div class="lbl">Rank</div></div>
@@ -321,7 +325,7 @@
                 </div>
 
                 <div class="stats-matrix">
-                    <div class="matrix-title"><span>Performance Matrix</span><span>Season Record</span></div>
+                    <div class="matrix-title">Season Record</div>
                     <div class="matrix-grid">
                         <div class="m-item"><div id="pubProfMP" class="m-val">0</div><div class="m-lbl">MP</div></div>
                         <div class="m-item win"><div id="pubProfWins" class="m-val">0</div><div class="m-lbl">W</div></div>
@@ -337,23 +341,23 @@
 
             <div class="pub-tabs-wrap">
                 <button class="pub-tab active" onclick="switchTabBox('pubInfo', this)">Info</button>
-                <button class="pub-tab" onclick="switchTabBox('pubForm', this)">Recent Form</button>
-                <button class="pub-tab" onclick="switchTabBox('pubTrophy', this)">Trophies</button>
+                <button class="pub-tab" onclick="switchTabBox('pubForm', this)">Form</button>
+                <button class="pub-tab" onclick="switchTabBox('pubTrophy', this)">Trophy</button>
             </div>
 
             <div id="pubInfo" class="pub-content active pub-card">
                 <div class="pub-card-title">User Information</div>
-                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-id-card'></i> Konami UID</span><span id="pubInfoUid" class="pub-list-val copyable" onclick="copyUID('pubInfoUid')">N/A</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-id-card'></i> UID</span><span id="pubInfoUid" class="pub-list-val copyable" onclick="copyUID('pubInfoUid')">N/A</span></div>
                 <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-mobile-alt'></i> Device</span><span id="pubInfoDevice" class="pub-list-val">N/A</span></div>
                 <div class="pub-list-item" style="border:none;">
                     <span class="pub-list-lbl"><i class='bx bxl-facebook-circle' style="color:#1877F2;"></i> Social</span>
-                    <a href="#" id="pubInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Facebook <i class='bx bx-link-external'></i></a>
+                    <a href="#" id="pubInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View FB <i class='bx bx-link-external'></i></a>
                 </div>
             </div>
 
             <div id="pubForm" class="pub-content pub-card"></div>
             <div id="pubTrophy" class="pub-content pub-card">
-                <div style="display:flex; justify-content:center; align-items:center; padding:25px; flex-direction:column; gap:8px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:8px;"><i class='bx bx-trophy' style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:11px;">No trophies yet.</p></div>
             </div>
         </div>
     </div>
@@ -366,7 +370,7 @@
                 <h2 id="myProfName">Player Name</h2>
             </div>
             
-            <!-- Bento Stats System -->
+            <!-- Modern Responsive Stats System -->
             <div class="stats-deck-container">
                 <div class="stat-banner-row">
                     <div class="stat-card-prime"><div id="myProfRank" class="num">#--</div><div class="lbl">Rank</div></div>
@@ -375,7 +379,7 @@
                 </div>
 
                 <div class="stats-matrix">
-                    <div class="matrix-title"><span>Performance Matrix</span><span>Season Record</span></div>
+                    <div class="matrix-title">Season Record</div>
                     <div class="matrix-grid">
                         <div class="m-item"><div id="myProfMP" class="m-val">0</div><div class="m-lbl">MP</div></div>
                         <div class="m-item win"><div id="myProfWins" class="m-val">0</div><div class="m-lbl">W</div></div>
@@ -391,23 +395,23 @@
 
             <div class="pub-tabs-wrap">
                 <button class="pub-tab active" onclick="switchTabBox('myInfo', this)">Info</button>
-                <button class="pub-tab" onclick="switchTabBox('myForm', this)">Recent Form</button>
-                <button class="pub-tab" onclick="switchTabBox('myTrophy', this)">Trophies</button>
+                <button class="pub-tab" onclick="switchTabBox('myForm', this)">Form</button>
+                <button class="pub-tab" onclick="switchTabBox('myTrophy', this)">Trophy</button>
             </div>
 
             <div id="myInfo" class="pub-content active pub-card">
                 <div class="pub-card-title">User Information</div>
-                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-id-card'></i> Konami UID</span><span id="myInfoUid" class="pub-list-val copyable" onclick="copyUID('myInfoUid')">N/A</span></div>
+                <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-id-card'></i> UID</span><span id="myInfoUid" class="pub-list-val copyable" onclick="copyUID('myInfoUid')">N/A</span></div>
                 <div class="pub-list-item"><span class="pub-list-lbl"><i class='bx bx-mobile-alt'></i> Device</span><span id="myInfoDevice" class="pub-list-val">N/A</span></div>
                 <div class="pub-list-item" style="border:none;">
                     <span class="pub-list-lbl"><i class='bx bxl-facebook-circle' style="color:#1877F2;"></i> Social</span>
-                    <a href="#" id="myInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View Facebook <i class='bx bx-link-external'></i></a>
+                    <a href="#" id="myInfoFb" target="_blank" class="pub-list-val copyable" style="text-decoration:none;">View FB <i class='bx bx-link-external'></i></a>
                 </div>
             </div>
 
             <div id="myForm" class="pub-content pub-card"></div>
             <div id="myTrophy" class="pub-content pub-card">
-                <div style="display:flex; justify-content:center; align-items:center; padding:25px; flex-direction:column; gap:8px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:8px;"><i class='bx bx-trophy' style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:11px;">No trophies yet.</p></div>
             </div>
             
             <div style="text-align:center; margin-top:20px;">
@@ -420,8 +424,8 @@
     <div id="submitScoreModal" class="modal-overlay" onclick="closeModal('submitScoreModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal('submitScoreModal')"><i class='bx bx-x'></i></button>
-            <h3 style="color:var(--accent); font-size:16px; margin-bottom:12px; text-align:center; font-weight:800;">Submit Result</h3>
-            <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:16px;">Enter exact score. False submission leads to immediate penalties.</p>
+            <h3 style="color:var(--accent); font-size:15px; margin-bottom:12px; text-align:center; font-weight:800;">Submit Result</h3>
+            <p style="font-size:10.5px; color:var(--text-muted); text-align:center; margin-bottom:15px; line-height:1.4;">Enter exact score. False submission leads to penalties.</p>
             
             <input type="hidden" id="submitTid">
             <input type="hidden" id="submitGroupRound">
@@ -431,12 +435,12 @@
             
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreMyName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">Me</span>
+                    <span id="scoreMyName" style="color:white; font-size:11.5px; font-weight:600; display:block; margin-bottom:6px;">Me</span>
                     <input type="number" id="scoreMyGoals" placeholder="0" style="text-align:center; font-size:20px; font-weight:bold; padding:8px;">
                 </div>
-                <div style="color:var(--gold); font-size:16px; padding:0 10px; font-weight: 800;">VS</div>
+                <div style="color:var(--gold); font-size:16px; padding:0 12px; font-weight: 800;">VS</div>
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreOppName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:5px;">Opponent</span>
+                    <span id="scoreOppName" style="color:white; font-size:11.5px; font-weight:600; display:block; margin-bottom:6px;">Opponent</span>
                     <input type="number" id="scoreOppGoals" placeholder="0" style="text-align:center; font-size:20px; font-weight:bold; padding:8px;">
                 </div>
             </div>
@@ -457,9 +461,9 @@
         <div id="smLoginSection">
             <div class="sm-item highlight" onclick="switchMenuTab('authPage')"><i class='bx bx-log-in-circle'></i> LOGIN / SIGN UP</div>
         </div>
-        <div id="smProfileSection" style="display:none; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:16px; margin-bottom:12px;">
-            <div class="sm-item" onclick="switchMenuTab('profile')" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);">
-                <img id="smAvatar" src="" style="width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid var(--logo-blue);">
+        <div id="smProfileSection" style="display:none; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:15px; margin-bottom:12px;">
+            <div class="sm-item" onclick="switchMenuTab('profile')" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 8px 12px;">
+                <img id="smAvatar" src="" style="width:28px; height:28px; border-radius:50%; object-fit:cover; margin-left:-2px; border:1px solid var(--logo-blue);">
                 <span id="smName" style="color:white; font-weight:600;">Player Name</span>
             </div>
         </div>
@@ -488,24 +492,24 @@
 
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
-        <div class="card" id="loginBox" style="text-align: center; margin-top: 15px;">
-            <h2 style="color: var(--logo-blue); margin-bottom: 16px; font-weight:800;">Player Login</h2>
+        <div class="card" id="loginBox" style="text-align: center; margin-top: 10px;">
+            <h2 style="color: var(--logo-blue); margin-bottom: 14px; font-weight:800;">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
             <input type="password" id="loginPassword" placeholder="Password">
-            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="loginWithEmail()">Log In</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:12px;" onclick="loginWithEmail()">Log In</button>
             <p class="link-text" onclick="toggleAuth('signup')">New here? <b>Create Account</b></p>
         </div>
 
-        <div class="card" id="signupBox" style="text-align: center; margin-top: 15px; display: none;">
-            <h2 style="color: var(--gold); margin-bottom: 16px; font-weight:800;">Create Account</h2>
+        <div class="card" id="signupBox" style="text-align: center; margin-top: 10px; display: none;">
+            <h2 style="color: var(--gold); margin-bottom: 14px; font-weight:800;">Create Account</h2>
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name">
-            <input type="url" id="regFb" placeholder="Facebook Profile Link (Optional)">
+            <input type="url" id="regFb" placeholder="FB Link (Optional)">
             <input type="file" id="regAvatarFile" accept="image/*" style="padding:10px;">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
-            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="signUpWithEmail()">Sign Up</button>
+            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:12px;" onclick="signUpWithEmail()">Sign Up</button>
             <p class="link-text" onclick="toggleAuth('login')">Have an account? <b>Log In</b></p>
         </div>
     </div>
@@ -532,54 +536,54 @@
             <div class="hero-dots" id="heroDots"><span class="dot active"></span><span class="dot"></span></div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <div class="section-title" style="margin:0;">Tournaments</div>
-            <span style="font-size:11px; color:var(--logo-blue); cursor:pointer; font-weight:600;" onclick="switchTab('tournamentsTab')">View All</span>
+            <span style="font-size:10.5px; color:var(--logo-blue); cursor:pointer; font-weight:600;" onclick="switchTab('tournamentsTab')">View All</span>
         </div>
-        <div class="t-slider" id="homeTournamentsList"><p style="font-size:12px; color:var(--text-dim); padding: 10px;">Loading...</p></div>
+        <div class="t-slider" id="homeTournamentsList"><p style="font-size:11px; color:var(--text-dim); padding: 10px;">Loading...</p></div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; margin-bottom:14px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; margin-bottom:12px;">
             <div class="section-title" style="margin:0;">Leaderboard</div>
-            <span style="font-size:10px; color:var(--gold); font-weight:700;"><i class='bx bxs-star'></i> Live</span>
+            <span style="font-size:9.5px; color:var(--gold); font-weight:700;"><i class='bx bxs-star'></i> Live</span>
         </div>
-        <div class="card" style="padding: 10px; border-radius: 18px;">
-            <div id="homeLeaderboardList"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
+        <div class="card" style="padding: 10px;">
+            <div id="homeLeaderboardList"><p style="text-align:center; color:var(--text-dim); font-size:11px;">Loading...</p></div>
         </div>
     </div>
 
     <!-- 2. TOURNAMENTS TAB -->
     <div id="tournamentsTab" class="page-section">
         <div class="section-title">All Events</div>
-        <div id="allTournamentsList"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
+        <div id="allTournamentsList"><p style="text-align:center; color:var(--text-dim); font-size:11px;">Loading...</p></div>
     </div>
 
     <!-- 3. MY MATCHES TAB -->
     <div id="myMatchesTab" class="page-section">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <div class="section-title" style="margin:0;">My Schedule</div>
             <span id="myMatchCountText" style="font-size:10px; color:var(--gold); font-weight:700;">0 Upcoming</span>
         </div>
         <div id="myMatchesList"></div>
     </div>
 
-    <!-- 4. TOURNAMENT DETAILS (TABS UI) -->
+    <!-- 4. TOURNAMENT DETAILS -->
     <div id="tournamentDetails" class="page-section">
-        <div class="card" style="padding:18px 16px; position:relative;">
-            <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:12px; cursor:pointer; margin-bottom:12px; font-weight:600; display:flex; align-items:center; gap:4px;"><i class='bx bx-left-arrow-alt'></i> Back</button>
-            <h2 id="tdName" style="color:white; font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:10px;">Tournament Name</h2>
-            <div style="display:flex; flex-wrap:wrap; gap:8px; font-size:10px; color:var(--text-muted); font-weight:600;">
+        <div class="card" style="padding:16px 14px; position:relative;">
+            <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:11px; cursor:pointer; margin-bottom:10px; font-weight:600; display:flex; align-items:center; gap:4px;"><i class='bx bx-left-arrow-alt'></i> Back</button>
+            <h2 id="tdName" style="color:white; font-size:16.5px; font-weight:800; text-transform:uppercase; margin-bottom:10px;">Tournament Name</h2>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; font-size:9.5px; color:var(--text-muted); font-weight:600;">
                 <span style="background:rgba(251,191,36,0.1); color:var(--gold); padding:4px 8px; border-radius:6px;" id="tdPrize"><i class='bx bxs-trophy'></i> Prize</span>
                 <span style="background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px;" id="tdFormat"><i class='bx bxs-joystick'></i> Format</span>
             </div>
-            <div class="admin-controls" id="tdAdminControls" style="margin-top:14px; display:none;">
-                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:10px; border-radius:10px; font-size:11px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="advanceToKnockout()"><i class='bx bxs-zap'></i> START KNOCKOUT STAGE</button>
+            <div class="admin-controls" id="tdAdminControls" style="margin-top:12px; display:none;">
+                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:10px; border-radius:10px; font-size:10.5px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="advanceToKnockout()"><i class='bx bxs-zap'></i> KNOCKOUT STAGE</button>
             </div>
         </div>
 
-        <div class="pub-tabs-wrap" style="margin-bottom:16px;">
-            <button class="pub-tab active" onclick="switchTdTab('tdGroups', this)" id="tabBtnGroups">Group Stage</button>
+        <div class="pub-tabs-wrap" style="margin-bottom:14px;">
+            <button class="pub-tab active" onclick="switchTdTab('tdGroups', this)" id="tabBtnGroups">Groups</button>
             <button class="pub-tab" onclick="switchTdTab('tdBracket', this)" id="tabBtnBracket">Knockout</button>
-            <button class="pub-tab" onclick="switchTdTab('tdMatches', this)" id="tabBtnMatches">All Matches</button>
+            <button class="pub-tab" onclick="switchTdTab('tdMatches', this)" id="tabBtnMatches">Matches</button>
         </div>
 
         <div id="tdGroups" class="pub-content active"></div>
@@ -590,7 +594,7 @@
     <!-- 5. LEADERBOARD -->
     <div id="leaderboard" class="page-section">
         <div class="section-title">Global Rankings</div>
-        <div class="card" id="leaderboardList" style="padding:10px;"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
+        <div class="card" id="leaderboardList" style="padding:10px;"><p style="text-align:center; color:var(--text-dim); font-size:11px;">Loading...</p></div>
     </div>
 
     <!-- 7. ADMIN DASHBOARD -->
@@ -598,20 +602,20 @@
         <div class="section-title" style="color: var(--danger);">Admin Panel</div>
         
         <!-- PENDING RESULTS APPROVAL -->
-        <div class="card admin-controls" style="border: 1px solid rgba(239,68,68,0.3); flex-direction:column; margin-bottom: 16px;">
-            <h3 style="color: var(--danger); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-list-check'></i> Pending Results</h3>
-            <div id="adminPendingResultsList" style="margin-top:12px; max-height: 250px; overflow-y: auto;">
-                <p style="color:var(--text-dim); font-size:11px; text-align:center;">Checking submissions...</p>
+        <div class="card admin-controls" style="border: 1px solid rgba(239,68,68,0.3); flex-direction:column; margin-bottom: 15px;">
+            <h3 style="color: var(--danger); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-list-check'></i> Pending Results</h3>
+            <div id="adminPendingResultsList" style="margin-top:10px; max-height: 250px; overflow-y: auto;">
+                <p style="color:var(--text-dim); font-size:10.5px; text-align:center;">Checking submissions...</p>
             </div>
         </div>
 
         <!-- FULL PLAYER MANAGEMENT SYSTEM -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(34,197,94,0.3); margin-bottom: 16px;">
-            <h3 style="color: var(--accent); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bxs-user-detail'></i> Player Management</h3>
-            <input type="text" id="adminPlayerSearch" placeholder="Search player name..." onkeyup="filterAdminPlayers()" style="margin-top: 12px;">
-            <div id="adminPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:8px; border:1px solid var(--card-border); border-radius:10px; padding:8px;"></div>
+        <div class="card main-admin-only" style="border: 1px solid rgba(34,197,94,0.3); margin-bottom: 15px;">
+            <h3 style="color: var(--accent); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bxs-user-detail'></i> Player Management</h3>
+            <input type="text" id="adminPlayerSearch" placeholder="Search player name..." onkeyup="filterAdminPlayers()" style="margin-top: 10px;">
+            <div id="adminPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:8px; border:1px solid var(--card-border); border-radius:10px; padding:6px;"></div>
             
-            <div id="adminEditPlayerForm" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed var(--card-border);">
+            <div id="adminEditPlayerForm" style="display:none; margin-top:14px; padding-top:14px; border-top:1px dashed var(--card-border);">
                 <input type="hidden" id="editPlayerUid">
                 <input type="text" id="editPlayerName" placeholder="Full Name">
                 <input type="text" id="editPlayerKonami" placeholder="Konami UID">
@@ -619,14 +623,14 @@
                 <input type="url" id="editPlayerFb" placeholder="Facebook Link">
                 <input type="text" id="editPlayerPhone" placeholder="Phone Number (Optional)">
                 <label style="font-size:10px; color:var(--text-dim); display:block; margin:6px 0 4px;">Role:</label>
-                <select id="editPlayerRole" style="margin-bottom:12px;">
+                <select id="editPlayerRole" style="margin-bottom:10px;">
                     <option value="user">Normal Player</option>
                     <option value="moderator">Moderator</option>
                 </select>
 
-                <div id="adminPlayerMatchHistory" style="margin-top: 10px; margin-bottom:12px; background:rgba(0,0,0,0.3); padding:12px; border-radius:10px; border:1px solid var(--card-border);">
-                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Match Records</p>
-                    <div id="adminPlayerMatchList" style="max-height:140px; overflow-y:auto;"></div>
+                <div id="adminPlayerMatchHistory" style="margin-top: 8px; margin-bottom:10px; background:rgba(0,0,0,0.3); padding:10px; border-radius:10px; border:1px solid var(--card-border);">
+                    <p style="font-size:10.5px; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Match Records</p>
+                    <div id="adminPlayerMatchList" style="max-height:130px; overflow-y:auto;"></div>
                 </div>
 
                 <div style="display:flex; gap:8px;">
@@ -637,51 +641,50 @@
         </div>
 
         <!-- Manage Tournament Registrations UI -->
-        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(34,197,94,0.4); margin-bottom: 16px;">
+        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(34,197,94,0.4); margin-bottom: 15px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="color: var(--accent); font-size: 15px; font-weight:800; margin:0;"><i class='bx bxs-group'></i> Tournament Players</h3>
-                <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:10px; font-weight:700;"></span>
+                <h3 style="color: var(--accent); font-size: 14px; font-weight:800; margin:0;"><i class='bx bxs-group'></i> Tourney Players</h3>
+                <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:9.5px; font-weight:700;"></span>
             </div>
             <input type="hidden" id="manageTid">
             
-            <div style="margin-top:12px;">
-                <label style="font-size:9.5px; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px; display:block;">Add Registered User</label>
+            <div style="margin-top:10px;">
+                <label style="font-size:9px; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px; display:block;">Add Registered User</label>
                 <input type="text" id="searchSiteUserForTourney" placeholder="Search user..." onkeyup="filterSiteUsersForTourney()" style="margin:0;">
-                <div id="tourneyUserSearchResults" style="max-height: 130px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 10px; margin-top: 6px; display: none;"></div>
+                <div id="tourneyUserSearchResults" style="max-height: 120px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 10px; margin-top: 6px; display: none;"></div>
             </div>
 
-            <!-- MANUAL ADD CUSTOM PLAYER -->
-            <div style="margin-top:14px; padding-top:12px; border-top:1px dashed var(--card-border);">
-                <label style="font-size:9.5px; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; display:block;">Manually Add Any Player</label>
-                <div style="display:flex; gap:8px; align-items:center;">
+            <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--card-border);">
+                <label style="font-size:9px; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; display:block;">Manually Add Custom Player</label>
+                <div style="display:flex; gap:6px; align-items:center;">
                     <input type="text" id="customPlayerName" placeholder="Player Name" style="margin:0; flex:1;">
-                    <select id="customPlayerPot" style="margin:0; width:95px;">
+                    <select id="customPlayerPot" style="margin:0; width:90px; padding:10px 6px;">
                         <option value="Unassigned">No Pot</option>
                         <option value="Pot 1">Pot 1</option>
                         <option value="Pot 2">Pot 2</option>
                         <option value="Pot 3">Pot 3</option>
                     </select>
-                    <button class="submit-btn" style="margin:0; padding:12px; width:auto;" onclick="addCustomPlayerToTourney()"><i class='bx bx-plus'></i></button>
+                    <button class="submit-btn" style="margin:0; padding:10px 14px; width:auto;" onclick="addCustomPlayerToTourney()"><i class='bx bx-plus'></i></button>
                 </div>
             </div>
             
-            <div id="tPlayerList" style="max-height: 230px; overflow-y: auto; margin-top:15px; border:1px solid var(--card-border); border-radius:10px; padding:8px;"></div>
+            <div id="tPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:14px; border:1px solid var(--card-border); border-radius:10px; padding:6px;"></div>
             <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:12px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
         </div>
 
         <!-- Create Tournament System -->
         <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.3);">
-            <h3 style="color: var(--logo-blue); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-calendar-plus'></i> Create Event</h3>
-            <input type="text" id="tName" placeholder="Tournament Name" style="margin-top:12px;">
+            <h3 style="color: var(--logo-blue); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-calendar-plus'></i> Create Event</h3>
+            <input type="text" id="tName" placeholder="Tournament Name" style="margin-top:10px;">
             <select id="tFormatType" onchange="toggleGroupOptions()">
                 <option value="Knockout">Knockout (Elimination)</option>
                 <option value="Group Stage">Group Stage System</option>
             </select>
-            <div id="groupOptions" style="display:none; gap:8px; margin-top:6px;">
-                <input type="number" id="tNumGroups" placeholder="Total Groups (e.g. 4)">
-                <input type="number" id="tQualifiers" placeholder="Qualify Per Group (e.g. 2)">
+            <div id="groupOptions" style="display:none; gap:8px; margin-top:4px;">
+                <input type="number" id="tNumGroups" placeholder="Total Groups">
+                <input type="number" id="tQualifiers" placeholder="Qualify Per Group">
             </div>
-            <select id="tFormat" style="margin-top: 6px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
+            <select id="tFormat" style="margin-top: 4px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
             <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32)">
             <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
             
@@ -689,15 +692,15 @@
             <label style="font-size:10px; color:var(--text-muted); margin-top:8px; display:block;">Or Upload Banner:</label>
             <input type="file" id="tImageFile" accept="image/*" style="padding:8px;">
             
-            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Event</button>
+            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:12px;" onclick="createTournament()">Publish Event</button>
         </div>
 
         <!-- Manual Leaderboard Override -->
         <div class="card main-admin-only" style="border: 1px solid rgba(251,191,36,0.3);">
-            <h3 style="color: var(--gold); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bxs-star'></i> Manual Score Override</h3>
-            <input type="text" id="lbPlayerUid" placeholder="Enter Player Name or UID" style="margin-top:12px;">
+            <h3 style="color: var(--gold); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bxs-star'></i> Manual Score Override</h3>
+            <input type="text" id="lbPlayerUid" placeholder="Enter Player Name/UID" style="margin-top:10px;">
             <input type="number" id="lbPoints" placeholder="Total Points">
-            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00;" onclick="updateLeaderboard()">Update Points</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:10px;" onclick="updateLeaderboard()">Update Points</button>
         </div>
     </div>
 
@@ -741,7 +744,7 @@
         function copyUID(elementId) {
             const uidText = document.getElementById(elementId).innerText;
             if(uidText && !uidText.includes("N/A")) { 
-                navigator.clipboard.writeText(uidText.trim()).then(() => alert("UID Copied!")); 
+                navigator.clipboard.writeText(uidText.trim().replace("N/A", "")).then(() => alert("UID Copied!")); 
             }
         }
 
@@ -769,7 +772,7 @@
         function renderFormTab(matches, containerId) {
             const container = document.getElementById(containerId);
             if(!matches || matches.length === 0) {
-                container.innerHTML = `<div class="pub-card-title">Recent Matches</div><div style="text-align:center; padding:20px 10px;"><i class='bx bx-bar-chart-alt-2' style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px; margin-top:5px;">No matches recorded yet.</p></div>`; return;
+                container.innerHTML = `<div class="pub-card-title">Recent Matches</div><div style="text-align:center; padding:20px 10px;"><i class='bx bx-bar-chart-alt-2' style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:11px; margin-top:5px;">No matches recorded yet.</p></div>`; return;
             }
             
             const formInfo = getFormDetails(matches);
@@ -778,7 +781,7 @@
             let sequenceHTML = matches.slice(-5).map(m => {
                 const color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#f87171';
                 const bg = m.result === 'W' ? 'rgba(34,197,94,0.15)' : m.result === 'D' ? 'rgba(148,163,184,0.15)' : 'rgba(239,68,68,0.15)';
-                return `<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; background:${bg}; color:${color}; font-size:9.5px; font-weight:800;">${m.result}</span>`;
+                return `<span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:6px; background:${bg}; color:${color}; font-size:9px; font-weight:800;">${m.result}</span>`;
             }).join('');
 
             let matchesListHTML = last10Desc.map((m, idx) => {
@@ -789,15 +792,15 @@
                 return `
                 <div class="form-history-item ${cls}">
                     <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="openPublicProfile('${m.oppUid}')">
-                        <img src="${oppAv}" style="width:26px; height:26px; border-radius:50%; object-fit:cover;">
+                        <img src="${oppAv}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
                         <div>
-                            <div style="font-size:12px; font-weight:600; color:white; max-width:110px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.opp || 'Opponent'}</div>
-                            <span style="font-size:9px; color:var(--text-dim);"><i class='bx bx-link-external'></i> View Profile</span>
+                            <div style="font-size:11.5px; font-weight:600; color:white; max-width:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.opp || 'Opponent'}</div>
+                            <span style="font-size:8.5px; color:var(--text-dim);"><i class='bx bx-link-external'></i> Profile</span>
                         </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:8px;">
-                        <div style="font-size:13px; font-weight:800; color:white;">${m.myScore} - ${m.oppScore}</div>
-                        <span style="padding:2px 6px; border-radius:4px; font-size:9px; font-weight:800; color:${tagColor}; text-transform:uppercase;">${m.result}</span>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <div style="font-size:12px; font-weight:800; color:white;">${m.myScore} - ${m.oppScore}</div>
+                        <span style="padding:2px 5px; border-radius:4px; font-size:8.5px; font-weight:800; color:${tagColor}; text-transform:uppercase;">${m.result}</span>
                     </div>
                 </div>`;
             }).join('');
@@ -805,16 +808,16 @@
             container.innerHTML = `
                 <div class="pub-card-title">Condition & Recent Form</div>
                 <div class="form-grade-box">
-                    <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
                         <div class="form-grade-badge ${formInfo.class}">${formInfo.grade}</div>
                         <div>
-                            <div style="font-size:13px; font-weight:800; color:white;">${formInfo.desc}</div>
-                            <div style="font-size:10px; color:var(--text-dim); margin-top:2px;">Rate: <span style="color:var(--gold);">${formInfo.pct}%</span></div>
+                            <div style="font-size:12px; font-weight:800; color:white;">${formInfo.desc}</div>
+                            <div style="font-size:9.5px; color:var(--text-dim); margin-top:2px;">Rate: <span style="color:var(--gold);">${formInfo.pct}%</span></div>
                         </div>
                     </div>
                     <div style="display:flex; gap:4px;">${sequenceHTML}</div>
                 </div>
-                <div style="font-size:10px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Last ${last10Desc.length} Games</div>
+                <div style="font-size:9.5px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Last ${last10Desc.length} Games</div>
                 <div class="form-history-list">${matchesListHTML}</div>
             `;
         }
@@ -851,7 +854,6 @@
                         let gd = gf - ga;
                         let gdTxt = gd > 0 ? ('+' + gd) : gd;
 
-                        // Detailed Stats Matrix Update
                         document.getElementById('pubProfWR').innerText = wr + '%';
                         document.getElementById('pubProfMP').innerText = played;
                         document.getElementById('pubProfWins').innerText = w;
@@ -980,7 +982,7 @@
         function renderAdminPlayers(list) {
             document.getElementById('adminPlayerList').innerHTML = list.map(p => `
                 <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.03);" onclick="openPlayerEdit('${p.uid}')">
-                    <span style="color:white; font-size:12.5px; cursor:pointer;">${p.name} ${p.role==='moderator'?'<i class="bx bxs-shield" style="color:var(--accent);font-size:12px;"></i>':''}</span> 
+                    <span style="color:white; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px;">${p.name} ${p.role==='moderator'?'<i class="bx bxs-shield" style="color:var(--accent);"></i>':''}</span> 
                     <i class='bx bx-edit-alt' style="color:var(--accent); cursor:pointer;"></i>
                 </div>`).join('');
         }
@@ -1001,7 +1003,7 @@
             document.getElementById('editPlayerPhone').value = p.phone || "";
             if(document.getElementById('editPlayerRole')) document.getElementById('editPlayerRole').value = p.role || "user";
             
-            document.getElementById('adminPlayerMatchList').innerHTML = "<p style='font-size:10px; color:gray;'>Loading...</p>";
+            document.getElementById('adminPlayerMatchList').innerHTML = "<p style='font-size:10px; color:var(--text-dim);'>Loading...</p>";
             db.collection("playerStats").doc(uid).get().then(doc => {
                 const list = document.getElementById('adminPlayerMatchList');
                 if(!doc.exists || !doc.data().matches || doc.data().matches.length === 0) {
@@ -1013,7 +1015,7 @@
                     let color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#f87171';
                     html += `
                     <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:8px; margin-bottom:6px;">
-                        <div style="font-size:11px; color:white;">
+                        <div style="font-size:10.5px; color:white; font-weight:500;">
                             <strong style="color:${color}; width:16px; display:inline-block;">[${m.result}]</strong> 
                             vs ${m.opp || 'Unknown'} <span style="color:var(--gold); font-weight:700;">(${m.myScore}-${m.oppScore})</span>
                         </div>
@@ -1117,7 +1119,7 @@
             list1.innerHTML = ""; list2.innerHTML = "";
             snapshot.forEach(doc => {
                 const t = doc.data(); const tFormat = t.type || 'Knockout';
-                let actionBtnHtml = t.status === 'Live' ? `<button class="t-reg-btn" style="background:var(--card-bg-soft); color:var(--logo-blue); border:1px solid var(--logo-blue);" onclick="openTournamentDetails('${doc.id}')">DETAILS <i class='bx bx-right-arrow-alt'></i></button>` : `<button id="reg-btn-all-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER</button>`;
+                let actionBtnHtml = t.status === 'Live' ? `<button class="t-reg-btn" style="background:rgba(56,189,248,0.1); color:var(--logo-blue); border:1px solid rgba(56,189,248,0.3);" onclick="openTournamentDetails('${doc.id}')">DETAILS <i class='bx bx-right-arrow-alt'></i></button>` : `<button id="reg-btn-all-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER</button>`;
                 const createCard = (btnHtml) => `
                 <div class="t-card">
                     <div class="t-card-img" style="background-image: url('${t.image}');">
@@ -1125,11 +1127,11 @@
                         <div class="t-card-titles"><div class="t-prize">${t.prize || 'PRIZE: TBA'}</div><div class="t-name">${t.name}</div></div>
                     </div>
                     <div class="t-card-info"><div class="t-stat"><span>SLOTS</span><strong>${t.slots || 'Unlimited'}</strong></div><div class="t-stat"><span>FORMAT</span><strong style="color: var(--logo-blue);">${tFormat}</strong></div></div>
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 16px; background: rgba(255,255,255,0.01);">${btnHtml}</div>
-                    <div class="admin-controls" style="gap:6px; padding: 0 16px 12px; background: rgba(255,255,255,0.01); flex-wrap: wrap;">
-                        <button style="flex:1 1 45%; background:var(--gold); color:#000; border:none; padding:8px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10.5px;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bxs-group'></i> Players</button>
-                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10.5px;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bxs-cog'></i> Draw</button>
-                        <button class="main-admin-only" style="flex:1 1 100%; background:var(--danger); color:white; border:none; padding:8px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10.5px;" onclick="if(confirm('Delete tournament?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete</button>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 10px 14px; background: rgba(255,255,255,0.01);">${btnHtml}</div>
+                    <div class="admin-controls" style="gap:6px; padding: 0 14px 12px; background: rgba(255,255,255,0.01); flex-wrap: wrap;">
+                        <button style="flex:1 1 45%; background:var(--gold); color:#000; border:none; padding:8px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10px;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bxs-group'></i> Players</button>
+                        <button class="main-admin-only" style="flex:1 1 45%; background:var(--logo-blue); color:white; border:none; padding:8px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10px;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bxs-cog'></i> Draw</button>
+                        <button class="main-admin-only" style="flex:1 1 100%; background:var(--danger); color:white; border:none; padding:8px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10px;" onclick="if(confirm('Delete tournament?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete</button>
                     </div>
                 </div>`;
                 list1.innerHTML += createCard(actionBtnHtml.replace('all-', 'home-')); list2.innerHTML += createCard(actionBtnHtml);
@@ -1139,7 +1141,7 @@
                     });
                 }
             });
-            if(list1.innerHTML === "") list1.innerHTML = "<p style='color:gray; padding: 10px;'>No tournaments available.</p>";
+            if(list1.innerHTML === "") list1.innerHTML = "<p style='color:var(--text-dim); padding: 10px; font-size:11px;'>No tournaments available.</p>";
         });
 
         function registerForTournament(docId, btnElement) {
@@ -1185,7 +1187,7 @@
                 list.innerHTML = snap.empty ? "<p style='color:var(--text-dim); font-size:11px; text-align:center;'>No players registered.</p>" : "";
                 snap.forEach(doc => {
                     const p = doc.data();
-                    list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.03);"><span style="font-size:12px; color:white; width:35%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</span><select onchange="updatePlayerPot('${docId}', '${doc.id}', this.value)" style="width:85px; margin:0; padding:4px; font-size:10px; background:rgba(255,255,255,0.05); border-radius:6px;"><option value="Unassigned" ${p.pot === 'Unassigned' ? 'selected' : ''}>No Pot</option><option value="Pot 1" ${p.pot === 'Pot 1' ? 'selected' : ''}>Pot 1</option><option value="Pot 2" ${p.pot === 'Pot 2' ? 'selected' : ''}>Pot 2</option><option value="Pot 3" ${p.pot === 'Pot 3' ? 'selected' : ''}>Pot 3</option></select><button onclick="db.collection('tournaments').doc('${docId}').collection('players').doc('${doc.id}').delete()" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:6px; font-size:10px; cursor:pointer;"><i class='bx bx-trash'></i></button></div>`;
+                    list.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.03);"><span style="font-size:11.5px; color:white; width:35%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${p.name}</span><select onchange="updatePlayerPot('${docId}', '${doc.id}', this.value)" style="width:85px; margin:0; padding:4px; font-size:10px; background:rgba(255,255,255,0.05); border-radius:6px;"><option value="Unassigned" ${p.pot === 'Unassigned' ? 'selected' : ''}>No Pot</option><option value="Pot 1" ${p.pot === 'Pot 1' ? 'selected' : ''}>Pot 1</option><option value="Pot 2" ${p.pot === 'Pot 2' ? 'selected' : ''}>Pot 2</option><option value="Pot 3" ${p.pot === 'Pot 3' ? 'selected' : ''}>Pot 3</option></select><button onclick="db.collection('tournaments').doc('${docId}').collection('players').doc('${doc.id}').delete()" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:6px; font-size:10px; cursor:pointer;"><i class='bx bx-trash'></i></button></div>`;
                 });
             });
         }
@@ -1294,7 +1296,7 @@
                 document.getElementById('drawImg1').src = item.player.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 img2El.style.display = 'none';
                 name2El.innerText = item.group; 
-                name2El.style.fontSize = "20px";
+                name2El.style.fontSize = "18px";
                 name2El.style.color = "var(--gold)";
                 vsEl.innerHTML = "<i class='bx bx-chevrons-right'></i>";
             } else {
@@ -1303,7 +1305,7 @@
                 document.getElementById('drawImg1').src = item.player1.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 img2El.style.display = 'block';
                 name2El.innerText = item.player2.name; 
-                name2El.style.fontSize = "12px";
+                name2El.style.fontSize = "11.5px";
                 name2El.style.color = "white";
                 img2El.src = item.player2.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 vsEl.innerText = 'VS';
@@ -1347,7 +1349,7 @@
         function renderTdData(t, docId) {
             const divG = document.getElementById('tdGroups'); const divB = document.getElementById('tdBracket'); const divM = document.getElementById('tdMatches');
             divG.innerHTML = ''; divB.innerHTML = ''; divM.innerHTML = '';
-            if(!t.fixtures) { divG.innerHTML = "<p style='color:var(--text-dim); font-size:12px; text-align:center;'>Fixtures not generated yet.</p>"; return; }
+            if(!t.fixtures) { divG.innerHTML = "<p style='color:var(--text-dim); font-size:11.5px; text-align:center;'>Fixtures not generated yet.</p>"; return; }
 
             let allMatchesHtml = "";
 
@@ -1404,7 +1406,7 @@
                         
                         divG.innerHTML += `
                         <div class="td-group-box">
-                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9.5px; font-weight:600;">Top ${t.qualifiers||2} Qualify</span></div>
+                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9px; font-weight:700; text-transform:uppercase;">Top ${t.qualifiers||2} Qualify</span></div>
                             <div class="g-table-wrap">
                                 <div class="g-table-header">
                                     <div class="g-col-team-head">Club / Player</div>
@@ -1426,7 +1428,7 @@
                     if(key !== 'standings' && !key.includes('Round') && !key.includes('Final')) {
                         const matches = t.fixtures[key];
                         if(Array.isArray(matches)) {
-                            allMatchesHtml += `<div style="font-size:12px; color:var(--logo-blue); font-weight:700; margin:15px 0 8px; text-transform:uppercase;">${key}</div>`;
+                            allMatchesHtml += `<div style="font-size:11px; color:var(--logo-blue); font-weight:700; margin:15px 0 8px; text-transform:uppercase;">${key}</div>`;
                             matches.forEach(m => allMatchesHtml += buildMatchBox(m, key, docId));
                         }
                     }
@@ -1438,11 +1440,11 @@
             let bracketHtml = ""; let hasBracket = false;
             Object.keys(t.fixtures).forEach(key => {
                 if(key.includes('Round') || key.includes('Final')) {
-                    hasBracket = true; bracketHtml += `<div style="font-size:12px; color:var(--gold); font-weight:800; margin:15px 0 8px; text-transform:uppercase;">${key}</div>`;
+                    hasBracket = true; bracketHtml += `<div style="font-size:11px; color:var(--gold); font-weight:800; margin:15px 0 8px; text-transform:uppercase;">${key}</div>`;
                     t.fixtures[key].forEach(m => { bracketHtml += buildMatchBox(m, key, docId); allMatchesHtml += buildMatchBox(m, key, docId); });
                 }
             });
-            if(hasBracket) divB.innerHTML = bracketHtml; else divB.innerHTML = "<p style='color:var(--text-dim); font-size:12px; text-align:center; margin-top:15px;'>Knockout bracket unlocked after group matches.</p>";
+            if(hasBracket) divB.innerHTML = bracketHtml; else divB.innerHTML = "<p style='color:var(--text-dim); font-size:11.5px; text-align:center; margin-top:15px;'>Knockout bracket locked.</p>";
             divM.innerHTML = allMatchesHtml;
         }
 
@@ -1455,7 +1457,7 @@
             if(currentUserRole === 'admin' || currentUserRole === 'moderator') {
                 adminButtons = `
                 <div style="display:flex; justify-content:center; gap:8px; margin-top:10px; width:100%; border-top:1px dashed var(--card-border); padding-top:8px;">
-                    <button onclick="adminEditScore('${tId}', '${round}', ${m.match})" style="background:var(--logo-blue); color:white; border:none; padding:5px 12px; border-radius:6px; font-size:10px; font-weight:600; cursor:pointer;"><i class='bx bxs-edit-alt'></i> Edit</button>
+                    <button onclick="adminEditScore('${tId}', '${round}', ${m.match})" style="background:rgba(56,189,248,0.1); color:var(--logo-blue); border:1px solid rgba(56,189,248,0.2); padding:5px 12px; border-radius:6px; font-size:10px; font-weight:600; cursor:pointer;"><i class='bx bxs-edit-alt'></i> Edit</button>
                     <button onclick="adminClearScore('${tId}', '${round}', ${m.match})" style="background:transparent; border:1px solid var(--danger); color:var(--danger); padding:5px 12px; border-radius:6px; font-size:10px; font-weight:600; cursor:pointer;"><i class='bx bxs-eraser'></i> Clear</button>
                 </div>`;
             }
@@ -1552,9 +1554,9 @@
         function loadMyMatches() {
             const user = auth.currentUser;
             const list = document.getElementById('myMatchesList'); const countBadge = document.getElementById('myMatchCountText');
-            if(!user) return list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">Log in to view upcoming matches.</p>`;
+            if(!user) return list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:11.5px; margin-top:30px;">Log in to view matches.</p>`;
             
-            list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;"><i class='bx bx-loader-alt bx-spin'></i> Loading...</p>`;
+            list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:11.5px; margin-top:30px;"><i class='bx bx-loader-alt bx-spin'></i> Loading...</p>`;
             
             db.collection("tournaments").where("status", "==", "Live").get().then(snap => {
                 let html = ""; let count = 0; let fetchPromises = [];
@@ -1574,7 +1576,7 @@
 
                                         let p = db.collection("pending_results").where("tournamentId", "==", tId).where("matchId", "==", m.match).get().then(resSnap => {
                                             let statusHtml = `<span class="mm-status pending">Not Played</span>`;
-                                            let btnHtml = `<button class="mm-btn" onclick="openScoreSubmit('${tId}', '${groupOrRound}', '${m.match}', '${me.uid}', '${opp.uid}')">SUBMIT</button>`;
+                                            let btnHtml = `<button class="mm-btn" onclick="openScoreSubmit('${tId}', '${groupOrRound}', '${m.match}', '${me.uid}', '${opp.uid}')">SUBMIT SCORE</button>`;
                                             
                                             let isFinished = (m.myScore !== undefined); 
                                             let isPending = false;
@@ -1588,10 +1590,10 @@
                                             if(isFinished) {
                                                 let myGoals = isP1 ? m.myScore : m.oppScore; let oppGoals = isP1 ? m.oppScore : m.myScore;
                                                 statusHtml = `<span class="mm-status approved">Finished</span>`;
-                                                btnHtml = `<button class="mm-btn" style="background:rgba(34,197,94,0.1); color:var(--accent); border:1px solid var(--accent);" disabled>${myGoals} - ${oppGoals}</button>`;
+                                                btnHtml = `<button class="mm-btn" style="background:rgba(34,197,94,0.1); color:var(--accent); border:1px solid rgba(34,197,94,0.2);" disabled>${myGoals} - ${oppGoals}</button>`;
                                             } else if (isPending) {
                                                 statusHtml = `<span class="mm-status submitted">Pending</span>`;
-                                                btnHtml = `<button class="mm-btn" style="background:rgba(255,255,255,0.05); color:var(--text-muted);" disabled>APPROVAL PENDING</button>`;
+                                                btnHtml = `<button class="mm-btn" style="background:rgba(255,255,255,0.04); color:var(--text-muted);" disabled>WAITING APPROVAL</button>`;
                                             }
 
                                             return `<div class="mm-card"><div class="mm-top"><span class="mm-tag">${t.name.substring(0,18)} • ${groupOrRound}</span><span>${statusHtml}</span></div><div class="mm-vs-row"><div class="mm-player" onclick="openPublicProfile('${me.uid}')"><img src="${me.avatar}" class="mm-avatar"><span class="mm-name">You</span></div><div class="mm-vs-badge">VS</div><div class="mm-player right" onclick="openPublicProfile('${opp.uid}')"><span class="mm-name">${opp.name}</span><img src="${opp.avatar}" class="mm-avatar"></div></div><div class="mm-bot">${btnHtml}</div></div>`;
@@ -1604,7 +1606,7 @@
                     }
                 });
                 Promise.all(fetchPromises).then(results => {
-                    list.innerHTML = count === 0 ? `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">No upcoming matches scheduled.</p>` : results.join('');
+                    list.innerHTML = count === 0 ? `<p style="text-align:center; color:var(--text-dim); font-size:11.5px; margin-top:30px;">No upcoming matches.</p>` : results.join('');
                     countBadge.innerText = `${count} Upcoming`;
                 });
             });
@@ -1620,7 +1622,7 @@
 
         function submitScoreFinal() {
             const myG = document.getElementById('scoreMyGoals').value; const oppG = document.getElementById('scoreOppGoals').value;
-            if(myG === "" || oppG === "") return alert("Please enter goals for both players.");
+            if(myG === "" || oppG === "") return alert("Please enter goals.");
             db.collection("pending_results").add({
                 tournamentId: document.getElementById('submitTid').value, groupRound: document.getElementById('submitGroupRound').value,
                 matchId: parseInt(document.getElementById('submitMatchId').value),
@@ -1633,21 +1635,21 @@
         function loadPendingResults() {
             const list = document.getElementById('adminPendingResultsList');
             db.collection("pending_results").where("status", "==", "Pending").onSnapshot(snap => {
-                if(snap.empty) { list.innerHTML = "<p style='color:var(--text-dim); font-size:11px; text-align:center;'>No pending results.</p>"; return; }
+                if(snap.empty) { list.innerHTML = "<p style='color:var(--text-dim); font-size:10px; text-align:center;'>No pending results.</p>"; return; }
                 let html = "";
                 snap.forEach(doc => {
                     const r = doc.data();
                     html += `
                     <div style="background:rgba(255,255,255,0.02); border:1px solid var(--card-border); padding:10px; border-radius:10px; margin-bottom:10px;">
-                        <div style="font-size:10px; color:var(--text-muted); margin-bottom:5px;">Match ID: ${r.matchId} • ${r.groupRound}</div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:600;">
+                        <div style="font-size:9px; color:var(--text-muted); margin-bottom:6px;">Match ID: ${r.matchId} • ${r.groupRound}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:600;">
                             <span style="color:var(--accent);">${r.submittedBy.substring(0,5)}...</span>
                             <span style="color:var(--gold); font-weight:800;">${r.myScore} - ${r.oppScore}</span>
                             <span style="color:white;">${r.oppUid.substring(0,5)}...</span>
                         </div>
                         <div style="display:flex; gap:8px; margin-top:10px;">
-                            <button onclick="approveResult('${doc.id}')" style="flex:1; background:var(--accent); color:#000; border:none; padding:6px; border-radius:6px; font-weight:700; font-size:10px; cursor:pointer;">Approve</button>
-                            <button onclick="rejectResult('${doc.id}')" style="flex:1; background:transparent; border:1px solid var(--danger); color:var(--danger); padding:6px; border-radius:6px; font-weight:700; font-size:10px; cursor:pointer;">Reject</button>
+                            <button onclick="approveResult('${doc.id}')" style="flex:1; background:var(--accent); color:#000; border:none; padding:6px; border-radius:6px; font-weight:700; font-size:9.5px; cursor:pointer;">Approve</button>
+                            <button onclick="rejectResult('${doc.id}')" style="flex:1; background:transparent; border:1px solid var(--danger); color:var(--danger); padding:6px; border-radius:6px; font-weight:700; font-size:9.5px; cursor:pointer;">Reject</button>
                         </div>
                     </div>`;
                 });
@@ -1808,7 +1810,6 @@
                     let gd = gf - ga;
                     let gdTxt = gd > 0 ? ('+' + gd) : gd;
 
-                    // Update My Profile Detailed Stats Matrix
                     document.getElementById('myProfWR').innerText = wr + '%';
                     document.getElementById('myProfMP').innerText = played;
                     document.getElementById('myProfWins').innerText = w;
