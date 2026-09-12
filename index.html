@@ -142,9 +142,31 @@
         .header-mark { width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 30% 30%, rgba(56,189,248,0.35), rgba(56,189,248,0.05)); border: 1px solid rgba(56,189,248,0.35); color: var(--logo-blue); font-size: 13px; }
         .header h2 { font-family: var(--font-display); font-size: 16px; font-weight: 800; letter-spacing: 2.5px; }
         .header span { color: var(--logo-blue); }
-        .header-actions { display: flex; align-items: center; gap: 8px; }
-        .btn-icon { background: rgba(255,255,255,0.03); color: var(--text-muted); border: 1px solid var(--card-border); height: 36px; border-radius: 12px; cursor: pointer; font-size: 15px; transition: 0.25s; display: flex; align-items: center; justify-content: center; }
-        .btn-icon.menu { width: 40px; }
+        
+        /* MODERN HEADER ACTIONS */
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-btn {
+            width: 38px; height: 38px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .header-btn:active { transform: scale(0.92); }
+        .header-btn.prof { 
+            color: var(--logo-blue); 
+            background: radial-gradient(circle at top left, rgba(56,189,248,0.1), rgba(0,0,0,0));
+            border-color: rgba(56,189,248,0.25);
+        }
+        .header-btn.menu { color: var(--text-muted); }
+        .modern-dots { display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; }
+        .modern-dots span { display: block; width: 4.5px; height: 4.5px; background-color: var(--text-muted); border-radius: 50%; transition: 0.3s; }
+        .header-btn.menu:hover .modern-dots span { background-color: var(--gold); box-shadow: 0 0 5px var(--gold); }
 
         .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99990; display: none; opacity: 0; transition: opacity 0.3s; backdrop-filter: blur(4px); }
         .side-menu-overlay.open { display: block; opacity: 1; }
@@ -211,12 +233,30 @@
         .td-content { display: none; animation: fadeIn 0.3s ease; }
         .td-content.active { display: block; }
         
+        /* NEW GROUP TABLE UI WITH STATS */
         .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
-        .td-group-head { background: var(--card-bg-soft); padding: 10px 15px; border-bottom: 1px solid var(--card-border); font-family: var(--font-display); font-size: 13px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between;}
-        .td-group-row { display: flex; align-items: center; padding: 8px 15px; border-bottom: 1px solid rgba(255,255,255,0.02); gap: 10px; }
-        .td-group-row:last-child { border-bottom: none; }
-        .td-g-rank { font-size: 11px; color: var(--text-dim); font-weight: 700; width: 15px; }
-        .td-g-name { font-size: 12px; font-weight: 600; flex: 1; color: white; }
+        .td-group-head { background: var(--card-bg-soft); padding: 10px 15px; border-bottom: 1px solid var(--card-border); font-family: var(--font-display); font-size: 13px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
+        .g-table-wrap { width: 100%; overflow-x: auto; scrollbar-width: none; padding-bottom: 5px; }
+        .g-table-wrap::-webkit-scrollbar { display: none; }
+        .g-table-header { display: flex; padding: 10px 15px 6px; border-bottom: 1px solid var(--card-border); font-size: 9px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; min-width: 420px; }
+        .g-table-row { display: flex; padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; min-width: 420px; transition: background 0.2s; }
+        .g-table-row:last-child { border-bottom: none; }
+        .g-table-row.qualify-spot { border-left: 2px solid var(--accent); background: linear-gradient(90deg, rgba(163,230,53,0.05), transparent 40%); padding-left: 13px; }
+        
+        .g-col-team-head { flex: 1; min-width: 150px; }
+        .g-col-stat-head { width: 28px; text-align: center; }
+        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 150px; }
+        .g-col-stat { width: 28px; text-align: center; font-size: 11px; font-weight: 600; color: white; font-family: var(--font-display); }
+        .g-rank { font-size: 11px; color: var(--text-dim); font-weight: 700; width: 15px; text-align: center; }
+        .g-name { font-size: 11.5px; font-weight: 600; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; cursor: pointer; transition: 0.2s;}
+        .g-name:hover { color: var(--logo-blue); }
+        .g-col-team img { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--card-border); cursor: pointer; object-fit: cover;}
+        
+        .g-col-stat.w { color: #4ade80; }
+        .g-col-stat.d { color: #94a3b8; }
+        .g-col-stat.l { color: #f87171; }
+        .g-col-stat.pts { color: var(--gold); font-weight: 800; font-size: 12px; }
+        .g-col-stat-head.pts { color: var(--gold); }
 
         .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:10px; padding:10px; margin-bottom:10px; }
         .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:5px; text-align:center; cursor:pointer; }
@@ -305,7 +345,7 @@
         </div>
     </div>
 
-    <!-- PUBLIC PROFILE MODAL (Used for clicking on profiles) -->
+    <!-- PUBLIC PROFILE MODAL -->
     <div id="publicProfileModal" class="modal-overlay">
         <div class="pub-header">
             <button class="pub-back-btn" onclick="closeModal('publicProfileModal')"><i class="fas fa-chevron-left"></i></button>
@@ -358,7 +398,7 @@
         </div>
     </div>
 
-    <!-- MY PROFILE PAGE SECTION (IDENTICAL DESIGN) -->
+    <!-- MY PROFILE PAGE SECTION -->
     <div id="profile" class="page-section">
         <div class="pub-body" style="padding:0; padding-top:10px;">
             <div class="pub-avatar-box" style="margin-bottom:15px;">
@@ -477,9 +517,12 @@
             <div class="header-mark"><i class="fas fa-bolt"></i></div>
             <h2>BMG <span>OFFICIAL</span></h2>
         </div>
+        <!-- MODERN HEADER ACTIONS -->
         <div class="header-actions">
-            <button id="loginBtn" class="login-btn prof-icon" onclick="switchTab('authPage')"><i class="far fa-user"></i></button>
-            <button class="login-btn menu-icon" onclick="openSideMenu()"><i class="fas fa-ellipsis-v"></i></button>
+            <button id="loginBtn" class="header-btn prof" onclick="switchTab('authPage')"><i class="far fa-user"></i></button>
+            <button class="header-btn menu" onclick="openSideMenu()">
+                <div class="modern-dots"><span></span><span></span><span></span></div>
+            </button>
         </div>
     </div>
 
@@ -1168,7 +1211,6 @@
                     let groups = {}; 
                     for (let i = 0; i < totalGroups; i++) groups[`Group ${groupNames[i]}`] = [];
                     
-                    // Shuffle players within their respective pots
                     let pot1 = players.filter(p => p.pot === 'Pot 1').sort(() => Math.random() - 0.5); 
                     let pot2 = players.filter(p => p.pot === 'Pot 2').sort(() => Math.random() - 0.5); 
                     let pot3 = players.filter(p => p.pot === 'Pot 3').sort(() => Math.random() - 0.5); 
@@ -1177,7 +1219,6 @@
                     let pots = [pot1, pot2, pot3, unassigned];
                     let groupIndex = 0;
                     
-                    // Assign players pot by pot natively across all groups
                     pots.forEach(pot => {
                         pot.forEach(p => {
                             let gName = `Group ${groupNames[groupIndex % totalGroups]}`;
@@ -1244,7 +1285,6 @@
                 document.getElementById('drawName1').innerText = "?"; document.getElementById('drawImg1').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 document.getElementById('drawName2').innerText = "?"; document.getElementById('drawImg2').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                 
-                // Reset styling for arena before start
                 document.getElementById('drawImg2').style.display = 'block';
                 document.querySelector('.draw-vs').innerText = 'VS';
             } catch(e) { alert("Error: " + e.message); }
@@ -1266,13 +1306,12 @@
             const img2El = document.getElementById('drawImg2');
             const name2El = document.getElementById('drawName2');
             
-            // Check if animating Group Assignment or Knockout Match
             if(item.type === 'group') {
                 document.getElementById('drawStatusTxt').innerText = `Allocating from ${item.player.pot || 'Unassigned'}`; 
                 document.getElementById('drawName1').innerText = item.player.name; 
                 document.getElementById('drawImg1').src = item.player.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 
-                img2El.style.display = 'none'; // hide player image
+                img2El.style.display = 'none';
                 name2El.innerText = item.group; 
                 name2El.style.fontSize = "22px";
                 name2El.style.color = "var(--gold)";
@@ -1330,6 +1369,7 @@
             });
         }
 
+        /* Update to dynamically generate Stats Table for Group Stage */
         function renderTdData(t, docId) {
             const divG = document.getElementById('tdGroups'); const divB = document.getElementById('tdBracket'); const divM = document.getElementById('tdMatches');
             divG.innerHTML = ''; divB.innerHTML = ''; divM.innerHTML = '';
@@ -1341,9 +1381,74 @@
                 document.getElementById('tabBtnGroups').style.display = 'block'; switchTdTab('tdGroups', document.getElementById('tabBtnGroups'));
                 if(t.fixtures.standings) {
                     Object.keys(t.fixtures.standings).forEach(gName => {
-                        const players = t.fixtures.standings[gName]; let rows = "";
-                        players.forEach((p, idx) => rows += `<div class="td-group-row"><span class="td-g-rank">${idx+1}</span><img src="${p.avatar}" style="width:20px;height:20px;border-radius:50%;cursor:pointer;" onclick="openPublicProfile('${p.uid}')"><span class="td-g-name" style="cursor:pointer;" onclick="openPublicProfile('${p.uid}')">${p.name}</span></div>`);
-                        divG.innerHTML += `<div class="td-group-box"><div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9px; font-weight:600;">Top ${t.qualifiers||2} Qualify</span></div>${rows}</div>`;
+                        // 1. Initialise player stats
+                        let groupPlayers = t.fixtures.standings[gName].map(p => ({
+                            ...p, MP: 0, W: 0, D: 0, L: 0, GF: 0, GA: 0, PTS: 0
+                        }));
+
+                        // 2. Calculate dynamically from played matches
+                        let groupMatches = t.fixtures[gName] || [];
+                        groupMatches.forEach(m => {
+                            if(m.myScore !== undefined && m.oppScore !== undefined) {
+                                let p1 = groupPlayers.find(p => p.uid === m.player1?.uid);
+                                let p2 = groupPlayers.find(p => p.uid === m.player2?.uid);
+                                if(p1 && p2) {
+                                    p1.MP++; p2.MP++;
+                                    p1.GF += m.myScore; p1.GA += m.oppScore;
+                                    p2.GF += m.oppScore; p2.GA += m.myScore;
+                                    if(m.myScore > m.oppScore) { p1.W++; p1.PTS += 3; p2.L++; }
+                                    else if(m.myScore < m.oppScore) { p2.W++; p2.PTS += 3; p1.L++; }
+                                    else { p1.D++; p2.D++; p1.PTS += 1; p2.PTS += 1; }
+                                }
+                            }
+                        });
+
+                        // 3. Sort standard (PTS > GD > GF)
+                        groupPlayers.sort((a, b) => {
+                            if(b.PTS !== a.PTS) return b.PTS - a.PTS;
+                            let gdA = a.GF - a.GA; let gdB = b.GF - b.GA;
+                            if(gdB !== gdA) return gdB - gdA;
+                            return b.GF - a.GF;
+                        });
+
+                        // 4. Build Table
+                        let rows = "";
+                        groupPlayers.forEach((p, idx) => {
+                            let qualifyClass = (idx < (t.qualifiers || 2)) ? 'qualify-spot' : '';
+                            rows += `
+                            <div class="g-table-row ${qualifyClass}">
+                                <div class="g-col-team">
+                                    <span class="g-rank">${idx+1}</span>
+                                    <img src="${p.avatar}" onclick="openPublicProfile('${p.uid}')">
+                                    <span class="g-name" onclick="openPublicProfile('${p.uid}')">${p.name}</span>
+                                </div>
+                                <div class="g-col-stat">${p.MP}</div>
+                                <div class="g-col-stat w">${p.W}</div>
+                                <div class="g-col-stat d">${p.D}</div>
+                                <div class="g-col-stat l">${p.L}</div>
+                                <div class="g-col-stat">${p.GF}</div>
+                                <div class="g-col-stat">${p.GA}</div>
+                                <div class="g-col-stat pts">${p.PTS}</div>
+                            </div>`;
+                        });
+                        
+                        divG.innerHTML += `
+                        <div class="td-group-box">
+                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9px; font-weight:600;">Top ${t.qualifiers||2} Qualify</span></div>
+                            <div class="g-table-wrap">
+                                <div class="g-table-header">
+                                    <div class="g-col-team-head">Club / Player</div>
+                                    <div class="g-col-stat-head">MP</div>
+                                    <div class="g-col-stat-head">W</div>
+                                    <div class="g-col-stat-head">D</div>
+                                    <div class="g-col-stat-head">L</div>
+                                    <div class="g-col-stat-head">GF</div>
+                                    <div class="g-col-stat-head">GA</div>
+                                    <div class="g-col-stat-head pts">PTS</div>
+                                </div>
+                                ${rows}
+                            </div>
+                        </div>`;
                     });
                 }
                 Object.keys(t.fixtures).forEach(key => {
