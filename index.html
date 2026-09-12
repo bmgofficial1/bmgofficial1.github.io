@@ -605,7 +605,7 @@
         <div class="card" id="leaderboardList"><p style="text-align:center; color:gray; font-size:12px;">Loading...</p></div>
     </div>
 
-    <!-- 6. PROFILE SECTION -->
+    <!-- 6. PROFILE SECTION (MY STATS) -->
     <div id="profile" class="page-section">
         <div class="prof-top-title">Player Overview</div>
         <div class="prof-header" id="profileHeader" style="display:none;">
@@ -655,9 +655,9 @@
                 <p style="color:var(--text-dim); font-size:11px; text-align:center;">Checking pending submissions...</p>
             </div>
         </div>
-        
+
         <!-- FULL PLAYER MANAGEMENT SYSTEM -->
-        <div class="card" style="border: 1px solid rgba(163,230,53,0.4);">
+        <div class="card main-admin-only" style="border: 1px solid rgba(163,230,53,0.4); margin-bottom: 20px;">
             <h3 style="color: var(--accent); font-size: 16px; font-weight:800; font-family: var(--font-display);"><i class="fas fa-users-cog"></i> Player Mgmt</h3>
             <input type="text" id="adminPlayerSearch" placeholder="Search by Name..." onkeyup="filterAdminPlayers()" style="margin-top: 10px;">
             <div id="adminPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:8px; padding:8px;"></div>
@@ -667,8 +667,9 @@
                 <input type="text" id="editPlayerName" placeholder="Full Name">
                 <input type="text" id="editPlayerKonami" placeholder="Konami UID">
                 <input type="text" id="editPlayerDevice" placeholder="Device Model">
-                <input type="text" id="editPlayerPhone" placeholder="Phone Number">
-                <select id="editPlayerRole" class="main-admin-only" style="margin-bottom:10px;">
+                <input type="text" id="editPlayerPhone" placeholder="Phone Number (Optional)">
+                <label style="font-size:10px; color:gray; display:block; margin:5px 0;">Account Role:</label>
+                <select id="editPlayerRole" style="margin-bottom:10px;">
                     <option value="user">Normal Player</option>
                     <option value="moderator">Moderator</option>
                 </select>
@@ -711,10 +712,15 @@
             <select id="tFormat" style="margin-top: 8px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
             <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32)">
             <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
-            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
+            
+            <input type="text" id="tImageLink" placeholder="Paste Image Link Here (Optional)">
+            <label style="font-size:11px; color:var(--text-muted); margin-top:8px; display:block;">Upload Thumbnail (Auto Fits):</label>
+            <input type="file" id="tImageFile" accept="image/*">
+            
+            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white;" onclick="createTournament()">Publish Tournament</button>
         </div>
 
-        <!-- Update Leaderboard System -->
+        <!-- Manual Leaderboard Override -->
         <div class="card main-admin-only" style="border: 1px solid rgba(255,215,0,0.4);">
             <h3 style="color: var(--gold); font-size: 16px; font-weight:800; font-family: var(--font-display);">Manual Leaderboard Override</h3>
             <input type="text" id="lbPlayerUid" placeholder="Enter Player Name or UID">
@@ -765,9 +771,9 @@
             if(uidText && uidText !== "N/A") { navigator.clipboard.writeText(uidText.trim()).then(() => { alert("UID Copied!"); }); }
         }
 
-        let fullLeaderboardData = []; // Cached leaderboard
+        let fullLeaderboardData = []; 
 
-        /* --- ADVANCED FORM GRADE CALCULATION (A, B, C, +, -) --- */
+        /* --- ADVANCED FORM GRADE CALCULATION --- */
         function getFormDetails(matches) {
             if(!matches || matches.length === 0) return { grade: 'C', class: 'grade-c', desc: 'Neutral / No Data', pct: 0, recent: [] };
             const last10 = matches.slice(-10);
@@ -784,11 +790,9 @@
             else if (pct >= 25) { grade = 'C (-)'; cls = 'grade-c-minus'; desc = 'Inconsistent Form'; } 
             else if (pct >= 15) { grade = 'D (-)'; cls = 'grade-d-minus'; desc = 'Poor Condition'; } 
             else { grade = 'E (-)'; cls = 'grade-e-minus'; desc = 'Cold / Critical Form'; }
-            
             return { grade, class: cls, desc, pct, recent: last10 };
         }
 
-        /* --- RENDER FORM TAB IN PUBLIC PROFILE --- */
         function renderPubFormTab(matches) {
             const container = document.getElementById('pubForm');
             if(!matches || matches.length === 0) {
@@ -848,7 +852,6 @@
 
         function openPublicProfile(uid) {
             if(!uid || uid === 'bye' || uid === 'undefined' || uid === 'tbd') return;
-            
             db.collection("users").doc(uid).get().then(doc => {
                 if(doc.exists) {
                     const p = doc.data();
@@ -1018,12 +1021,46 @@
             db.collection("users").doc(uid).update(data).then(() => { alert("Player details updated!"); cancelPlayerEdit(); });
         }
 
-        /* --- TOURNAMENT CREATION --- */
+        /* --- TOURNAMENT CREATION (WITH IMAGE UPLOAD) --- */
         function toggleGroupOptions() { document.getElementById('groupOptions').style.display = document.getElementById('tFormatType').value === 'Group Stage' ? 'flex' : 'none'; }
-        function createTournament() {
-            const data = { name: document.getElementById('tName').value, type: document.getElementById('tFormatType').value || 'Knockout', status: document.getElementById('tFormat').value, slots: document.getElementById('tSlots').value || 'Unlimited', prize: document.getElementById('tPrize').value || 'TBA', image: "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg", time: firebase.firestore.FieldValue.serverTimestamp() };
-            if(data.type === 'Group Stage') { data.numGroups = document.getElementById('tNumGroups').value || 4; data.qualifiers = document.getElementById('tQualifiers').value || 2; }
-            if(data.name) db.collection("tournaments").add(data).then(() => { alert("Created!"); document.getElementById('tName').value = ""; });
+        
+        async function createTournament() {
+            const btn = document.getElementById('btnCreateTourney');
+            btn.innerText = "Publishing..."; btn.disabled = true;
+            
+            let imgUrl = document.getElementById('tImageLink').value || "https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg";
+            const fileInput = document.getElementById('tImageFile');
+            
+            try {
+                if(fileInput.files.length > 0) {
+                    const compressed = await compressImage(fileInput.files[0]);
+                    imgUrl = await uploadToImgBB(compressed);
+                }
+
+                const data = {
+                    name: document.getElementById('tName').value,
+                    type: document.getElementById('tFormatType').value || 'Knockout',
+                    status: document.getElementById('tFormat').value,
+                    slots: document.getElementById('tSlots').value || 'Unlimited',
+                    prize: document.getElementById('tPrize').value || 'TBA',
+                    image: imgUrl,
+                    time: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                if(data.type === 'Group Stage') {
+                    data.numGroups = document.getElementById('tNumGroups').value || 4;
+                    data.qualifiers = document.getElementById('tQualifiers').value || 2;
+                }
+                if(data.name) {
+                    await db.collection("tournaments").add(data);
+                    alert("Created Successfully!");
+                    document.getElementById('tName').value = "";
+                    document.getElementById('tImageLink').value = "";
+                    fileInput.value = "";
+                } else {
+                    alert("Tournament name is required!");
+                }
+            } catch(e) { alert("Error: " + e.message); } 
+            finally { btn.innerText = "Publish Tournament"; btn.disabled = false; }
         }
 
         let currentActiveTournamentId = null;
@@ -1190,7 +1227,7 @@
             }); 
         }
 
-        /* --- TOURNAMENT DETAILS (REAL-TIME FIXTURES & ADMIN EDIT MATCH) --- */
+        /* --- TOURNAMENT DETAILS --- */
         function switchTdTab(tabId, btn) {
             document.querySelectorAll('.td-content').forEach(el => el.classList.remove('active')); 
             document.querySelectorAll('.td-tab').forEach(el => el.classList.remove('active'));
@@ -1279,37 +1316,81 @@
             </div>`;
         }
 
-        /* --- ADMIN MATCH EDIT / SYNC STATS --- */
+        /* --- ADMIN MATCH EDIT / SYNC (WITH REVERT LOGIC) --- */
         function adminEditScore(tId, round, matchId) {
             const p1Score = prompt("Enter Player 1 Score:"); if(p1Score === null || p1Score === "") return;
             const p2Score = prompt("Enter Player 2 Score:"); if(p2Score === null || p2Score === "") return;
             updateTournamentMatchScore(tId, round, matchId, parseInt(p1Score), parseInt(p2Score));
         }
         function adminClearScore(tId, round, matchId) {
-            if(confirm("Are you sure you want to clear this match result?")) updateTournamentMatchScore(tId, round, matchId, undefined, undefined);
+            if(confirm("Are you sure you want to clear this match result? It will revert stats/points from the players.")) updateTournamentMatchScore(tId, round, matchId, undefined, undefined);
         }
+
+        async function revertPlayerStatsDB(uid, oldGf, oldGa, tId, matchId) {
+            if(!uid || uid === 'bye' || uid === 'tbd') return;
+            const statRef = db.collection("playerStats").doc(uid);
+            const doc = await statRef.get();
+            if(!doc.exists) return; 
+            
+            let d = doc.data();
+            d.played = Math.max(0, (d.played || 0) - 1);
+            d.gf = Math.max(0, (d.gf || 0) - oldGf);
+            d.ga = Math.max(0, (d.ga || 0) - oldGa);
+            
+            let ptsToRemove = 0;
+            if(oldGf > oldGa) { d.wins = Math.max(0, (d.wins || 0) - 1); ptsToRemove = 3; }
+            else if(oldGf === oldGa) { d.draws = Math.max(0, (d.draws || 0) - 1); ptsToRemove = 1; }
+            else { d.losses = Math.max(0, (d.losses || 0) - 1); }
+            
+            if(d.matches && Array.isArray(d.matches)) {
+                const matchIndex = d.matches.findIndex(m => m.tId === tId && m.matchId === matchId);
+                if(matchIndex !== -1) d.matches.splice(matchIndex, 1);
+            }
+            await statRef.set(d);
+            
+            const lbRef = db.collection("leaderboard").doc(uid);
+            const lbDoc = await lbRef.get();
+            if(lbDoc.exists) {
+                let lb = lbDoc.data();
+                lb.points = Math.max(0, (lb.points || 0) - ptsToRemove);
+                lb.played = Math.max(0, (lb.played || 0) - 1);
+                if(oldGf > oldGa) lb.wins = Math.max(0, (lb.wins || 0) - 1);
+                lb.winRate = lb.played > 0 ? Math.round((lb.wins / lb.played) * 100) : 0;
+                await lbRef.set(lb);
+            }
+        }
+
         async function updateTournamentMatchScore(tId, round, matchId, s1, s2) {
             const tRef = db.collection("tournaments").doc(tId);
             const doc = await tRef.get();
             let fixtures = doc.data().fixtures;
             let p1Uid = null, p2Uid = null, p1Name = "", p2Name = "", p1Av = "", p2Av = "";
+            let oldS1 = undefined, oldS2 = undefined;
 
             fixtures[round].forEach(m => {
                 if(m.match === matchId) {
-                    if(s1 !== undefined && s2 !== undefined) { 
-                        m.myScore = s1; m.oppScore = s2; 
-                        p1Uid = m.player1?.uid; p2Uid = m.player2?.uid;
-                        p1Name = m.player1?.name; p2Name = m.player2?.name;
-                        p1Av = m.player1?.avatar; p2Av = m.player2?.avatar;
-                    } 
+                    p1Uid = m.player1?.uid; p2Uid = m.player2?.uid;
+                    p1Name = m.player1?.name; p2Name = m.player2?.name;
+                    p1Av = m.player1?.avatar; p2Av = m.player2?.avatar;
+                    oldS1 = m.myScore; oldS2 = m.oppScore; 
+
+                    if(s1 !== undefined && s2 !== undefined) { m.myScore = s1; m.oppScore = s2; } 
                     else { delete m.myScore; delete m.oppScore; }
                 }
             });
+
+            // Revert Old Stats
+            if(oldS1 !== undefined && oldS2 !== undefined && p1Uid && p2Uid && p1Uid !== 'bye' && p2Uid !== 'bye') {
+                await revertPlayerStatsDB(p1Uid, oldS1, oldS2, tId, matchId);
+                await revertPlayerStatsDB(p2Uid, oldS2, oldS1, tId, matchId);
+            }
+
             await tRef.update({ fixtures: fixtures });
 
+            // Apply New Stats
             if(s1 !== undefined && s2 !== undefined && p1Uid && p2Uid && p1Uid !== 'bye' && p2Uid !== 'bye') {
-                await updatePlayerStatsDB(p1Uid, s1, s2, p2Name, p2Av, p2Uid);
-                await updatePlayerStatsDB(p2Uid, s2, s1, p1Name, p1Av, p1Uid);
+                await updatePlayerStatsDB(p1Uid, s1, s2, p2Name, p2Av, p2Uid, tId, matchId);
+                await updatePlayerStatsDB(p2Uid, s2, s1, p1Name, p1Av, p1Uid, tId, matchId);
             }
             alert("Match result updated & player stats/ranking synced!");
         }
@@ -1428,38 +1509,56 @@
                 const reqDoc = await db.collection("pending_results").doc(reqId).get();
                 const r = reqDoc.data();
                 
-                const p1UserDoc = await db.collection("users").doc(r.submittedBy).get();
-                const p2UserDoc = await db.collection("users").doc(r.oppUid).get();
-                const p1Data = p1UserDoc.exists ? p1UserDoc.data() : { name: "Player 1", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
-                const p2Data = p2UserDoc.exists ? p2UserDoc.data() : { name: "Player 2", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png" };
-
-                // 1. Sync stats & ranking 
-                await updatePlayerStatsDB(r.submittedBy, r.myScore, r.oppScore, p2Data.name, p2Data.avatar, r.oppUid);
-                await updatePlayerStatsDB(r.oppUid, r.oppScore, r.myScore, p1Data.name, p1Data.avatar, r.submittedBy);
-
-                // 2. Update Fixtures
                 const tRef = db.collection("tournaments").doc(r.tournamentId);
                 const tDoc = await tRef.get();
-                if(tDoc.exists) {
-                    let fixtures = tDoc.data().fixtures; let matchFound = false;
+                let fixtures = tDoc.exists ? tDoc.data().fixtures : null;
+                let oldS1 = undefined, oldS2 = undefined;
+                
+                let p1Name = "Player", p2Name = "Player", p1Av = "", p2Av = "";
+
+                if(fixtures) {
                     let roundName = r.groupRound;
                     if(fixtures[roundName] && Array.isArray(fixtures[roundName])) {
                         fixtures[roundName].forEach(m => {
                             if(m.match === r.matchId) {
-                                if(m.player1.uid === r.submittedBy) { m.myScore = r.myScore; m.oppScore = r.oppScore; } 
-                                else { m.myScore = r.oppScore; m.oppScore = r.myScore; }
-                                matchFound = true;
+                                if(m.myScore !== undefined) {
+                                    if(m.player1.uid === r.submittedBy) { oldS1 = m.myScore; oldS2 = m.oppScore; }
+                                    else { oldS1 = m.oppScore; oldS2 = m.myScore; }
+                                }
+                                if(m.player1.uid === r.submittedBy) { p1Name = m.player1.name; p1Av = m.player1.avatar; p2Name = m.player2.name; p2Av = m.player2.avatar; }
+                                else { p1Name = m.player2.name; p1Av = m.player2.avatar; p2Name = m.player1.name; p2Av = m.player1.avatar; }
                             }
                         });
                     }
+                }
+
+                if(oldS1 !== undefined && oldS2 !== undefined) {
+                    await revertPlayerStatsDB(r.submittedBy, oldS1, oldS2, r.tournamentId, r.matchId);
+                    await revertPlayerStatsDB(r.oppUid, oldS2, oldS1, r.tournamentId, r.matchId);
+                }
+
+                await updatePlayerStatsDB(r.submittedBy, r.myScore, r.oppScore, p2Name, p2Av, r.oppUid, r.tournamentId, r.matchId);
+                await updatePlayerStatsDB(r.oppUid, r.oppScore, r.myScore, p1Name, p1Av, r.submittedBy, r.tournamentId, r.matchId);
+
+                if(fixtures) {
+                    let matchFound = false;
+                    let roundName = r.groupRound;
+                    fixtures[roundName].forEach(m => {
+                        if(m.match === r.matchId) {
+                            if(m.player1.uid === r.submittedBy) { m.myScore = r.myScore; m.oppScore = r.oppScore; } 
+                            else { m.myScore = r.oppScore; m.oppScore = r.myScore; }
+                            matchFound = true;
+                        }
+                    });
                     if(matchFound) await tRef.update({ fixtures: fixtures });
                 }
+
                 await db.collection("pending_results").doc(reqId).update({ status: 'Approved' });
                 alert("Result Approved! Player Stats, Leaderboard & Fixtures Updated.");
             } catch(e) { alert("Error: " + e.message); }
         }
 
-        async function updatePlayerStatsDB(uid, gf, ga, oppName, oppAvatar, oppUid) {
+        async function updatePlayerStatsDB(uid, gf, ga, oppName, oppAvatar, oppUid, tId, matchId) {
             const statRef = db.collection("playerStats").doc(uid); 
             const userRef = db.collection("users").doc(uid);
             const doc = await statRef.get(); 
@@ -1478,12 +1577,12 @@
             d.matches.push({ 
                 result: resChar, myScore: gf, oppScore: ga, 
                 opp: oppName || 'Opponent', oppAvatar: oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppUid: oppUid || '',
+                tId: tId, matchId: matchId,
                 time: Date.now()
             });
             if(d.matches.length > 10) d.matches = d.matches.slice(-10);
             await statRef.set(d);
             
-            // AUTOMATIC LEADERBOARD UPDATE BY UID
             const lbRef = db.collection("leaderboard").doc(uid); 
             const lbDoc = await lbRef.get();
             let lb = lbDoc.exists ? lbDoc.data() : { name: u.name, avatar: u.avatar, points: 0, played: 0, wins: 0, uid: uid };
