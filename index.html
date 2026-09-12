@@ -1009,7 +1009,6 @@
             db.collection("users").doc(uid).update(data).then(() => { alert("Player details updated!"); cancelPlayerEdit(); });
         }
 
-        // NEW: ADMIN MATCH DELETION FUNCTION FROM PLAYER PROFILE
         async function adminDeletePlayerMatch(uid, matchIndex) {
             if(!confirm("Delete this match? It will deduct points and goals from this player's stats/ranking.")) return;
             try {
@@ -1152,7 +1151,7 @@
         }
         function updatePlayerPot(tId, pId, potVal) { db.collection("tournaments").doc(tId).collection("players").doc(pId).update({ pot: potVal }); }
 
-        /* --- DRAW CEREMONY --- */
+        /* --- DRAW CEREMONY (Pot wise assignment added) --- */
         let pendingDrawFixtures = {}; let drawQueue = []; let currentDrawIndex = 0; let pendingDrawTid = null;
         async function generateFixturesAnimated(docId, format) {
             try {
@@ -1161,49 +1160,70 @@
                 let players = []; playersSnap.forEach(d => players.push(d.data()));
                 if(players.length < 2) return alert("Minimum 2 players required.");
                 
-                let pot1 = players.filter(p => p.pot === 'Pot 1').sort(() => Math.random() - 0.5); 
-                let pot2 = players.filter(p => p.pot === 'Pot 2').sort(() => Math.random() - 0.5); 
-                let pot3 = players.filter(p => p.pot === 'Pot 3').sort(() => Math.random() - 0.5); 
-                let unassigned = players.filter(p => p.pot === 'Unassigned' || !p.pot).sort(() => Math.random() - 0.5);
-                
-                let mixedPlayers = [];
-                while(pot1.length || pot2.length || pot3.length || unassigned.length) { 
-                    if(pot1.length) mixedPlayers.push(pot1.pop()); 
-                    if(pot2.length) mixedPlayers.push(pot2.pop()); 
-                    if(pot3.length) mixedPlayers.push(pot3.pop()); 
-                    if(unassigned.length) mixedPlayers.push(unassigned.pop()); 
-                }
-
                 pendingDrawFixtures = {}; drawQueue = []; pendingDrawTid = docId; currentDrawIndex = 0;
 
                 if (format === "Group Stage") {
-                    const totalGroups = parseInt(tInfo.numGroups) || Math.max(1, Math.ceil(mixedPlayers.length / 4)); 
+                    const totalGroups = parseInt(tInfo.numGroups) || Math.max(1, Math.ceil(players.length / 4)); 
                     const groupNames = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P'];
                     let groups = {}; 
                     for (let i = 0; i < totalGroups; i++) groups[`Group ${groupNames[i]}`] = [];
-                    mixedPlayers.forEach((p, index) => groups[`Group ${groupNames[index % totalGroups]}`].push(p));
+                    
+                    // Shuffle players within their respective pots
+                    let pot1 = players.filter(p => p.pot === 'Pot 1').sort(() => Math.random() - 0.5); 
+                    let pot2 = players.filter(p => p.pot === 'Pot 2').sort(() => Math.random() - 0.5); 
+                    let pot3 = players.filter(p => p.pot === 'Pot 3').sort(() => Math.random() - 0.5); 
+                    let unassigned = players.filter(p => p.pot === 'Unassigned' || !p.pot).sort(() => Math.random() - 0.5);
+                    
+                    let pots = [pot1, pot2, pot3, unassigned];
+                    let groupIndex = 0;
+                    
+                    // Assign players pot by pot natively across all groups
+                    pots.forEach(pot => {
+                        pot.forEach(p => {
+                            let gName = `Group ${groupNames[groupIndex % totalGroups]}`;
+                            groups[gName].push(p);
+                            drawQueue.push({ type: 'group', player: p, group: gName });
+                            groupIndex++;
+                        });
+                    });
+
                     pendingDrawFixtures['standings'] = groups; 
+                    
                     let matchId = 1;
                     Object.keys(groups).forEach(gName => {
                         let gPlayers = groups[gName]; let gMatches = [];
                         for(let i=0; i<gPlayers.length; i++) { 
                             for(let j=i+1; j<gPlayers.length; j++) { 
                                 let m = { match: matchId++, player1: gPlayers[i], player2: gPlayers[j], group: gName }; 
-                                gMatches.push(m); drawQueue.push(m); 
+                                gMatches.push(m); 
                             } 
                         }
                         pendingDrawFixtures[gName] = gMatches;
                     });
                 } else {
+                    let pot1 = players.filter(p => p.pot === 'Pot 1').sort(() => Math.random() - 0.5); 
+                    let pot2 = players.filter(p => p.pot === 'Pot 2').sort(() => Math.random() - 0.5); 
+                    let pot3 = players.filter(p => p.pot === 'Pot 3').sort(() => Math.random() - 0.5); 
+                    let unassigned = players.filter(p => p.pot === 'Unassigned' || !p.pot).sort(() => Math.random() - 0.5);
+                    
+                    let mixedPlayers = [];
+                    while(pot1.length || pot2.length || pot3.length || unassigned.length) { 
+                        if(pot1.length) mixedPlayers.push(pot1.pop()); 
+                        if(pot2.length) mixedPlayers.push(pot2.pop()); 
+                        if(pot3.length) mixedPlayers.push(pot3.pop()); 
+                        if(unassigned.length) mixedPlayers.push(unassigned.pop()); 
+                    }
+
                     const totalPlayers = mixedPlayers.length; 
                     const nextPowerOf2 = Math.pow(2, Math.ceil(Math.log2(totalPlayers))); 
                     const byes = nextPowerOf2 - totalPlayers;
                     let round1 = []; let playerIndex = 0;
+                    
                     for(let i = 0; i < nextPowerOf2 / 2; i++) {
                         let p1 = mixedPlayers[playerIndex++]; 
                         let p2 = (i < byes) ? { name: "BYE", uid: "bye", avatar:"https://cdn-icons-png.flaticon.com/512/149/149071.png" } : mixedPlayers[playerIndex++];
                         let m = { match: i + 1, player1: p1, player2: p2, round: 'Round 1' }; 
-                        round1.push(m); drawQueue.push(m);
+                        round1.push(m); drawQueue.push({ ...m, type: 'knockout' });
                     }
                     pendingDrawFixtures[`Round 1`] = round1;
                     let currentMatches = nextPowerOf2 / 2; let roundNum = 2;
@@ -1215,6 +1235,7 @@
                         pendingDrawFixtures[roundName] = matches; roundNum++;
                     }
                 }
+                
                 document.getElementById('drawOverlay').classList.add('active'); 
                 document.getElementById('drawNextBtn').style.display = 'block'; 
                 document.getElementById('drawFinishBtn').style.display = 'none'; 
@@ -1222,26 +1243,61 @@
                 document.getElementById('drawStatusTxt').innerText = "Draw Ready! Click Next."; 
                 document.getElementById('drawName1').innerText = "?"; document.getElementById('drawImg1').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 document.getElementById('drawName2').innerText = "?"; document.getElementById('drawImg2').src = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                
+                // Reset styling for arena before start
+                document.getElementById('drawImg2').style.display = 'block';
+                document.querySelector('.draw-vs').innerText = 'VS';
             } catch(e) { alert("Error: " + e.message); }
         }
+
         function animateNextDraw() {
             if(currentDrawIndex >= drawQueue.length) { 
-                document.getElementById('drawStatusTxt').innerText = "All Matches Drawn!"; 
+                document.getElementById('drawStatusTxt').innerText = "All Draws Completed!"; 
                 document.getElementById('drawNextBtn').style.display = 'none'; 
                 document.getElementById('drawFinishBtn').style.display = 'block'; 
                 return; 
             }
-            const match = drawQueue[currentDrawIndex];
+            const item = drawQueue[currentDrawIndex];
+            
             document.getElementById('drawArena').classList.remove('animate-draw'); 
             void document.getElementById('drawArena').offsetWidth;
-            document.getElementById('drawStatusTxt').innerText = match.group ? `Drawing for ${match.group}` : `Drawing for ${match.round}`; 
-            document.getElementById('drawName1').innerText = match.player1.name; 
-            document.getElementById('drawImg1').src = match.player1.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
-            document.getElementById('drawName2').innerText = match.player2.name; 
-            document.getElementById('drawImg2').src = match.player2.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
+            
+            const vsEl = document.querySelector('.draw-vs');
+            const img2El = document.getElementById('drawImg2');
+            const name2El = document.getElementById('drawName2');
+            
+            // Check if animating Group Assignment or Knockout Match
+            if(item.type === 'group') {
+                document.getElementById('drawStatusTxt').innerText = `Allocating from ${item.player.pot || 'Unassigned'}`; 
+                document.getElementById('drawName1').innerText = item.player.name; 
+                document.getElementById('drawImg1').src = item.player.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
+                
+                img2El.style.display = 'none'; // hide player image
+                name2El.innerText = item.group; 
+                name2El.style.fontSize = "22px";
+                name2El.style.color = "var(--gold)";
+                name2El.style.fontFamily = "var(--font-display)";
+                
+                vsEl.innerHTML = '<i class="fas fa-angle-double-right"></i>';
+            } else {
+                document.getElementById('drawStatusTxt').innerText = `Drawing for ${item.round}`; 
+                document.getElementById('drawName1').innerText = item.player1.name; 
+                document.getElementById('drawImg1').src = item.player1.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
+                
+                img2El.style.display = 'block';
+                name2El.innerText = item.player2.name; 
+                name2El.style.fontSize = "12px";
+                name2El.style.color = "white";
+                name2El.style.fontFamily = "var(--font-body)";
+                img2El.src = item.player2.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
+                
+                vsEl.innerText = 'VS';
+            }
+
             document.getElementById('drawArena').classList.add('animate-draw'); 
             currentDrawIndex++;
         }
+        
         function finishDraw() { 
             db.collection("tournaments").doc(pendingDrawTid).update({ status: 'Live', fixtures: pendingDrawFixtures }).then(() => { 
                 document.getElementById('drawOverlay').classList.remove('active'); 
