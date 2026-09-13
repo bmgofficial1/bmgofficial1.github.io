@@ -32,9 +32,9 @@
     <style>
         :root {
             --bg-dark: #070a14;
-            --card-bg: rgba(15, 22, 41, 0.7);
-            --card-bg-soft: rgba(22, 31, 58, 0.5);
-            --card-border: rgba(255, 255, 255, 0.06);
+            --card-bg: rgba(12, 18, 36, 0.45); /* More transparent for glass effect */
+            --card-bg-soft: rgba(22, 31, 58, 0.35);
+            --card-border: rgba(255, 255, 255, 0.08);
             --gold: #fbbf24;
             --accent: #22c55e;
             --logo-blue: #38bdf8;
@@ -42,7 +42,7 @@
             --danger: #ef4444;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --text-dim: #475569;
+            --text-dim: #64748b;
             --signature: linear-gradient(135deg, #38bdf8, #818cf8 50%, #c084fc);
             --font-body: 'Outfit', -apple-system, sans-serif;
             --font-display: 'Orbitron', sans-serif;
@@ -50,11 +50,16 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-tap-highlight-color: transparent; }
         
+        /* PREMIUM STADIUM BACKGROUND */
         body { 
             background-color: var(--bg-dark); 
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.04) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.03) 0%, transparent 40%);
+                radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.12), transparent 35%),
+                radial-gradient(circle at 85% 60%, rgba(34, 197, 94, 0.08), transparent 35%),
+                linear-gradient(to bottom, rgba(7, 10, 20, 0.8) 0%, rgba(7, 10, 20, 0.95) 100%),
+                url('https://img.freepik.com/free-vector/soccer-stadium-night-background_1284-53909.jpg');
+            background-size: cover;
+            background-position: center top;
             background-attachment: fixed;
             color: var(--text-main); 
             padding-bottom: calc(90px + env(safe-area-inset-bottom)); 
@@ -82,22 +87,22 @@
         .preloader-title span { color: var(--logo-blue); }
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
 
-        /* HEADER (App Native) */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: rgba(7, 10, 20, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: rgba(7, 10, 20, 0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .header-brand { display: flex; align-items: center; gap: 10px; }
-        .header-mark { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.2); color: var(--logo-blue); font-size: 18px; }
-        .header h2 { font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0;}
+        .header-mark { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(56,189,248,0.15), transparent); border: 1px solid rgba(56,189,248,0.3); color: var(--logo-blue); font-size: 18px; box-shadow: 0 4px 12px rgba(56,189,248,0.2); }
+        .header h2 { font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
         .header span { color: var(--logo-blue); }
         
-        .header-actions { display: flex; align-items: center; gap: 8px; }
-        .header-btn { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; }
-        .header-btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.08); }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-btn { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px);}
+        .header-btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.1); }
         .header-btn.prof { color: var(--logo-blue); }
 
         /* SIDE MENU */
         .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999990; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
         .side-menu-overlay.open { display: block; opacity: 1; }
-        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: rgba(10,14,28,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 999999; transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); padding: 25px 20px; border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
+        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: rgba(10,14,28,0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 999999; transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); padding: 25px 20px; border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
         .side-menu.open { right: 0; }
         .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .sm-header h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: white; letter-spacing: 1.5px; margin: 0; }
@@ -111,19 +116,19 @@
         .sm-item.highlight i { color: var(--accent); }
 
         /* MODALS */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
-        .modal-card { background: #0c1222; border: 1px solid var(--card-border); border-radius: 20px; padding: 22px; width: 90%; max-width: 350px; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .modal-close { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.06); border: none; color: var(--text-muted); font-size: 24px; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+        .modal-card { background: rgba(12,18,34,0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 22px; width: 90%; max-width: 350px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8); backdrop-filter: blur(20px);}
+        .modal-close { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.08); border: none; color: white; font-size: 22px; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
         .modal-close:active { transform: scale(0.9); }
 
         /* DRAW CEREMONY */
-        #drawOverlay { background: radial-gradient(circle at center, #0e172a 0%, #000000 100%); z-index: 999999; }
+        #drawOverlay { background: radial-gradient(circle at center, rgba(14,23,42,0.95) 0%, #000000 100%); z-index: 999999; }
         .draw-arena { display: flex; align-items: center; justify-content: space-around; width: 100%; height: 160px; position: relative; overflow: hidden; margin-top: 15px; }
         .draw-player { display: flex; flex-direction: column; align-items: center; opacity: 0; width: 42%; text-align: center; }
-        .draw-player img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--logo-blue); margin-bottom: 8px; box-shadow: 0 0 15px rgba(56,189,248,0.3); object-fit: cover;}
-        .draw-player span { font-size: 12px; font-weight: 600; color: white; word-break: break-word; line-height: 1.2;}
-        .draw-vs { font-family: var(--font-display); font-size: 20px; color: var(--gold); font-weight: 900; opacity: 0; }
+        .draw-player img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--logo-blue); margin-bottom: 10px; box-shadow: 0 0 20px rgba(56,189,248,0.5); object-fit: cover;}
+        .draw-player span { font-size: 13px; font-weight: 600; color: white; word-break: break-word; line-height: 1.2;}
+        .draw-vs { font-family: var(--font-display); font-size: 22px; color: var(--gold); font-weight: 900; opacity: 0; }
         .animate-draw .draw-p1 { animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-draw .draw-vs { animation: popIn 0.5s ease 0.5s forwards; }
         .animate-draw .draw-p2 { animation: slideInRight 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards; }
@@ -134,24 +139,24 @@
         /* CLEAN APP PROFILE SYSTEM */
         #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
         .pub-header { display: flex; align-items: center; padding: 12px 16px; width: 100%; background: rgba(7, 10, 20, 0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
-        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 10px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 24px;}
-        .pub-title { flex: 1; text-align: center; font-size: 13px; letter-spacing: 1px; margin-right: 34px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;}
+        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 36px; height: 36px; border-radius: 12px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 24px;}
+        .pub-title { flex: 1; text-align: center; font-size: 13px; letter-spacing: 1px; margin-right: 36px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;}
         
         .pub-body { padding: 16px 14px 40px; width: 100%; max-width: 480px; margin: 0 auto; overflow-x: hidden; }
         .profile-hero { text-align: center; margin-bottom: 20px; }
-        .avatar-ring { width: 85px; height: 85px; margin: 0 auto 10px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--logo-blue), var(--gold)); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+        .avatar-ring { width: 90px; height: 90px; margin: 0 auto 12px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--logo-blue), var(--gold)); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
         .avatar-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #0c1222; }
         .profile-hero h2 { font-size: 18px; font-weight: 800; color: #fff; }
         
         /* Premium Stats Matrix */
         .stats-deck-container { margin-bottom: 18px; }
         .stat-banner-row { display: flex; gap: 8px; margin-bottom: 8px; justify-content: space-between; }
-        .stat-card-prime { flex: 1; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px 6px; text-align: center; }
+        .stat-card-prime { flex: 1; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px 6px; text-align: center; backdrop-filter: blur(24px); box-shadow: 0 8px 20px rgba(0,0,0,0.3);}
         .stat-card-prime .num { font-size: 17px; font-weight: 800; color: #fff; }
         .stat-card-prime .lbl { font-size: 9px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px; }
         
         /* 4x2 Grid */
-        .stats-matrix { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 12px; }
+        .stats-matrix { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 12px; backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
         .matrix-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; text-align: center; letter-spacing: 1px; }
         .matrix-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .m-item { background: rgba(255,255,255,0.03); border-radius: 10px; padding: 10px 0; text-align: center; border: 1px solid rgba(255,255,255,0.02); }
@@ -163,57 +168,56 @@
         .m-item.pts .m-val { color: var(--gold); }
         .m-item.gd .m-val { color: var(--logo-blue); }
 
-        .pub-tabs-wrap { display: flex; background: rgba(15,23,42,0.8); border-radius: 12px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--card-border); }
+        .pub-tabs-wrap { display: flex; background: rgba(10,14,28,0.7); border-radius: 12px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
         .pub-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 8px 0; font-size: 11.5px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .pub-tab.active { background: rgba(255,255,255,0.08); color: #fff; font-weight: 700; }
+        .pub-tab.active { background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; }
         .pub-content { display: none; animation: fadeIn 0.25s ease; }
         .pub-content.active { display: block; }
         
-        .pub-card { background: var(--card-bg); border-radius: 16px; padding: 15px; border: 1px solid var(--card-border); }
-        .pub-card-title { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
-        .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .pub-card { background: var(--card-bg); border-radius: 16px; padding: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(0,0,0,0.4);}
+        .pub-card-title { font-size: 10.5px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
+        .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
         .pub-list-item:last-child { border-bottom: none; padding-bottom: 0;}
-        .pub-list-lbl { font-size: 12px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 6px;}
-        .pub-list-lbl i { font-size: 18px; color: var(--text-dim); display:flex; align-items:center; justify-content:center; }
-        .pub-list-val { font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 5px;}
+        .pub-list-lbl { font-size: 12.5px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 8px;}
+        .pub-list-lbl i { font-size: 18px; color: var(--text-dim); }
+        .pub-list-val { font-size: 12.5px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 6px;}
         .pub-list-val.copyable { color: var(--logo-blue); cursor: pointer; }
 
         /* RECENT FORM LIST */
-        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 12px; }
-        .form-grade-badge { font-size: 14px; font-weight: 800; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+        .form-grade-badge { font-size: 15px; font-weight: 800; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
         .grade-a-plus, .grade-a { background: #15803d; color: #fff; border: 1px solid #4ade80; }
         .grade-b-plus, .grade-b { background: #0369a1; color: #fff; border: 1px solid #38bdf8; }
         .grade-c-plus, .grade-c, .grade-c-minus { background: #854d0e; color: #fff; border: 1px solid #facc15; }
         .grade-d-minus, .grade-e-minus { background: #991b1b; color: #fff; border: 1px solid #f87171; }
         .form-history-list { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
-        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; }
+        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); border-radius: 12px; padding: 10px 12px; }
         .form-history-item.win { border-left: 3px solid #22c55e; }
         .form-history-item.draw { border-left: 3px solid #94a3b8; }
         .form-history-item.loss { border-left: 3px solid #ef4444; }
 
         /* GENERAL UI SECTIONS */
-        .page-section { display: none; padding: 16px 16px 0; animation: fadeIn 0.3s ease; }
+        .page-section { display: none; padding: 18px 16px 0; animation: fadeIn 0.3s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .section-title { font-size: 14px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;}
-        .section-title::before { content: ''; width: 4px; height: 14px; border-radius: 4px; background: var(--signature); }
+        .section-title { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;}
+        .section-title::before { content: ''; width: 4px; height: 15px; border-radius: 4px; background: var(--signature); }
 
-        /* HERO SLIDER - PERFECTED FULL BACKGROUND OVERLAY (Fixing the Cut-Off issues) */
-        .hero-banner-slider { position: relative; width: 100%; height: 185px; border-radius: 20px; overflow: hidden; margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); background: var(--card-bg-soft); border: 1px solid var(--card-border); }
+        /* PREMIUM HERO SLIDER WITH PERFECT STADIUM OVERLAY */
+        .hero-banner-slider { position: relative; width: 100%; height: 185px; border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); background: var(--card-bg-soft); border: 1px solid rgba(255,255,255,0.1); }
         .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 22px; opacity: 0; transition: opacity 0.6s ease; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
-        /* Background image taking full space */
-        .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 100%; object-fit: cover; object-position: center; z-index: 1; }
-        /* Gradient overlay strictly covering left side and fading perfectly */
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,14,28,1) 0%, rgba(10,14,28,0.85) 45%, transparent 100%); z-index: 2; }
         
-        .hero-content { z-index: 3; width: 80%; position: relative; }
-        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 8px; border-radius: 8px; display: inline-block; margin-bottom: 8px; letter-spacing: 1px; border: 1px solid; }
-        .hero-title { font-size: 18px; font-weight: 900; line-height: 1.15; margin-bottom: 8px; text-transform: uppercase; }
-        .hero-btn { border: none; padding: 8px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
-        .hero-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
-        .hero-dots .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
-        .hero-dots .dot.active { width: 14px; border-radius: 4px; background: var(--logo-blue); }
+        .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 100%; object-fit: cover; object-position: right center; z-index: 1; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,14,28,1) 15%, rgba(10,14,28,0.7) 60%, transparent 100%); z-index: 2; }
+        
+        .hero-content { z-index: 3; width: 75%; position: relative; }
+        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-bottom: 10px; letter-spacing: 1.5px; border: 1px solid; }
+        .hero-title { font-size: 20px; font-weight: 900; line-height: 1.15; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
+        .hero-btn { border: none; padding: 8px 14px; border-radius: 10px; font-size: 10.5px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);}
+        .hero-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
+        .hero-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: 0.3s; }
+        .hero-dots .dot.active { width: 18px; border-radius: 4px; background: var(--logo-blue); }
 
         /* TOURNAMENT CARD */
         .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding-bottom: 10px; scrollbar-width: none; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
@@ -221,106 +225,108 @@
         
         #allTournamentsList .t-card { margin-bottom: 16px; min-width: 100%; }
         
-        .t-card { min-width: 88vw; scroll-snap-align: center; border-radius: 18px; overflow: hidden; background: var(--card-bg-soft); border: 1px solid var(--card-border); display: flex; flex-direction: column; }
-        .t-card-banner { width: 100%; height: 140px; position: relative; }
+        .t-card { min-width: 88vw; scroll-snap-align: center; border-radius: 18px; overflow: hidden; background: var(--card-bg); border: 1px solid var(--card-border); display: flex; flex-direction: column; backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        .t-card-banner { width: 100%; height: 145px; position: relative; }
         .t-card-banner img { width: 100%; height: 100%; object-fit: cover; }
-        .t-card-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--card-bg-soft) 0%, transparent 40%); }
-        .t-status { position: absolute; top: 12px; left: 12px; background: var(--gold); color: #000; font-size: 9.5px; font-weight: 800; padding: 4px 10px; border-radius: 8px; display: flex; align-items: center; text-transform: uppercase; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
-        .t-card-body { padding: 12px 14px 8px; position: relative; z-index: 3; }
-        .t-prize { color: var(--gold); font-size: 11px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; display: flex; align-items: center; gap: 4px;}
-        .t-name { font-size: 16px; font-weight: 800; text-transform: uppercase; line-height: 1.25; color: white; font-family: var(--font-display); }
-        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: rgba(255,255,255,0.02); margin: 0 14px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03); }
+        .t-card-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,18,36,1) 0%, transparent 50%); }
+        .t-status { position: absolute; top: 12px; left: 12px; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; display: flex; align-items: center; text-transform: uppercase; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+        .t-card-body { padding: 12px 16px 8px; position: relative; z-index: 3; }
+        .t-prize { color: var(--gold); font-size: 11.5px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; display: flex; align-items: center; gap: 5px;}
+        .t-name { font-size: 16.5px; font-weight: 800; text-transform: uppercase; line-height: 1.25; color: white; font-family: var(--font-display); }
+        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.02); margin: 0 16px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.04); }
         .t-stat { text-align: center; }
-        .t-stat span { display: block; font-size: 8px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
-        .t-stat strong { font-size: 12px; font-weight: 700; color: white;}
+        .t-stat span { display: block; font-size: 8.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+        .t-stat strong { font-size: 13px; font-weight: 700; color: white;}
         .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 12px 14px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:5px; width: 100%;}
         
-        .admin-controls-card { display: flex; gap: 8px; padding: 0 14px 14px; flex-wrap: wrap; }
+        .admin-controls-card { display: flex; gap: 8px; padding: 0 16px 14px; flex-wrap: wrap; }
         .admin-controls-card button { flex:1 1 45%; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10.5px; display:flex; align-items:center; justify-content:center; gap:4px; }
 
         /* CLEAN GROUP TABLE UI */
-        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; margin-bottom: 16px; overflow: hidden; }
-        .td-group-head { background: var(--card-bg-soft); padding: 12px 14px; border-bottom: 1px solid var(--card-border); font-size: 12.5px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
+        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; backdrop-filter: blur(24px);}
+        .td-group-head { background: rgba(255,255,255,0.03); padding: 14px 16px; border-bottom: 1px solid var(--card-border); font-size: 13px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
         .g-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .g-table-wrap::-webkit-scrollbar { display: none; }
         
-        .g-table-header { display: flex; padding: 10px 12px 6px; border-bottom: 1px solid var(--card-border); font-size: 8.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; width: max-content; min-width: 100%; }
-        .g-table-row { display: flex; padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; width: max-content; min-width: 100%; transition: background 0.2s; }
+        .g-table-header { display: flex; padding: 10px 14px 6px; border-bottom: 1px solid var(--card-border); font-size: 9px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; width: max-content; min-width: 100%; }
+        .g-table-row { display: flex; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; width: max-content; min-width: 100%; transition: background 0.2s; }
         .g-table-row:last-child { border-bottom: none; }
-        .g-table-row.qualify-spot { border-left: 3px solid var(--accent); background: linear-gradient(90deg, rgba(34,197,94,0.05), transparent 40%); padding-left: 9px;}
+        .g-table-row.qualify-spot { border-left: 3px solid var(--accent); background: linear-gradient(90deg, rgba(34,197,94,0.05), transparent 40%); padding-left: 11px;}
         
-        .g-col-team-head { flex: 1; min-width: 130px; }
-        .g-col-stat-head { width: 26px; text-align: center; }
-        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 130px; }
-        .g-col-stat { width: 26px; text-align: center; font-size: 11px; font-weight: 600; color: #fff; }
-        .g-rank { font-size: 10px; color: var(--text-dim); font-weight: 700; width: 12px; text-align: center; }
-        .g-name { font-size: 11.5px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; cursor: pointer; }
-        .g-col-team img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
+        .g-col-team-head { flex: 1; min-width: 140px; }
+        .g-col-stat-head { width: 28px; text-align: center; }
+        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 140px; }
+        .g-col-stat { width: 28px; text-align: center; font-size: 11.5px; font-weight: 600; color: #fff; }
+        .g-rank { font-size: 10.5px; color: var(--text-dim); font-weight: 700; width: 14px; text-align: center; }
+        .g-name { font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; cursor: pointer; }
+        .g-col-team img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
         .g-col-stat.w { color: #4ade80; }
         .g-col-stat.d { color: #94a3b8; }
         .g-col-stat.l { color: #f87171; }
-        .g-col-stat.pts { color: var(--gold); font-weight: 800; }
+        .g-col-stat.pts { color: var(--gold); font-weight: 800; font-size: 13px;}
         .g-col-stat.gd { color: var(--logo-blue); }
 
         /* MATCH BOX */
-        .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:12px; padding:10px 12px; margin-bottom:10px; }
-        .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:4px; text-align:center; cursor:pointer; }
-        .td-m-team img { width:30px; height:30px; border-radius:50%; border:1px solid var(--logo-blue); object-fit: cover;}
-        .td-m-team span { font-size:10.5px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
-        .td-m-vs { font-size:12px; color:var(--gold); font-weight:800; background:rgba(251,191,36,0.1); padding:4px 8px; border-radius:6px; }
+        .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:14px; padding:12px 14px; margin-bottom:12px; backdrop-filter: blur(10px);}
+        .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:6px; text-align:center; cursor:pointer; }
+        .td-m-team img { width:32px; height:32px; border-radius:50%; border:2px solid var(--logo-blue); object-fit: cover; box-shadow: 0 4px 10px rgba(56,189,248,0.2);}
+        .td-m-team span { font-size:11px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+        .td-m-vs { font-size:13px; color:var(--gold); font-weight:800; background:rgba(251,191,36,0.1); padding:4px 10px; border-radius:8px; border: 1px solid rgba(251,191,36,0.2);}
 
         /* MY MATCHES */
-        .mm-card { background: var(--card-bg); border-radius: 14px; padding: 12px; margin-bottom: 12px; border: 1px solid var(--card-border); }
-        .mm-top { display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-muted); margin-bottom: 10px; border-bottom: 1px solid var(--card-border); padding-bottom: 6px; align-items: center; }
-        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(34,197,94,0.1); padding: 4px 6px; border-radius: 6px; }
-        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .mm-player { display: flex; align-items: center; gap: 8px; width: 40%; cursor: pointer; }
+        .mm-card { background: var(--card-bg); border-radius: 16px; padding: 15px; margin-bottom: 14px; border: 1px solid var(--card-border); backdrop-filter: blur(24px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .mm-top { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; align-items: center; }
+        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(34,197,94,0.1); padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px;}
+        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .mm-player { display: flex; align-items: center; gap: 10px; width: 40%; cursor: pointer; }
         .mm-player.right { flex-direction: row-reverse; text-align: right; }
-        .mm-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; }
-        .mm-name { font-size: 11.5px; font-weight: 600; color: white; }
-        .mm-vs-badge { font-size: 10px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 4px 6px; border-radius: 6px; }
+        .mm-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px rgba(255,255,255,0.1);}
+        .mm-name { font-size: 12px; font-weight: 600; color: white; }
+        .mm-vs-badge { font-size: 11px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.2);}
         .mm-bot { display: flex; justify-content: space-between; align-items: center; }
-        .mm-btn { background: linear-gradient(135deg, var(--gold), #d97706); color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 800; cursor: pointer; }
-        .mm-status { font-size: 9px; padding: 4px 6px; border-radius: 6px; font-weight: 700; border: 1px solid; display:flex; align-items:center; gap:3px;}
+        .mm-btn { background: linear-gradient(135deg, var(--gold), #d97706); color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-size: 10.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(251,191,36,0.3);}
+        .mm-status { font-size: 9.5px; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid; display:flex; align-items:center; gap:4px;}
         .mm-status.pending { color: #f87171; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
         .mm-status.submitted { color: var(--logo-blue); background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.2); }
         .mm-status.approved { color: var(--accent); background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); }
 
         /* FORM ELEMENTS & INPUTS */
-        .card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-sizing: border-box; width: 100%; }
-        input, select { width: 100%; margin: 6px 0; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: white; font-size: 12.5px; font-weight: 500; box-sizing: border-box;}
-        input:focus, select:focus { outline: none; border-color: var(--logo-blue); background: rgba(255,255,255,0.06); }
-        .submit-btn { background: linear-gradient(135deg, var(--accent), #15803d); color: #04210a; border: none; padding: 12px; width: 100%; border-radius: 10px; cursor: pointer; font-weight: 800; margin-top: 10px; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; box-sizing: border-box;}
-        .link-text { color: var(--logo-blue); font-size: 11px; margin-top: 14px; cursor: pointer; font-weight: 600; text-align: center; }
+        .card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin-bottom: 18px; border: 1px solid var(--card-border); backdrop-filter: blur(24px); box-sizing: border-box; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        input, select { width: 100%; margin: 8px 0; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: white; font-size: 13px; font-weight: 500; box-sizing: border-box; transition: 0.3s;}
+        input:focus, select:focus { outline: none; border-color: var(--logo-blue); background: rgba(255,255,255,0.06); box-shadow: 0 0 0 4px rgba(56,189,248,0.1);}
+        .submit-btn { background: linear-gradient(135deg, var(--accent), #15803d); color: #04210a; border: none; padding: 14px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: 800; margin-top: 12px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(34,197,94,0.3); transition: 0.2s;}
+        .submit-btn:active { transform: translateY(2px); }
+        .link-text { color: var(--logo-blue); font-size: 11.5px; margin-top: 16px; cursor: pointer; font-weight: 600; text-align: center; }
 
-        /* PERFECT APP LEADERBOARD */
-        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03); }
-        .leaderboard-row:nth-child(1) { border-left: 4px solid var(--gold); background: linear-gradient(90deg, rgba(251,191,36,0.1), transparent 60%); }
-        .leaderboard-row:nth-child(2) { border-left: 4px solid #cbd5e1; }
-        .leaderboard-row:nth-child(3) { border-left: 4px solid #cd7f32; }
+        /* LEADERBOARD */
+        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.03); padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.02);}
+        .leaderboard-row:nth-child(1) { background: linear-gradient(90deg, rgba(251,191,36,0.1), transparent 70%); border-left: 3px solid var(--gold); }
+        .leaderboard-row:nth-child(2) { border-left: 3px solid #cbd5e1; }
+        .leaderboard-row:nth-child(3) { border-left: 3px solid #cd7f32; }
         .rank { color: var(--gold); font-weight: 800; width: 24px; font-size: 14px; text-align: center;}
-        .lb-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; margin: 0 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 10px; border: 1px solid rgba(255,255,255,0.1);}
         .player-info { flex: 1; }
         .player-name { font-weight: 600; font-size: 13px; color: white; margin-bottom: 2px;}
         .points { font-size: 11px; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 4px; }
-        .win-rate-val { font-size: 14px; font-weight: 800; color: var(--accent); text-align: right;}
-        .win-rate-lbl { font-size: 8.5px; color: var(--text-dim); text-transform: uppercase; text-align: right;}
+        .win-rate-val { font-size: 15px; font-weight: 800; color: var(--accent); text-align: right;}
+        .win-rate-lbl { font-size: 9px; color: var(--text-dim); text-transform: uppercase; text-align: right; letter-spacing: 0.5px;}
 
-        /* FIXED SOLID BOTTOM NAV (No float breakage) */
+        /* FIXED SOLID BOTTOM NAV (Perfect iOS/App Style - No Breakage) */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; right: 0; 
-            background: rgba(10, 14, 28, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            background: rgba(10, 14, 28, 0.98); 
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             display: flex; justify-content: space-around; align-items: center; 
-            padding: 10px 8px calc(10px + env(safe-area-inset-bottom)); 
-            z-index: 1000; border-top: 1px solid rgba(255,255,255,0.06); 
-            border-radius: 20px 20px 0 0; 
+            padding: 12px 10px calc(12px + env(safe-area-inset-bottom)); 
+            z-index: 1000; 
+            border-top: 1px solid rgba(255,255,255,0.06); 
         }
-        .nav-item { color: var(--text-muted); text-align: center; font-size: 9.5px; cursor: pointer; font-weight: 600; padding: 6px 4px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; flex: 1; gap: 4px;}
-        .nav-item i { font-size: 22px; transition: transform 0.2s ease; display:flex; align-items:center; justify-content:center; }
+        .nav-item { color: var(--text-muted); text-align: center; font-size: 10px; cursor: pointer; font-weight: 600; padding: 6px 8px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; flex: 1; gap: 4px;}
+        .nav-item i { font-size: 22px; transition: 0.2s ease; display:flex; align-items:center; justify-content:center; }
         .nav-admin { display: none; color: #f87171; }
         .nav-admin.show { display: flex; }
-        .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); }
-        .nav-item.active i { transform: translateY(-2px); }
+        .nav-item.active { color: var(--logo-blue); }
+        .nav-item.active i { transform: translateY(-2px); color: var(--logo-blue); text-shadow: 0 0 15px rgba(56,189,248,0.5);}
     </style>
 </head>
 <body>
@@ -404,7 +410,7 @@
 
             <div id="pubForm" class="pub-content pub-card"></div>
             <div id="pubTrophy" class="pub-content pub-card">
-                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:8px;"><i class='bx bx-trophy' style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:11px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
             </div>
         </div>
     </div>
@@ -458,7 +464,7 @@
 
             <div id="myForm" class="pub-content pub-card"></div>
             <div id="myTrophy" class="pub-content pub-card">
-                <div style="display:flex; justify-content:center; align-items:center; padding:20px; flex-direction:column; gap:8px;"><i class='bx bx-trophy' style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:11px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
             </div>
             
             <div style="text-align:center; margin-top:20px;">
@@ -471,8 +477,8 @@
     <div id="submitScoreModal" class="modal-overlay" onclick="closeModal('submitScoreModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal('submitScoreModal')"><i class='bx bx-x'></i></button>
-            <h3 style="color:var(--accent); font-size:15px; margin-bottom:12px; text-align:center; font-weight:800;">Submit Result</h3>
-            <p style="font-size:10.5px; color:var(--text-muted); text-align:center; margin-bottom:15px; line-height:1.4;">Enter exact score. False submission leads to penalties.</p>
+            <h3 style="color:var(--accent); font-size:16px; margin-bottom:12px; text-align:center; font-weight:800;">Submit Result</h3>
+            <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:18px; line-height:1.4;">Enter exact score. False submission leads to penalties.</p>
             
             <input type="hidden" id="submitTid">
             <input type="hidden" id="submitGroupRound">
@@ -480,15 +486,15 @@
             <input type="hidden" id="submitMyUid">
             <input type="hidden" id="submitOppUid">
             
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreMyName" style="color:white; font-size:11.5px; font-weight:600; display:block; margin-bottom:6px;">Me</span>
-                    <input type="number" id="scoreMyGoals" placeholder="0" style="text-align:center; font-size:20px; font-weight:bold; padding:8px;">
+                    <span id="scoreMyName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:6px;">Me</span>
+                    <input type="number" id="scoreMyGoals" placeholder="0" style="text-align:center; font-size:22px; font-weight:bold; padding:10px;">
                 </div>
-                <div style="color:var(--gold); font-size:16px; padding:0 12px; font-weight: 800;">VS</div>
+                <div style="color:var(--gold); font-size:18px; padding:0 12px; font-weight: 800;">VS</div>
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreOppName" style="color:white; font-size:11.5px; font-weight:600; display:block; margin-bottom:6px;">Opponent</span>
-                    <input type="number" id="scoreOppGoals" placeholder="0" style="text-align:center; font-size:20px; font-weight:bold; padding:8px;">
+                    <span id="scoreOppName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:6px;">Opponent</span>
+                    <input type="number" id="scoreOppGoals" placeholder="0" style="text-align:center; font-size:22px; font-weight:bold; padding:10px;">
                 </div>
             </div>
             <button class="submit-btn" onclick="submitScoreFinal()"><i class='bx bx-send'></i> Send For Approval</button>
@@ -532,7 +538,7 @@
         <div class="header-actions">
             <button id="loginBtn" class="header-btn prof" onclick="switchTab('authPage')"><i class='bx bx-user'></i></button>
             <button class="header-btn menu" onclick="openSideMenu()">
-                <i class='bx bx-dots-vertical-rounded'></i>
+                <i class='bx bx-dots-vertical-rounded' style="font-size:24px;"></i>
             </button>
         </div>
     </div>
@@ -563,6 +569,7 @@
 
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
+        <!-- PERFECT HERO SLIDER -->
         <div class="hero-banner-slider">
             <div class="hero-slide active">
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
@@ -585,52 +592,52 @@
             <div class="hero-dots" id="heroDots"><span class="dot active"></span><span class="dot"></span></div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <div class="section-title" style="margin:0;">Tournaments</div>
-            <span style="font-size:10.5px; color:var(--logo-blue); cursor:pointer; font-weight:600;" onclick="switchTab('tournamentsTab')">View All</span>
+            <span style="font-size:11px; color:var(--logo-blue); cursor:pointer; font-weight:600;" onclick="switchTab('tournamentsTab')">View All</span>
         </div>
         
-        <div class="t-slider" id="homeTournamentsList"><p style="font-size:11px; color:var(--text-dim); padding: 10px;">Loading...</p></div>
+        <div class="t-slider" id="homeTournamentsList"><p style="font-size:12px; color:var(--text-dim); padding: 10px;">Loading...</p></div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; margin-bottom:14px;">
             <div class="section-title" style="margin:0;">Leaderboard</div>
-            <span style="font-size:9.5px; color:var(--gold); font-weight:700; display:flex; align-items:center; gap:2px;"><i class='bx bxs-star'></i> Live</span>
+            <span style="font-size:10px; color:var(--gold); font-weight:700; display:flex; align-items:center; gap:3px;"><i class='bx bxs-star'></i> Live</span>
         </div>
-        <div class="card" style="padding: 10px; margin-bottom: 24px;">
-            <div id="homeLeaderboardList"><p style="text-align:center; color:var(--text-dim); font-size:11px;">Loading...</p></div>
+        <div class="card" style="padding: 12px; margin-bottom: 24px;">
+            <div id="homeLeaderboardList"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
         </div>
     </div>
 
     <!-- 2. TOURNAMENTS TAB -->
     <div id="tournamentsTab" class="page-section">
         <div class="section-title">All Events</div>
-        <div id="allTournamentsList"><p style="text-align:center; color:var(--text-dim); font-size:11px;">Loading...</p></div>
+        <div id="allTournamentsList"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
     </div>
 
     <!-- 3. MY MATCHES TAB -->
     <div id="myMatchesTab" class="page-section">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
             <div class="section-title" style="margin:0;">My Schedule</div>
-            <span id="myMatchCountText" style="font-size:10px; color:var(--gold); font-weight:700;">0 Upcoming</span>
+            <span id="myMatchCountText" style="font-size:11px; color:var(--gold); font-weight:700;">0 Upcoming</span>
         </div>
         <div id="myMatchesList"></div>
     </div>
 
     <!-- 4. TOURNAMENT DETAILS -->
     <div id="tournamentDetails" class="page-section">
-        <div class="card" style="padding:16px 14px; position:relative;">
-            <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:11px; cursor:pointer; margin-bottom:10px; font-weight:600; display:flex; align-items:center; gap:4px;"><i class='bx bx-left-arrow-alt'></i> Back</button>
-            <h2 id="tdName" style="color:white; font-size:16.5px; font-weight:800; text-transform:uppercase; margin-bottom:10px;">Tournament Name</h2>
-            <div style="display:flex; flex-wrap:wrap; gap:6px; font-size:9.5px; color:var(--text-muted); font-weight:600;">
-                <span style="background:rgba(251,191,36,0.1); color:var(--gold); padding:4px 8px; border-radius:6px; display:flex; align-items:center; gap:3px;" id="tdPrize"><i class='bx bx-trophy'></i> Prize</span>
-                <span style="background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px; display:flex; align-items:center; gap:3px;" id="tdFormat"><i class='bx bx-joystick'></i> Format</span>
+        <div class="card" style="padding:18px 16px; position:relative;">
+            <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:12px; cursor:pointer; margin-bottom:12px; font-weight:600; display:flex; align-items:center; gap:4px;"><i class='bx bx-left-arrow-alt'></i> Back</button>
+            <h2 id="tdName" style="color:white; font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:12px;">Tournament Name</h2>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; font-size:10.5px; color:var(--text-muted); font-weight:600;">
+                <span style="background:rgba(251,191,36,0.1); color:var(--gold); padding:5px 10px; border-radius:8px; display:flex; align-items:center; gap:4px;" id="tdPrize"><i class='bx bx-trophy'></i> Prize</span>
+                <span style="background:rgba(255,255,255,0.04); padding:5px 10px; border-radius:8px; display:flex; align-items:center; gap:4px;" id="tdFormat"><i class='bx bx-joystick'></i> Format</span>
             </div>
-            <div class="admin-controls" id="tdAdminControls" style="margin-top:12px; display:none;">
-                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:10px; border-radius:10px; font-size:10.5px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="advanceToKnockout()"><i class='bx bx-bolt-circle'></i> KNOCKOUT STAGE</button>
+            <div class="admin-controls" id="tdAdminControls" style="margin-top:16px; display:none;">
+                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:12px; border-radius:12px; font-size:11px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:6px;" onclick="advanceToKnockout()"><i class='bx bx-bolt-circle'></i> KNOCKOUT STAGE</button>
             </div>
         </div>
 
-        <div class="pub-tabs-wrap" style="margin-bottom:14px;">
+        <div class="pub-tabs-wrap" style="margin-bottom:16px;">
             <button class="pub-tab active" onclick="switchTdTab('tdGroups', this)" id="tabBtnGroups">Groups</button>
             <button class="pub-tab" onclick="switchTdTab('tdBracket', this)" id="tabBtnBracket">Knockout</button>
             <button class="pub-tab" onclick="switchTdTab('tdMatches', this)" id="tabBtnMatches">Matches</button>
@@ -644,7 +651,7 @@
     <!-- 5. LEADERBOARD -->
     <div id="leaderboard" class="page-section">
         <div class="section-title">Global Rankings</div>
-        <div class="card" id="leaderboardList" style="padding:10px; margin-bottom:24px;"><p style="text-align:center; color:var(--text-dim); font-size:11px;">Loading...</p></div>
+        <div class="card" id="leaderboardList" style="padding:12px; margin-bottom:24px;"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
     </div>
 
     <!-- 7. ADMIN DASHBOARD -->
@@ -652,38 +659,38 @@
         <div class="section-title" style="color: var(--danger);">Admin Panel</div>
         
         <!-- PENDING RESULTS APPROVAL -->
-        <div class="card admin-controls" style="border: 1px solid rgba(239,68,68,0.3); flex-direction:column; margin-bottom: 15px;">
-            <h3 style="color: var(--danger); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-list-check'></i> Pending Results</h3>
-            <div id="adminPendingResultsList" style="margin-top:10px; max-height: 250px; overflow-y: auto;">
-                <p style="color:var(--text-dim); font-size:10.5px; text-align:center;">Checking submissions...</p>
+        <div class="card admin-controls" style="border: 1px solid rgba(239,68,68,0.3); flex-direction:column; margin-bottom: 18px;">
+            <h3 style="color: var(--danger); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-list-check'></i> Pending Results</h3>
+            <div id="adminPendingResultsList" style="margin-top:12px; max-height: 250px; overflow-y: auto;">
+                <p style="color:var(--text-dim); font-size:11px; text-align:center;">Checking submissions...</p>
             </div>
         </div>
 
         <!-- FULL PLAYER MANAGEMENT SYSTEM -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(34,197,94,0.3); margin-bottom: 15px;">
-            <h3 style="color: var(--accent); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-user-pin'></i> Player Management</h3>
-            <input type="text" id="adminPlayerSearch" placeholder="Search player name..." onkeyup="filterAdminPlayers()" style="margin-top: 10px;">
-            <div id="adminPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:8px; border:1px solid var(--card-border); border-radius:10px; padding:6px;"></div>
+        <div class="card main-admin-only" style="border: 1px solid rgba(34,197,94,0.3); margin-bottom: 18px;">
+            <h3 style="color: var(--accent); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-user-pin'></i> Player Management</h3>
+            <input type="text" id="adminPlayerSearch" placeholder="Search player name..." onkeyup="filterAdminPlayers()" style="margin-top: 12px;">
+            <div id="adminPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:12px; padding:8px;"></div>
             
-            <div id="adminEditPlayerForm" style="display:none; margin-top:14px; padding-top:14px; border-top:1px dashed var(--card-border);">
+            <div id="adminEditPlayerForm" style="display:none; margin-top:16px; padding-top:16px; border-top:1px dashed var(--card-border);">
                 <input type="hidden" id="editPlayerUid">
                 <input type="text" id="editPlayerName" placeholder="Full Name">
                 <input type="text" id="editPlayerKonami" placeholder="Konami UID">
                 <input type="text" id="editPlayerDevice" placeholder="Device Model">
                 <input type="url" id="editPlayerFb" placeholder="Facebook Link">
                 <input type="text" id="editPlayerPhone" placeholder="Phone Number (Optional)">
-                <label style="font-size:10px; color:var(--text-dim); display:block; margin:6px 0 4px;">Role:</label>
-                <select id="editPlayerRole" style="margin-bottom:10px;">
+                <label style="font-size:11px; color:var(--text-dim); display:block; margin:8px 0 4px;">Role:</label>
+                <select id="editPlayerRole" style="margin-bottom:12px;">
                     <option value="user">Normal Player</option>
                     <option value="moderator">Moderator</option>
                 </select>
 
-                <div id="adminPlayerMatchHistory" style="margin-top: 8px; margin-bottom:10px; background:rgba(0,0,0,0.3); padding:10px; border-radius:10px; border:1px solid var(--card-border);">
-                    <p style="font-size:10.5px; color:var(--text-muted); margin-bottom:6px; font-weight:600;">Match Records</p>
-                    <div id="adminPlayerMatchList" style="max-height:130px; overflow-y:auto;"></div>
+                <div id="adminPlayerMatchHistory" style="margin-top: 10px; margin-bottom:12px; background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; border:1px solid var(--card-border);">
+                    <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Match Records</p>
+                    <div id="adminPlayerMatchList" style="max-height:140px; overflow-y:auto;"></div>
                 </div>
 
-                <div style="display:flex; gap:8px;">
+                <div style="display:flex; gap:10px;">
                     <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin:0;" onclick="savePlayerEdit()">Save</button>
                     <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
                 </div>
@@ -691,66 +698,66 @@
         </div>
 
         <!-- Manage Tournament Registrations UI -->
-        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(34,197,94,0.4); margin-bottom: 15px;">
+        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(34,197,94,0.4); margin-bottom: 18px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="color: var(--accent); font-size: 14px; font-weight:800; margin:0; display:flex; align-items:center; gap:6px;"><i class='bx bx-group'></i> Tourney Players</h3>
-                <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:9.5px; font-weight:700;"></span>
+                <h3 style="color: var(--accent); font-size: 15px; font-weight:800; margin:0; display:flex; align-items:center; gap:6px;"><i class='bx bx-group'></i> Tourney Players</h3>
+                <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:10.5px; font-weight:700;"></span>
             </div>
             <input type="hidden" id="manageTid">
             
-            <div style="margin-top:10px;">
-                <label style="font-size:9px; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px; display:block;">Add Registered User</label>
+            <div style="margin-top:12px;">
+                <label style="font-size:10px; color:var(--text-dim); text-transform:uppercase; margin-bottom:4px; display:block;">Add Registered User</label>
                 <input type="text" id="searchSiteUserForTourney" placeholder="Search user..." onkeyup="filterSiteUsersForTourney()" style="margin:0;">
-                <div id="tourneyUserSearchResults" style="max-height: 120px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 10px; margin-top: 6px; display: none;"></div>
+                <div id="tourneyUserSearchResults" style="max-height: 130px; overflow-y: auto; background: var(--card-bg-soft); border: 1px solid var(--card-border); border-radius: 12px; margin-top: 8px; display: none;"></div>
             </div>
 
-            <div style="margin-top:12px; padding-top:10px; border-top:1px dashed var(--card-border);">
-                <label style="font-size:9px; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; display:block;">Manually Add Custom Player</label>
-                <div style="display:flex; gap:6px; align-items:center;">
+            <div style="margin-top:14px; padding-top:12px; border-top:1px dashed var(--card-border);">
+                <label style="font-size:10px; color:var(--text-dim); text-transform:uppercase; margin-bottom:6px; display:block;">Manually Add Custom Player</label>
+                <div style="display:flex; gap:8px; align-items:center;">
                     <input type="text" id="customPlayerName" placeholder="Player Name" style="margin:0; flex:1;">
-                    <select id="customPlayerPot" style="margin:0; width:90px; padding:10px 6px;">
+                    <select id="customPlayerPot" style="margin:0; width:100px; padding:12px 8px;">
                         <option value="Unassigned">No Pot</option>
                         <option value="Pot 1">Pot 1</option>
                         <option value="Pot 2">Pot 2</option>
                         <option value="Pot 3">Pot 3</option>
                     </select>
-                    <button class="submit-btn" style="margin:0; padding:10px 14px; width:auto;" onclick="addCustomPlayerToTourney()"><i class='bx bx-plus'></i></button>
+                    <button class="submit-btn" style="margin:0; padding:12px 16px; width:auto;" onclick="addCustomPlayerToTourney()"><i class='bx bx-plus'></i></button>
                 </div>
             </div>
             
-            <div id="tPlayerList" style="max-height: 220px; overflow-y: auto; margin-top:14px; border:1px solid var(--card-border); border-radius:10px; padding:6px;"></div>
-            <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:12px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
+            <div id="tPlayerList" style="max-height: 240px; overflow-y: auto; margin-top:16px; border:1px solid var(--card-border); border-radius:12px; padding:8px;"></div>
+            <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:14px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
         </div>
 
         <!-- Create Tournament System -->
         <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.3);">
-            <h3 style="color: var(--logo-blue); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-calendar-plus'></i> Create Event</h3>
-            <input type="text" id="tName" placeholder="Tournament Name" style="margin-top:10px;">
+            <h3 style="color: var(--logo-blue); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-calendar-plus'></i> Create Event</h3>
+            <input type="text" id="tName" placeholder="Tournament Name" style="margin-top:12px;">
             <select id="tFormatType" onchange="toggleGroupOptions()">
                 <option value="Knockout">Knockout (Elimination)</option>
                 <option value="Group Stage">Group Stage System</option>
             </select>
-            <div id="groupOptions" style="display:none; gap:8px; margin-top:4px;">
+            <div id="groupOptions" style="display:none; gap:10px; margin-top:6px;">
                 <input type="number" id="tNumGroups" placeholder="Total Groups">
                 <input type="number" id="tQualifiers" placeholder="Qualify Per Group">
             </div>
-            <select id="tFormat" style="margin-top: 4px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
+            <select id="tFormat" style="margin-top: 6px;"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select>
             <input type="text" id="tSlots" placeholder="Total Slots (e.g. 32)">
             <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
             
             <input type="text" id="tImageLink" placeholder="Image Link (Optional)">
-            <label style="font-size:10px; color:var(--text-muted); margin-top:8px; display:block;">Or Upload Banner:</label>
-            <input type="file" id="tImageFile" accept="image/*" style="padding:8px;">
+            <label style="font-size:11px; color:var(--text-muted); margin-top:10px; display:block;">Or Upload Banner:</label>
+            <input type="file" id="tImageFile" accept="image/*" style="padding:10px;">
             
-            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:12px;" onclick="createTournament()">Publish Event</button>
+            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:14px;" onclick="createTournament()">Publish Event</button>
         </div>
 
         <!-- Manual Leaderboard Override -->
         <div class="card main-admin-only" style="border: 1px solid rgba(251,191,36,0.3); margin-bottom:24px;">
-            <h3 style="color: var(--gold); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-star'></i> Manual Score Override</h3>
-            <input type="text" id="lbPlayerUid" placeholder="Enter Player Name/UID" style="margin-top:10px;">
+            <h3 style="color: var(--gold); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-star'></i> Manual Score Override</h3>
+            <input type="text" id="lbPlayerUid" placeholder="Enter Player Name/UID" style="margin-top:12px;">
             <input type="number" id="lbPoints" placeholder="Total Points">
-            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:10px;" onclick="updateLeaderboard()">Update Points</button>
+            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:12px;" onclick="updateLeaderboard()">Update Points</button>
         </div>
     </div>
 
