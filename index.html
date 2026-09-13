@@ -10,6 +10,7 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png">
     
     <!-- Open Graph (Facebook/Messenger) -->
     <meta property="og:type" content="website">
@@ -136,7 +137,7 @@
         .draw-arena { display: flex; align-items: center; justify-content: space-around; width: 100%; height: 160px; position: relative; overflow: hidden; margin-top: 20px; }
         .draw-player { display: flex; flex-direction: column; align-items: center; opacity: 0; width: 42%; text-align: center; }
         .draw-player img { width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--primary-blue-light); margin-bottom: 10px; box-shadow: 0 4px 20px rgba(14,165,233,0.3); object-fit: cover;}
-        .draw-player span { font-size: 13px; font-weight: 700; color: var(--cream-white); word-break: break-word; line-height: 1.2;}
+        .draw-player span { font-size: 13px; font-weight: 700; color: white; word-break: break-word; line-height: 1.2;}
         .draw-vs { font-family: var(--font-display); font-size: 26px; color: var(--gold); font-weight: 900; opacity: 0; }
         .animate-draw .draw-p1 { animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-draw .draw-vs { animation: popIn 0.5s ease 0.5s forwards; }
@@ -282,7 +283,7 @@
         .g-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .g-table-wrap::-webkit-scrollbar { display: none; }
         
-        .g-table-header { display: flex; padding: 12px 16px 8px; border-bottom: 1px solid var(--card-border); font-size: 9.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; width: max-content; min-width: 100%; }
+        .g-table-header { display: flex; padding: 12px 16px 8px; border-bottom: 1px solid var(--card-border); font-size: 9.5px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; width: max-content; min-width: 100%; }
         .g-table-row { display: flex; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; width: max-content; min-width: 100%; transition: background 0.2s; }
         .g-table-row:last-child { border-bottom: none; }
         .g-table-row.qualify-spot { border-left: 3px solid var(--primary-blue-light); background: rgba(14, 165, 233, 0.1); padding-left: 13px;}
@@ -319,6 +320,9 @@
         .mm-bot { display: flex; justify-content: space-between; align-items: center; }
         .mm-btn { background: var(--primary-blue-gradient); color: #fff; border: none; padding: 10px 18px; border-radius: 10px; font-size: 11.5px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow-btn);}
         .mm-status { font-size: 10px; padding: 6px 10px; border-radius: 8px; font-weight: 700; border: 1px solid; display:flex; align-items:center; gap:4px;}
+        .mm-status.pending { color: var(--danger); background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
+        .mm-status.submitted { color: var(--gold); background: rgba(250, 204, 21, 0.1); border-color: rgba(250, 204, 21, 0.2); }
+        .mm-status.approved { color: var(--accent); background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.2); }
 
         /* FORM ELEMENTS & INPUTS */
         .card { background: var(--card-bg); border-radius: 20px; padding: 22px; margin-bottom: 20px; border: 1px solid var(--card-border); box-sizing: border-box; width: 100%; box-shadow: var(--shadow-soft);}
@@ -401,7 +405,6 @@
                 <h2 id="pubProfName">Player Name</h2>
             </div>
             
-            <!-- Modern Responsive Stats System -->
             <div class="stats-deck-container">
                 <div class="stat-banner-row">
                     <div class="stat-card-prime"><div id="pubProfRank" class="num">#--</div><div class="lbl">Rank</div></div>
@@ -600,14 +603,14 @@
 
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
-        <!-- PREMIUM HERO SLIDER -->
+        <!-- PREMIUM HERO SLIDER WITH BLUE & WHITE COMBO TEXT -->
         <div class="hero-banner-slider">
             <div class="hero-slide active">
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--accent); background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2);">SEASON 1</span>
-                    <h1 class="hero-title" style="color: var(--cream-white);">NEW ERA<br><span style="color:var(--accent)">OF LEGENDS</span></h1>
+                    <span class="hero-badge" style="color: var(--primary-blue-light); background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.2);">SEASON 1</span>
+                    <h1 class="hero-title" style="color: var(--cream-white);">NEW ERA<br><span style="color:var(--primary-blue-light)">OF LEGENDS</span></h1>
                     <button class="hero-btn" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class='bx bx-chevron-right'></i></button>
                 </div>
             </div>
@@ -615,8 +618,8 @@
                 <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--gold); background: rgba(250,204,21,0.1); border-color: rgba(250,204,21,0.2);">ELITE</span>
-                    <h1 class="hero-title" style="color: var(--cream-white);">BECOME<br><span style="color:var(--gold)">CHAMPION</span></h1>
+                    <span class="hero-badge" style="color: var(--primary-blue-light); background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.2);">ELITE</span>
+                    <h1 class="hero-title" style="color: var(--cream-white);">BECOME<br><span style="color:var(--primary-blue-light)">CHAMPION</span></h1>
                     <button class="hero-btn" onclick="switchTab('leaderboard')">RANKINGS <i class='bx bx-chevron-right'></i></button>
                 </div>
             </div>
@@ -682,7 +685,7 @@
     <!-- 5. LEADERBOARD -->
     <div id="leaderboard" class="page-section">
         <div class="section-title">Global Rankings</div>
-        <div class="card" id="leaderboardList" style="padding:10px; margin-bottom:24px;"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
+        <div class="card" id="leaderboardList" style="padding:12px; margin-bottom:24px;"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
     </div>
 
     <!-- 7. ADMIN DASHBOARD -->
@@ -866,7 +869,7 @@
             let sequenceHTML = matches.slice(-5).map(m => {
                 const color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#ef4444';
                 const bg = m.result === 'W' ? 'rgba(34,197,94,0.15)' : m.result === 'D' ? 'rgba(148,163,184,0.15)' : 'rgba(239,68,68,0.15)';
-                return `<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; background:${bg}; color:${color}; font-size:9.5px; font-weight:800; border:1px solid ${color}40;">${m.result}</span>`;
+                return `<span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:6px; background:${bg}; color:${color}; font-size:9px; font-weight:800;">${m.result}</span>`;
             }).join('');
 
             let matchesListHTML = last10Desc.map((m, idx) => {
@@ -1206,7 +1209,7 @@
                 }
                 if(data.name) {
                     await db.collection("tournaments").add(data);
-                    alert("Created Successfully!");
+                    alert("Published!");
                     document.getElementById('tName').value = ""; document.getElementById('tImageLink').value = ""; fileInput.value = "";
                 } else { alert("Tournament name is required!"); }
             } catch(e) { alert("Error: " + e.message); } 
@@ -1240,8 +1243,8 @@
                     </div>
                     <div style="padding: 0 14px 14px;">${btnHtml}</div>
                     <div class="admin-controls admin-controls-card main-admin-only">
-                        <button style="background:var(--gold); color:#000;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bxs-group'></i> Players & Pots</button>
-                        <button style="background:var(--primary-blue); color:white;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bxs-cog'></i> Draw Logic</button>
+                        <button style="background:var(--gold); color:#000;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bxs-group'></i> Pot & P</button>
+                        <button style="background:var(--primary-blue); color:white;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bxs-cog'></i> Draw</button>
                         <button style="flex:1 1 100%; background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2);" onclick="if(confirm('Delete tournament completely?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete</button>
                     </div>
                 </div>`;
@@ -1356,7 +1359,7 @@
                             </select>
                             <button onclick="removeTourneyPlayer('${currentManageTid}', '${p.uid}')" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:var(--danger); width:34px; height:34px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px;" title="Remove from tournament"><i class='bx bx-trash'></i></button>
                         ` : `
-                            <button onclick="addSiteUserWithPot('${currentManageTid}', '${p.uid}', '${safeName}', '${safeAvatar}', 'Pot 1')" style="background:var(--primary-blue-gradient); color:white; border:none; padding:7px 12px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:3px; box-shadow:var(--shadow-btn);">
+                            <button onclick="addSiteUserWithPot('${currentManageTid}', '${p.uid}', '${safeName}', '${safeAvatar}', 'Pot 1')" style="background:var(--primary-blue-gradient); color:white; border:none; padding:7px 12px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:var(--shadow-btn);">
                                 <i class='bx bx-plus'></i> Add
                             </button>
                         `}
