@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- === PAGE THUMBNAIL & SEO META TAGS === -->
     <title>BMG Official - eFootball Community</title>
     <meta name="description" content="Join the ultimate eFootball tournament platform. Compete, track stats, and climb the global leaderboard!">
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png">
     
     <!-- Open Graph (Facebook/Messenger) -->
     <meta property="og:type" content="website">
@@ -30,25 +29,28 @@
 
     <style>
         :root {
-            /* DEEP PREMIUM APP BACKGROUND */
-            --bg-dark: #050810; 
+            /* CLEAN LIGHT THEME COLORS */
+            --bg-main: #f4f7fb;
+            --card-bg: #ffffff;
+            --card-bg-soft: #f8fafc;
+            --card-border: #e2e8f0;
             
-            /* ULTRA GLASSMORPHISM (Faded Boxes) */
-            --card-bg: rgba(15, 22, 41, 0.4); 
-            --card-bg-soft: rgba(22, 31, 58, 0.2);
-            --card-border: rgba(255, 255, 255, 0.05);
+            --primary-blue: #0284c7;
+            --primary-blue-light: #0ea5e9;
+            --primary-blue-gradient: linear-gradient(135deg, #0ea5e9, #0284c7);
             
-            --gold: #fbbf24;
+            --gold: #f59e0b;
             --accent: #22c55e;
-            --logo-blue: #38bdf8;
-            --logo-blue-deep: #0284c7;
             --danger: #ef4444;
             
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --text-dim: #64748b;
+            --text-dark: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --text-dim: #94a3b8;
             
-            --signature: linear-gradient(135deg, #38bdf8, #818cf8 50%, #c084fc);
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-btn: 0 4px 15px rgba(2, 132, 199, 0.25);
+            
             --font-body: 'Outfit', -apple-system, sans-serif;
             --font-display: 'Orbitron', sans-serif;
         }
@@ -56,11 +58,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background-color: var(--bg-dark); 
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(34, 197, 94, 0.05) 0%, transparent 40%);
-            background-attachment: fixed;
+            background-color: var(--bg-main); 
             color: var(--text-main); 
             padding-bottom: calc(90px + env(safe-area-inset-bottom)); 
             overflow-x: hidden; 
@@ -69,7 +67,7 @@
             max-width: 100%;
         }
 
-        ::selection { background: var(--logo-blue); color: #000; }
+        ::selection { background: var(--primary-blue-light); color: #fff; }
         ::-webkit-scrollbar { display: none; }
         img { max-width: 100%; }
 
@@ -78,56 +76,56 @@
         body:not(.is-main-admin) .main-admin-only { display: none !important; }
 
         /* PRELOADER */
-        #preloader { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #050810; transition: opacity 0.4s ease, visibility 0.4s ease; }
+        #preloader { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #ffffff; transition: opacity 0.4s ease, visibility 0.4s ease; }
         #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
         .preloader-ring-wrap { position: relative; width: 76px; height: 76px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-        .preloader-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(56,189,248,0.1); border-top-color: var(--logo-blue); animation: preloaderSpin 0.8s linear infinite; }
+        .preloader-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid #e0f2fe; border-top-color: var(--primary-blue); animation: preloaderSpin 0.8s linear infinite; }
         .preloader-logo { width: 34px; height: 34px; object-fit: contain; }
-        .preloader-title { font-family: var(--font-display); font-size: 15px; letter-spacing: 2px; font-weight: 800; color: #fff; }
-        .preloader-title span { color: var(--logo-blue); }
+        .preloader-title { font-family: var(--font-display); font-size: 15px; letter-spacing: 2px; font-weight: 800; color: var(--text-dark); }
+        .preloader-title span { color: var(--primary-blue); }
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
 
-        /* HEADER */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: rgba(5, 8, 16, 0.6); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        /* HEADER (Clean App Native) */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--card-border); box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
         .header-brand { display: flex; align-items: center; gap: 10px; }
-        .header-mark { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(56,189,248,0.15), transparent); border: 1px solid rgba(56,189,248,0.2); color: var(--logo-blue); font-size: 18px; box-shadow: 0 4px 12px rgba(56,189,248,0.1); }
-        .header h2 { font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0;}
-        .header span { color: var(--logo-blue); }
+        .header-mark { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: #e0f2fe; color: var(--primary-blue); font-size: 18px; }
+        .header h2 { font-size: 16px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 0; color: var(--text-dark);}
+        .header span { color: var(--primary-blue); }
         
         .header-actions { display: flex; align-items: center; gap: 10px; }
-        .header-btn { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px);}
-        .header-btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.08); }
-        .header-btn.prof { color: var(--logo-blue); }
+        .header-btn { width: 38px; height: 38px; border-radius: 10px; background: #f1f5f9; border: 1px solid #e2e8f0; color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; transition: 0.2s; }
+        .header-btn:active { transform: scale(0.92); background: #e2e8f0; }
+        .header-btn.prof { color: var(--primary-blue); background: #f0f9ff; border-color: #bae6fd;}
 
         /* SIDE MENU */
-        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999990; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+        .side-menu-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); z-index: 999990; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(3px); }
         .side-menu-overlay.open { display: block; opacity: 1; }
-        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: rgba(10,14,28,0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 999999; transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); padding: 25px 20px; border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.8); }
+        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100%; background: #ffffff; z-index: 999999; transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); padding: 25px 20px; border-left: 1px solid var(--card-border); overflow-y: auto; display: flex; flex-direction: column; box-shadow: -5px 0 25px rgba(0,0,0,0.1); }
         .side-menu.open { right: 0; }
         .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .sm-header h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: white; letter-spacing: 1.5px; margin: 0; }
-        .sm-close { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 24px; }
+        .sm-header h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: var(--text-dark); letter-spacing: 1px; margin: 0; }
+        .sm-close { background: #f1f5f9; border: 1px solid #e2e8f0; color: var(--text-muted); width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 24px; }
         .sm-close:active { transform: scale(0.9); }
         .sm-group-title { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin: 15px 0 8px 5px; }
-        .sm-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; font-size: 14px; font-weight: 500; color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 6px; }
-        .sm-item:hover { background: rgba(255,255,255,0.04); color: white; }
+        .sm-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; font-size: 14px; font-weight: 600; color: var(--text-main); border-radius: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 6px; }
+        .sm-item:hover { background: #f8fafc; }
         .sm-item i { font-size: 22px; width: 24px; text-align: center; color: var(--text-muted); transition: 0.2s; display: flex; justify-content: center; align-items: center; }
-        .sm-item.highlight { background: linear-gradient(90deg, rgba(163,230,53,0.1), transparent); color: var(--accent); border: 1px solid rgba(163,230,53,0.2); font-weight: 600; }
-        .sm-item.highlight i { color: var(--accent); }
+        .sm-item.highlight { background: #f0f9ff; color: var(--primary-blue); border: 1px solid #bae6fd; }
+        .sm-item.highlight i { color: var(--primary-blue); }
 
         /* MODALS */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.6); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
-        .modal-card { background: rgba(10,14,28,0.95); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 22px; width: 90%; max-width: 350px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8); backdrop-filter: blur(20px);}
-        .modal-close { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.06); border: none; color: white; font-size: 22px; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+        .modal-card { background: #ffffff; border: 1px solid var(--card-border); border-radius: 20px; padding: 22px; width: 90%; max-width: 350px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .modal-close { position: absolute; top: 12px; right: 12px; background: #f1f5f9; border: none; color: var(--text-main); font-size: 22px; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
         .modal-close:active { transform: scale(0.9); }
 
         /* DRAW CEREMONY */
-        #drawOverlay { background: radial-gradient(circle at center, rgba(10,14,28,0.95) 0%, #000000 100%); z-index: 999999; }
+        #drawOverlay { background: radial-gradient(circle at center, #f0f9ff 0%, #e0f2fe 100%); z-index: 999999; }
         .draw-arena { display: flex; align-items: center; justify-content: space-around; width: 100%; height: 160px; position: relative; overflow: hidden; margin-top: 15px; }
         .draw-player { display: flex; flex-direction: column; align-items: center; opacity: 0; width: 42%; text-align: center; }
-        .draw-player img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--logo-blue); margin-bottom: 10px; box-shadow: 0 0 20px rgba(56,189,248,0.4); object-fit: cover;}
-        .draw-player span { font-size: 13px; font-weight: 600; color: white; word-break: break-word; line-height: 1.2;}
+        .draw-player img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--primary-blue); margin-bottom: 10px; box-shadow: 0 4px 15px rgba(2,132,199,0.2); object-fit: cover;}
+        .draw-player span { font-size: 13px; font-weight: 700; color: var(--text-dark); word-break: break-word; line-height: 1.2;}
         .draw-vs { font-family: var(--font-display); font-size: 22px; color: var(--gold); font-weight: 900; opacity: 0; }
         .animate-draw .draw-p1 { animation: slideInLeft 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-draw .draw-vs { animation: popIn 0.5s ease 0.5s forwards; }
@@ -137,105 +135,88 @@
         @keyframes popIn { 0% { transform: scale(0); opacity: 0; } 70% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
 
         /* CLEAN APP PROFILE SYSTEM */
-        #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
-        .pub-header { display: flex; align-items: center; padding: 12px 16px; width: 100%; background: rgba(5, 8, 16, 0.6); backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
-        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 36px; height: 36px; border-radius: 10px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 24px;}
+        #publicProfileModal { background: var(--bg-main); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
+        .pub-header { display: flex; align-items: center; padding: 12px 16px; width: 100%; background: rgba(255, 255, 255, 0.95); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
+        .pub-back-btn { background: #f1f5f9; border: 1px solid var(--card-border); width: 36px; height: 36px; border-radius: 10px; color: var(--text-dark); cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 24px;}
         .pub-title { flex: 1; text-align: center; font-size: 13px; letter-spacing: 1px; margin-right: 36px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;}
         
         .pub-body { padding: 16px 14px 40px; width: 100%; max-width: 480px; margin: 0 auto; overflow-x: hidden; }
         .profile-hero { text-align: center; margin-bottom: 20px; }
-        .avatar-ring { width: 90px; height: 90px; margin: 0 auto 12px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--logo-blue), var(--gold)); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .avatar-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: var(--bg-dark); }
-        .profile-hero h2 { font-size: 18px; font-weight: 800; color: #fff; }
+        .avatar-ring { width: 90px; height: 90px; margin: 0 auto 12px; border-radius: 50%; padding: 3px; background: var(--primary-blue-gradient); box-shadow: 0 8px 20px rgba(2,132,199,0.2); }
+        .avatar-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #fff; border: 2px solid #fff;}
+        .profile-hero h2 { font-size: 19px; font-weight: 800; color: var(--text-dark); }
         
-        /* Premium Stats Matrix */
+        /* Stats Matrix */
         .stats-deck-container { margin-bottom: 18px; }
         .stat-banner-row { display: flex; gap: 8px; margin-bottom: 8px; justify-content: space-between; }
-        .stat-card-prime { flex: 1; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px 6px; text-align: center; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 8px 20px rgba(0,0,0,0.2);}
-        .stat-card-prime .num { font-size: 17px; font-weight: 800; color: #fff; }
-        .stat-card-prime .lbl { font-size: 9px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-top: 4px; }
+        .stat-card-prime { flex: 1; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 6px; text-align: center; box-shadow: var(--shadow-soft);}
+        .stat-card-prime .num { font-size: 18px; font-weight: 800; color: var(--text-dark); }
+        .stat-card-prime .lbl { font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-top: 4px; }
         
         /* 4x2 Grid */
-        .stats-matrix { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px 12px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-        .matrix-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; margin-bottom: 10px; text-align: center; letter-spacing: 1px; }
+        .stats-matrix { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px 12px; box-shadow: var(--shadow-soft); }
+        .matrix-title { font-size: 10.5px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; text-align: center; letter-spacing: 1px; }
         .matrix-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .m-item { background: rgba(255,255,255,0.02); border-radius: 10px; padding: 10px 0; text-align: center; border: 1px solid rgba(255,255,255,0.02); }
-        .m-item .m-val { font-size: 15px; font-weight: 800; color: #fff; }
-        .m-item .m-lbl { font-size: 8.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 3px; }
-        .m-item.win .m-val { color: #4ade80; }
-        .m-item.draw .m-val { color: #94a3b8; }
-        .m-item.loss .m-val { color: #f87171; }
-        .m-item.pts .m-val { color: var(--gold); }
-        .m-item.gd .m-val { color: var(--logo-blue); }
+        .m-item { background: var(--bg-main); border-radius: 10px; padding: 12px 0; text-align: center; border: 1px solid var(--card-border); }
+        .m-item .m-val { font-size: 16px; font-weight: 800; color: var(--text-dark); }
+        .m-item .m-lbl { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-top: 4px; }
+        .m-item.win .m-val { color: var(--accent); }
+        .m-item.loss .m-val { color: var(--danger); }
+        .m-item.pts .m-val { color: var(--primary-blue); }
+        .m-item.gd .m-val { color: var(--gold); }
 
-        .pub-tabs-wrap { display: flex; background: rgba(10,14,28,0.4); border-radius: 12px; padding: 4px; margin-bottom: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); }
-        .pub-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 8px 0; font-size: 11.5px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .pub-tab.active { background: rgba(255,255,255,0.1); color: #fff; font-weight: 700; }
+        .pub-tabs-wrap { display: flex; background: #e2e8f0; border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+        .pub-tab { flex: 1; background: transparent; border: none; color: var(--text-muted); padding: 10px 0; font-size: 12px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .pub-tab.active { background: #ffffff; color: var(--primary-blue); font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
         .pub-content { display: none; animation: fadeIn 0.25s ease; }
         .pub-content.active { display: block; }
         
-        .pub-card { background: var(--card-bg); border-radius: 16px; padding: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.2);}
-        .pub-card-title { font-size: 10.5px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
-        .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .pub-card { background: var(--card-bg); border-radius: 16px; padding: 18px; border: 1px solid var(--card-border); box-shadow: var(--shadow-soft);}
+        .pub-card-title { font-size: 11px; font-weight: 800; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 12px; text-transform: uppercase; }
+        .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--bg-main); }
         .pub-list-item:last-child { border-bottom: none; padding-bottom: 0;}
-        .pub-list-lbl { font-size: 12.5px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 8px;}
-        .pub-list-lbl i { font-size: 18px; color: var(--text-dim); }
-        .pub-list-val { font-size: 12.5px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 6px;}
-        .pub-list-val.copyable { color: var(--logo-blue); cursor: pointer; }
+        .pub-list-lbl { font-size: 13px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 8px;}
+        .pub-list-lbl i { font-size: 18px; color: var(--primary-blue-light); }
+        .pub-list-val { font-size: 13px; font-weight: 700; color: var(--text-dark); display: flex; align-items: center; gap: 6px;}
+        .pub-list-val.copyable { color: var(--primary-blue); cursor: pointer; }
 
         /* RECENT FORM LIST */
-        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
-        .form-grade-badge { font-size: 15px; font-weight: 800; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-        .grade-a-plus, .grade-a { background: #15803d; color: #fff; border: 1px solid #4ade80; }
-        .grade-b-plus, .grade-b { background: #0369a1; color: #fff; border: 1px solid #38bdf8; }
-        .grade-c-plus, .grade-c, .grade-c-minus { background: #854d0e; color: #fff; border: 1px solid #facc15; }
-        .grade-d-minus, .grade-e-minus { background: #991b1b; color: #fff; border: 1px solid #f87171; }
+        .form-grade-box { display: flex; align-items: center; justify-content: space-between; background: var(--bg-main); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+        .form-grade-badge { font-size: 15px; font-weight: 800; width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;}
+        .grade-a-plus, .grade-a { background: var(--accent); }
+        .grade-b-plus, .grade-b { background: var(--primary-blue); }
+        .grade-c-plus, .grade-c, .grade-c-minus { background: var(--gold); }
+        .grade-d-minus, .grade-e-minus { background: var(--danger); }
         .form-history-list { display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; }
-        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); border-radius: 12px; padding: 10px 12px; }
-        .form-history-item.win { border-left: 3px solid #22c55e; }
-        .form-history-item.draw { border-left: 3px solid #94a3b8; }
-        .form-history-item.loss { border-left: 3px solid #ef4444; }
+        .form-history-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-main); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; }
+        .form-history-item.win { border-left: 4px solid var(--accent); }
+        .form-history-item.draw { border-left: 4px solid var(--text-dim); }
+        .form-history-item.loss { border-left: 4px solid var(--danger); }
 
         /* GENERAL UI SECTIONS */
         .page-section { display: none; padding: 18px 16px 0; animation: fadeIn 0.3s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .section-title { font-size: 15px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;}
-        .section-title::before { content: ''; width: 4px; height: 15px; border-radius: 4px; background: var(--signature); }
+        .section-title { font-size: 16px; font-weight: 800; color: var(--text-dark); letter-spacing: 0.5px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;}
+        .section-title::before { content: ''; width: 5px; height: 16px; border-radius: 4px; background: var(--primary-blue); }
 
-        /* === PREMIUM HERO SLIDER WITH FADED TRANSPARENCY MASKING === */
-        .hero-banner-slider { 
-            position: relative; width: 100%; height: 180px; 
-            border-radius: 20px; overflow: hidden; margin-bottom: 25px; 
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4); 
-            background: rgba(12, 18, 34, 0.4); 
-            border: 1px solid rgba(255,255,255,0.05); 
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-        }
+        /* PREMIUM HERO SLIDER (LIGHT MODE) */
+        .hero-banner-slider { position: relative; width: 100%; height: 180px; border-radius: 20px; overflow: hidden; margin-bottom: 25px; box-shadow: var(--shadow-soft); background: var(--card-bg); border: 1px solid var(--card-border); }
         .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 22px; opacity: 0; transition: opacity 0.6s ease; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; }
         
-        /* MAGIC FADE */
-        .hero-img { 
-            position: absolute; right: 0; top: 0; height: 100%; width: 85%; 
-            object-fit: cover; object-position: right center; z-index: 1; 
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 50%); 
-            mask-image: linear-gradient(to right, transparent 0%, black 50%); 
-        }
-        .hero-overlay { 
-            position: absolute; inset: 0; 
-            background: linear-gradient(to right, rgba(5,8,16,0.9) 20%, rgba(5,8,16,0.4) 60%, transparent 100%); 
-            z-index: 2; 
-        }
+        /* The images provided were dark, so we use a dark gradient overlay on them to keep text white and readable */
+        .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 100%; object-fit: cover; object-position: right center; z-index: 1; }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(2, 132, 199, 0.95) 10%, rgba(2, 132, 199, 0.5) 60%, transparent 100%); z-index: 2; }
         
-        .hero-content { z-index: 3; width: 75%; position: relative; }
-        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-bottom: 10px; letter-spacing: 1.5px; border: 1px solid; }
-        .hero-title { font-size: 20px; font-weight: 900; line-height: 1.15; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
+        .hero-content { z-index: 3; width: 75%; position: relative; color: white;}
+        .hero-badge { font-size: 9px; font-weight: 700; padding: 4px 10px; border-radius: 8px; display: inline-block; margin-bottom: 10px; letter-spacing: 1.5px; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.15);}
+        .hero-title { font-size: 20px; font-weight: 900; line-height: 1.15; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,0.3);}
         
         /* BLUE WHITE COMBO BUTTON */
         .hero-btn { 
-            border: 1px solid rgba(255,255,255,0.25); 
-            padding: 8px 16px; 
+            border: none; 
+            padding: 9px 18px; 
             border-radius: 10px; 
             font-size: 11px; 
             font-weight: 700; 
@@ -243,141 +224,135 @@
             display: inline-flex; 
             align-items: center; 
             gap: 5px; 
-            box-shadow: 0 4px 15px rgba(2,132,199,0.5); 
-            background: linear-gradient(135deg, #38bdf8, #0284c7); 
-            color: #ffffff; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            background: #ffffff; 
+            color: var(--primary-blue); 
             text-transform: uppercase; 
             letter-spacing: 0.5px;
             transition: 0.25s ease;
         }
-        .hero-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(2,132,199,0.7);
-        }
+        .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
         .hero-dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 4; }
-        .hero-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s; }
-        .hero-dots .dot.active { width: 18px; border-radius: 4px; background: var(--logo-blue); }
+        .hero-dots .dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); transition: 0.3s; }
+        .hero-dots .dot.active { width: 18px; border-radius: 4px; background: #ffffff; }
 
-        /* === PERFECT TOURNAMENT CARD WITH FADE TO BOTTOM === */
-        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding-bottom: 10px; scrollbar-width: none; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+        /* TOURNAMENT CARD */
+        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding-bottom: 15px; scrollbar-width: none; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
         .t-slider::-webkit-scrollbar { display: none; }
         
-        #allTournamentsList .t-card { margin-bottom: 16px; min-width: 100%; }
+        #allTournamentsList .t-card { margin-bottom: 18px; min-width: 100%; }
         
         .t-card { 
             min-width: 88vw; scroll-snap-align: center; border-radius: 18px; 
-            background: rgba(12, 18, 34, 0.5); border: 1px solid var(--card-border); 
-            display: flex; flex-direction: column; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4); overflow: hidden;
+            background: var(--card-bg); border: 1px solid var(--card-border); 
+            display: flex; flex-direction: column; box-shadow: var(--shadow-soft); overflow: hidden;
         }
-        .t-card-banner { width: 100%; height: 150px; position: relative; }
-        .t-card-banner img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%); 
-            mask-image: linear-gradient(to bottom, black 40%, transparent 100%); 
-        }
-        .t-card-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(5,8,16,0.6) 0%, transparent 50%); pointer-events: none; }
+        .t-card-banner { width: 100%; height: 140px; position: relative; }
+        .t-card-banner img { width: 100%; height: 100%; object-fit: cover; }
+        .t-card-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 60%); pointer-events: none; }
         
-        .t-status { position: absolute; top: 12px; left: 12px; background: var(--gold); color: #000; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; display: flex; align-items: center; text-transform: uppercase; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.4); }
+        .t-status { position: absolute; top: 12px; left: 12px; background: var(--gold); color: #fff; font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 8px; display: flex; align-items: center; text-transform: uppercase; z-index: 2; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         
-        .t-card-body { padding: 0 16px 8px; position: relative; z-index: 3; margin-top: -36px; }
-        .t-prize { color: var(--gold); font-size: 11.5px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; display: flex; align-items: center; gap: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.8);}
-        .t-name { font-size: 18px; font-weight: 800; text-transform: uppercase; line-height: 1.25; color: white; font-family: var(--font-display); text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        .t-card-body { padding: 0 16px 10px; position: relative; z-index: 3; margin-top: -40px; color: white;}
+        .t-prize { color: var(--gold); font-size: 11.5px; font-weight: 700; margin-bottom: 4px; text-transform: uppercase; display: flex; align-items: center; gap: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);}
+        .t-name { font-size: 18px; font-weight: 800; text-transform: uppercase; line-height: 1.25; color: white; font-family: var(--font-display); text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
         
-        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(255,255,255,0.02); margin: 0 16px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03); }
+        .t-card-info { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--bg-main); margin: 0 16px 14px; border-radius: 12px; border: 1px solid var(--card-border); }
         .t-stat { text-align: center; }
-        .t-stat span { display: block; font-size: 8.5px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
-        .t-stat strong { font-size: 13px; font-weight: 700; color: white;}
-        .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 12px 14px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:5px; width: 100%; box-shadow: 0 4px 15px rgba(56,189,248,0.2);}
+        .t-stat span { display: block; font-size: 9px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+        .t-stat strong { font-size: 14px; font-weight: 700; color: var(--text-dark);}
         
-        .admin-controls-card { display: flex; gap: 8px; padding: 0 16px 14px; flex-wrap: wrap; }
-        .admin-controls-card button { flex:1 1 45%; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10.5px; display:flex; align-items:center; justify-content:center; gap:4px; }
+        .t-reg-btn { background: var(--primary-blue-gradient); color: white; border: none; padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; display:flex; align-items:center; justify-content:center; gap:6px; width: 100%; box-shadow: var(--shadow-btn);}
+        
+        .admin-controls-card { display: flex; gap: 8px; padding: 0 16px 16px; flex-wrap: wrap; }
+        .admin-controls-card button { flex:1 1 45%; border:none; padding:12px; border-radius:10px; font-weight:700; cursor:pointer; font-size:11px; display:flex; align-items:center; justify-content:center; gap:4px; }
 
         /* CLEAN GROUP TABLE UI */
-        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 16px; overflow: hidden; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);}
-        .td-group-head { background: rgba(255,255,255,0.02); padding: 14px 16px; border-bottom: 1px solid var(--card-border); font-size: 13px; color: var(--gold); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
+        .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; margin-bottom: 18px; overflow: hidden; box-shadow: var(--shadow-soft);}
+        .td-group-head { background: var(--bg-main); padding: 14px 16px; border-bottom: 1px solid var(--card-border); font-size: 14px; color: var(--primary-blue); font-weight: 800; display:flex; justify-content:space-between; align-items:center;}
         .g-table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
         .g-table-wrap::-webkit-scrollbar { display: none; }
         
-        .g-table-header { display: flex; padding: 10px 14px 6px; border-bottom: 1px solid var(--card-border); font-size: 9px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; width: max-content; min-width: 100%; }
-        .g-table-row { display: flex; padding: 12px 14px; border-bottom: 1px solid rgba(255,255,255,0.02); align-items: center; width: max-content; min-width: 100%; transition: background 0.2s; }
+        .g-table-header { display: flex; padding: 12px 14px 8px; border-bottom: 1px solid var(--card-border); font-size: 9.5px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; width: max-content; min-width: 100%; }
+        .g-table-row { display: flex; padding: 14px; border-bottom: 1px solid var(--bg-main); align-items: center; width: max-content; min-width: 100%; transition: background 0.2s; }
         .g-table-row:last-child { border-bottom: none; }
-        .g-table-row.qualify-spot { border-left: 3px solid var(--accent); background: linear-gradient(90deg, rgba(34,197,94,0.05), transparent 40%); padding-left: 11px;}
+        .g-table-row.qualify-spot { border-left: 3px solid var(--primary-blue); background: #f0f9ff; padding-left: 11px;}
         
-        .g-col-team-head { flex: 1; min-width: 140px; }
-        .g-col-stat-head { width: 28px; text-align: center; }
-        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 140px; }
-        .g-col-stat { width: 28px; text-align: center; font-size: 11.5px; font-weight: 600; color: #fff; }
-        .g-rank { font-size: 10.5px; color: var(--text-dim); font-weight: 700; width: 14px; text-align: center; }
-        .g-name { font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; cursor: pointer; }
-        .g-col-team img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
-        .g-col-stat.w { color: #4ade80; }
-        .g-col-stat.d { color: #94a3b8; }
-        .g-col-stat.l { color: #f87171; }
-        .g-col-stat.pts { color: var(--gold); font-weight: 800; font-size: 13px;}
-        .g-col-stat.gd { color: var(--logo-blue); }
+        .g-col-team-head { flex: 1; min-width: 150px; }
+        .g-col-stat-head { width: 30px; text-align: center; }
+        .g-col-team { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 150px; }
+        .g-col-stat { width: 30px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-dark); }
+        .g-rank { font-size: 11px; color: var(--text-muted); font-weight: 700; width: 14px; text-align: center; }
+        .g-name { font-size: 13px; font-weight: 600; color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px; cursor: pointer; }
+        .g-col-team img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0; }
+        .g-col-stat.w { color: var(--accent); }
+        .g-col-stat.d { color: var(--text-dim); }
+        .g-col-stat.l { color: var(--danger); }
+        .g-col-stat.pts { color: var(--primary-blue); font-weight: 800; font-size: 14px;}
 
         /* MATCH BOX */
-        .td-match-box { display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); border:1px solid var(--card-border); border-radius:14px; padding:12px 14px; margin-bottom:12px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);}
+        .td-match-box { display:flex; justify-content:space-between; align-items:center; background: var(--card-bg); border:1px solid var(--card-border); border-radius:14px; padding:14px; margin-bottom:12px; box-shadow: var(--shadow-soft);}
         .td-m-team { display:flex; flex-direction:column; align-items:center; width:35%; gap:6px; text-align:center; cursor:pointer; }
-        .td-m-team img { width:32px; height:32px; border-radius:50%; border:2px solid var(--logo-blue); object-fit: cover; box-shadow: 0 4px 10px rgba(56,189,248,0.15);}
-        .td-m-team span { font-size:11px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
-        .td-m-vs { font-size:13px; color:var(--gold); font-weight:800; background:rgba(251,191,36,0.1); padding:4px 10px; border-radius:8px; border: 1px solid rgba(251,191,36,0.2);}
+        .td-m-team img { width:36px; height:36px; border-radius:50%; border:2px solid var(--primary-blue-light); object-fit: cover; padding: 2px;}
+        .td-m-team span { font-size:12px; font-weight:600; color:var(--text-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%; }
+        .td-m-vs { font-size:14px; color:var(--primary-blue); font-weight:800; background:#f0f9ff; padding:6px 12px; border-radius:8px; border: 1px solid #bae6fd;}
 
         /* MY MATCHES */
-        .mm-card { background: var(--card-bg); border-radius: 16px; padding: 15px; margin-bottom: 14px; border: 1px solid var(--card-border); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .mm-top { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 8px; align-items: center; }
-        .mm-tag { color: var(--accent); font-weight: 700; background: rgba(34,197,94,0.1); padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px;}
-        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .mm-card { background: var(--card-bg); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--card-border); box-shadow: var(--shadow-soft); }
+        .mm-top { display: flex; justify-content: space-between; font-size: 10.5px; color: var(--text-muted); margin-bottom: 14px; border-bottom: 1px solid var(--bg-main); padding-bottom: 10px; align-items: center; font-weight: 600; }
+        .mm-tag { color: var(--primary-blue-light); font-weight: 700; background: #e0f2fe; padding: 4px 8px; border-radius: 6px; letter-spacing: 0.5px;}
+        .mm-vs-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
         .mm-player { display: flex; align-items: center; gap: 10px; width: 40%; cursor: pointer; }
         .mm-player.right { flex-direction: row-reverse; text-align: right; }
-        .mm-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 2px rgba(255,255,255,0.1);}
-        .mm-name { font-size: 12px; font-weight: 600; color: white; }
-        .mm-vs-badge { font-size: 11px; font-weight: 800; color: var(--danger); background: rgba(239,68,68,0.1); padding: 4px 8px; border-radius: 8px; border: 1px solid rgba(239,68,68,0.2);}
+        .mm-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #e2e8f0;}
+        .mm-name { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+        .mm-vs-badge { font-size: 12px; font-weight: 800; color: var(--danger); background: #fef2f2; padding: 6px 10px; border-radius: 8px; border: 1px solid #fecaca;}
         .mm-bot { display: flex; justify-content: space-between; align-items: center; }
-        .mm-btn { background: linear-gradient(135deg, var(--gold), #d97706); color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-size: 10.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(251,191,36,0.2);}
-        .mm-status { font-size: 9.5px; padding: 4px 8px; border-radius: 6px; font-weight: 700; border: 1px solid; display:flex; align-items:center; gap:4px;}
-        .mm-status.pending { color: #f87171; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
-        .mm-status.submitted { color: var(--logo-blue); background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.2); }
-        .mm-status.approved { color: var(--accent); background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2); }
+        .mm-btn { background: var(--primary-blue-gradient); color: #fff; border: none; padding: 10px 16px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; box-shadow: var(--shadow-btn);}
+        .mm-status { font-size: 10px; padding: 6px 10px; border-radius: 8px; font-weight: 700; display:flex; align-items:center; gap:4px;}
+        .mm-status.pending { color: var(--danger); background: #fef2f2; }
+        .mm-status.submitted { color: var(--gold); background: #fffbeb; }
+        .mm-status.approved { color: var(--accent); background: #f0fdf4; }
 
         /* FORM ELEMENTS & INPUTS */
-        .card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin-bottom: 18px; border: 1px solid var(--card-border); backdrop-filter: blur(24px); box-sizing: border-box; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
-        input, select { width: 100%; margin: 8px 0; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); color: white; font-size: 13px; font-weight: 500; box-sizing: border-box; transition: 0.3s;}
-        input:focus, select:focus { outline: none; border-color: var(--logo-blue); background: rgba(255,255,255,0.05); box-shadow: 0 0 0 4px rgba(56,189,248,0.1);}
-        .submit-btn { background: linear-gradient(135deg, var(--accent), #15803d); color: #04210a; border: none; padding: 14px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: 800; margin-top: 12px; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; box-shadow: 0 4px 15px rgba(34,197,94,0.2); transition: 0.2s;}
+        .card { background: var(--card-bg); border-radius: 18px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--card-border); box-sizing: border-box; width: 100%; box-shadow: var(--shadow-soft);}
+        input, select { width: 100%; margin: 8px 0; padding: 14px 16px; border-radius: 12px; border: 1px solid #cbd5e1; background: #f8fafc; color: var(--text-dark); font-size: 14px; font-weight: 500; box-sizing: border-box; transition: 0.3s;}
+        input:focus, select:focus { outline: none; border-color: var(--primary-blue); background: #ffffff; box-shadow: 0 0 0 4px #e0f2fe;}
+        .submit-btn { background: var(--primary-blue-gradient); color: #fff; border: none; padding: 15px; width: 100%; border-radius: 12px; cursor: pointer; font-weight: 800; margin-top: 14px; font-size: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; box-sizing: border-box; box-shadow: var(--shadow-btn); transition: 0.2s;}
         .submit-btn:active { transform: translateY(2px); }
-        .link-text { color: var(--logo-blue); font-size: 11.5px; margin-top: 16px; cursor: pointer; font-weight: 600; text-align: center; }
+        .link-text { color: var(--primary-blue); font-size: 12.5px; margin-top: 18px; cursor: pointer; font-weight: 600; text-align: center; }
 
         /* LEADERBOARD */
-        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.02); padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.01);}
-        .leaderboard-row:nth-child(1) { background: linear-gradient(90deg, rgba(251,191,36,0.08), transparent 70%); border-left: 3px solid var(--gold); }
-        .leaderboard-row:nth-child(2) { border-left: 3px solid #cbd5e1; }
-        .leaderboard-row:nth-child(3) { border-left: 3px solid #cd7f32; }
-        .rank { color: var(--gold); font-weight: 800; width: 24px; font-size: 14px; text-align: center;}
-        .lb-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; margin: 0 10px; border: 1px solid rgba(255,255,255,0.08);}
+        .leaderboard-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid var(--bg-main); padding: 12px 14px; border-radius: 14px; background: var(--card-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.02); border: 1px solid var(--card-border);}
+        .leaderboard-row:nth-child(1) { background: #fffbeb; border-left: 4px solid var(--gold); border-color: #fde68a;}
+        .leaderboard-row:nth-child(2) { border-left: 4px solid #94a3b8; }
+        .leaderboard-row:nth-child(3) { border-left: 4px solid #b45309; }
+        .rank { color: var(--text-dim); font-weight: 800; width: 26px; font-size: 15px; text-align: center;}
+        .leaderboard-row:nth-child(1) .rank { color: var(--gold); }
+        .lb-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; margin: 0 12px; border: 2px solid #f1f5f9;}
         .player-info { flex: 1; }
-        .player-name { font-weight: 600; font-size: 13px; color: white; margin-bottom: 2px;}
-        .points { font-size: 11px; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 4px; }
-        .win-rate-val { font-size: 15px; font-weight: 800; color: var(--accent); text-align: right;}
-        .win-rate-lbl { font-size: 9px; color: var(--text-dim); text-transform: uppercase; text-align: right; letter-spacing: 0.5px;}
+        .player-name { font-weight: 700; font-size: 14px; color: var(--text-dark); margin-bottom: 3px;}
+        .points { font-size: 11.5px; color: var(--primary-blue); font-weight: 700; display: flex; align-items: center; gap: 4px; }
+        .win-rate-val { font-size: 16px; font-weight: 800; color: var(--text-main); text-align: right;}
+        .win-rate-lbl { font-size: 9px; color: var(--text-muted); text-transform: uppercase; text-align: right; letter-spacing: 0.5px;}
 
-        /* FIXED SOLID BOTTOM NAV (Perfect iOS/App Style - No Breakage) */
+        /* FIXED SOLID BOTTOM NAV (Perfect iOS/App Style Light) */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; right: 0; 
-            background: rgba(7, 10, 20, 0.95); 
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+            background: rgba(255, 255, 255, 0.98); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
             display: flex; justify-content: space-around; align-items: center; 
             padding: 12px 10px calc(12px + env(safe-area-inset-bottom)); 
             z-index: 1000; 
-            border-top: 1px solid rgba(255,255,255,0.04); 
+            border-top: 1px solid #e2e8f0; 
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
         }
-        .nav-item { color: var(--text-muted); text-align: center; font-size: 10px; cursor: pointer; font-weight: 600; padding: 6px 8px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; flex: 1; gap: 4px;}
-        .nav-item i { font-size: 22px; transition: 0.2s ease; display:flex; align-items:center; justify-content:center; }
-        .nav-admin { display: none; color: #f87171; }
+        .nav-item { color: var(--text-dim); text-align: center; font-size: 10px; cursor: pointer; font-weight: 600; padding: 6px 8px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; flex: 1; gap: 4px;}
+        .nav-item i { font-size: 24px; transition: 0.2s ease; display:flex; align-items:center; justify-content:center; }
+        .nav-admin { display: none; color: var(--danger); }
         .nav-admin.show { display: flex; }
-        .nav-item.active { color: var(--logo-blue); }
-        .nav-item.active i { transform: translateY(-2px); color: var(--logo-blue); text-shadow: 0 0 15px rgba(56,189,248,0.4);}
+        .nav-item.active { color: var(--primary-blue); }
+        .nav-item.active i { transform: translateY(-2px); color: var(--primary-blue); }
     </style>
 </head>
 <body>
@@ -394,8 +369,8 @@
     <!-- DRAW ANIMATION OVERLAY -->
     <div id="drawOverlay" class="modal-overlay">
         <div style="width:100%; max-width:320px; text-align:center;">
-            <h2 style="color:var(--gold); font-size:20px; letter-spacing:1px; margin-bottom:8px; font-weight:800;">DRAW CEREMONY</h2>
-            <p id="drawStatusTxt" style="color:var(--logo-blue); font-size:11px; font-weight:700; margin-bottom:15px; text-transform:uppercase;">Preparing...</p>
+            <h2 style="color:var(--primary-blue); font-size:22px; letter-spacing:1px; margin-bottom:10px; font-weight:800;">DRAW CEREMONY</h2>
+            <p id="drawStatusTxt" style="color:var(--text-muted); font-size:12px; font-weight:700; margin-bottom:20px; text-transform:uppercase;">Preparing...</p>
             
             <div id="drawArena" class="draw-arena">
                 <div class="draw-player draw-p1"><img id="drawImg1" src=""><span id="drawName1">Player 1</span></div>
@@ -403,8 +378,8 @@
                 <div class="draw-player draw-p2"><img id="drawImg2" src=""><span id="drawName2">Player 2</span></div>
             </div>
             
-            <button id="drawNextBtn" class="submit-btn" style="background:var(--accent); color:#000; width:80%; margin:20px auto;" onclick="animateNextDraw()">NEXT DRAW <i class='bx bx-shuffle'></i></button>
-            <button id="drawFinishBtn" class="submit-btn" style="background:linear-gradient(135deg, #f97316, #ef4444); color:#fff; width:80%; margin:20px auto; display:none;" onclick="finishDraw()">SAVE ALL FIXTURES</button>
+            <button id="drawNextBtn" class="submit-btn" style="width:80%; margin:25px auto;" onclick="animateNextDraw()">NEXT DRAW <i class='bx bx-shuffle'></i></button>
+            <button id="drawFinishBtn" class="submit-btn" style="background:var(--accent); width:80%; margin:25px auto; display:none;" onclick="finishDraw()">SAVE FIXTURES</button>
         </div>
     </div>
 
@@ -420,11 +395,10 @@
                 <h2 id="pubProfName">Player Name</h2>
             </div>
             
-            <!-- Modern Responsive Stats System -->
             <div class="stats-deck-container">
                 <div class="stat-banner-row">
                     <div class="stat-card-prime"><div id="pubProfRank" class="num">#--</div><div class="lbl">Rank</div></div>
-                    <div class="stat-card-prime"><div id="pubProfWR" class="num" style="color:var(--accent);">0%</div><div class="lbl">Win Rate</div></div>
+                    <div class="stat-card-prime"><div id="pubProfWR" class="num" style="color:var(--primary-blue);">0%</div><div class="lbl">Win Rate</div></div>
                     <div class="stat-card-prime"><div id="pubProfTrophies" class="num" style="color:var(--gold);">0</div><div class="lbl">Trophies</div></div>
                 </div>
 
@@ -461,7 +435,7 @@
 
             <div id="pubForm" class="pub-content pub-card"></div>
             <div id="pubTrophy" class="pub-content pub-card">
-                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:40px; color:#cbd5e1;"></i><p style="color:var(--text-muted); font-size:13px;">No trophies yet.</p></div>
             </div>
         </div>
     </div>
@@ -474,11 +448,10 @@
                 <h2 id="myProfName">Player Name</h2>
             </div>
             
-            <!-- Modern Responsive Stats System -->
             <div class="stats-deck-container">
                 <div class="stat-banner-row">
                     <div class="stat-card-prime"><div id="myProfRank" class="num">#--</div><div class="lbl">Rank</div></div>
-                    <div class="stat-card-prime"><div id="myProfWR" class="num" style="color:var(--accent);">0%</div><div class="lbl">Win Rate</div></div>
+                    <div class="stat-card-prime"><div id="myProfWR" class="num" style="color:var(--primary-blue);">0%</div><div class="lbl">Win Rate</div></div>
                     <div class="stat-card-prime"><div id="myProfTrophies" class="num" style="color:var(--gold);">0</div><div class="lbl">Trophies</div></div>
                 </div>
 
@@ -515,11 +488,11 @@
 
             <div id="myForm" class="pub-content pub-card"></div>
             <div id="myTrophy" class="pub-content pub-card">
-                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:40px; color:#cbd5e1;"></i><p style="color:var(--text-muted); font-size:13px;">No trophies yet.</p></div>
             </div>
             
-            <div style="text-align:center; margin-top:20px;">
-                <button onclick="logOut()" class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin:0 auto; width:100%;"><i class='bx bx-log-out'></i> Logout Account</button>
+            <div style="text-align:center; margin-top:24px;">
+                <button onclick="logOut()" class="submit-btn" style="background:#fef2f2; border:1px solid #fecaca; color:var(--danger); box-shadow:none; margin:0 auto; width:100%;"><i class='bx bx-log-out'></i> Logout Account</button>
             </div>
         </div>
     </div>
@@ -528,8 +501,8 @@
     <div id="submitScoreModal" class="modal-overlay" onclick="closeModal('submitScoreModal')">
         <div class="modal-card" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal('submitScoreModal')"><i class='bx bx-x'></i></button>
-            <h3 style="color:var(--accent); font-size:16px; margin-bottom:12px; text-align:center; font-weight:800;">Submit Result</h3>
-            <p style="font-size:11px; color:var(--text-muted); text-align:center; margin-bottom:18px; line-height:1.4;">Enter exact score. False submission leads to penalties.</p>
+            <h3 style="color:var(--primary-blue); font-size:18px; margin-bottom:12px; text-align:center; font-weight:800;">Submit Result</h3>
+            <p style="font-size:11.5px; color:var(--text-muted); text-align:center; margin-bottom:20px; line-height:1.4;">Enter exact score. False submission leads to penalties.</p>
             
             <input type="hidden" id="submitTid">
             <input type="hidden" id="submitGroupRound">
@@ -537,15 +510,15 @@
             <input type="hidden" id="submitMyUid">
             <input type="hidden" id="submitOppUid">
             
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreMyName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:6px;">Me</span>
-                    <input type="number" id="scoreMyGoals" placeholder="0" style="text-align:center; font-size:22px; font-weight:bold; padding:10px;">
+                    <span id="scoreMyName" style="color:var(--text-main); font-size:13px; font-weight:700; display:block; margin-bottom:8px;">Me</span>
+                    <input type="number" id="scoreMyGoals" placeholder="0" style="text-align:center; font-size:24px; font-weight:800; padding:12px;">
                 </div>
-                <div style="color:var(--gold); font-size:18px; padding:0 12px; font-weight: 800;">VS</div>
+                <div style="color:var(--text-dim); font-size:18px; padding:0 15px; font-weight: 800;">VS</div>
                 <div style="text-align:center; flex:1;">
-                    <span id="scoreOppName" style="color:white; font-size:12px; font-weight:600; display:block; margin-bottom:6px;">Opponent</span>
-                    <input type="number" id="scoreOppGoals" placeholder="0" style="text-align:center; font-size:22px; font-weight:bold; padding:10px;">
+                    <span id="scoreOppName" style="color:var(--text-main); font-size:13px; font-weight:700; display:block; margin-bottom:8px;">Opponent</span>
+                    <input type="number" id="scoreOppGoals" placeholder="0" style="text-align:center; font-size:24px; font-weight:800; padding:12px;">
                 </div>
             </div>
             <button class="submit-btn" onclick="submitScoreFinal()"><i class='bx bx-send'></i> Send For Approval</button>
@@ -565,10 +538,10 @@
         <div id="smLoginSection">
             <div class="sm-item highlight" onclick="switchMenuTab('authPage')"><i class='bx bx-log-in-circle'></i> LOGIN / SIGN UP</div>
         </div>
-        <div id="smProfileSection" style="display:none; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:15px; margin-bottom:12px;">
-            <div class="sm-item" onclick="switchMenuTab('profile')" style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); padding: 8px 12px;">
-                <img id="smAvatar" src="" style="width:28px; height:28px; border-radius:50%; object-fit:cover; margin-left:-2px; border:1px solid var(--logo-blue);">
-                <span id="smName" style="color:white; font-weight:600;">Player Name</span>
+        <div id="smProfileSection" style="display:none; border-bottom:1px solid var(--card-border); padding-bottom:15px; margin-bottom:15px;">
+            <div class="sm-item" onclick="switchMenuTab('profile')" style="background: #f8fafc; border: 1px solid var(--card-border); padding: 10px 14px;">
+                <img id="smAvatar" src="" style="width:32px; height:32px; border-radius:50%; object-fit:cover; margin-left:-4px; border:2px solid var(--logo-blue);">
+                <span id="smName" style="color:var(--text-dark); font-weight:700;">Player Name</span>
             </div>
         </div>
 
@@ -589,7 +562,7 @@
         <div class="header-actions">
             <button id="loginBtn" class="header-btn prof" onclick="switchTab('authPage')"><i class='bx bx-user'></i></button>
             <button class="header-btn menu" onclick="openSideMenu()">
-                <i class='bx bx-dots-vertical-rounded' style="font-size:24px;"></i>
+                <i class='bx bx-menu-alt-right' style="font-size:26px;"></i>
             </button>
         </div>
     </div>
@@ -597,15 +570,15 @@
     <!-- 0. LOGIN / SIGNUP PAGE -->
     <div id="authPage" class="page-section">
         <div class="card" id="loginBox" style="text-align: center; margin-top: 10px;">
-            <h2 style="color: var(--logo-blue); margin-bottom: 14px; font-weight:800;">Player Login</h2>
+            <h2 style="color: var(--primary-blue); margin-bottom: 16px; font-weight:800;">Player Login</h2>
             <input type="email" id="loginEmail" placeholder="Email Address">
             <input type="password" id="loginPassword" placeholder="Password">
-            <button class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:12px;" onclick="loginWithEmail()">Log In</button>
+            <button class="submit-btn" onclick="loginWithEmail()">Log In</button>
             <p class="link-text" onclick="toggleAuth('signup')">New here? <b>Create Account</b></p>
         </div>
 
         <div class="card" id="signupBox" style="text-align: center; margin-top: 10px; display: none;">
-            <h2 style="color: var(--gold); margin-bottom: 14px; font-weight:800;">Create Account</h2>
+            <h2 style="color: var(--primary-blue); margin-bottom: 16px; font-weight:800;">Create Account</h2>
             <input type="text" id="regName" placeholder="Full Name (Must)">
             <input type="text" id="regKonami" placeholder="Konami UID (Must)">
             <input type="text" id="regDevice" placeholder="Device Model Name">
@@ -613,21 +586,21 @@
             <input type="file" id="regAvatarFile" accept="image/*" style="padding:10px;">
             <input type="email" id="regEmail" placeholder="Email Address (Must)">
             <input type="password" id="regPassword" placeholder="Password (Min 6 chars)">
-            <button id="regBtn" class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:12px;" onclick="signUpWithEmail()">Sign Up</button>
+            <button id="regBtn" class="submit-btn" onclick="signUpWithEmail()">Sign Up</button>
             <p class="link-text" onclick="toggleAuth('login')">Have an account? <b>Log In</b></p>
         </div>
     </div>
 
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active">
-        <!-- PREMIUM HERO SLIDER WITH BLUE & WHITE COMBO BUTTON -->
+        <!-- PREMIUM HERO SLIDER (LIGHT MODE) -->
         <div class="hero-banner-slider">
             <div class="hero-slide active">
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--accent); background: rgba(34,197,94,0.1); border-color: rgba(34,197,94,0.2);">SEASON 1</span>
-                    <h1 class="hero-title">NEW ERA<br><span style="color:var(--accent)">OF LEGENDS</span></h1>
+                    <span class="hero-badge">SEASON 1</span>
+                    <h1 class="hero-title">NEW ERA<br><span>OF LEGENDS</span></h1>
                     <button class="hero-btn" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class='bx bx-chevron-right'></i></button>
                 </div>
             </div>
@@ -635,8 +608,8 @@
                 <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--gold); background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.2);">ELITE</span>
-                    <h1 class="hero-title">BECOME<br><span style="color:var(--gold)">CHAMPION</span></h1>
+                    <span class="hero-badge">ELITE</span>
+                    <h1 class="hero-title">BECOME<br><span>CHAMPION</span></h1>
                     <button class="hero-btn" onclick="switchTab('leaderboard')">RANKINGS <i class='bx bx-chevron-right'></i></button>
                 </div>
             </div>
@@ -645,14 +618,14 @@
 
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
             <div class="section-title" style="margin:0;">Tournaments</div>
-            <span style="font-size:11px; color:var(--logo-blue); cursor:pointer; font-weight:600;" onclick="switchTab('tournamentsTab')">View All</span>
+            <span style="font-size:11px; color:var(--primary-blue); cursor:pointer; font-weight:700;" onclick="switchTab('tournamentsTab')">View All</span>
         </div>
         
         <div class="t-slider" id="homeTournamentsList"><p style="font-size:12px; color:var(--text-dim); padding: 10px;">Loading...</p></div>
 
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; margin-bottom:14px;">
             <div class="section-title" style="margin:0;">Leaderboard</div>
-            <span style="font-size:10px; color:var(--gold); font-weight:700; display:flex; align-items:center; gap:3px;"><i class='bx bxs-star'></i> Live</span>
+            <span style="font-size:10px; color:var(--primary-blue); font-weight:800; display:flex; align-items:center; gap:3px;"><i class='bx bxs-star'></i> Live</span>
         </div>
         <div class="card" style="padding: 12px; margin-bottom: 24px;">
             <div id="homeLeaderboardList"><p style="text-align:center; color:var(--text-dim); font-size:12px;">Loading...</p></div>
@@ -669,7 +642,7 @@
     <div id="myMatchesTab" class="page-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
             <div class="section-title" style="margin:0;">My Schedule</div>
-            <span id="myMatchCountText" style="font-size:11px; color:var(--gold); font-weight:700;">0 Upcoming</span>
+            <span id="myMatchCountText" style="font-size:11px; color:var(--primary-blue); font-weight:700;">0 Upcoming</span>
         </div>
         <div id="myMatchesList"></div>
     </div>
@@ -678,13 +651,13 @@
     <div id="tournamentDetails" class="page-section">
         <div class="card" style="padding:18px 16px; position:relative;">
             <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:12px; cursor:pointer; margin-bottom:12px; font-weight:600; display:flex; align-items:center; gap:4px;"><i class='bx bx-left-arrow-alt'></i> Back</button>
-            <h2 id="tdName" style="color:white; font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:12px;">Tournament Name</h2>
+            <h2 id="tdName" style="color:var(--text-dark); font-size:18px; font-weight:800; text-transform:uppercase; margin-bottom:12px;">Tournament Name</h2>
             <div style="display:flex; flex-wrap:wrap; gap:8px; font-size:10.5px; color:var(--text-muted); font-weight:600;">
-                <span style="background:rgba(251,191,36,0.1); color:var(--gold); padding:5px 10px; border-radius:8px; display:flex; align-items:center; gap:4px;" id="tdPrize"><i class='bx bx-trophy'></i> Prize</span>
-                <span style="background:rgba(255,255,255,0.04); padding:5px 10px; border-radius:8px; display:flex; align-items:center; gap:4px;" id="tdFormat"><i class='bx bx-joystick'></i> Format</span>
+                <span style="background:#fffbeb; color:var(--gold); padding:5px 10px; border-radius:8px; display:flex; align-items:center; gap:4px;" id="tdPrize"><i class='bx bx-trophy'></i> Prize</span>
+                <span style="background:#f1f5f9; color:var(--text-main); padding:5px 10px; border-radius:8px; display:flex; align-items:center; gap:4px;" id="tdFormat"><i class='bx bx-joystick'></i> Format</span>
             </div>
             <div class="admin-controls" id="tdAdminControls" style="margin-top:16px; display:none;">
-                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:12px; border-radius:12px; font-size:11px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:6px;" onclick="advanceToKnockout()"><i class='bx bx-bolt-circle'></i> KNOCKOUT STAGE</button>
+                <button style="background:var(--danger); color:white; border:none; padding:12px; border-radius:12px; font-size:12px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:6px;" onclick="advanceToKnockout()"><i class='bx bx-bolt-circle'></i> KNOCKOUT STAGE</button>
             </div>
         </div>
 
@@ -710,7 +683,7 @@
         <div class="section-title" style="color: var(--danger);">Admin Panel</div>
         
         <!-- PENDING RESULTS APPROVAL -->
-        <div class="card admin-controls" style="border: 1px solid rgba(239,68,68,0.3); flex-direction:column; margin-bottom: 18px;">
+        <div class="card admin-controls" style="border: 1px solid #fecaca; flex-direction:column; margin-bottom: 18px;">
             <h3 style="color: var(--danger); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-list-check'></i> Pending Results</h3>
             <div id="adminPendingResultsList" style="margin-top:12px; max-height: 250px; overflow-y: auto;">
                 <p style="color:var(--text-dim); font-size:11px; text-align:center;">Checking submissions...</p>
@@ -718,10 +691,10 @@
         </div>
 
         <!-- FULL PLAYER MANAGEMENT SYSTEM -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(34,197,94,0.3); margin-bottom: 18px;">
+        <div class="card main-admin-only" style="border: 1px solid #bbf7d0; margin-bottom: 18px;">
             <h3 style="color: var(--accent); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-user-pin'></i> Player Management</h3>
             <input type="text" id="adminPlayerSearch" placeholder="Search player name..." onkeyup="filterAdminPlayers()" style="margin-top: 12px;">
-            <div id="adminPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:12px; padding:8px;"></div>
+            <div id="adminPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:10px; border:1px solid var(--card-border); border-radius:12px; padding:8px; background:var(--bg-main);"></div>
             
             <div id="adminEditPlayerForm" style="display:none; margin-top:16px; padding-top:16px; border-top:1px dashed var(--card-border);">
                 <input type="hidden" id="editPlayerUid">
@@ -736,54 +709,50 @@
                     <option value="moderator">Moderator</option>
                 </select>
 
-                <div id="adminPlayerMatchHistory" style="margin-top: 10px; margin-bottom:12px; background:rgba(0,0,0,0.3); padding:12px; border-radius:12px; border:1px solid var(--card-border);">
+                <div id="adminPlayerMatchHistory" style="margin-top: 10px; margin-bottom:12px; background:var(--bg-main); padding:12px; border-radius:12px; border:1px solid var(--card-border);">
                     <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px; font-weight:600;">Match Records</p>
                     <div id="adminPlayerMatchList" style="max-height:140px; overflow-y:auto;"></div>
                 </div>
 
                 <div style="display:flex; gap:10px;">
-                    <button class="submit-btn" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; flex:1; margin:0;" onclick="savePlayerEdit()">Save</button>
-                    <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); flex:1; margin:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
+                    <button class="submit-btn" style="flex:1; margin:0;" onclick="savePlayerEdit()">Save</button>
+                    <button class="submit-btn" style="background:#fef2f2; border:1px solid #fecaca; color:var(--danger); flex:1; margin:0; box-shadow:none;" onclick="cancelPlayerEdit()">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <!-- NEW: REGISTERED PLAYERS LIST WITH SEARCH FOR TOURNAMENT -->
-        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(56,189,248,0.3); margin-bottom: 18px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <!-- Manage Tournament Registrations UI -->
+        <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid #bae6fd; margin-bottom: 18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
                 <div>
-                    <h3 style="color: var(--logo-blue); font-size: 15px; font-weight:800; margin:0; display:flex; align-items:center; gap:6px;"><i class='bx bxs-user-check'></i> Tournament Players & Pots</h3>
+                    <h3 style="color: var(--primary-blue); font-size: 15px; font-weight:800; margin:0; display:flex; align-items:center; gap:6px;"><i class='bx bxs-user-check'></i> Tourney Players</h3>
                     <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:10.5px; font-weight:600;"></span>
                 </div>
-                <button class="modal-close" style="position:static; width:32px; height:32px; font-size:20px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'"><i class='bx bx-x'></i></button>
             </div>
             <input type="hidden" id="manageTid">
             
-            <!-- Realtime Search Box -->
             <div style="margin-bottom:12px;">
                 <div style="position:relative;">
-                    <input type="text" id="searchRegisteredTourneyPlayers" placeholder="Search registered player by name or UID..." onkeyup="filterTourneyRegisteredPlayers()" style="margin:0; padding-left:38px;">
+                    <input type="text" id="searchRegisteredTourneyPlayers" placeholder="Search by name or UID..." onkeyup="filterTourneyRegisteredPlayers()" style="margin:0; padding-left:38px;">
                     <i class='bx bx-search' style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-dim); font-size:18px;"></i>
                 </div>
                 
-                <!-- Filter Tabs -->
-                <div style="display:flex; gap:8px; margin-top:10px;">
-                    <button id="btnTourneyTabAll" class="pub-tab active" style="padding:6px 14px; font-size:11px; flex: initial;" onclick="switchTourneyPlayerTab('all')">All Registered (<span id="countAllRegistered">0</span>)</button>
-                    <button id="btnTourneyTabAdded" class="pub-tab" style="padding:6px 14px; font-size:11px; flex: initial;" onclick="switchTourneyPlayerTab('added')">In Tournament (<span id="countInTourney">0</span>)</button>
+                <div style="display:flex; gap:8px; margin-top:12px;">
+                    <button id="btnTourneyTabAll" class="pub-tab active" style="padding:8px 14px; font-size:11px; flex: 1; border-radius:8px;" onclick="switchTourneyPlayerTab('all')">All (<span id="countAllRegistered">0</span>)</button>
+                    <button id="btnTourneyTabAdded" class="pub-tab" style="padding:8px 14px; font-size:11px; flex: 1; border-radius:8px;" onclick="switchTourneyPlayerTab('added')">Added (<span id="countInTourney">0</span>)</button>
                 </div>
             </div>
             
-            <!-- Registered Players List Container -->
-            <div id="tRegisteredPlayerList" style="max-height: 280px; overflow-y: auto; border:1px solid var(--card-border); border-radius:12px; padding:6px; background:rgba(0,0,0,0.25);">
-                <p style='color:var(--text-dim); font-size:11.5px; text-align:center; padding:15px;'>Loading registered players...</p>
+            <div id="tRegisteredPlayerList" style="max-height: 280px; overflow-y: auto; border:1px solid var(--card-border); border-radius:12px; padding:6px; background:var(--bg-main);">
+                <p style='color:var(--text-dim); font-size:11.5px; text-align:center; padding:15px;'>Loading players...</p>
             </div>
             
-            <button class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin-top:14px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
+            <button class="submit-btn" style="background:#fef2f2; border:1px solid #fecaca; color:var(--danger); box-shadow:none; margin-top:14px;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close Panel</button>
         </div>
 
         <!-- Create Tournament System -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(56,189,248,0.3);">
-            <h3 style="color: var(--logo-blue); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-calendar-plus'></i> Create Event</h3>
+        <div class="card main-admin-only" style="border: 1px solid #bae6fd;">
+            <h3 style="color: var(--primary-blue); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-calendar-plus'></i> Create Event</h3>
             <input type="text" id="tName" placeholder="Tournament Name" style="margin-top:12px;">
             <select id="tFormatType" onchange="toggleGroupOptions()">
                 <option value="Knockout">Knockout (Elimination)</option>
@@ -798,18 +767,18 @@
             <input type="text" id="tPrize" placeholder="Prize Pool (e.g. 500 BDT)">
             
             <input type="text" id="tImageLink" placeholder="Image Link (Optional)">
-            <label style="font-size:10px; color:var(--text-muted); margin-top:8px; display:block;">Or Upload Banner:</label>
+            <label style="font-size:11px; color:var(--text-muted); margin-top:8px; display:block;">Or Upload Banner:</label>
             <input type="file" id="tImageFile" accept="image/*" style="padding:10px;">
             
-            <button id="btnCreateTourney" class="submit-btn" style="background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; margin-top:14px;" onclick="createTournament()">Publish Event</button>
+            <button id="btnCreateTourney" class="submit-btn" onclick="createTournament()">Publish Event</button>
         </div>
 
         <!-- Manual Leaderboard Override -->
-        <div class="card main-admin-only" style="border: 1px solid rgba(251,191,36,0.3); margin-bottom:24px;">
+        <div class="card main-admin-only" style="border: 1px solid #fde68a; margin-bottom:24px;">
             <h3 style="color: var(--gold); font-size: 15px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-star'></i> Manual Score Override</h3>
             <input type="text" id="lbPlayerUid" placeholder="Enter Player Name/UID" style="margin-top:12px;">
             <input type="number" id="lbPoints" placeholder="Total Points">
-            <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:12px;" onclick="updateLeaderboard()">Update Points</button>
+            <button class="submit-btn" style="background: var(--gold); color:#fff; margin-top:12px;" onclick="updateLeaderboard()">Update Points</button>
         </div>
     </div>
 
@@ -881,7 +850,7 @@
         function renderFormTab(matches, containerId) {
             const container = document.getElementById(containerId);
             if(!matches || matches.length === 0) {
-                container.innerHTML = `<div class="pub-card-title">Recent Matches</div><div style="text-align:center; padding:20px 10px;"><i class='bx bx-bar-chart-alt-2' style="font-size:30px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:11px; margin-top:5px;">No matches recorded yet.</p></div>`; return;
+                container.innerHTML = `<div class="pub-card-title">Recent Matches</div><div style="text-align:center; padding:20px 10px;"><i class='bx bx-bar-chart-alt-2' style="font-size:35px; color:var(--text-dim); margin-bottom:8px;"></i><p style="color:var(--text-muted); font-size:12px;">No matches recorded yet.</p></div>`; return;
             }
             
             const formInfo = getFormDetails(matches);
@@ -889,8 +858,8 @@
             
             let sequenceHTML = matches.slice(-5).map(m => {
                 const color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#f87171';
-                const bg = m.result === 'W' ? 'rgba(34,197,94,0.15)' : m.result === 'D' ? 'rgba(148,163,184,0.15)' : 'rgba(239,68,68,0.15)';
-                return `<span style="display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:6px; background:${bg}; color:${color}; font-size:9px; font-weight:800;">${m.result}</span>`;
+                const bg = m.result === 'W' ? '#f0fdf4' : m.result === 'D' ? '#f1f5f9' : '#fef2f2';
+                return `<span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6px; background:${bg}; color:${color}; font-size:9.5px; font-weight:800; border:1px solid ${color}40;">${m.result}</span>`;
             }).join('');
 
             let matchesListHTML = last10Desc.map((m, idx) => {
@@ -900,16 +869,17 @@
                 
                 return `
                 <div class="form-history-item ${cls}">
-                    <div style="display:flex; align-items:center; gap:8px; cursor:pointer;" onclick="openPublicProfile('${m.oppUid}')">
-                        <img src="${oppAv}" style="width:24px; height:24px; border-radius:50%; object-fit:cover;">
+                    <div style="display:flex; align-items:center; gap:10px; cursor:pointer;" onclick="openPublicProfile('${m.oppUid}')">
+                        <span style="font-size:10px; font-weight:800; color:var(--text-dim); width:18px;">#${last10Desc.length - idx}</span>
+                        <img src="${oppAv}" style="width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border);">
                         <div>
-                            <div style="font-size:11.5px; font-weight:600; color:white; max-width:100px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.opp || 'Opponent'}</div>
-                            <span style="font-size:8.5px; color:var(--text-dim);"><i class='bx bx-link-external'></i> Profile</span>
+                            <div style="font-size:12.5px; font-weight:600; color:var(--text-dark); max-width:110px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${m.opp || 'Opponent'}</div>
+                            <span style="font-size:9px; color:var(--primary-blue);"><i class='bx bx-link-external'></i> Profile</span>
                         </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <div style="font-size:12px; font-weight:800; color:white;">${m.myScore} - ${m.oppScore}</div>
-                        <span style="padding:2px 5px; border-radius:4px; font-size:8.5px; font-weight:800; color:${tagColor}; text-transform:uppercase;">${m.result}</span>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="font-family:var(--font-display); font-size:14px; font-weight:800; color:var(--text-dark);">${m.myScore} - ${m.oppScore}</div>
+                        <span style="display:inline-block; padding:3px 7px; border-radius:6px; background:#fff; border:1px solid ${tagColor}40; color:${tagColor}; font-size:9px; font-weight:800; text-transform:uppercase;">${m.result}</span>
                     </div>
                 </div>`;
             }).join('');
@@ -917,16 +887,16 @@
             container.innerHTML = `
                 <div class="pub-card-title">Condition & Recent Form</div>
                 <div class="form-grade-box">
-                    <div style="display:flex; align-items:center; gap:8px;">
+                    <div class="form-grade-left">
                         <div class="form-grade-badge ${formInfo.class}">${formInfo.grade}</div>
                         <div>
-                            <div style="font-size:12px; font-weight:800; color:white;">${formInfo.desc}</div>
-                            <div style="font-size:9.5px; color:var(--text-dim); margin-top:2px;">Rate: <span style="color:var(--gold);">${formInfo.pct}%</span></div>
+                            <div style="font-size:13px; font-weight:800; color:var(--text-dark); line-height:1.2;">${formInfo.desc}</div>
+                            <div style="font-size:10px; color:var(--text-dim); margin-top:3px;">Win Rate: <span style="color:var(--primary-blue); font-weight:700;">${formInfo.pct}%</span> (Last ${last10Desc.length})</div>
                         </div>
                     </div>
                     <div style="display:flex; gap:4px;">${sequenceHTML}</div>
                 </div>
-                <div style="font-size:9.5px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px;">Last ${last10Desc.length} Games</div>
+                <div style="font-size:10px; color:var(--text-dim); font-weight:700; text-transform:uppercase; margin-bottom:8px; letter-spacing:0.5px;">Latest ${last10Desc.length} History</div>
                 <div class="form-history-list">${matchesListHTML}</div>
             `;
         }
@@ -939,7 +909,7 @@
                 if(doc.exists) {
                     const p = doc.data();
                     document.getElementById('pubProfName').innerText = p.name;
-                    document.getElementById('pubInfoUid').innerText = p.konamiUid || "N/A";
+                    document.getElementById('pubInfoUid').innerHTML = `${p.konamiUid || "N/A"} <i class='bx bx-copy'></i>`;
                     document.getElementById('pubInfoDevice').innerText = p.device || "N/A";
                     document.getElementById('pubProfAvatar').src = p.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                     
@@ -963,6 +933,7 @@
                         let gd = gf - ga;
                         let gdTxt = gd > 0 ? ('+' + gd) : gd;
 
+                        // Detailed Stats Matrix Update
                         document.getElementById('pubProfWR').innerText = wr + '%';
                         document.getElementById('pubProfMP').innerText = played;
                         document.getElementById('pubProfWins').innerText = w;
@@ -990,23 +961,10 @@
             if ((tabId === 'profile' || tabId === 'myMatchesTab') && !auth.currentUser) tabId = 'authPage';
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
-            
-            // Bottom nav active state update
             if(element && element.classList) { 
                 document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active')); 
-                if(element.classList.contains('nav-item')) {
-                    element.classList.add('active'); 
-                }
-            } else {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                const navItems = document.querySelectorAll('.nav-item');
-                if(tabId === 'home' && navItems[0]) navItems[0].classList.add('active');
-                if(tabId === 'tournamentsTab' && navItems[1]) navItems[1].classList.add('active');
-                if(tabId === 'myMatchesTab' && navItems[2]) navItems[2].classList.add('active');
-                if(tabId === 'leaderboard' && navItems[3]) navItems[3].classList.add('active');
-                if(tabId === 'profile' && navItems[4]) navItems[4].classList.add('active');
+                if(element.classList.contains('nav-item')) element.classList.add('active'); 
             }
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if(tabId === 'myMatchesTab') loadMyMatches();
             if(tabId === 'profile') loadPlayerStats();
@@ -1015,7 +973,7 @@
 
         function toggleAuth(type) { document.getElementById('loginBox').style.display = type === 'signup' ? 'none' : 'block'; document.getElementById('signupBox').style.display = type === 'signup' ? 'block' : 'none'; }
 
-        /* --- HERO SLIDER --- */
+        /* --- HERO SLIDER JS --- */
         setInterval(() => {
             const slides = document.querySelectorAll('.hero-slide'); const dots = document.querySelectorAll('#heroDots .dot');
             if(slides.length === 0) return; let activeIdx = 0;
@@ -1045,7 +1003,7 @@
             const data = await response.json(); return data.data.url;
         }
 
-        /* --- AUTHENTICATION --- */
+        /* --- AUTHENTICATION & USERS DATA --- */
         async function signUpWithEmail() {
             const name = document.getElementById('regName').value; const konami = document.getElementById('regKonami').value; const device = document.getElementById('regDevice').value; const email = document.getElementById('regEmail').value; const password = document.getElementById('regPassword').value; const avatarFile = document.getElementById('regAvatarFile').files[0];
             const fbLink = document.getElementById('regFb').value;
@@ -1104,9 +1062,9 @@
 
         function renderAdminPlayers(list) {
             document.getElementById('adminPlayerList').innerHTML = list.map(p => `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.03);" onclick="openPlayerEdit('${p.uid}')">
-                    <span style="color:white; font-size:12px; cursor:pointer; display:flex; align-items:center; gap:4px;">${p.name} ${p.role==='moderator'?'<i class="bx bxs-shield" style="color:var(--accent);"></i>':''}</span> 
-                    <i class='bx bx-edit-alt' style="color:var(--accent); cursor:pointer;"></i>
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--card-border);" onclick="openPlayerEdit('${p.uid}')">
+                    <span style="color:var(--text-dark); font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:5px;">${p.name} ${p.role==='moderator'?'<i class="bx bxs-shield" style="color:var(--primary-blue);font-size:14px;"></i>':''}</span> 
+                    <i class='bx bx-edit-alt' style="color:var(--primary-blue); cursor:pointer; font-size:18px;"></i>
                 </div>`).join('');
         }
 
@@ -1126,23 +1084,23 @@
             document.getElementById('editPlayerPhone').value = p.phone || "";
             if(document.getElementById('editPlayerRole')) document.getElementById('editPlayerRole').value = p.role || "user";
             
-            document.getElementById('adminPlayerMatchList').innerHTML = "<p style='font-size:10px; color:var(--text-dim);'>Loading...</p>";
+            document.getElementById('adminPlayerMatchList').innerHTML = "<p style='font-size:11px; color:var(--text-dim); text-align:center;'>Loading matches...</p>";
             db.collection("playerStats").doc(uid).get().then(doc => {
                 const list = document.getElementById('adminPlayerMatchList');
                 if(!doc.exists || !doc.data().matches || doc.data().matches.length === 0) {
-                    list.innerHTML = "<p style='font-size:10px; color:var(--text-dim);'>No records found.</p>"; return;
+                    list.innerHTML = "<p style='font-size:11px; color:var(--text-dim); text-align:center;'>No match records found.</p>"; return;
                 }
                 let matches = doc.data().matches; let html = "";
                 matches.slice().reverse().forEach((m, reversedIdx) => {
                     let actualIdx = matches.length - 1 - reversedIdx;
                     let color = m.result === 'W' ? '#4ade80' : m.result === 'D' ? '#94a3b8' : '#f87171';
                     html += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:8px; margin-bottom:6px;">
-                        <div style="font-size:10.5px; color:white; font-weight:500;">
-                            <strong style="color:${color}; width:16px; display:inline-block;">[${m.result}]</strong> 
-                            vs ${m.opp || 'Unknown'} <span style="color:var(--gold); font-weight:700;">(${m.myScore}-${m.oppScore})</span>
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--card-bg); padding:10px 12px; border-radius:10px; margin-bottom:8px; border:1px solid var(--card-border);">
+                        <div style="font-size:12px; color:var(--text-dark); font-weight:600;">
+                            <strong style="color:${color}; width:20px; display:inline-block;">[${m.result}]</strong> 
+                            vs ${m.opp || 'Unknown'} <span style="color:var(--primary-blue); margin-left:5px; font-family:var(--font-display); font-weight:800;">(${m.myScore}-${m.oppScore})</span>
                         </div>
-                        <button onclick="adminDeletePlayerMatch('${uid}', ${actualIdx})" style="background:var(--danger); color:white; border:none; padding:4px 8px; border-radius:6px; font-size:10px; cursor:pointer;"><i class='bx bx-trash'></i></button>
+                        <button onclick="adminDeletePlayerMatch('${uid}', ${actualIdx})" style="background:#fef2f2; color:var(--danger); border:1px solid #fecaca; padding:6px 10px; border-radius:8px; font-size:12px; cursor:pointer;"><i class='bx bx-trash'></i></button>
                     </div>`;
                 });
                 list.innerHTML = html;
@@ -1156,11 +1114,11 @@
             const uid = document.getElementById('editPlayerUid').value; if(!uid) return;
             let data = { name: document.getElementById('editPlayerName').value, konamiUid: document.getElementById('editPlayerKonami').value, device: document.getElementById('editPlayerDevice').value, fbLink: document.getElementById('editPlayerFb').value, phone: document.getElementById('editPlayerPhone').value };
             let roleElem = document.getElementById('editPlayerRole'); if(roleElem && currentUserRole === 'admin') data.role = roleElem.value;
-            db.collection("users").doc(uid).update(data).then(() => { alert("Player updated!"); cancelPlayerEdit(); });
+            db.collection("users").doc(uid).update(data).then(() => { alert("Player details updated!"); cancelPlayerEdit(); });
         }
 
         async function adminDeletePlayerMatch(uid, matchIndex) {
-            if(!confirm("Delete this match? It will revert player's stats.")) return;
+            if(!confirm("Delete this match? It will deduct points and goals from this player's stats/ranking.")) return;
             try {
                 const statRef = db.collection("playerStats").doc(uid);
                 const statDoc = await statRef.get();
@@ -1193,11 +1151,11 @@
                     lb.winRate = lb.played > 0 ? Math.round((lb.wins / lb.played) * 100) : 0;
                     await lbRef.update({ points: lb.points, played: lb.played, wins: lb.wins, winRate: lb.winRate });
                 }
-                alert("Match removed!"); openPlayerEdit(uid);
+                alert("Match removed and stats adjusted successfully!"); openPlayerEdit(uid);
             } catch(e) { alert("Error: " + e.message); }
         }
 
-        /* --- TOURNAMENT CREATION --- */
+        /* --- TOURNAMENT CREATION (WITH IMAGE UPLOAD) --- */
         function toggleGroupOptions() { document.getElementById('groupOptions').style.display = document.getElementById('tFormatType').value === 'Group Stage' ? 'flex' : 'none'; }
         
         async function createTournament() {
@@ -1228,7 +1186,7 @@
                 }
                 if(data.name) {
                     await db.collection("tournaments").add(data);
-                    alert("Published!");
+                    alert("Created Successfully!");
                     document.getElementById('tName').value = ""; document.getElementById('tImageLink').value = ""; fileInput.value = "";
                 } else { alert("Tournament name is required!"); }
             } catch(e) { alert("Error: " + e.message); } 
@@ -1242,7 +1200,7 @@
             list1.innerHTML = ""; list2.innerHTML = "";
             snapshot.forEach(doc => {
                 const t = doc.data(); const tFormat = t.type || 'Knockout';
-                let actionBtnHtml = t.status === 'Live' ? `<button class="t-reg-btn" style="background:rgba(56,189,248,0.1); color:var(--logo-blue); border:1px solid rgba(56,189,248,0.3);" onclick="openTournamentDetails('${doc.id}')">DETAILS <i class='bx bx-right-arrow-alt'></i></button>` : `<button id="reg-btn-all-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER</button>`;
+                let actionBtnHtml = t.status === 'Live' ? `<button class="t-reg-btn" style="background:#e0f2fe; color:var(--primary-blue); box-shadow:none;" onclick="openTournamentDetails('${doc.id}')">VIEW DETAILS <i class='bx bx-right-arrow-alt'></i></button>` : `<button id="reg-btn-all-${doc.id}" class="t-reg-btn" onclick="registerForTournament('${doc.id}', this)">REGISTER <i class='bx bx-chevron-right'></i></button>`;
                 
                 const createCard = (btnHtml) => `
                 <div class="t-card">
@@ -1258,29 +1216,29 @@
                     </div>
                     <div class="t-card-info">
                         <div class="t-stat"><span>Slots</span><strong>${t.slots || 'Unlimited'}</strong></div>
-                        <div class="t-stat"><span>Format</span><strong style="color: var(--logo-blue);">${tFormat}</strong></div>
+                        <div class="t-stat"><span>Format</span><strong style="color: var(--primary-blue);">${tFormat}</strong></div>
                     </div>
                     <div style="padding: 0 16px 14px;">${btnHtml}</div>
                     <div class="admin-controls admin-controls-card main-admin-only">
-                        <button style="background:var(--gold); color:#000;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bxs-group'></i> Pot & Players</button>
-                        <button style="background:var(--logo-blue); color:white;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bxs-cog'></i> Draw</button>
-                        <button style="flex:1 1 100%; background:var(--danger); color:white;" onclick="if(confirm('Delete tournament?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete</button>
+                        <button style="background:var(--gold); color:#000;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bxs-group'></i> Players & Pots</button>
+                        <button style="background:var(--primary-blue); color:white;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bxs-cog'></i> Draw Logic</button>
+                        <button style="flex:1 1 100%; background:#fef2f2; color:var(--danger); border:1px solid #fecaca;" onclick="if(confirm('Delete tournament completely?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete</button>
                     </div>
                 </div>`;
                 list1.innerHTML += createCard(actionBtnHtml.replace('all-', 'home-')); list2.innerHTML += createCard(actionBtnHtml);
                 if (t.status !== 'Live' && auth.currentUser) {
                     db.collection("tournaments").doc(doc.id).collection("players").doc(auth.currentUser.uid).get().then(pDoc => {
-                        if (pDoc.exists) { ['reg-btn-home-', 'reg-btn-all-'].forEach(prefix => { const btn = document.getElementById(prefix + doc.id); if(btn) { btn.innerHTML = 'REGISTERED <i class="bx bxs-check-circle"></i>'; btn.style.background = "rgba(255,255,255,0.05)"; btn.style.border = "1px solid var(--card-border)"; btn.style.color = "var(--accent)"; btn.onclick = () => alert("You are already registered!"); } }); }
+                        if (pDoc.exists) { ['reg-btn-home-', 'reg-btn-all-'].forEach(prefix => { const btn = document.getElementById(prefix + doc.id); if(btn) { btn.innerHTML = 'REGISTERED <i class="bx bxs-check-circle"></i>'; btn.style.background = "#f0fdf4"; btn.style.border = "1px solid #bbf7d0"; btn.style.color = "var(--accent)"; btn.style.boxShadow = "none"; btn.onclick = () => alert("You are already registered!"); } }); }
                     });
                 }
             });
-            if(list1.innerHTML === "") list1.innerHTML = "<p style='color:var(--text-dim); padding: 10px; font-size:11px;'>No tournaments available.</p>";
+            if(list1.innerHTML === "") list1.innerHTML = "<p style='color:var(--text-dim); padding: 10px; font-size:12px; text-align:center;'>No tournaments available.</p>";
         });
 
         function registerForTournament(docId, btnElement) {
             const user = auth.currentUser; if(!user) return switchTab('authPage');
-            btnElement.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i>'; btnElement.disabled = true;
-            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ uid: user.uid, name: user.displayName || user.email, avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png", pot: "Unassigned", time: firebase.firestore.FieldValue.serverTimestamp() }).then(() => { alert("Registered!"); }).catch(e => alert(e.message));
+            btnElement.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> WAIT...'; btnElement.disabled = true;
+            db.collection("tournaments").doc(docId).collection("players").doc(user.uid).set({ uid: user.uid, name: user.displayName || user.email, avatar: user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png", pot: "Unassigned", time: firebase.firestore.FieldValue.serverTimestamp() }).then(() => { alert("Registration Successful!"); }).catch(e => alert(e.message));
         }
 
         /* --- REGISTERED PLAYERS LIST WITH SEARCH FOR TOURNAMENT --- */
@@ -1296,7 +1254,7 @@
             document.getElementById('manageTid').value = docId;
             currentManageTid = docId;
             document.getElementById('manageTSlotsDisplay').innerText = `Slots: ${slots}`;
-            setTimeout(() => window.scrollTo({ top: card.offsetTop - 70, behavior: 'smooth' }), 100);
+            setTimeout(() => window.scrollTo({ top: card.offsetTop - 80, behavior: 'smooth' }), 100);
             
             loadTourneyPlayersAndRegistry(docId);
         }
@@ -1359,26 +1317,26 @@
                 const safeAvatar = p.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
                 
                 html += `
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 10px; border-bottom:1px solid rgba(255,255,255,0.03); gap:8px;">
-                    <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:0;">
-                        <img src="${safeAvatar}" style="width:28px; height:28px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border); flex-shrink:0;">
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; border-bottom:1px solid var(--card-border); gap:8px; background:var(--card-bg); border-radius:10px; margin-bottom:6px;">
+                    <div style="display:flex; align-items:center; gap:10px; flex:1; min-width:0;">
+                        <img src="${safeAvatar}" style="width:34px; height:34px; border-radius:50%; object-fit:cover; border:1px solid var(--card-border); flex-shrink:0;">
                         <div style="min-width:0;">
-                            <div style="font-size:12px; font-weight:600; color:white; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</div>
-                            <div style="font-size:9.5px; color:var(--text-dim);"><i class='bx bx-id-card'></i> ${p.konamiUid || 'No UID'}</div>
+                            <div style="font-size:12.5px; font-weight:700; color:var(--text-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</div>
+                            <div style="font-size:9.5px; color:var(--text-dim); margin-top:2px;"><i class='bx bx-id-card'></i> ${p.konamiUid || 'No UID'}</div>
                         </div>
                     </div>
                     
                     <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
                         ${isAdded ? `
-                            <select onchange="updatePlayerPot('${currentManageTid}', '${p.uid}', this.value)" style="width:85px; margin:0; padding:6px; font-size:10.5px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); color:var(--logo-blue); font-weight:700; border-radius:8px;">
+                            <select onchange="updatePlayerPot('${currentManageTid}', '${p.uid}', this.value)" style="width:85px; margin:0; padding:8px 6px; font-size:10px; background:#e0f2fe; border:1px solid #bae6fd; color:var(--primary-blue); font-weight:700; border-radius:8px;">
                                 <option value="Unassigned" ${currentPot === 'Unassigned' ? 'selected' : ''}>No Pot</option>
                                 <option value="Pot 1" ${currentPot === 'Pot 1' ? 'selected' : ''}>Pot 1</option>
                                 <option value="Pot 2" ${currentPot === 'Pot 2' ? 'selected' : ''}>Pot 2</option>
                                 <option value="Pot 3" ${currentPot === 'Pot 3' ? 'selected' : ''}>Pot 3</option>
                             </select>
-                            <button onclick="removeTourneyPlayer('${currentManageTid}', '${p.uid}')" style="background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:var(--danger); width:32px; height:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px;" title="Remove from tournament"><i class='bx bx-trash'></i></button>
+                            <button onclick="removeTourneyPlayer('${currentManageTid}', '${p.uid}')" style="background:#fef2f2; border:1px solid #fecaca; color:var(--danger); width:34px; height:34px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px;" title="Remove"><i class='bx bx-trash'></i></button>
                         ` : `
-                            <button onclick="addSiteUserWithPot('${currentManageTid}', '${p.uid}', '${safeName}', '${safeAvatar}', 'Pot 1')" style="background:linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color:white; border:none; padding:7px 12px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:3px;">
+                            <button onclick="addSiteUserWithPot('${currentManageTid}', '${p.uid}', '${safeName}', '${safeAvatar}', 'Pot 1')" style="background:var(--primary-blue-gradient); color:white; border:none; padding:8px 14px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:4px; box-shadow:var(--shadow-btn);">
                                 <i class='bx bx-plus'></i> Add
                             </button>
                         `}
@@ -1480,7 +1438,7 @@
                 }
                 
                 document.getElementById('drawOverlay').classList.add('active'); 
-                document.getElementById('drawNextBtn').style.display = 'block'; 
+                document.getElementById('drawNextBtn').style.display = 'flex'; 
                 document.getElementById('drawFinishBtn').style.display = 'none'; 
                 document.getElementById('drawArena').classList.remove('animate-draw'); 
                 document.getElementById('drawStatusTxt').innerText = "Draw Ready!"; 
@@ -1512,8 +1470,9 @@
                 document.getElementById('drawImg1').src = item.player.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 img2El.style.display = 'none';
                 name2El.innerText = item.group; 
-                name2El.style.fontSize = "18px";
-                name2El.style.color = "var(--gold)";
+                name2El.style.fontSize = "22px";
+                name2El.style.color = "var(--primary-blue)";
+                name2El.style.fontFamily = "var(--font-display)";
                 vsEl.innerHTML = "<i class='bx bx-chevrons-right'></i>";
             } else {
                 document.getElementById('drawStatusTxt').innerText = `Drawing for ${item.round}`; 
@@ -1521,8 +1480,9 @@
                 document.getElementById('drawImg1').src = item.player1.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 img2El.style.display = 'block';
                 name2El.innerText = item.player2.name; 
-                name2El.style.fontSize = "11.5px";
-                name2El.style.color = "white";
+                name2El.style.fontSize = "13px";
+                name2El.style.color = "var(--text-dark)";
+                name2El.style.fontFamily = "var(--font-body)";
                 img2El.src = item.player2.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png"; 
                 vsEl.innerText = 'VS';
             }
@@ -1565,7 +1525,7 @@
         function renderTdData(t, docId) {
             const divG = document.getElementById('tdGroups'); const divB = document.getElementById('tdBracket'); const divM = document.getElementById('tdMatches');
             divG.innerHTML = ''; divB.innerHTML = ''; divM.innerHTML = '';
-            if(!t.fixtures) { divG.innerHTML = "<p style='color:var(--text-dim); font-size:11.5px; text-align:center;'>Fixtures not generated yet.</p>"; return; }
+            if(!t.fixtures) { divG.innerHTML = "<p style='color:var(--text-dim); font-size:12px; text-align:center;'>Fixtures not generated yet.</p>"; return; }
 
             let allMatchesHtml = "";
 
@@ -1622,7 +1582,7 @@
                         
                         divG.innerHTML += `
                         <div class="td-group-box">
-                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9.5px; font-weight:600;">Top ${t.qualifiers||2} Qualify</span></div>
+                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:10px; font-weight:700; text-transform:uppercase;">Top ${t.qualifiers||2} Qualify</span></div>
                             <div class="g-table-wrap">
                                 <div class="g-table-header">
                                     <div class="g-col-team-head">Club / Player</div>
@@ -1644,7 +1604,7 @@
                     if(key !== 'standings' && !key.includes('Round') && !key.includes('Final')) {
                         const matches = t.fixtures[key];
                         if(Array.isArray(matches)) {
-                            allMatchesHtml += `<div style="font-size:11px; color:var(--logo-blue); font-weight:700; margin:15px 0 8px; text-transform:uppercase;">${key}</div>`;
+                            allMatchesHtml += `<div style="font-size:12px; color:var(--primary-blue); font-weight:800; margin:20px 0 10px; letter-spacing:1px; text-transform:uppercase;">${key}</div>`;
                             matches.forEach(m => allMatchesHtml += buildMatchBox(m, key, docId));
                         }
                     }
@@ -1656,11 +1616,11 @@
             let bracketHtml = ""; let hasBracket = false;
             Object.keys(t.fixtures).forEach(key => {
                 if(key.includes('Round') || key.includes('Final')) {
-                    hasBracket = true; bracketHtml += `<div style="font-size:11px; color:var(--gold); font-weight:800; margin:15px 0 8px; text-transform:uppercase;">${key}</div>`;
+                    hasBracket = true; bracketHtml += `<div style="font-size:12px; color:var(--primary-blue); font-weight:800; margin:20px 0 10px; text-transform:uppercase; letter-spacing:1px;">${key}</div>`;
                     t.fixtures[key].forEach(m => { bracketHtml += buildMatchBox(m, key, docId); allMatchesHtml += buildMatchBox(m, key, docId); });
                 }
             });
-            if(hasBracket) divB.innerHTML = bracketHtml; else divB.innerHTML = "<p style='color:var(--text-dim); font-size:11.5px; text-align:center; margin-top:15px;'>Knockout bracket locked.</p>";
+            if(hasBracket) divB.innerHTML = bracketHtml; else divB.innerHTML = "<p style='color:var(--text-dim); font-size:12px; text-align:center; margin-top:20px;'><i class='bx bxs-lock-alt'></i> Knockout bracket unlocked after Groups.</p>";
             divM.innerHTML = allMatchesHtml;
         }
 
@@ -1672,9 +1632,9 @@
             let adminButtons = '';
             if(currentUserRole === 'admin' || currentUserRole === 'moderator') {
                 adminButtons = `
-                <div style="display:flex; justify-content:center; gap:8px; margin-top:10px; width:100%; border-top:1px dashed var(--card-border); padding-top:8px;">
-                    <button onclick="adminEditScore('${tId}', '${round}', ${m.match})" style="background:rgba(56,189,248,0.1); color:var(--logo-blue); border:1px solid rgba(56,189,248,0.2); padding:5px 12px; border-radius:6px; font-size:10px; font-weight:600; cursor:pointer;"><i class='bx bxs-edit-alt'></i> Edit</button>
-                    <button onclick="adminClearScore('${tId}', '${round}', ${m.match})" style="background:transparent; border:1px solid var(--danger); color:var(--danger); padding:5px 12px; border-radius:6px; font-size:10px; font-weight:600; cursor:pointer;"><i class='bx bxs-eraser'></i> Clear</button>
+                <div style="display:flex; justify-content:center; gap:10px; margin-top:12px; width:100%; border-top:1px dashed var(--card-border); padding-top:12px;">
+                    <button onclick="adminEditScore('${tId}', '${round}', ${m.match})" style="background:#e0f2fe; color:var(--primary-blue); border:1px solid #bae6fd; padding:6px 16px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;"><i class='bx bxs-edit-alt'></i> Edit</button>
+                    <button onclick="adminClearScore('${tId}', '${round}', ${m.match})" style="background:#fef2f2; border:1px solid #fecaca; color:var(--danger); padding:6px 16px; border-radius:8px; font-size:11px; font-weight:700; cursor:pointer; transition:0.2s;"><i class='bx bxs-eraser'></i> Clear</button>
                 </div>`;
             }
 
@@ -1770,9 +1730,9 @@
         function loadMyMatches() {
             const user = auth.currentUser;
             const list = document.getElementById('myMatchesList'); const countBadge = document.getElementById('myMatchCountText');
-            if(!user) return list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:11.5px; margin-top:30px;">Log in to view matches.</p>`;
+            if(!user) return list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">Log in to view upcoming matches.</p>`;
             
-            list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:11.5px; margin-top:30px;"><i class='bx bx-loader-alt bx-spin'></i> Loading...</p>`;
+            list.innerHTML = `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;"><i class='bx bx-loader-alt bx-spin'></i> Checking arena...</p>`;
             
             db.collection("tournaments").where("status", "==", "Live").get().then(snap => {
                 let html = ""; let count = 0; let fetchPromises = [];
@@ -1791,7 +1751,7 @@
                                         if(!opp || opp.name.includes("BYE") || opp.name==="TBD") opp = { name: opp?opp.name:"TBD", avatar: "https://cdn-icons-png.flaticon.com/512/149/149071.png", uid:'bye' };
 
                                         let p = db.collection("pending_results").where("tournamentId", "==", tId).where("matchId", "==", m.match).get().then(resSnap => {
-                                            let statusHtml = `<span class="mm-status pending">Not Played</span>`;
+                                            let statusHtml = `<span class="mm-status pending"><i class='bx bx-time-five'></i> Not Played</span>`;
                                             let btnHtml = `<button class="mm-btn" onclick="openScoreSubmit('${tId}', '${groupOrRound}', '${m.match}', '${me.uid}', '${opp.uid}')">SUBMIT SCORE</button>`;
                                             
                                             let isFinished = (m.myScore !== undefined); 
@@ -1805,14 +1765,14 @@
 
                                             if(isFinished) {
                                                 let myGoals = isP1 ? m.myScore : m.oppScore; let oppGoals = isP1 ? m.oppScore : m.myScore;
-                                                statusHtml = `<span class="mm-status approved">Finished</span>`;
-                                                btnHtml = `<button class="mm-btn" style="background:rgba(34,197,94,0.1); color:var(--accent); border:1px solid rgba(34,197,94,0.2);" disabled>${myGoals} - ${oppGoals}</button>`;
+                                                statusHtml = `<span class="mm-status approved"><i class='bx bxs-check-circle'></i> Finished</span>`;
+                                                btnHtml = `<button class="mm-btn" style="background:#f0fdf4; color:var(--accent); border:1px solid #bbf7d0; box-shadow:none;" disabled>${myGoals} - ${oppGoals}</button>`;
                                             } else if (isPending) {
-                                                statusHtml = `<span class="mm-status submitted">Pending</span>`;
-                                                btnHtml = `<button class="mm-btn" style="background:rgba(255,255,255,0.04); color:var(--text-muted);" disabled>APPROVAL PENDING</button>`;
+                                                statusHtml = `<span class="mm-status submitted"><i class='bx bx-time-five'></i> Pending Admin</span>`;
+                                                btnHtml = `<button class="mm-btn" style="background:#f8fafc; color:var(--text-muted); box-shadow:none;" disabled>WAITING APPROVAL</button>`;
                                             }
 
-                                            return `<div class="mm-card"><div class="mm-top"><span class="mm-tag">${t.name.substring(0,18)} • ${groupOrRound}</span><span>${statusHtml}</span></div><div class="mm-vs-row"><div class="mm-player" onclick="openPublicProfile('${me.uid}')"><img src="${me.avatar}" class="mm-avatar"><span class="mm-name">You</span></div><div class="mm-vs-badge">VS</div><div class="mm-player right" onclick="openPublicProfile('${opp.uid}')"><span class="mm-name">${opp.name}</span><img src="${opp.avatar}" class="mm-avatar"></div></div><div class="mm-bot">${btnHtml}</div></div>`;
+                                            return `<div class="mm-card"><div class="mm-top"><span class="mm-tag">${t.name.substring(0,20)} • ${groupOrRound}</span><span>${statusHtml}</span></div><div class="mm-vs-row"><div class="mm-player" onclick="openPublicProfile('${me.uid}')"><img src="${me.avatar}" class="mm-avatar"><span class="mm-name">You</span></div><div class="mm-vs-badge">VS</div><div class="mm-player right" onclick="openPublicProfile('${opp.uid}')"><span class="mm-name">${opp.name}</span><img src="${opp.avatar}" class="mm-avatar"></div></div><div class="mm-bot">${btnHtml}</div></div>`;
                                         });
                                         fetchPromises.push(p);
                                     }
@@ -1822,8 +1782,8 @@
                     }
                 });
                 Promise.all(fetchPromises).then(results => {
-                    list.innerHTML = count === 0 ? `<p style="text-align:center; color:var(--text-dim); font-size:11.5px; margin-top:30px;">No upcoming matches.</p>` : results.join('');
-                    countBadge.innerText = `${count} Upcoming`;
+                    list.innerHTML = count === 0 ? `<p style="text-align:center; color:var(--text-dim); font-size:12px; margin-top:30px;">You have no upcoming matches.</p>` : results.join('');
+                    countBadge.innerHTML = `${count} Upcoming`;
                 });
             });
         }
@@ -1838,34 +1798,34 @@
 
         function submitScoreFinal() {
             const myG = document.getElementById('scoreMyGoals').value; const oppG = document.getElementById('scoreOppGoals').value;
-            if(myG === "" || oppG === "") return alert("Please enter goals.");
+            if(myG === "" || oppG === "") return alert("Please enter goals for both players.");
             db.collection("pending_results").add({
                 tournamentId: document.getElementById('submitTid').value, groupRound: document.getElementById('submitGroupRound').value,
                 matchId: parseInt(document.getElementById('submitMatchId').value),
                 submittedBy: document.getElementById('submitMyUid').value, oppUid: document.getElementById('submitOppUid').value,
                 myScore: parseInt(myG), oppScore: parseInt(oppG), status: "Pending", time: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => { alert("Score Submitted!"); closeModal('submitScoreModal'); loadMyMatches(); });
+            }).then(() => { alert("Score Submitted! Waiting for admin approval."); closeModal('submitScoreModal'); loadMyMatches(); });
         }
 
-        /* --- ADMIN APPROVAL SYSTEM --- */
+        /* --- ADMIN APPROVAL SYSTEM & AUTOMATIC RANKING/STATS SYNC --- */
         function loadPendingResults() {
             const list = document.getElementById('adminPendingResultsList');
             db.collection("pending_results").where("status", "==", "Pending").onSnapshot(snap => {
-                if(snap.empty) { list.innerHTML = "<p style='color:var(--text-dim); font-size:10px; text-align:center;'>No pending results.</p>"; return; }
+                if(snap.empty) { list.innerHTML = "<p style='color:var(--text-dim); font-size:11px; text-align:center; padding:10px;'>No pending results.</p>"; return; }
                 let html = "";
                 snap.forEach(doc => {
                     const r = doc.data();
                     html += `
-                    <div style="background:rgba(255,255,255,0.02); border:1px solid var(--card-border); padding:10px; border-radius:10px; margin-bottom:10px;">
-                        <div style="font-size:9px; color:var(--text-muted); margin-bottom:6px;">Match ID: ${r.matchId} • ${r.groupRound}</div>
-                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:600;">
-                            <span style="color:var(--accent);">${r.submittedBy.substring(0,5)}...</span>
-                            <span style="color:var(--gold); font-weight:800;">${r.myScore} - ${r.oppScore}</span>
-                            <span style="color:white;">${r.oppUid.substring(0,5)}...</span>
+                    <div style="background:var(--bg-main); border:1px solid var(--card-border); padding:12px; border-radius:12px; margin-bottom:12px;">
+                        <div style="font-size:10px; color:var(--text-muted); margin-bottom:5px;">Match ID: ${r.matchId} • ${r.groupRound}</div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; font-size:13px; font-weight:bold;">
+                            <span style="color:var(--primary-blue);">${r.submittedBy.substring(0,5)}...</span>
+                            <span style="color:var(--text-dark);">${r.myScore} - ${r.oppScore}</span>
+                            <span style="color:var(--text-dark);">${r.oppUid.substring(0,5)}...</span>
                         </div>
-                        <div style="display:flex; gap:8px; margin-top:10px;">
-                            <button onclick="approveResult('${doc.id}')" style="flex:1; background:var(--accent); color:#000; border:none; padding:6px; border-radius:6px; font-weight:700; font-size:9.5px; cursor:pointer;">Approve</button>
-                            <button onclick="rejectResult('${doc.id}')" style="flex:1; background:transparent; border:1px solid var(--danger); color:var(--danger); padding:6px; border-radius:6px; font-weight:700; font-size:9.5px; cursor:pointer;">Reject</button>
+                        <div style="display:flex; gap:10px; margin-top:12px;">
+                            <button onclick="approveResult('${doc.id}')" style="flex:1; background:var(--accent); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:700; font-size:11px; cursor:pointer;"><i class='bx bx-check'></i> Approve</button>
+                            <button onclick="rejectResult('${doc.id}')" style="flex:1; background:#fef2f2; border:1px solid #fecaca; color:var(--danger); padding:8px; border-radius:8px; font-weight:700; font-size:11px; cursor:pointer;"><i class='bx bx-x'></i> Reject</button>
                         </div>
                     </div>`;
                 });
@@ -1873,7 +1833,7 @@
             });
         }
 
-        function rejectResult(reqId) { if(confirm("Reject submission?")) db.collection("pending_results").doc(reqId).delete(); }
+        function rejectResult(reqId) { if(confirm("Reject this submission?")) db.collection("pending_results").doc(reqId).delete(); }
 
         async function approveResult(reqId) {
             try {
@@ -1884,6 +1844,7 @@
                 const tDoc = await tRef.get();
                 let fixtures = tDoc.exists ? tDoc.data().fixtures : null;
                 let oldS1 = undefined, oldS2 = undefined;
+                
                 let p1Name = "Player", p2Name = "Player", p1Av = "", p2Av = "";
 
                 if(fixtures) {
@@ -1924,7 +1885,7 @@
                 }
 
                 await db.collection("pending_results").doc(reqId).update({ status: 'Approved' });
-                alert("Result Approved!");
+                alert("Result Approved! Player Stats, Leaderboard & Fixtures Updated.");
             } catch(e) { alert("Error: " + e.message); }
         }
 
@@ -1947,7 +1908,8 @@
             d.matches.push({ 
                 result: resChar, myScore: gf, oppScore: ga, 
                 opp: oppName || 'Opponent', oppAvatar: oppAvatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png', oppUid: oppUid || '',
-                tId: tId, matchId: matchId, time: Date.now()
+                tId: tId, matchId: matchId,
+                time: Date.now()
             });
             if(d.matches.length > 10) d.matches = d.matches.slice(-10);
             await statRef.set(d);
@@ -1969,12 +1931,12 @@
             const points = parseInt(document.getElementById('lbPoints').value);
             if(uidInput && !isNaN(points)) {
                 const p = allUsersData.find(x => x.uid === uidInput || x.konamiUid === uidInput || x.name.toLowerCase() === uidInput.toLowerCase());
-                if(!p) return alert("Player not found!");
+                if(!p) return alert("Player not found in database!");
                 
                 db.collection("leaderboard").doc(p.uid).set({ 
                     name: p.name, avatar: p.avatar || "https://cdn-icons-png.flaticon.com/512/149/149071.png", 
                     points: points, uid: p.uid, time: firebase.firestore.FieldValue.serverTimestamp() 
-                }, {merge:true}).then(() => { alert("Updated!"); document.getElementById('lbPlayerUid').value = ''; document.getElementById('lbPoints').value = ''; });
+                }, {merge:true}).then(() => { alert("Leaderboard Updated!"); document.getElementById('lbPlayerUid').value = ''; document.getElementById('lbPoints').value = ''; });
             }
         }
 
@@ -2001,7 +1963,7 @@
                 if(uDoc.exists) {
                     const uData = uDoc.data();
                     document.getElementById('myProfName').innerText = uData.name;
-                    document.getElementById('myInfoUid').innerText = uData.konamiUid || "N/A";
+                    document.getElementById('myInfoUid').innerHTML = `${uData.konamiUid || "N/A"} <i class='bx bx-copy'></i>`;
                     document.getElementById('myInfoDevice').innerText = uData.device || "N/A";
                     document.getElementById('myProfAvatar').src = uData.avatar || user.photoURL || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
                     
