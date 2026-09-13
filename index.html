@@ -7,7 +7,7 @@
 
     <!-- Modern App Typography -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
-    <!-- Boxicons -->
+    <!-- Boxicons (Premium Modern Icons) -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Firebase -->
@@ -20,7 +20,7 @@
             --bg-dark: #070a14;
             --card-bg: rgba(15, 22, 41, 0.7);
             --card-bg-soft: rgba(22, 31, 58, 0.5);
-            --card-border: rgba(255, 255, 255, 0.06);
+            --card-border: rgba(255, 255, 255, 0.08);
             --gold: #fbbf24;
             --gold-glow: rgba(251, 191, 36, 0.3);
             --accent: #22c55e;
@@ -45,7 +45,7 @@
                 radial-gradient(circle at 90% 80%, rgba(129, 140, 248, 0.03) 0%, transparent 40%);
             background-attachment: fixed;
             color: var(--text-main); 
-            padding-bottom: 95px; 
+            padding-bottom: 100px; 
             overflow-x: hidden; 
             -webkit-font-smoothing: antialiased;
             width: 100vw;
@@ -72,24 +72,42 @@
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
 
         /* HEADER (Clean App Native) */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(7, 10, 20, 0.8); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); }
-        .header-brand { display: flex; align-items: center; gap: 8px; }
-        .header-mark { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(56,189,248,0.15), transparent); border: 1px solid rgba(56,189,248,0.2); color: var(--logo-blue); font-size: 16px; }
-        .header h2 { font-size: 15px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;}
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; background: rgba(7, 10, 20, 0.85); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .header-brand { display: flex; align-items: center; gap: 10px; }
+        .header-mark { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(56,189,248,0.15), transparent); border: 1px solid rgba(56,189,248,0.2); color: var(--logo-blue); font-size: 18px; }
+        .header h2 { font-size: 16px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0;}
         .header span { color: var(--logo-blue); }
         
-        .header-actions { display: flex; align-items: center; gap: 8px; }
-        .header-btn { width: 34px; height: 34px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-btn { width: 36px; height: 36px; border-radius: 10px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06); color: var(--text-main); display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; transition: 0.2s; }
         .header-btn:active { transform: scale(0.92); background: rgba(255, 255, 255, 0.08); }
-        .header-btn.prof { color: var(--logo-blue); }
-        .modern-dots { display: flex; flex-direction: column; gap: 3px; }
-        .modern-dots span { width: 4px; height: 4px; background: var(--text-muted); border-radius: 50%; }
+        .header-btn.prof { color: var(--logo-blue); font-size: 20px; }
+        .modern-dots { display: flex; flex-direction: column; gap: 3.5px; align-items: center; justify-content: center; }
+        .modern-dots span { display: block; width: 4.5px; height: 4.5px; background: var(--text-muted); border-radius: 50%; transition: 0.2s; }
+        .header-btn.menu:hover .modern-dots span { background: var(--logo-blue); }
+
+        /* SIDE MENU CSS (Fixed Layout Breakage) */
+        .side-menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999990; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+        .side-menu-overlay.open { display: block; opacity: 1; }
+        .side-menu { position: fixed; top: 0; right: -320px; width: 280px; height: 100%; background: rgba(10,14,28,0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 999999; transition: right 0.35s cubic-bezier(0.2, 0.8, 0.2, 1); padding: 25px 20px; border-left: 1px solid rgba(255,255,255,0.08); overflow-y: auto; display: flex; flex-direction: column; box-shadow: -15px 0 40px rgba(0,0,0,0.7); }
+        .side-menu.open { right: 0; }
+        .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .sm-header h3 { font-family: var(--font-display); font-size: 16px; font-weight: 800; color: white; letter-spacing: 1.5px; margin: 0; }
+        .sm-close { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); width: 36px; height: 36px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 24px; }
+        .sm-close:active { transform: scale(0.9); }
+        .sm-group-title { font-size: 11px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 5px; }
+        .sm-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; font-size: 14px; font-weight: 500; color: #cbd5e1; border-radius: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 6px; }
+        .sm-item:hover { background: rgba(255,255,255,0.04); color: white; }
+        .sm-item i { font-size: 22px; width: 24px; text-align: center; color: var(--text-muted); transition: 0.2s; display: flex; justify-content: center; align-items: center; }
+        .sm-item.highlight { background: linear-gradient(90deg, rgba(163,230,53,0.15), transparent); color: var(--accent); border: 1px solid rgba(163,230,53,0.2); font-weight: 600; }
+        .sm-item.highlight i { color: var(--accent); }
 
         /* MODALS */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.25s ease; }
-        .modal-card { background: #0c1222; border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; width: 90%; max-width: 340px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
-        .modal-close { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.06); border: none; color: var(--text-muted); font-size: 20px; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .modal-card { background: #0c1222; border: 1px solid var(--card-border); border-radius: 20px; padding: 22px; width: 90%; max-width: 350px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.8); }
+        .modal-close { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.06); border: none; color: var(--text-muted); font-size: 22px; width: 34px; height: 34px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+        .modal-close:active { transform: scale(0.9); }
 
         /* DRAW CEREMONY */
         #drawOverlay { background: radial-gradient(circle at center, #0e172a 0%, #000000 100%); z-index: 999999; }
@@ -108,7 +126,7 @@
         /* CLEAN APP PROFILE SYSTEM */
         #publicProfileModal { background: var(--bg-dark); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
         .pub-header { display: flex; align-items: center; padding: 12px 16px; width: 100%; background: rgba(7, 10, 20, 0.8); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
-        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 10px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 20px;}
+        .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); width: 34px; height: 34px; border-radius: 10px; color: white; cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 22px;}
         .pub-title { flex: 1; text-align: center; font-size: 13px; letter-spacing: 1px; margin-right: 34px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;}
         
         .pub-body { padding: 16px 14px 40px; width: 100%; max-width: 480px; margin: 0 auto; overflow-x: hidden; }
@@ -147,8 +165,8 @@
         .pub-card-title { font-size: 10px; font-weight: 700; color: var(--text-dim); letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
         .pub-list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .pub-list-item:last-child { border-bottom: none; padding-bottom: 0;}
-        .pub-list-lbl { font-size: 12px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 6px;}
-        .pub-list-lbl i { font-size: 16px; color: var(--text-dim); }
+        .pub-list-lbl { font-size: 12px; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 8px;}
+        .pub-list-lbl i { font-size: 18px; color: var(--text-dim); display:flex; align-items:center; justify-content:center; }
         .pub-list-val { font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; gap: 5px;}
         .pub-list-val.copyable { color: var(--logo-blue); cursor: pointer; }
 
@@ -186,7 +204,7 @@
         .hero-dots .dot.active { width: 14px; border-radius: 4px; background: var(--logo-blue); }
 
         /* TOURNAMENT CARD */
-        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding-bottom: 6px; scrollbar-width: none; margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
+        .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding-bottom: 10px; scrollbar-width: none; margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
         .t-slider::-webkit-scrollbar { display: none; }
         .t-card { min-width: 88vw; scroll-snap-align: center; border-radius: 16px; overflow: hidden; background: var(--card-bg); border: 1px solid var(--card-border); backdrop-filter: blur(15px); }
         .t-card-img { height: 140px; background-size: cover; background-position: center; position: relative; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -199,7 +217,7 @@
         .t-stat { text-align: center; }
         .t-stat span { display: block; font-size: 8px; color: var(--text-dim); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
         .t-stat strong { font-size: 12px; font-weight: 700; }
-        .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 10px 14px; border-radius: 10px; font-size: 10.5px; font-weight: 700; cursor: pointer; flex:1;}
+        .t-reg-btn { background: linear-gradient(135deg, var(--logo-blue), var(--logo-blue-deep)); color: white; border: none; padding: 10px 14px; border-radius: 10px; font-size: 10.5px; font-weight: 700; cursor: pointer; flex:1; display:flex; align-items:center; justify-content:center; gap:5px;}
 
         /* CLEAN GROUP TABLE UI (Responsive Fix) */
         .td-group-box { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; margin-bottom: 16px; overflow: hidden; }
@@ -267,13 +285,14 @@
         .win-rate-val { font-size: 14px; font-weight: 800; color: var(--accent); text-align: right;}
         .win-rate-lbl { font-size: 8.5px; color: var(--text-dim); text-transform: uppercase; text-align: right;}
 
-        /* FLOATING BOTTOM NAV (PILL DESIGN - PERFECT MOBILE FIT) */
-        .bottom-nav { position: fixed; bottom: 12px; left: 12px; right: 12px; background: rgba(12, 18, 34, 0.88); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); display: flex; justify-content: space-between; padding: 6px 8px 8px; z-index: 1000; border-radius: 20px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
-        .nav-item { color: var(--text-muted); text-align: center; font-size: 9.5px; cursor: pointer; font-weight: 500; padding: 4px 6px; border-radius: 12px; transition: 0.2s; display: flex; flex-direction: column; align-items: center; flex: 1;}
-        .nav-item i { font-size: 20px; margin-bottom: 2px; }
+        /* FLOATING BOTTOM NAV (PERFECT APP FIT) */
+        .bottom-nav { position: fixed; bottom: 12px; left: 12px; right: 12px; background: rgba(12, 18, 34, 0.95); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); display: flex; justify-content: space-between; align-items: center; padding: 6px 8px 8px; z-index: 1000; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
+        .nav-item { color: var(--text-muted); text-align: center; font-size: 9.5px; cursor: pointer; font-weight: 600; padding: 6px 8px; border-radius: 12px; transition: 0.3s; display: flex; flex-direction: column; align-items: center; flex: 1; gap: 4px;}
+        .nav-item i { font-size: 22px; transition: transform 0.2s ease; display:flex; align-items:center; justify-content:center; }
         .nav-admin { display: none; color: #f87171; }
         .nav-admin.show { display: flex; }
-        .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.1); font-weight: 700; }
+        .nav-item.active { color: var(--logo-blue); background: rgba(56,189,248,0.12); font-weight: 700; }
+        .nav-item.active i { transform: scale(1.1); color: var(--logo-blue); }
     </style>
 </head>
 <body>
@@ -415,7 +434,7 @@
             </div>
             
             <div style="text-align:center; margin-top:20px;">
-                <button onclick="logOut()" class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin:0 auto; width:85%;"><i class='bx bx-log-out'></i> Logout Account</button>
+                <button onclick="logOut()" class="submit-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); box-shadow:none; margin:0 auto; width:100%;"><i class='bx bx-log-out'></i> Logout Account</button>
             </div>
         </div>
     </div>
@@ -451,7 +470,7 @@
     <!-- SIDE MENU OVERLAY -->
     <div id="sideMenuOverlay" class="side-menu-overlay" onclick="closeSideMenu()"></div>
 
-    <!-- SLIDING SIDE MENU -->
+    <!-- SLIDING SIDE MENU (FIXED) -->
     <div id="sideMenu" class="side-menu">
         <div class="sm-header">
             <h3>BMG MENU</h3>
@@ -469,11 +488,11 @@
         </div>
 
         <div class="sm-group-title">Navigate</div>
-        <div class="sm-item" onclick="switchMenuTab('home')"><i class='bx bxs-home'></i> Home</div>
-        <div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class='bx bxs-trophy'></i> Tournaments</div>
-        <div class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class='bx bxs-joystick'></i> My Matches</div>
-        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class='bx bx-line-chart'></i> Rankings</div>
-        <div class="sm-item" onclick="switchMenuTab('profile')"><i class='bx bxs-user-circle'></i> Profile</div>
+        <div class="sm-item" onclick="switchMenuTab('home')"><i class='bx bx-home-alt-2'></i> Home</div>
+        <div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class='bx bx-trophy'></i> Tournaments</div>
+        <div class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class='bx bx-joystick'></i> My Matches</div>
+        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class='bx bx-bar-chart-square'></i> Rankings</div>
+        <div class="sm-item" onclick="switchMenuTab('profile')"><i class='bx bx-user'></i> Profile</div>
     </div>
 
     <!-- APP HEADER -->
@@ -544,7 +563,7 @@
 
         <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; margin-bottom:12px;">
             <div class="section-title" style="margin:0;">Leaderboard</div>
-            <span style="font-size:9.5px; color:var(--gold); font-weight:700;"><i class='bx bxs-star'></i> Live</span>
+            <span style="font-size:9.5px; color:var(--gold); font-weight:700; display:flex; align-items:center; gap:2px;"><i class='bx bxs-star'></i> Live</span>
         </div>
         <div class="card" style="padding: 10px;">
             <div id="homeLeaderboardList"><p style="text-align:center; color:var(--text-dim); font-size:11px;">Loading...</p></div>
@@ -572,11 +591,11 @@
             <button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-muted); font-size:11px; cursor:pointer; margin-bottom:10px; font-weight:600; display:flex; align-items:center; gap:4px;"><i class='bx bx-left-arrow-alt'></i> Back</button>
             <h2 id="tdName" style="color:white; font-size:16.5px; font-weight:800; text-transform:uppercase; margin-bottom:10px;">Tournament Name</h2>
             <div style="display:flex; flex-wrap:wrap; gap:6px; font-size:9.5px; color:var(--text-muted); font-weight:600;">
-                <span style="background:rgba(251,191,36,0.1); color:var(--gold); padding:4px 8px; border-radius:6px;" id="tdPrize"><i class='bx bxs-trophy'></i> Prize</span>
-                <span style="background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px;" id="tdFormat"><i class='bx bxs-joystick'></i> Format</span>
+                <span style="background:rgba(251,191,36,0.1); color:var(--gold); padding:4px 8px; border-radius:6px; display:flex; align-items:center; gap:3px;" id="tdPrize"><i class='bx bx-trophy'></i> Prize</span>
+                <span style="background:rgba(255,255,255,0.04); padding:4px 8px; border-radius:6px; display:flex; align-items:center; gap:3px;" id="tdFormat"><i class='bx bx-joystick'></i> Format</span>
             </div>
             <div class="admin-controls" id="tdAdminControls" style="margin-top:12px; display:none;">
-                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:10px; border-radius:10px; font-size:10.5px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="advanceToKnockout()"><i class='bx bxs-zap'></i> KNOCKOUT STAGE</button>
+                <button style="background:linear-gradient(135deg, #f97316, #ef4444); color:white; border:none; padding:10px; border-radius:10px; font-size:10.5px; font-weight:800; cursor:pointer; width:100%; display:flex; justify-content:center; align-items:center; gap:5px;" onclick="advanceToKnockout()"><i class='bx bx-bolt-circle'></i> KNOCKOUT STAGE</button>
             </div>
         </div>
 
@@ -611,7 +630,7 @@
 
         <!-- FULL PLAYER MANAGEMENT SYSTEM -->
         <div class="card main-admin-only" style="border: 1px solid rgba(34,197,94,0.3); margin-bottom: 15px;">
-            <h3 style="color: var(--accent); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bxs-user-detail'></i> Player Management</h3>
+            <h3 style="color: var(--accent); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-user-pin'></i> Player Management</h3>
             <input type="text" id="adminPlayerSearch" placeholder="Search player name..." onkeyup="filterAdminPlayers()" style="margin-top: 10px;">
             <div id="adminPlayerList" style="max-height: 200px; overflow-y: auto; margin-top:8px; border:1px solid var(--card-border); border-radius:10px; padding:6px;"></div>
             
@@ -643,7 +662,7 @@
         <!-- Manage Tournament Registrations UI -->
         <div class="card" id="adminTournamentPlayersCard" style="display:none; border: 1px solid rgba(34,197,94,0.4); margin-bottom: 15px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="color: var(--accent); font-size: 14px; font-weight:800; margin:0;"><i class='bx bxs-group'></i> Tourney Players</h3>
+                <h3 style="color: var(--accent); font-size: 14px; font-weight:800; margin:0; display:flex; align-items:center; gap:6px;"><i class='bx bx-group'></i> Tourney Players</h3>
                 <span id="manageTSlotsDisplay" style="color:var(--text-muted); font-size:9.5px; font-weight:700;"></span>
             </div>
             <input type="hidden" id="manageTid">
@@ -697,21 +716,21 @@
 
         <!-- Manual Leaderboard Override -->
         <div class="card main-admin-only" style="border: 1px solid rgba(251,191,36,0.3);">
-            <h3 style="color: var(--gold); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bxs-star'></i> Manual Score Override</h3>
+            <h3 style="color: var(--gold); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-star'></i> Manual Score Override</h3>
             <input type="text" id="lbPlayerUid" placeholder="Enter Player Name/UID" style="margin-top:10px;">
             <input type="number" id="lbPoints" placeholder="Total Points">
             <button class="submit-btn" style="background: linear-gradient(135deg, #ffe27a, var(--gold-deep)); color:#241b00; margin-top:10px;" onclick="updateLeaderboard()">Update Points</button>
         </div>
     </div>
 
-    <!-- FLOATING BOTTOM APP NAV -->
+    <!-- FLOATING BOTTOM APP NAV (Perfect Centered Setup) -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)"><i class='bx bxs-home-alt-2'></i>Home</div>
-        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class='bx bxs-trophy'></i>Events</div>
-        <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class='bx bxs-joystick'></i>Matches</div>
-        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class='bx bx-line-chart'></i>Rank</div>
-        <div class="nav-item" onclick="switchTab('profile', this)"><i class='bx bxs-user'></i>Profile</div>
-        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class='bx bxs-cog'></i>Admin</div>
+        <div class="nav-item active" onclick="switchTab('home', this)"><i class='bx bx-home-alt-2'></i><span>Home</span></div>
+        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class='bx bx-trophy'></i><span>Events</span></div>
+        <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class='bx bx-joystick'></i><span>Matches</span></div>
+        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class='bx bx-bar-chart-square'></i><span>Ranking</span></div>
+        <div class="nav-item" onclick="switchTab('profile', this)"><i class='bx bx-user'></i><span>Profile</span></div>
+        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class='bx bx-cog'></i><span>Admin</span></div>
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
@@ -881,10 +900,24 @@
             if ((tabId === 'profile' || tabId === 'myMatchesTab') && !auth.currentUser) tabId = 'authPage';
             document.querySelectorAll('.page-section').forEach(page => page.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
+            
+            // Bottom nav active state update
             if(element && element.classList) { 
                 document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active')); 
-                if(element.classList.contains('nav-item')) element.classList.add('active'); 
+                if(element.classList.contains('nav-item')) {
+                    element.classList.add('active'); 
+                }
+            } else {
+                // Map section ID to nav items safely if opened via other buttons
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                const navItems = document.querySelectorAll('.nav-item');
+                if(tabId === 'home' && navItems[0]) navItems[0].classList.add('active');
+                if(tabId === 'tournamentsTab' && navItems[1]) navItems[1].classList.add('active');
+                if(tabId === 'myMatchesTab' && navItems[2]) navItems[2].classList.add('active');
+                if(tabId === 'leaderboard' && navItems[3]) navItems[3].classList.add('active');
+                if(tabId === 'profile' && navItems[4]) navItems[4].classList.add('active');
             }
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
             if(tabId === 'myMatchesTab') loadMyMatches();
             if(tabId === 'profile') loadPlayerStats();
@@ -1109,7 +1142,7 @@
                     document.getElementById('tName').value = ""; document.getElementById('tImageLink').value = ""; fileInput.value = "";
                 } else { alert("Tournament name is required!"); }
             } catch(e) { alert("Error: " + e.message); } 
-            finally { btn.innerText = "Publish Event"; btn.disabled = false; }
+            finally { btn.innerHTML = "Publish Event"; btn.disabled = false; }
         }
 
         let currentActiveTournamentId = null;
@@ -1406,7 +1439,7 @@
                         
                         divG.innerHTML += `
                         <div class="td-group-box">
-                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9px; font-weight:700; text-transform:uppercase;">Top ${t.qualifiers||2} Qualify</span></div>
+                            <div class="td-group-head">${gName} <span style="color:var(--text-dim); font-size:9.5px; font-weight:600;">Top ${t.qualifiers||2} Qualify</span></div>
                             <div class="g-table-wrap">
                                 <div class="g-table-header">
                                     <div class="g-col-team-head">Club / Player</div>
@@ -1593,7 +1626,7 @@
                                                 btnHtml = `<button class="mm-btn" style="background:rgba(34,197,94,0.1); color:var(--accent); border:1px solid rgba(34,197,94,0.2);" disabled>${myGoals} - ${oppGoals}</button>`;
                                             } else if (isPending) {
                                                 statusHtml = `<span class="mm-status submitted">Pending</span>`;
-                                                btnHtml = `<button class="mm-btn" style="background:rgba(255,255,255,0.04); color:var(--text-muted);" disabled>WAITING APPROVAL</button>`;
+                                                btnHtml = `<button class="mm-btn" style="background:rgba(255,255,255,0.04); color:var(--text-muted);" disabled>APPROVAL PENDING</button>`;
                                             }
 
                                             return `<div class="mm-card"><div class="mm-top"><span class="mm-tag">${t.name.substring(0,18)} • ${groupOrRound}</span><span>${statusHtml}</span></div><div class="mm-vs-row"><div class="mm-player" onclick="openPublicProfile('${me.uid}')"><img src="${me.avatar}" class="mm-avatar"><span class="mm-name">You</span></div><div class="mm-vs-badge">VS</div><div class="mm-player right" onclick="openPublicProfile('${opp.uid}')"><span class="mm-name">${opp.name}</span><img src="${opp.avatar}" class="mm-avatar"></div></div><div class="mm-bot">${btnHtml}</div></div>`;
