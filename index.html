@@ -1,319 +1,198 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>BMG Official - eFootball Community</title>
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <style>
-        :root{--bg-main:#0B0F19;--card-bg:#131A2A;--card-border:rgba(0,210,255,0.25);--primary-cyan:#00d2ff;--primary-blue:#007bff;--primary-gradient:linear-gradient(90deg,#00d2ff 0%,#007bff 100%);--gold:#FFD700;--accent:#00FF87;--danger:#FF3366;--cream-white:#FFFFFF;--text-main:#E2E8F0;--text-dim:#94A3B8;--shadow-glow:0 0 15px rgba(0,210,255,0.15);--font-body:'Outfit',sans-serif;--font-display:'Montserrat',sans-serif;}
-        *{margin:0;padding:0;box-sizing:border-box;font-family:var(--font-body);-webkit-tap-highlight-color:transparent;}
-        body{background-color:var(--bg-main);color:var(--text-main);padding-bottom:90px;overflow-x:hidden;width:100vw;max-width:100%;}
-        ::selection{background:var(--primary-cyan);color:#000;}::-webkit-scrollbar{display:none;}img{max-width:100%;}
-        body:not(.is-admin) .admin-controls{display:none !important;}body.is-admin .admin-controls{display:flex !important;}body:not(.is-main-admin) .main-admin-only{display:none !important;}
-        #preloader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-main);transition:0.4s ease;}
-        #preloader.hide{opacity:0;visibility:hidden;pointer-events:none;}
-        .preloader-ring{width:60px;height:60px;border-radius:50%;border:3px solid rgba(0,210,255,0.1);border-top-color:var(--primary-cyan);animation:spin 0.8s linear infinite;margin-bottom:15px;}
-        @keyframes spin{to{transform:rotate(360deg);}}
-        .header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:rgba(11,15,25,0.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.05);}
-        .header-btn{width:40px;height:40px;background:transparent;color:var(--text-main);display:flex;align-items:center;justify-content:center;font-size:26px;border:none;cursor:pointer;}
-        .header-brand{display:flex;flex-direction:column;align-items:center;position:absolute;left:50%;transform:translateX(-50%);gap:2px;}
-        .header-brand i{color:var(--primary-cyan);font-size:24px;text-shadow:var(--shadow-glow);}
-        .header-brand h2{font-family:var(--font-display);font-size:14px;font-weight:900;letter-spacing:1px;color:var(--cream-white);margin:0;}
-        .header-brand span{color:var(--primary-cyan);}
-        .header-btn.prof{font-size:22px;color:var(--text-dim);}
-        .esports-btn{background:var(--primary-gradient);color:#fff;border:none;box-shadow:0 4px 15px rgba(0,210,255,0.4);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-transform:uppercase;font-family:var(--font-display);font-weight:800;border-radius:12px;padding:12px;font-size:12px;transition:0.2s;}
-        .esports-btn:active{transform:scale(0.95);}
-        .quick-links-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:24px;}
-        .ql-item{background:var(--card-bg);border-radius:14px;padding:12px 5px;display:flex;flex-direction:column;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;}
-        .ql-icon{width:36px;height:36px;background:rgba(0,210,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--primary-cyan);font-size:20px;}
-        .ql-item span{font-size:10px;font-weight:600;}
-        .t-slider{display:flex;flex-direction:column;gap:16px;padding:0 16px 10px;}
-        .t-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;display:flex;flex-direction:column;box-shadow:var(--shadow-glow);padding:12px;}
-        .t-card-banner{width:100%;height:130px;border-radius:12px;overflow:hidden;margin-bottom:12px;position:relative;}
-        .t-card-banner img{width:100%;height:100%;object-fit:cover;}
-        .t-card-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(19,26,42,0.8),transparent);}
-        .t-card-title{font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--cream-white);text-transform:uppercase;margin-bottom:4px;}
-        .t-card-subtitle{font-size:11px;color:var(--gold);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:4px;}
-        .t-stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:12px 0;}
-        .t-stat-box{display:flex;flex-direction:column;gap:4px;}
-        .t-stat-lbl{font-size:10px;color:var(--text-dim);font-weight:500;}
-        .t-stat-val{font-size:13px;color:var(--cream-white);font-weight:700;font-family:var(--font-display);}
-        .t-card-footer{display:flex;justify-content:space-between;align-items:center;}
-        .t-reg-btn{padding:10px 20px;border-radius:20px;font-size:11px;width:auto;}
-        .card{background:var(--card-bg);border-radius:16px;padding:16px;margin:0 16px 16px;border:1px solid rgba(255,255,255,0.05);}
-        input,select{width:100%;margin:6px 0;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#fff;font-size:13px;outline:none;}
-        input:focus{border-color:var(--primary-cyan);}
-        .page-section{display:none;padding-bottom:20px;animation:fadeIn 0.3s ease;}
-        .page-section.active{display:block;}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-        .section-title{font-family:var(--font-display);font-size:15px;font-weight:800;padding:0 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
-        .hero-banner-slider{position:relative;height:170px;border-radius:16px;margin:16px;box-shadow:var(--shadow-glow);background:var(--card-bg);border:1px solid var(--card-border);overflow:hidden;}
-        .hero-slide{position:absolute;inset:0;padding:20px;opacity:0;transition:0.5s ease;pointer-events:none;}
-        .hero-slide.active{opacity:1;pointer-events:auto;}
-        .hero-img{position:absolute;right:0;top:0;height:100%;width:100%;object-fit:cover;z-index:1;}
-        .hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(11,15,25,0.95) 20%,transparent 100%);z-index:2;}
-        .hero-content{z-index:3;position:relative;}
-        .hero-badge{font-size:9px;font-weight:700;padding:4px 8px;border-radius:6px;border:1px solid rgba(0,210,255,0.3);background:rgba(0,210,255,0.1);color:var(--primary-cyan);display:inline-block;margin-bottom:8px;}
-        .hero-title{font-family:var(--font-display);font-size:20px;font-weight:900;margin-bottom:12px;color:#fff;}
-        .hero-btn{border-radius:20px;padding:8px 16px;font-size:10px;width:auto;}
-        .side-menu{position:fixed;top:0;left:-280px;width:260px;height:100%;background:#0B0F19;z-index:999999;transition:0.3s;padding:20px 16px;border-right:1px solid var(--card-border);overflow-y:auto;}
-        .side-menu.open{left:0;}
-        .sm-close{background:none;border:none;color:var(--text-dim);font-size:28px;cursor:pointer;}
-        .sm-item{display:flex;align-items:center;gap:12px;padding:12px;font-size:14px;font-weight:600;border-radius:12px;cursor:pointer;margin-bottom:4px;}
-        .sm-item i{font-size:22px;color:var(--text-dim);}
-        .sm-item.highlight{background:rgba(0,210,255,0.1);color:var(--primary-cyan);border:1px solid rgba(0,210,255,0.2);}
-        .sm-item.highlight i{color:var(--primary-cyan);}
-        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(11,15,25,0.98);backdrop-filter:blur(20px);display:flex;justify-content:space-around;padding:10px 5px 25px;z-index:1000;border-top:1px solid var(--card-border);}
-        .nav-item{color:var(--text-dim);font-size:10px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;}
-        .nav-item i{font-size:22px;}
-        .nav-item.active{color:var(--primary-cyan);font-weight:700;}
-        .nav-item.active i{transform:translateY(-2px);text-shadow:var(--shadow-glow);}
-        .g-table-row{display:flex;padding:12px;border-bottom:1px solid rgba(255,255,255,0.02);align-items:center;font-size:12px;width:max-content;min-width:100%;}
-        .g-col-stat{width:28px;text-align:center;font-family:var(--font-display);font-weight:700;}
-        .leaderboard-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;margin-bottom:8px;}
-        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999990;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
-        .modal-overlay.active{display:flex;}
-        .pub-tabs-wrap{display:flex;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--card-border);margin:0 16px 16px;}
-        .pub-tab{flex:1;background:transparent;border:none;color:var(--text-dim);padding:8px 0;font-size:12px;font-weight:600;border-radius:8px;cursor:pointer;}
-        .pub-tab.active{background:rgba(0,210,255,0.15);color:var(--primary-cyan);}
-        .pub-content{display:none;} .pub-content.active{display:block;}
-    </style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"><title>BMG Official - eFootball Community</title><link rel="icon" type="image/png" href="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'><script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<style>
+:root{--bg-main:#0B0F19;--card-bg:#131A2A;--card-border:rgba(0,210,255,0.25);--primary-cyan:#00d2ff;--primary-gradient:linear-gradient(90deg,#00d2ff 0%,#007bff 100%);--gold:#FFD700;--accent:#00FF87;--danger:#FF3366;--cream-white:#FFFFFF;--text-main:#E2E8F0;--text-dim:#94A3B8;--shadow-glow:0 0 15px rgba(0,210,255,0.15);--font-body:'Outfit',sans-serif;--font-display:'Montserrat',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font-body);-webkit-tap-highlight-color:transparent;}
+body{background-color:var(--bg-main);color:var(--text-main);padding-bottom:90px;overflow-x:hidden;width:100vw;max-width:100%;}
+::selection{background:var(--primary-cyan);color:#000;}::-webkit-scrollbar{display:none;}img{max-width:100%;}
+body:not(.is-admin) .admin-controls,body:not(.is-main-admin) .main-admin-only{display:none !important;}
+body.is-admin .admin-controls{display:flex !important;}
+#preloader{position:fixed;inset:0;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg-main);transition:0.4s ease;}
+#preloader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+.preloader-ring{width:60px;height:60px;border-radius:50%;border:3px solid rgba(0,210,255,0.1);border-top-color:var(--primary-cyan);animation:spin 0.8s linear infinite;margin-bottom:15px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:rgba(11,15,25,0.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.05);}
+.header-btn{width:40px;height:40px;background:transparent;color:var(--text-main);display:flex;align-items:center;justify-content:center;font-size:26px;border:none;cursor:pointer;}
+.header-brand{display:flex;flex-direction:column;align-items:center;position:absolute;left:50%;transform:translateX(-50%);gap:2px;}
+.header-brand i{color:var(--primary-cyan);font-size:24px;text-shadow:var(--shadow-glow);}
+.header-brand h2{font-family:var(--font-display);font-size:14px;font-weight:900;letter-spacing:1px;color:var(--cream-white);margin:0;}
+.esports-btn{background:var(--primary-gradient);color:#fff;border:none;box-shadow:0 4px 15px rgba(0,210,255,0.4);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;text-transform:uppercase;font-family:var(--font-display);font-weight:800;border-radius:12px;padding:12px;font-size:12px;transition:0.2s;}
+.esports-btn:active{transform:scale(0.95);}
+.quick-links-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:24px;}
+.ql-item{background:var(--card-bg);border-radius:14px;padding:12px 5px;display:flex;flex-direction:column;align-items:center;gap:8px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;}
+.ql-icon{width:36px;height:36px;background:rgba(0,210,255,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--primary-cyan);font-size:20px;}
+.ql-item span{font-size:10px;font-weight:600;}
+.t-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:16px;display:flex;flex-direction:column;box-shadow:var(--shadow-glow);padding:12px;margin-bottom:16px;}
+.t-card-banner{width:100%;height:130px;border-radius:12px;overflow:hidden;margin-bottom:12px;position:relative;}
+.t-card-banner img{width:100%;height:100%;object-fit:cover;}
+.t-card-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(19,26,42,0.8),transparent);}
+.t-card-title{font-family:var(--font-display);font-size:18px;font-weight:900;color:var(--cream-white);text-transform:uppercase;margin-bottom:4px;}
+.t-card-subtitle{font-size:11px;color:var(--gold);font-weight:700;margin-bottom:12px;}
+.t-stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);padding:12px 0;}
+.t-stat-box{display:flex;flex-direction:column;gap:4px;}
+.t-stat-lbl{font-size:10px;color:var(--text-dim);font-weight:500;}
+.t-stat-val{font-size:13px;color:var(--cream-white);font-weight:700;font-family:var(--font-display);}
+.card{background:var(--card-bg);border-radius:16px;padding:16px;margin:0 16px 16px;border:1px solid rgba(255,255,255,0.05);}
+input,select{width:100%;margin:6px 0;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:rgba(0,0,0,0.3);color:#fff;font-size:13px;outline:none;}
+.page-section{display:none;padding-bottom:20px;animation:fadeIn 0.3s ease;}
+.page-section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.section-title{font-family:var(--font-display);font-size:15px;font-weight:800;padding:0 16px;margin-bottom:14px;display:flex;justify-content:space-between;}
+.hero-banner-slider{position:relative;height:170px;border-radius:16px;margin:16px;box-shadow:var(--shadow-glow);background:var(--card-bg);border:1px solid var(--card-border);overflow:hidden;}
+.hero-slide{position:absolute;inset:0;padding:20px;opacity:0;transition:0.5s ease;pointer-events:none;}
+.hero-slide.active{opacity:1;pointer-events:auto;}
+.hero-img{position:absolute;right:0;top:0;height:100%;width:100%;object-fit:cover;z-index:1;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(11,15,25,0.95) 20%,transparent 100%);z-index:2;}
+.hero-content{z-index:3;position:relative;}
+.hero-title{font-family:var(--font-display);font-size:20px;font-weight:900;margin-bottom:12px;}
+.side-menu{position:fixed;top:0;left:-280px;width:260px;height:100%;background:#0B0F19;z-index:999999;transition:0.3s;padding:20px 16px;border-right:1px solid var(--card-border);overflow-y:auto;}
+.side-menu.open{left:0;}
+.sm-item{display:flex;align-items:center;gap:12px;padding:12px;font-size:14px;font-weight:600;border-radius:12px;cursor:pointer;margin-bottom:4px;}
+.sm-item i{font-size:22px;color:var(--text-dim);}
+.sm-item.highlight{background:rgba(0,210,255,0.1);color:var(--primary-cyan);border:1px solid rgba(0,210,255,0.2);}
+.sm-item.highlight i{color:var(--primary-cyan);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(11,15,25,0.98);backdrop-filter:blur(20px);display:flex;justify-content:space-around;padding:10px 5px 25px;z-index:1000;border-top:1px solid var(--card-border);}
+.nav-item{color:var(--text-dim);font-size:10px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;}
+.nav-item i{font-size:22px;}
+.nav-item.active{color:var(--primary-cyan);font-weight:700;}
+.g-table-row{display:flex;padding:12px;border-bottom:1px solid rgba(255,255,255,0.02);align-items:center;font-size:12px;width:max-content;min-width:100%;}
+.leaderboard-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;margin-bottom:8px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:999990;display:none;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
+.modal-overlay.active{display:flex;}
+.pub-tabs-wrap{display:flex;background:var(--card-bg);border-radius:12px;padding:4px;border:1px solid var(--card-border);margin:0 16px 16px;}
+.pub-tab{flex:1;background:transparent;border:none;color:var(--text-dim);padding:8px 0;font-size:12px;font-weight:600;border-radius:8px;}
+.pub-tab.active{background:rgba(0,210,255,0.15);color:var(--primary-cyan);}
+.pub-content{display:none;} .pub-content.active{display:block;}
+</style>
 </head>
 <body>
+<div id="preloader"><div class="preloader-ring"></div><div class="preloader-title">BMG <span style="color:var(--primary-cyan);">OFFICIAL</span></div></div>
+<div id="drawOverlay" class="modal-overlay"><div style="width:100%;max-width:320px;text-align:center;"><h2 style="color:var(--primary-cyan);font-family:var(--font-display);font-size:22px;margin-bottom:10px;">DRAW CEREMONY</h2><p id="drawStatusTxt" style="color:var(--text-muted);font-size:12px;margin-bottom:20px;">Preparing...</p><div id="drawArena" style="display:flex;align-items:center;justify-content:space-around;height:140px;"><div style="width:40%;"><img id="drawImg1" src="" style="width:55px;border-radius:50%;border:2px solid var(--primary-cyan);margin-bottom:5px;"><span id="drawName1" style="font-size:12px;color:#fff;">P1</span></div><div style="font-family:var(--font-display);color:var(--gold);font-size:20px;">VS</div><div style="width:40%;"><img id="drawImg2" src="" style="width:55px;border-radius:50%;border:2px solid var(--primary-cyan);margin-bottom:5px;"><span id="drawName2" style="font-size:12px;color:#fff;">P2</span></div></div><button id="drawNextBtn" class="esports-btn" style="width:80%;margin:20px auto;" onclick="animateNextDraw()">NEXT DRAW</button><button id="drawFinishBtn" class="esports-btn" style="background:var(--accent);width:80%;margin:20px auto;display:none;" onclick="finishDraw()">SAVE FIXTURES</button></div></div>
+<div class="header"><button class="header-btn" onclick="document.getElementById('sideMenu').classList.add('open')"><i class='bx bx-menu-alt-left'></i></button><div class="header-brand"><i class='bx bxs-gamepad'></i><h2>BMG <span>OFFICIAL</span></h2></div><button class="header-btn prof" onclick="switchTab('authPage')"><i class='bx bx-user'></i></button></div>
+<div id="sideMenu" class="side-menu"><div class="sm-header"><h3>MENU</h3><button style="background:none;border:none;color:#fff;font-size:24px;" onclick="document.getElementById('sideMenu').classList.remove('open')">&times;</button></div><div id="smLoginSection"><div class="sm-item highlight" onclick="switchMenuTab('authPage')"><i class='bx bx-log-in'></i> LOGIN</div></div><div id="smProfileSection" style="display:none; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:15px; margin-bottom:15px;"><div class="sm-item" onclick="switchMenuTab('profile')"><img id="smAvatar" src="" style="width:30px; height:30px; border-radius:50%; border:2px solid var(--primary-cyan);"><span id="smName" style="color:#fff;">Name</span></div></div><div class="sm-item" onclick="switchMenuTab('home')"><i class='bx bx-home-alt-2'></i> Home</div><div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class='bx bx-trophy'></i> Events</div><div class="sm-item" onclick="switchMenuTab('myMatchesTab')"><i class='bx bx-joystick'></i> My Matches</div><div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class='bx bx-bar-chart-alt-2'></i> Rankings</div><div class="sm-item" onclick="switchMenuTab('profile')"><i class='bx bx-user-circle'></i> Profile</div></div>
+<div id="authPage" class="page-section"><div class="card" id="loginBox" style="text-align:center;"><h2 style="color:var(--primary-cyan);font-family:var(--font-display);margin-bottom:15px;">LOGIN</h2><input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPassword" placeholder="Password"><button class="esports-btn" style="width:100%;margin-top:10px;" onclick="loginWithEmail()">Log In</button><p style="color:var(--primary-cyan);margin-top:15px;cursor:pointer;" onclick="toggleAuth('signup')">Create Account</p></div><div class="card" id="signupBox" style="text-align:center;display:none;"><h2 style="color:var(--gold);font-family:var(--font-display);margin-bottom:15px;">REGISTER</h2><input type="text" id="regName" placeholder="Full Name"><input type="text" id="regKonami" placeholder="Konami UID"><input type="text" id="regDevice" placeholder="Device Name"><input type="url" id="regFb" placeholder="Facebook Link"><input type="file" id="regAvatarFile" accept="image/*"><input type="email" id="regEmail" placeholder="Email"><input type="password" id="regPassword" placeholder="Password"><button id="regBtn" class="esports-btn" style="background:var(--gold);color:#000;width:100%;margin-top:10px;" onclick="signUpWithEmail()">Sign Up</button><p style="color:var(--gold);margin-top:15px;cursor:pointer;" onclick="toggleAuth('login')">Have account? Log In</p></div></div>
+<div id="home" class="page-section active" style="padding-top:0;"><div class="hero-banner-slider"><div class="hero-slide active"><img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img"><div class="hero-overlay"></div><div class="hero-content"><span class="hero-badge">SEASON 1</span><h1 class="hero-title">NEW ERA<br><span style="color:var(--primary-cyan)">OF LEGENDS</span></h1><button class="esports-btn" style="padding:8px 16px;font-size:10px;" onclick="switchTab('tournamentsTab')">JOIN EVENT</button></div></div><div class="hero-slide"><img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img"><div class="hero-overlay"></div><div class="hero-content"><span class="hero-badge" style="color:var(--gold);background:rgba(255,215,0,0.1);border-color:var(--gold);">ELITE</span><h1 class="hero-title">BECOME<br><span style="color:var(--gold)">CHAMPION</span></h1><button class="esports-btn" style="padding:8px 16px;font-size:10px;" onclick="switchTab('leaderboard')">RANKINGS</button></div></div></div><div class="quick-links-grid"><div class="ql-item" onclick="switchTab('tournamentsTab')"><div class="ql-icon"><i class='bx bxs-trophy'></i></div><span>Events</span></div><div class="ql-item" onclick="switchTab('myMatchesTab')"><div class="ql-icon" style="color:var(--accent);background:rgba(0,255,135,0.1);"><i class='bx bxs-gamepad'></i></div><span>Matches</span></div><div class="ql-item" onclick="switchTab('leaderboard')"><div class="ql-icon" style="color:var(--gold);background:rgba(255,215,0,0.1);"><i class='bx bxs-bar-chart-alt-2'></i></div><span>Ranking</span></div><div class="ql-item" onclick="switchTab('profile')"><div class="ql-icon" style="color:#a855f7;background:rgba(168,85,247,0.1);"><i class='bx bxs-user'></i></div><span>Profile</span></div></div><div class="section-title">Ongoing Events <span onclick="switchTab('tournamentsTab')" style="color:var(--primary-cyan);font-size:11px;">See All</span></div><div id="homeTournamentsList"></div><div class="section-title" style="margin-top:10px;">Top Players <span style="color:var(--gold);font-size:11px;"><i class='bx bxs-star'></i> Live</span></div><div style="padding:0 16px;" id="homeLeaderboardList"></div></div>
+<div id="tournamentsTab" class="page-section"><div class="section-title">All Events</div><div id="allTournamentsList"></div></div>
+<div id="myMatchesTab" class="page-section"><div class="section-title">My Schedule <span id="myMatchCountText" style="color:var(--primary-cyan);font-size:10px;">0 Upcoming</span></div><div id="myMatchesList" style="padding:0 16px;"></div></div>
+<div id="tournamentDetails" class="page-section"><div class="card" style="border-color:var(--primary-cyan);"><button onclick="switchTab('tournamentsTab')" style="background:none;border:none;color:var(--text-dim);margin-bottom:10px;"><i class='bx bx-left-arrow-alt'></i> Back</button><h2 id="tdName" style="color:#fff;font-family:var(--font-display);font-size:16px;">Tourney Name</h2><div style="display:flex;gap:10px;margin-top:10px;font-size:11px;"><span id="tdPrize" style="color:var(--gold);">Prize</span><span id="tdFormat" style="color:var(--primary-cyan);">Format</span></div><div class="admin-controls" id="tdAdminControls" style="margin-top:10px;display:none;"><button class="esports-btn" style="background:var(--danger);box-shadow:none;width:100%;" onclick="advanceToKnockout()">Knockout Stage</button></div></div><div class="pub-tabs-wrap"><button class="pub-tab active" onclick="switchTdTab('tdGroups',this)" id="tabBtnGroups">Groups</button><button class="pub-tab" onclick="switchTdTab('tdBracket',this)" id="tabBtnBracket">Knockout</button><button class="pub-tab" onclick="switchTdTab('tdMatches',this)" id="tabBtnMatches">Matches</button></div><div id="tdGroups" class="pub-content active" style="padding:0 16px;"></div><div id="tdBracket" class="pub-content" style="padding:0 16px;"></div><div id="tdMatches" class="pub-content" style="padding:0 16px;"></div></div>
+<div id="leaderboard" class="page-section"><div class="section-title">Global Rankings</div><div style="padding:0 16px;" id="leaderboardList"></div></div>
+<div id="profile" class="page-section"><div class="section-title">Player Profile</div><div style="text-align:center;margin-bottom:20px;"><img id="myProfAvatar" src="" style="width:80px;height:80px;border-radius:50%;border:2px solid var(--primary-cyan);margin-bottom:10px;"><h2 id="myProfName" style="font-family:var(--font-display);font-size:18px;display:flex;align-items:center;justify-content:center;gap:5px;">Name</h2></div><div style="display:flex;gap:10px;padding:0 16px;margin-bottom:15px;text-align:center;"><div style="flex:1;background:var(--card-bg);padding:10px;border-radius:10px;"><div id="myProfRank" style="color:var(--primary-cyan);font-weight:800;font-size:16px;">#--</div><div style="font-size:9px;color:var(--text-dim);">RANK</div></div><div style="flex:1;background:var(--card-bg);padding:10px;border-radius:10px;"><div id="myProfWR" style="color:var(--accent);font-weight:800;font-size:16px;">0%</div><div style="font-size:9px;color:var(--text-dim);">WIN RATE</div></div><div style="flex:1;background:var(--card-bg);padding:10px;border-radius:10px;"><div id="myProfTrophies" style="color:var(--gold);font-weight:800;font-size:16px;">0</div><div style="font-size:9px;color:var(--text-dim);">TROPHIES</div></div></div><div class="pub-tabs-wrap"><button class="pub-tab active" onclick="switchTabBox('myInfo',this)">Info</button><button class="pub-tab" onclick="switchTabBox('myForm',this)">Form</button></div><div id="myInfo" class="pub-content active card"><p style="font-size:11px;color:var(--text-dim);">UID: <span id="myInfoUid" style="color:#fff;">N/A</span></p><p style="font-size:11px;color:var(--text-dim);margin-top:5px;">Device: <span id="myInfoDevice" style="color:#fff;">N/A</span></p></div><div id="myForm" class="pub-content card"></div><button onclick="logOut()" class="esports-btn" style="background:transparent;border:1px solid var(--danger);color:var(--danger);width:calc(100% - 32px);margin:0 16px;">Logout</button></div>
+<div id="admin" class="page-section"><div class="section-title" style="color:var(--danger);">Admin Panel</div><div class="card"><h3 style="color:var(--danger);font-size:14px;margin-bottom:10px;">Pending Results</h3><div id="adminPendingResultsList" style="max-height:200px;overflow-y:auto;font-size:11px;"></div></div><div class="card main-admin-only"><div style="display:flex;justify-content:space-between;margin-bottom:10px;"><h3 style="color:var(--accent);font-size:14px;">Players <span id="totalRegisteredCount" style="color:#fff;font-size:10px;"></span></h3><button onclick="copyAllPlayerNames()" style="background:rgba(255,255,255,0.1);border:none;color:#fff;padding:4px 8px;border-radius:5px;font-size:9px;">Copy Names</button></div><input type="text" id="adminPlayerSearch" placeholder="Search..." onkeyup="filterAdminPlayers()"><div id="adminPlayerList" style="max-height:200px;overflow-y:auto;margin-top:10px;"></div><div id="adminEditPlayerForm" style="display:none;margin-top:15px;border-top:1px solid rgba(255,255,255,0.1);padding-top:10px;"><input type="hidden" id="editPlayerUid"><input type="text" id="editPlayerName"><select id="editPlayerRole"><option value="user">User</option><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="esports-btn" onclick="savePlayerEdit()">Save</button></div></div><div class="card" id="adminTournamentPlayersCard" style="display:none;"><h3 style="color:var(--primary-cyan);font-size:14px;">Manage Tourney Players</h3><input type="hidden" id="manageTid"><input type="text" id="searchRegisteredTourneyPlayers" placeholder="Search..." onkeyup="filterTourneyRegisteredPlayers()"><div id="tRegisteredPlayerList" style="max-height:250px;overflow-y:auto;margin-top:10px;"></div></div><div class="card main-admin-only"><h3 style="color:var(--primary-cyan);font-size:14px;">Create Event</h3><input type="text" id="tName" placeholder="Name"><select id="tFormatType"><option value="Knockout">Knockout</option><option value="Group Stage">Group Stage</option></select><select id="tFormat"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select><input type="text" id="tSlots" placeholder="Slots"><input type="text" id="tPrize" placeholder="Prize"><button class="esports-btn" onclick="createTournament()">Publish</button></div></div>
+<div id="submitScoreModal" class="modal-overlay" onclick="closeModal('submitScoreModal')"><div class="modal-card" onclick="event.stopPropagation()"><h3 style="color:var(--primary-cyan);font-family:var(--font-display);font-size:16px;text-align:center;margin-bottom:15px;">Submit Score</h3><input type="hidden" id="submitTid"><input type="hidden" id="submitGroupRound"><input type="hidden" id="submitMatchId"><input type="hidden" id="submitMyUid"><input type="hidden" id="submitOppUid"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;"><div style="text-align:center;"><span id="scoreMyName" style="font-size:12px;display:block;margin-bottom:5px;">Me</span><input type="number" id="scoreMyGoals" style="width:60px;text-align:center;font-size:20px;"></div><div style="font-weight:bold;color:var(--text-dim);">VS</div><div style="text-align:center;"><span id="scoreOppName" style="font-size:12px;display:block;margin-bottom:5px;">Opponent</span><input type="number" id="scoreOppGoals" style="width:60px;text-align:center;font-size:20px;"></div></div><button class="esports-btn" style="width:100%;" onclick="submitScoreFinal()">Send</button></div></div>
+<div id="publicProfileModal" class="modal-overlay" style="align-items:flex-start;overflow-y:auto;padding:0;background:var(--bg-main);"><div style="width:100%;padding:20px;"><button onclick="closeModal('publicProfileModal')" style="background:none;border:none;color:#fff;font-size:24px;margin-bottom:15px;">&times;</button><div style="text-align:center;"><img id="pubProfAvatar" src="" style="width:80px;height:80px;border-radius:50%;border:2px solid var(--primary-cyan);"><h2 id="pubProfName" style="font-size:18px;margin-top:10px;display:flex;justify-content:center;align-items:center;gap:5px;">Name</h2></div><div style="display:flex;gap:10px;margin:20px 0;text-align:center;"><div style="flex:1;background:var(--card-bg);padding:10px;border-radius:10px;"><div id="pubProfRank" style="color:var(--primary-cyan);font-weight:bold;">#--</div><div style="font-size:9px;color:var(--text-dim);">RANK</div></div><div style="flex:1;background:var(--card-bg);padding:10px;border-radius:10px;"><div id="pubProfWR" style="color:var(--accent);font-weight:bold;">0%</div><div style="font-size:9px;color:var(--text-dim);">WIN RATE</div></div></div><div id="pubForm" class="card" style="margin:0;"></div></div></div>
+<div class="bottom-nav"><div class="nav-item active" onclick="switchTab('home',this)"><i class='bx bxs-home'></i><span>Home</span></div><div class="nav-item" onclick="switchTab('tournamentsTab',this)"><i class='bx bxs-trophy'></i><span>Events</span></div><div class="nav-item" onclick="switchTab('myMatchesTab',this)"><i class='bx bxs-gamepad'></i><span>Matches</span></div><div class="nav-item" onclick="switchTab('leaderboard',this)"><i class='bx bxs-bar-chart-alt-2'></i><span>Ranking</span></div><div class="nav-item" onclick="switchTab('profile',this)"><i class='bx bxs-user'></i><span>Profile</span></div><div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin',this)"><i class='bx bxs-cog'></i><span>Admin</span></div></div>
 
-    <div id="preloader"><div class="preloader-ring"></div><div class="preloader-title">BMG <span style="color:var(--primary-cyan);">OFFICIAL</span></div></div>
-    
-    <div id="drawOverlay" class="modal-overlay">
-        <div style="width:100%;max-width:320px;text-align:center;"><h2 style="color:var(--primary-cyan);font-family:var(--font-display);font-size:22px;margin-bottom:10px;">DRAW CEREMONY</h2>
-        <p id="drawStatusTxt" style="color:var(--text-muted);font-size:12px;margin-bottom:20px;">Preparing...</p>
-        <div id="drawArena" class="draw-arena" style="display:flex;align-items:center;justify-content:space-around;height:140px;">
-            <div class="draw-player" id="drawP1" style="width:40%;"><img id="drawImg1" src="" style="width:55px;border-radius:50%;border:2px solid var(--primary-cyan);margin-bottom:5px;"><span id="drawName1" style="font-size:12px;color:#fff;">P1</span></div>
-            <div class="draw-vs" style="font-family:var(--font-display);color:var(--gold);font-size:20px;">VS</div>
-            <div class="draw-player" id="drawP2" style="width:40%;"><img id="drawImg2" src="" style="width:55px;border-radius:50%;border:2px solid var(--primary-cyan);margin-bottom:5px;"><span id="drawName2" style="font-size:12px;color:#fff;">P2</span></div>
-        </div>
-        <button id="drawNextBtn" class="esports-btn" style="width:80%;margin:20px auto;" onclick="animateNextDraw()">NEXT DRAW</button>
-        <button id="drawFinishBtn" class="esports-btn" style="background:var(--accent);width:80%;margin:20px auto;display:none;" onclick="finishDraw()">SAVE FIXTURES</button></div>
-    </div>
+<script>
+let currentUserRole="user",allUsersData=[],fullLeaderboardData=[],currentManageTid=null,currentTourneyPlayers={},tourneyPlayerFilterTab='all',pendingDrawFixtures={},drawQueue=[],currentDrawIndex=0,pendingDrawTid=null,tdUnsubscribe=null;
+const firebaseConfig={apiKey:"AIzaSyDsnRIuo614UKEoNwBJxSdQvkJzUHL-sE0",authDomain:"bmg-official-c0d9a.firebaseapp.com",projectId:"bmg-official-c0d9a",storageBucket:"bmg-official-c0d9a.firebasestorage.app",messagingSenderId:"686980285364",appId:"1:686980285364:web:66e38cf3b7a559f051e8e1"};
+firebase.initializeApp(firebaseConfig); const auth=firebase.auth(); const db=firebase.firestore();
+setTimeout(()=>document.getElementById('preloader')?.classList.add('hide'),3000);
+function closeModal(id){document.getElementById(id).classList.remove('active');}
+function switchTabBox(id,btn){let p=btn.closest('.page-section')||btn.closest('.modal-overlay');p.querySelectorAll('.pub-content').forEach(e=>e.classList.remove('active'));p.querySelectorAll('.pub-tab').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}
+function copyUID(id){let t=document.getElementById(id).innerText;if(t&&!t.includes("N/A")){navigator.clipboard.writeText(t.trim().replace("N/A","")).then(()=>alert("Copied!"));}}
 
-    <div class="header">
-        <button class="header-btn" onclick="document.getElementById('sideMenu').classList.add('open')"><i class='bx bx-menu-alt-left'></i></button>
-        <div class="header-brand"><i class='bx bxs-gamepad'></i><h2>BMG <span>OFFICIAL</span></h2></div>
-        <button id="loginBtn" class="header-btn prof" onclick="switchTab('authPage')"><i class='bx bx-user'></i></button>
-    </div>
+db.collection("users").onSnapshot(snap=>{allUsersData=[];snap.forEach(doc=>{let d=doc.data();d.uid=doc.id;allUsersData.push(d);}); let cEl=document.getElementById('totalRegisteredCount');if(cEl)cEl.innerText=`Total: ${allUsersData.length} Players`; if(currentUserRole==="admin"||currentUserRole==="moderator"){renderAdminPlayers(allUsersData);if(currentManageTid)renderTourneyRegisteredPlayers();} if(auth.currentUser&&document.getElementById('profile').classList.contains('active'))loadPlayerStats();});
+function getRoleIcon(uid){let u=allUsersData.find(x=>x.uid===uid);if(u){if(u.role==='admin')return `<i class='bx bxs-crown' style='color:var(--gold);font-size:16px;'></i>`;if(u.role==='moderator')return `<i class='bx bxs-shield' style='color:var(--primary-cyan);font-size:16px;'></i>`;}return '';}
+function copyAllPlayerNames(){if(!allUsersData.length)return alert("No players!");navigator.clipboard.writeText(allUsersData.map((p,i)=>`${i+1}. ${p.name}`).join('\n')).then(()=>alert("Copied!"));}
 
-    <div id="sideMenu" class="side-menu">
-        <div class="sm-header"><h3>MENU</h3><button class="sm-close" onclick="document.getElementById('sideMenu').classList.remove('open')">&times;</button></div>
-        <div id="smLoginSection"><div class="sm-item highlight" onclick="switchMenuTab('authPage')"><i class='bx bx-log-in'></i> LOGIN / SIGN UP</div></div>
-        <div id="smProfileSection" style="display:none; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:15px; margin-bottom:15px;">
-            <div class="sm-item" onclick="switchMenuTab('profile')"><img id="smAvatar" src="" style="width:30px; height:30px; border-radius:50%; border:2px solid var(--primary-cyan);"><span id="smName" style="color:#fff;">Name</span></div>
-        </div>
-        <div class="sm-group-title">Navigate</div>
-        <div class="sm-item" onclick="switchMenuTab('home')"><i class='bx bx-home-alt-2'></i> Home</div>
-        <div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class='bx bx-trophy'></i> Events</div>
-        <div class="sm-item" onclick="switchMenuTab('myMatchesTab')"><i class='bx bx-joystick'></i> My Matches</div>
-        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class='bx bx-bar-chart-alt-2'></i> Rankings</div>
-        <div class="sm-item" onclick="switchMenuTab('profile')"><i class='bx bx-user-circle'></i> Profile</div>
-    </div>
+function switchTab(id,el){if((id==='profile'||id==='myMatchesTab')&&!auth.currentUser)id='authPage';document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el&&el.classList.contains('nav-item'))el.classList.add('active');window.scrollTo(0,0);if(id==='myMatchesTab')loadMyMatches();if(id==='profile')loadPlayerStats();if(id==='admin')loadPendingResults();document.getElementById('sideMenu').classList.remove('open');}
+function switchMenuTab(id){switchTab(id);}
+function toggleAuth(t){document.getElementById('loginBox').style.display=t==='signup'?'none':'block';document.getElementById('signupBox').style.display=t==='signup'?'block':'none';}
+setInterval(()=>{let s=document.querySelectorAll('.hero-slide'),d=document.querySelectorAll('.dot');if(!s.length)return;let a=0;s.forEach((x,i)=>{if(x.classList.contains('active'))a=i;});s[a].classList.remove('active');d[a].classList.remove('active');let n=(a+1)%s.length;s[n].classList.add('active');d[n].classList.add('active');},4000);
 
-    <div id="authPage" class="page-section">
-        <div class="card" id="loginBox" style="text-align:center;">
-            <h2 style="color:var(--primary-cyan);font-family:var(--font-display);margin-bottom:15px;">LOGIN</h2>
-            <input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPassword" placeholder="Password">
-            <button class="esports-btn" style="width:100%;margin-top:10px;" onclick="loginWithEmail()">Log In</button>
-            <p class="link-text" onclick="toggleAuth('signup')">New? <b>Create Account</b></p>
-        </div>
-        <div class="card" id="signupBox" style="text-align:center;display:none;">
-            <h2 style="color:var(--gold);font-family:var(--font-display);margin-bottom:15px;">REGISTER</h2>
-            <input type="text" id="regName" placeholder="Full Name"><input type="text" id="regKonami" placeholder="Konami UID"><input type="text" id="regDevice" placeholder="Device Name">
-            <input type="url" id="regFb" placeholder="Facebook Link"><input type="file" id="regAvatarFile" accept="image/*" style="padding:10px;">
-            <input type="email" id="regEmail" placeholder="Email"><input type="password" id="regPassword" placeholder="Password">
-            <button id="regBtn" class="esports-btn" style="background:var(--gold);color:#000;width:100%;margin-top:10px;" onclick="signUpWithEmail()">Sign Up</button>
-            <p class="link-text" onclick="toggleAuth('login')">Have account? <b>Log In</b></p>
-        </div>
-    </div>
+async function signUpWithEmail(){let n=document.getElementById('regName').value,e=document.getElementById('regEmail').value,p=document.getElementById('regPassword').value;if(!n||!e||p.length<6)return alert("Fill required info!");try{let u=await auth.createUserWithEmailAndPassword(e,p);await u.user.updateProfile({displayName:n});await db.collection("users").doc(u.user.uid).set({name:n,email:e,role:"user"});alert("Created!");switchTab('home');}catch(err){alert(err.message);}}
+function loginWithEmail(){let e=document.getElementById('loginEmail').value,p=document.getElementById('loginPassword').value;if(e&&p)auth.signInWithEmailAndPassword(e,p).then(()=>switchTab('home')).catch(err=>alert(err.message));}
+function logOut(){auth.signOut().then(()=>switchTab('home'));}
 
-    <div id="home" class="page-section active" style="padding-top:0;">
-        <div class="hero-banner-slider">
-            <div class="hero-slide active"><img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img"><div class="hero-overlay"></div><div class="hero-content"><span class="hero-badge">SEASON 1</span><h1 class="hero-title">NEW ERA<br><span style="color:var(--primary-cyan)">OF LEGENDS</span></h1><button class="esports-btn hero-btn" onclick="switchTab('tournamentsTab')">JOIN EVENT</button></div></div>
-        </div>
-        <div class="quick-links-grid">
-            <div class="ql-item" onclick="switchTab('tournamentsTab')"><div class="ql-icon"><i class='bx bxs-trophy'></i></div><span>Events</span></div>
-            <div class="ql-item" onclick="switchTab('myMatchesTab')"><div class="ql-icon" style="color:var(--accent); background:rgba(0,255,135,0.1);"><i class='bx bxs-gamepad'></i></div><span>Matches</span></div>
-            <div class="ql-item" onclick="switchTab('leaderboard')"><div class="ql-icon" style="color:var(--gold); background:rgba(255,215,0,0.1);"><i class='bx bxs-bar-chart-alt-2'></i></div><span>Ranking</span></div>
-            <div class="ql-item" onclick="switchTab('profile')"><div class="ql-icon" style="color:#a855f7; background:rgba(168,85,247,0.1);"><i class='bx bxs-user'></i></div><span>Profile</span></div>
-        </div>
-        <div class="section-title">Ongoing Events <span onclick="switchTab('tournamentsTab')" style="color:var(--primary-cyan);">See All</span></div>
-        <div class="t-slider" id="homeTournamentsList"></div>
-        <div class="section-title" style="margin-top:10px;">Top Players <span style="color:var(--gold);"><i class='bx bxs-star'></i> Live</span></div>
-        <div style="padding:0 16px;" id="homeLeaderboardList"></div>
-    </div>
+auth.onAuthStateChanged(u=>{
+    if(u){
+        document.getElementById('loginBtn').style.display='none';document.getElementById('smLoginSection').style.display='none';document.getElementById('smProfileSection').style.display='block';
+        db.collection("users").doc(u.uid).get().then(doc=>{currentUserRole=doc.exists?(doc.data().role||"user"):"user";if(u.email==="mynewff123@gmail.com")currentUserRole="admin";document.getElementById('smName').innerHTML=`${doc.data()?.name||u.displayName} ${getRoleIcon(u.uid)}`;document.body.classList.remove('is-main-admin','is-admin');if(currentUserRole==="admin"||currentUserRole==="moderator"){document.getElementById('navAdmin').classList.add('show');document.body.classList.add('is-admin');if(currentUserRole==="admin")document.body.classList.add('is-main-admin');}});
+    }else{document.getElementById('loginBtn').style.display='flex';document.getElementById('smLoginSection').style.display='block';document.getElementById('smProfileSection').style.display='none';document.getElementById('navAdmin').classList.remove('show');document.body.classList.remove('is-main-admin','is-admin');currentUserRole="user";}
+});
 
-    <div id="tournamentsTab" class="page-section"><div class="section-title">All Events</div><div class="t-slider" id="allTournamentsList"></div></div>
-    <div id="myMatchesTab" class="page-section"><div class="section-title">My Schedule <span id="myMatchCountText" style="color:var(--primary-cyan); font-size:10px;">0 Upcoming</span></div><div id="myMatchesList" style="padding:0 16px;"></div></div>
+function loadPlayerStats(){
+    let u=auth.currentUser;if(!u)return;
+    db.collection("users").doc(u.uid).get().then(d=>{if(d.exists){let x=d.data();document.getElementById('myProfName').innerHTML=`${x.name} ${getRoleIcon(u.uid)}`;document.getElementById('myInfoUid').innerText=x.konamiUid||"N/A";document.getElementById('myProfRank').innerText=`#${fullLeaderboardData.findIndex(z=>z.uid===u.uid)+1||"--"}`;}});
+    db.collection("playerStats").doc(u.uid).get().then(d=>{if(d.exists){let s=d.data();document.getElementById('myProfMP').innerText=s.played||0;document.getElementById('myProfWins').innerText=s.wins||0;document.getElementById('myProfWR').innerText=(s.played>0?Math.round((s.wins/s.played)*100):0)+'%';renderFormTab(s.matches||[],'myForm');}});
+}
 
-    <div id="tournamentDetails" class="page-section">
-        <div class="card" style="border-color:var(--primary-cyan);"><button onclick="switchTab('tournamentsTab')" style="background:none; border:none; color:var(--text-dim); margin-bottom:10px;"><i class='bx bx-left-arrow-alt'></i> Back</button><h2 id="tdName" style="color:#fff; font-family:var(--font-display); font-size:16px;">Tourney Name</h2><div style="display:flex; gap:10px; margin-top:10px; font-size:11px;"><span id="tdPrize" style="color:var(--gold);">Prize</span><span id="tdFormat" style="color:var(--primary-cyan);">Format</span></div>
-        <div class="admin-controls" id="tdAdminControls" style="margin-top:10px; display:none;"><button class="esports-btn" style="background:var(--danger); box-shadow:none; width:100%;" onclick="advanceToKnockout()">Knockout Stage</button></div></div>
-        <div class="pub-tabs-wrap"><button class="pub-tab active" onclick="switchTdTab('tdGroups', this)" id="tabBtnGroups">Groups</button><button class="pub-tab" onclick="switchTdTab('tdBracket', this)" id="tabBtnBracket">Knockout</button><button class="pub-tab" onclick="switchTdTab('tdMatches', this)" id="tabBtnMatches">Matches</button></div>
-        <div id="tdGroups" class="pub-content active" style="padding:0 16px;"></div><div id="tdBracket" class="pub-content" style="padding:0 16px;"></div><div id="tdMatches" class="pub-content" style="padding:0 16px;"></div>
-    </div>
+function renderFormTab(m,id){
+    if(!m||!m.length){document.getElementById(id).innerHTML="<p style='color:var(--text-dim);font-size:12px;text-align:center;'>No matches.</p>";return;}
+    document.getElementById(id).innerHTML=m.slice(-10).reverse().map((x,i)=>`<div style="display:flex;justify-content:space-between;background:rgba(0,0,0,0.3);padding:10px;border-radius:10px;margin-bottom:5px;border-left:3px solid ${x.result==='W'?'var(--accent)':x.result==='D'?'var(--text-dim)':'var(--danger)'};"><span style="color:#fff;font-size:12px;">vs ${x.opp}</span><strong style="color:var(--cream-white);">${x.myScore}-${x.oppScore}</strong></div>`).join('');
+}
 
-    <div id="leaderboard" class="page-section"><div class="section-title">Global Rankings</div><div style="padding:0 16px;" id="leaderboardList"></div></div>
+function openPublicProfile(uid){
+    if(!uid||uid==='bye'||uid==='tbd')return;
+    db.collection("users").doc(uid).get().then(d=>{if(d.exists){document.getElementById('pubProfName').innerHTML=`${d.data().name} ${getRoleIcon(uid)}`;document.getElementById('pubInfoUid').innerText=d.data().konamiUid||"N/A";document.getElementById('publicProfileModal').classList.add('active');}});
+    db.collection("playerStats").doc(uid).get().then(d=>{if(d.exists){let s=d.data();document.getElementById('pubProfMP').innerText=s.played||0;document.getElementById('pubProfWins').innerText=s.wins||0;document.getElementById('pubProfWR').innerText=(s.played>0?Math.round((s.wins/s.played)*100):0)+'%';renderFormTab(s.matches||[],'pubForm');}});
+}
 
-    <div id="profile" class="page-section">
-        <div class="section-title">Player Profile</div>
-        <div style="text-align:center; margin-bottom:20px;"><img id="myProfAvatar" src="" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary-cyan); margin-bottom:10px;"><h2 id="myProfName" style="font-family:var(--font-display); font-size:18px; display:flex; align-items:center; justify-content:center; gap:5px; color:#fff;">Name</h2></div>
-        <div style="display:flex; gap:10px; padding:0 16px; margin-bottom:15px; text-align:center;">
-            <div style="flex:1; background:var(--card-bg); padding:10px; border-radius:10px;"><div id="myProfRank" style="color:var(--primary-cyan); font-weight:800; font-size:16px;">#--</div><div style="font-size:9px; color:var(--text-dim);">RANK</div></div>
-            <div style="flex:1; background:var(--card-bg); padding:10px; border-radius:10px;"><div id="myProfWR" style="color:var(--accent); font-weight:800; font-size:16px;">0%</div><div style="font-size:9px; color:var(--text-dim);">WIN RATE</div></div>
-            <div style="flex:1; background:var(--card-bg); padding:10px; border-radius:10px;"><div id="myProfTrophies" style="color:var(--gold); font-weight:800; font-size:16px;">0</div><div style="font-size:9px; color:var(--text-dim);">TROPHIES</div></div>
-        </div>
-        <div class="pub-tabs-wrap"><button class="pub-tab active" onclick="switchTabBox('myInfo', this)">Info</button><button class="pub-tab" onclick="switchTabBox('myForm', this)">Form</button></div>
-        <div id="myInfo" class="pub-content active card"><p style="font-size:12px; color:var(--text-dim); margin-bottom:8px;">UID: <span id="myInfoUid" style="color:#fff;">N/A</span></p><p style="font-size:12px; color:var(--text-dim);">Device: <span id="myInfoDevice" style="color:#fff;">N/A</span></p></div>
-        <div id="myForm" class="pub-content card" style="padding:10px;"></div>
-        <button onclick="logOut()" class="esports-btn" style="background:transparent; border:1px solid var(--danger); color:var(--danger); width:calc(100% - 32px); margin:0 16px; box-shadow:none;">Logout</button>
-    </div>
+db.collection("tournaments").orderBy("time","desc").onSnapshot(snap=>{
+    let h="",a="";snap.forEach(doc=>{
+        let t=doc.data(),f=t.type||'Knockout';
+        let b=t.status==='Live'?`<button class="esports-btn" style="background:rgba(0,210,255,0.1);color:var(--primary-cyan);width:100%;box-shadow:none;padding:10px;font-size:11px;" onclick="openTournamentDetails('${doc.id}')">View Details</button>`:`<button class="esports-btn" style="padding:10px;font-size:11px;" onclick="registerForTournament('${doc.id}',this)">Register</button>`;
+        let c=`<div class="t-card" style="padding:12px; margin-bottom:15px; border-radius:16px;"><div class="t-card-banner" style="height:120px; border-radius:10px; overflow:hidden; position:relative; margin-bottom:10px;"><span style="position:absolute; top:10px; left:10px; background:var(--gold); color:#000; font-size:10px; padding:3px 8px; border-radius:5px; font-weight:bold; z-index:2;">${t.status}</span><img src="${t.image}" style="width:100%; height:100%; object-fit:cover;"></div><div style="display:flex; justify-content:space-between; align-items:center; margin:5px 0;"><h3 style="font-family:var(--font-display); font-size:16px; color:var(--cream-white); margin:0;">${t.name}</h3><span style="color:var(--gold); font-size:11px; font-weight:bold;"><i class='bx bxs-trophy'></i> ${t.prize||'TBA'}</span></div><div style="font-size:11px; color:var(--text-dim); margin-bottom:10px;">Format: <span style="color:var(--primary-cyan);">${f}</span> | Slots: ${t.slots||'Unlimited'}</div><div style="display:flex; justify-content:flex-end;">${b}</div><div class="admin-controls-card main-admin-only" style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;"><button style="background:var(--gold);color:#000;" onclick="openManageTPlayers('${doc.id}','${t.slots||'Unlimited'}')">Players</button><button style="background:var(--primary-cyan);color:#000;" onclick="generateFixturesAnimated('${doc.id}','${f}')">Draw</button><button style="background:var(--danger);color:#fff;" onclick="db.collection('tournaments').doc('${doc.id}').delete()">Delete</button></div></div>`;
+        h+=c;a+=c;
+    });
+    document.getElementById('homeTournamentsList').innerHTML=h||"<p style='color:var(--text-dim);font-size:12px;text-align:center;'>No events.</p>";document.getElementById('allTournamentsList').innerHTML=a;
+});
 
-    <div id="publicProfileModal" class="modal-overlay" style="align-items:flex-start; overflow-y:auto; padding:0; background:var(--bg-main);">
-        <div style="width:100%; padding:20px;"><button onclick="closeModal('publicProfileModal')" style="background:none; border:none; color:#fff; font-size:30px; margin-bottom:15px;">&times;</button>
-        <div style="text-align:center;"><img id="pubProfAvatar" src="" style="width:80px; height:80px; border-radius:50%; border:2px solid var(--primary-cyan);"><h2 id="pubProfName" style="font-size:18px; margin-top:10px; display:flex; justify-content:center; align-items:center; gap:5px; color:#fff;">Name</h2></div>
-        <div style="display:flex; gap:10px; margin:20px 0; text-align:center;">
-            <div style="flex:1; background:var(--card-bg); padding:10px; border-radius:10px;"><div id="pubProfRank" style="color:var(--primary-cyan); font-weight:bold;">#--</div><div style="font-size:9px; color:var(--text-dim);">RANK</div></div>
-            <div style="flex:1; background:var(--card-bg); padding:10px; border-radius:10px;"><div id="pubProfWR" style="color:var(--accent); font-weight:bold;">0%</div><div style="font-size:9px; color:var(--text-dim);">WIN RATE</div></div>
-        </div><div id="pubForm" class="card" style="margin:0; padding:10px;"></div></div>
-    </div>
+function registerForTournament(id,b){let u=auth.currentUser;if(!u)return switchTab('authPage');b.innerText="WAIT...";b.disabled=true;db.collection("tournaments").doc(id).collection("players").doc(u.uid).set({uid:u.uid,name:u.displayName,pot:"Unassigned",time:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>alert("Registered!"));}
 
-    <div id="admin" class="page-section">
-        <div class="section-title" style="color:var(--danger);">Admin Panel</div>
-        <div class="card"><h3 style="color:var(--danger); font-size:14px; margin-bottom:10px;">Pending Results</h3><div id="adminPendingResultsList" style="max-height:200px; overflow-y:auto; font-size:11px;"></div></div>
-        <div class="card main-admin-only"><div style="display:flex; justify-content:space-between; margin-bottom:10px;"><h3 style="color:var(--accent); font-size:14px;">Players</h3><button onclick="copyAllPlayerNames()" style="background:rgba(255,255,255,0.1); border:none; color:#fff; padding:4px 8px; border-radius:5px; font-size:9px;">Copy Names</button></div><input type="text" id="adminPlayerSearch" placeholder="Search..." onkeyup="filterAdminPlayers()"><div id="adminPlayerList" style="max-height:200px; overflow-y:auto; margin-top:10px;"></div>
-        <div id="adminEditPlayerForm" style="display:none; margin-top:15px; border-top:1px solid rgba(255,255,255,0.1); padding-top:10px;"><input type="hidden" id="editPlayerUid"><input type="text" id="editPlayerName"><select id="editPlayerRole"><option value="user">User</option><option value="moderator">Moderator</option><option value="admin">Admin</option></select><button class="esports-btn" style="width:100%; margin-top:10px;" onclick="savePlayerEdit()">Save</button></div></div>
-        <div class="card" id="adminTournamentPlayersCard" style="display:none;"><h3 style="color:var(--primary-cyan); font-size:14px;">Manage Tourney Players</h3><input type="hidden" id="manageTid"><input type="text" id="searchRegisteredTourneyPlayers" placeholder="Search..." onkeyup="filterTourneyRegisteredPlayers()"><div id="tRegisteredPlayerList" style="max-height:250px; overflow-y:auto; margin-top:10px;"></div><button class="esports-btn" style="width:100%; background:var(--danger); margin-top:10px; box-shadow:none;" onclick="document.getElementById('adminTournamentPlayersCard').style.display='none'">Close</button></div>
-        <div class="card main-admin-only"><h3 style="color:var(--primary-cyan); font-size:14px;">Create Event</h3><input type="text" id="tName" placeholder="Name"><select id="tFormatType"><option value="Knockout">Knockout</option><option value="Group Stage">Group Stage</option></select><select id="tFormat"><option value="Upcoming">Upcoming</option><option value="Live">Live</option></select><input type="text" id="tSlots" placeholder="Slots"><input type="text" id="tPrize" placeholder="Prize"><button class="esports-btn" style="width:100%; margin-top:10px;" onclick="createTournament()">Publish</button></div>
-    </div>
+function openManageTPlayers(id,slots){switchTab('admin');document.getElementById('adminTournamentPlayersCard').style.display='block';currentManageTid=id;tPlayersUnsubscribe=db.collection("tournaments").doc(id).collection("players").onSnapshot(s=>{currentTourneyPlayers={};s.forEach(d=>currentTourneyPlayers[d.id]=d.data());renderTourneyRegisteredPlayers();});}
 
-    <div id="submitScoreModal" class="modal-overlay" onclick="closeModal('submitScoreModal')"><div class="modal-card" onclick="event.stopPropagation()"><h3 style="color:var(--primary-cyan); font-family:var(--font-display); font-size:16px; text-align:center; margin-bottom:15px;">Submit Score</h3><input type="hidden" id="submitTid"><input type="hidden" id="submitGroupRound"><input type="hidden" id="submitMatchId"><input type="hidden" id="submitMyUid"><input type="hidden" id="submitOppUid"><div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;"><div style="text-align:center;"><span id="scoreMyName" style="font-size:12px; display:block; margin-bottom:5px; color:#fff;">Me</span><input type="number" id="scoreMyGoals" style="width:60px; text-align:center; font-size:20px;"></div><div style="font-weight:bold; color:var(--text-dim);">VS</div><div style="text-align:center;"><span id="scoreOppName" style="font-size:12px; display:block; margin-bottom:5px; color:#fff;">Opponent</span><input type="number" id="scoreOppGoals" style="width:60px; text-align:center; font-size:20px;"></div></div><button class="esports-btn" style="width:100%;" onclick="submitScoreFinal()">Send</button></div></div>
+function renderTourneyRegisteredPlayers(){
+    let q=document.getElementById('searchRegisteredTourneyPlayers')?.value.toLowerCase()||'';
+    let f=allUsersData.filter(p=>(p.name.toLowerCase().includes(q)));if(tourneyPlayerFilterTab==='added')f=f.filter(p=>!!currentTourneyPlayers[p.uid]);
+    document.getElementById('tRegisteredPlayerList').innerHTML=f.map(p=>{
+        let a=currentTourneyPlayers[p.uid];return `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; margin-bottom:5px;"><span style="font-size:12px; color:#fff; display:flex; align-items:center; gap:5px;">${p.name} ${getRoleIcon(p.uid)}</span>${a?`<select onchange="db.collection('tournaments').doc('${currentManageTid}').collection('players').doc('${p.uid}').update({pot:this.value})" style="width:80px; padding:4px; font-size:10px;"><option ${a.pot==='Pot 1'?'selected':''}>Pot 1</option><option ${a.pot==='Pot 2'?'selected':''}>Pot 2</option></select><button onclick="db.collection('tournaments').doc('${currentManageTid}').collection('players').doc('${p.uid}').delete()" style="background:var(--danger); border:none; padding:5px; border-radius:5px; color:#fff;">X</button>`:`<button onclick="db.collection('tournaments').doc('${currentManageTid}').collection('players').doc('${p.uid}').set({uid:'${p.uid}',name:'${p.name}',pot:'Pot 1'})" style="background:var(--primary-cyan); border:none; padding:5px 10px; border-radius:5px; color:#000; font-weight:bold;">Add</button>`}</div>`;
+    }).join('')||"<p style='color:var(--text-dim);font-size:11px;text-align:center;'>No players found.</p>";
+}
 
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home', this)"><i class='bx bxs-home'></i><span>Home</span></div>
-        <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class='bx bxs-trophy'></i><span>Events</span></div>
-        <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class='bx bxs-gamepad'></i><span>Matches</span></div>
-        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class='bx bxs-bar-chart-alt-2'></i><span>Ranking</span></div>
-        <div class="nav-item" onclick="switchTab('profile', this)"><i class='bx bxs-user'></i><span>Profile</span></div>
-        <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class='bx bxs-cog'></i><span>Admin</span></div>
-    </div>
+async function generateFixturesAnimated(id,fmt){
+    let s=await db.collection("tournaments").doc(id).collection("players").get();let p=[];s.forEach(d=>p.push(d.data()));if(p.length<2)return alert("Min 2 players.");
+    pendingDrawFixtures={};drawQueue=[];pendingDrawTid=id;currentDrawIndex=0;
+    if(fmt==="Group Stage"){
+        let gs={'Group A':[],'Group B':[]};p.forEach((x,i)=>gs[i%2===0?'Group A':'Group B'].push(x));pendingDrawFixtures['standings']=gs;
+        Object.keys(gs).forEach(g=>{let m=[];for(let i=0;i<gs[g].length;i++)for(let j=i+1;j<gs[g].length;j++)m.push({match:m.length+1,player1:gs[g][i],player2:gs[g][j]});pendingDrawFixtures[g]=m;});
+    }else{let m=[];for(let i=0;i<p.length;i+=2)m.push({match:i/2+1,player1:p[i],player2:p[i+1]||{name:"BYE",uid:"bye"}});pendingDrawFixtures['Round 1']=m;}
+    document.getElementById('drawOverlay').classList.add('active');document.getElementById('drawNextBtn').style.display='block';document.getElementById('drawFinishBtn').style.display='none';
+}
+function animateNextDraw(){document.getElementById('drawNextBtn').style.display='none';document.getElementById('drawFinishBtn').style.display='block';}
+function finishDraw(){db.collection("tournaments").doc(pendingDrawTid).update({status:'Live',fixtures:pendingDrawFixtures}).then(()=>{document.getElementById('drawOverlay').classList.remove('active');alert("Live!");openTournamentDetails(pendingDrawTid);});}
 
-    <script>
-        let currentUserRole="user",allUsersData=[],fullLeaderboardData=[],currentManageTid=null,currentTourneyPlayers={},tourneyPlayerFilterTab='all',tPlayersUnsubscribe=null,pendingDrawFixtures={},drawQueue=[],currentDrawIndex=0,pendingDrawTid=null,tdUnsubscribe=null;
-        const firebaseConfig={apiKey:"AIzaSyDsnRIuo614UKEoNwBJxSdQvkJzUHL-sE0",authDomain:"bmg-official-c0d9a.firebaseapp.com",projectId:"bmg-official-c0d9a",storageBucket:"bmg-official-c0d9a.firebasestorage.app",messagingSenderId:"686980285364",appId:"1:686980285364:web:66e38cf3b7a559f051e8e1"};
-        const adminEmail="mynewff123@gmail.com";
-        firebase.initializeApp(firebaseConfig);const auth=firebase.auth(),db=firebase.firestore();
-        setTimeout(()=>document.getElementById('preloader')?.classList.add('hide'),3000);
-        window.addEventListener('load',()=>setTimeout(()=>document.getElementById('preloader')?.classList.add('hide'),500));
-        function closeModal(id){document.getElementById(id).classList.remove('active');}
-        function switchTabBox(id,btn){let p=btn.closest('.page-section')||btn.closest('.modal-overlay');p.querySelectorAll('.pub-content').forEach(e=>e.classList.remove('active'));p.querySelectorAll('.pub-tab').forEach(e=>e.classList.remove('active'));document.getElementById(id).classList.add('active');btn.classList.add('active');}
-        function copyUID(id){let t=document.getElementById(id).innerText;if(t&&!t.includes("N/A")){navigator.clipboard.writeText(t.trim().replace("N/A","")).then(()=>alert("Copied!"));}}
-        db.collection("users").onSnapshot(snap=>{
-            allUsersData=[];snap.forEach(doc=>{let d=doc.data();d.uid=doc.id;allUsersData.push(d);});
-            let cEl=document.getElementById('totalRegisteredCount');if(cEl)cEl.innerText=`Total: ${allUsersData.length} Players`;
-            if(currentUserRole==="admin"||currentUserRole==="moderator"){renderAdminPlayers(allUsersData);if(currentManageTid)renderTourneyRegisteredPlayers();}
-            if(auth.currentUser&&document.getElementById('profile').classList.contains('active'))loadPlayerStats();
-        });
-        function getRoleIcon(uid){let u=allUsersData.find(x=>x.uid===uid);if(u){if(u.role==='admin')return `<i class='bx bxs-crown' style='color:var(--gold); font-size:16px;'></i>`;if(u.role==='moderator')return `<i class='bx bxs-shield' style='color:var(--primary-cyan); font-size:16px;'></i>`;}return '';}
-        function copyAllPlayerNames(){if(allUsersData.length===0)return alert("No players!");navigator.clipboard.writeText(allUsersData.map((p,i)=>`${i+1}. ${p.name}`).join('\n')).then(()=>alert("Copied!"));}
-        function switchTab(id,el){
-            if((id==='profile'||id==='myMatchesTab')&&!auth.currentUser)id='authPage';
-            document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));if(el&&el.classList.contains('nav-item'))el.classList.add('active');
-            window.scrollTo(0,0);if(id==='myMatchesTab')loadMyMatches();if(id==='profile')loadPlayerStats();if(id==='admin')loadPendingResults();document.getElementById('sideMenu').classList.remove('open');
-        }
-        function switchMenuTab(id){switchTab(id);}
-        function toggleAuth(t){document.getElementById('loginBox').style.display=t==='signup'?'none':'block';document.getElementById('signupBox').style.display=t==='signup'?'block':'none';}
-        setInterval(()=>{let s=document.querySelectorAll('.hero-slide'),d=document.querySelectorAll('.dot');if(!s.length)return;let a=0;s.forEach((x,i)=>{if(x.classList.contains('active'))a=i;});s[a].classList.remove('active');d[a].classList.remove('active');let n=(a+1)%s.length;s[n].classList.add('active');d[n].classList.add('active');},4000);
-        async function signUpWithEmail(){let n=document.getElementById('regName').value,e=document.getElementById('regEmail').value,p=document.getElementById('regPassword').value;if(!n||!e||p.length<6)return alert("Fill required info!");try{let u=await auth.createUserWithEmailAndPassword(e,p);await u.user.updateProfile({displayName:n});await db.collection("users").doc(u.user.uid).set({name:n,email:e,role:"user"});alert("Created!");switchTab('home');}catch(err){alert(err.message);}}
-        function loginWithEmail(){let e=document.getElementById('loginEmail').value,p=document.getElementById('loginPassword').value;if(e&&p)auth.signInWithEmailAndPassword(e,p).then(()=>switchTab('home')).catch(err=>alert(err.message));}
-        function logOut(){auth.signOut().then(()=>switchTab('home'));}
-        auth.onAuthStateChanged(u=>{
-            if(u){
-                document.getElementById('loginBtn').style.display='none';document.getElementById('smLoginSection').style.display='none';document.getElementById('smProfileSection').style.display='block';
-                db.collection("users").doc(u.uid).get().then(doc=>{currentUserRole=doc.exists?(doc.data().role||"user"):"user";if(u.email===adminEmail)currentUserRole="admin";document.getElementById('smName').innerHTML=`${doc.data()?.name||u.displayName} ${getRoleIcon(u.uid)}`;document.body.classList.remove('is-main-admin','is-admin');if(currentUserRole==="admin"||currentUserRole==="moderator"){document.getElementById('navAdmin').classList.add('show');document.body.classList.add('is-admin');if(currentUserRole==="admin")document.body.classList.add('is-main-admin');}});
-            }else{document.getElementById('loginBtn').style.display='flex';document.getElementById('smLoginSection').style.display='block';document.getElementById('smProfileSection').style.display='none';document.getElementById('navAdmin').classList.remove('show');document.body.classList.remove('is-main-admin','is-admin');currentUserRole="user";}
-        });
-        function loadPlayerStats(){
-            let u=auth.currentUser;if(!u)return;
-            db.collection("users").doc(u.uid).get().then(d=>{if(d.exists){let x=d.data();document.getElementById('myProfName').innerHTML=`${x.name} ${getRoleIcon(u.uid)}`;document.getElementById('myInfoUid').innerText=x.konamiUid||"N/A";document.getElementById('myProfRank').innerText=`#${fullLeaderboardData.findIndex(z=>z.uid===u.uid)+1||"--"}`;}});
-            db.collection("playerStats").doc(u.uid).get().then(d=>{if(d.exists){let s=d.data();document.getElementById('myProfMP').innerText=s.played||0;document.getElementById('myProfWins').innerText=s.wins||0;document.getElementById('myProfWR').innerText=(s.played>0?Math.round((s.wins/s.played)*100):0)+'%';renderFormTab(s.matches||[],'myForm');}});
-        }
-        function renderFormTab(m,id){
-            if(!m||!m.length){document.getElementById(id).innerHTML="<p style='color:var(--text-dim);font-size:12px;text-align:center;'>No matches.</p>";return;}
-            document.getElementById(id).innerHTML=m.slice(-10).reverse().map((x,i)=>`<div style="display:flex; justify-content:space-between; background:rgba(0,0,0,0.3); padding:10px; border-radius:10px; margin-bottom:5px; border-left:3px solid ${x.result==='W'?'var(--accent)':x.result==='D'?'var(--text-dim)':'var(--danger)'};"><span style="color:#fff; font-size:12px;">vs ${x.opp}</span><strong style="color:var(--cream-white);">${x.myScore}-${x.oppScore}</strong></div>`).join('');
-        }
-        function openPublicProfile(uid){
-            if(!uid||uid==='bye'||uid==='tbd')return;
-            db.collection("users").doc(uid).get().then(d=>{if(d.exists){document.getElementById('pubProfName').innerHTML=`${d.data().name} ${getRoleIcon(uid)}`;document.getElementById('pubInfoUid').innerText=d.data().konamiUid||"N/A";document.getElementById('publicProfileModal').classList.add('active');}});
-            db.collection("playerStats").doc(uid).get().then(d=>{if(d.exists){let s=d.data();document.getElementById('pubProfMP').innerText=s.played||0;document.getElementById('pubProfWins').innerText=s.wins||0;document.getElementById('pubProfWR').innerText=(s.played>0?Math.round((s.wins/s.played)*100):0)+'%';renderFormTab(s.matches||[],'pubForm');}});
-        }
-        db.collection("tournaments").orderBy("time","desc").onSnapshot(snap=>{
-            let h="",a="";snap.forEach(doc=>{
-                let t=doc.data(),f=t.type||'Knockout';
-                let b=t.status==='Live'?`<button class="esports-btn" style="background:rgba(0,210,255,0.1);color:var(--primary-cyan);width:100%;box-shadow:none;" onclick="openTournamentDetails('${doc.id}')">View Details</button>`:`<button class="esports-btn" style="width:100%;" onclick="registerForTournament('${doc.id}',this)">Register</button>`;
-                let c=`<div class="t-card"><div class="t-card-banner"><span style="position:absolute; top:10px; left:10px; background:var(--gold); color:#000; font-size:10px; padding:3px 8px; border-radius:5px; font-weight:bold; z-index:2;">${t.status}</span><img src="${t.image}"></div><div style="display:flex; justify-content:space-between; align-items:center; margin:5px 0;"><h3 style="font-family:var(--font-display); font-size:16px; color:var(--cream-white); margin:0;">${t.name}</h3><span style="color:var(--gold); font-size:11px; font-weight:bold;"><i class='bx bxs-trophy'></i> ${t.prize||'TBA'}</span></div><div style="font-size:11px; color:var(--text-dim); margin-bottom:10px;">Format: <span style="color:var(--primary-cyan);">${f}</span> | Slots: ${t.slots||'Unlimited'}</div>${b}<div class="admin-controls-card main-admin-only"><button style="background:var(--gold);color:#000;" onclick="openManageTPlayers('${doc.id}')">Players</button><button style="background:var(--primary-cyan);color:#000;" onclick="generateFixturesAnimated('${doc.id}','${f}')">Draw</button><button style="background:var(--danger);color:#fff;" onclick="db.collection('tournaments').doc('${doc.id}').delete()">Delete</button></div></div>`;
-                h+=c;a+=c;
-            });
-            document.getElementById('homeTournamentsList').innerHTML=h||"<p style='color:var(--text-dim);font-size:12px;text-align:center;'>No events.</p>";document.getElementById('allTournamentsList').innerHTML=a;
-        });
-        function registerForTournament(id,b){let u=auth.currentUser;if(!u)return switchTab('authPage');b.innerText="WAIT...";b.disabled=true;db.collection("tournaments").doc(id).collection("players").doc(u.uid).set({uid:u.uid,name:u.displayName,pot:"Unassigned",time:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>alert("Registered!"));}
-        function openManageTPlayers(id){switchTab('admin');document.getElementById('adminTournamentPlayersCard').style.display='block';currentManageTid=id;tPlayersUnsubscribe=db.collection("tournaments").doc(id).collection("players").onSnapshot(s=>{currentTourneyPlayers={};s.forEach(d=>currentTourneyPlayers[d.id]=d.data());renderTourneyRegisteredPlayers();});}
-        function renderTourneyRegisteredPlayers(){
-            let q=document.getElementById('searchRegisteredTourneyPlayers')?.value.toLowerCase()||'';
-            let f=allUsersData.filter(p=>(p.name.toLowerCase().includes(q)));if(tourneyPlayerFilterTab==='added')f=f.filter(p=>!!currentTourneyPlayers[p.uid]);
-            document.getElementById('tRegisteredPlayerList').innerHTML=f.map(p=>{
-                let a=currentTourneyPlayers[p.uid];return `<div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; margin-bottom:5px;"><span style="font-size:12px; color:#fff; display:flex; align-items:center; gap:5px;">${p.name} ${getRoleIcon(p.uid)}</span>${a?`<select onchange="db.collection('tournaments').doc('${currentManageTid}').collection('players').doc('${p.uid}').update({pot:this.value})" style="width:80px; padding:4px; font-size:10px;"><option ${a.pot==='Pot 1'?'selected':''}>Pot 1</option><option ${a.pot==='Pot 2'?'selected':''}>Pot 2</option></select><button onclick="db.collection('tournaments').doc('${currentManageTid}').collection('players').doc('${p.uid}').delete()" style="background:var(--danger); border:none; padding:5px; border-radius:5px; color:#fff;">X</button>`:`<button onclick="db.collection('tournaments').doc('${currentManageTid}').collection('players').doc('${p.uid}').set({uid:'${p.uid}',name:'${p.name}',pot:'Pot 1'})" style="background:var(--primary-cyan); border:none; padding:5px 10px; border-radius:5px; color:#000; font-weight:bold;">Add</button>`}</div>`;
-            }).join('');
-        }
-        async function generateFixturesAnimated(id,fmt){
-            let s=await db.collection("tournaments").doc(id).collection("players").get();let p=[];s.forEach(d=>p.push(d.data()));if(p.length<2)return alert("Min 2 players.");
-            pendingDrawFixtures={};drawQueue=[];pendingDrawTid=id;currentDrawIndex=0;
-            if(fmt==="Group Stage"){
-                let gs={'Group A':[],'Group B':[]};p.forEach((x,i)=>gs[i%2===0?'Group A':'Group B'].push(x));pendingDrawFixtures['standings']=gs;
-                Object.keys(gs).forEach(g=>{let m=[];for(let i=0;i<gs[g].length;i++)for(let j=i+1;j<gs[g].length;j++)m.push({match:m.length+1,player1:gs[g][i],player2:gs[g][j]});pendingDrawFixtures[g]=m;});
-            }else{let m=[];for(let i=0;i<p.length;i+=2)m.push({match:i/2+1,player1:p[i],player2:p[i+1]||{name:"BYE",uid:"bye"}});pendingDrawFixtures['Round 1']=m;}
-            document.getElementById('drawOverlay').classList.add('active');document.getElementById('drawNextBtn').style.display='block';document.getElementById('drawFinishBtn').style.display='none';
-        }
-        function animateNextDraw(){document.getElementById('drawNextBtn').style.display='none';document.getElementById('drawFinishBtn').style.display='block';}
-        function finishDraw(){db.collection("tournaments").doc(pendingDrawTid).update({status:'Live',fixtures:pendingDrawFixtures}).then(()=>{document.getElementById('drawOverlay').classList.remove('active');alert("Live!");openTournamentDetails(pendingDrawTid);});}
-        function openTournamentDetails(id){
-            currentActiveTournamentId=id;switchTab('tournamentDetails');
-            if(tdUnsubscribe)tdUnsubscribe();tdUnsubscribe=db.collection("tournaments").doc(id).onSnapshot(d=>{
-                let t=d.data();document.getElementById('tdName').innerText=t.name;document.getElementById('tdFormat').innerText=t.type;
-                let mHtml="";if(t.fixtures)Object.keys(t.fixtures).forEach(k=>{if(k!=='standings'){mHtml+=`<div style="font-size:12px; color:var(--primary-cyan); font-weight:bold; margin:15px 0 5px;">${k}</div>`;t.fixtures[k].forEach(m=>{mHtml+=`<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:10px; margin-bottom:5px; display:flex; justify-content:space-between; align-items:center;"><span style="color:#fff; font-size:12px; display:flex; align-items:center;">${m.player1?.name||'TBD'} ${getRoleIcon(m.player1?.uid)}</span><strong style="color:var(--primary-cyan); background:rgba(0,210,255,0.1); padding:2px 6px; border-radius:4px; font-size:14px;">${m.myScore!==undefined?m.myScore+'-'+m.oppScore:'VS'}</strong><span style="color:#fff; font-size:12px; display:flex; align-items:center;">${m.player2?.name||'TBD'} ${getRoleIcon(m.player2?.uid)}</span></div>`;});}});
-                document.getElementById('tdMatches').innerHTML=mHtml||"<p style='color:var(--text-dim);font-size:12px;'>No matches.</p>";switchTdTab('tdMatches', document.getElementById('tabBtnMatches'));
-            });
-        }
-        function loadMyMatches(){
-            let u=auth.currentUser;if(!u)return;
-            db.collection("tournaments").where("status","==","Live").get().then(s=>{
-                let h="",c=0;s.forEach(d=>{let t=d.data();if(t.fixtures)Object.values(t.fixtures).forEach(arr=>{if(Array.isArray(arr))arr.forEach(m=>{if(m.player1?.uid===u.uid||m.player2?.uid===u.uid){c++;h+=`<div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:10px; margin-bottom:10px;"><div style="font-size:10px; color:var(--primary-cyan); margin-bottom:5px;">${t.name}</div><div style="display:flex; justify-content:space-between; align-items:center; color:#fff; font-weight:bold;"><span style="display:flex; align-items:center;">${m.player1.name} ${getRoleIcon(m.player1.uid)}</span><span style="color:var(--danger); font-size:11px; background:rgba(239,68,68,0.1); padding:2px 5px; border-radius:4px;">VS</span><span style="display:flex; align-items:center;">${getRoleIcon(m.player2.uid)} ${m.player2.name}</span></div></div>`;}})})});
-                document.getElementById('myMatchesList').innerHTML=h||"<p style='text-align:center;font-size:12px;color:var(--text-dim);'>No matches.</p>";document.getElementById('myMatchCountText').innerText=c+" Upcoming";
-            });
-        }
-        db.collection("leaderboard").orderBy("points","desc").onSnapshot(s=>{
-            fullLeaderboardData=[];let h="";let r=1;
-            s.forEach(d=>{let p=d.data();p.uid=d.id;fullLeaderboardData.push(p);h+=`<div class="leaderboard-row"><span class="rank">#${r}</span><span style="color:#fff; font-size:13px; font-weight:bold; flex:1; margin-left:10px; display:flex; align-items:center;">${p.name} ${getRoleIcon(p.uid)}</span><span style="color:var(--primary-cyan); font-weight:bold; font-size:13px; font-family:var(--font-display);">${p.points} Pts</span></div>`;r++;});
-            document.getElementById('leaderboardList').innerHTML=h;document.getElementById('homeLeaderboardList').innerHTML=h;
-        });
-        function renderAdminPlayers(list){document.getElementById('adminPlayerList').innerHTML=list.map(p=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);" onclick="openPlayerEdit('${p.uid}')"><span style="color:#fff; font-size:12px; display:flex; align-items:center;">${p.name} ${getRoleIcon(p.uid)}</span><i class='bx bx-edit' style="color:var(--primary-cyan);"></i></div>`).join('');}
-        function filterAdminPlayers(){renderAdminPlayers(allUsersData.filter(p=>p.name.toLowerCase().includes(document.getElementById('adminPlayerSearch').value.toLowerCase())));}
-        function openPlayerEdit(uid){let p=allUsersData.find(x=>x.uid===uid);if(!p)return;document.getElementById('editPlayerUid').value=uid;document.getElementById('editPlayerName').value=p.name;document.getElementById('editPlayerRole').value=p.role||"user";document.getElementById('adminEditPlayerForm').style.display='block';}
-        function cancelPlayerEdit(){document.getElementById('adminEditPlayerForm').style.display='none';}
-        function savePlayerEdit(){db.collection("users").doc(document.getElementById('editPlayerUid').value).update({name:document.getElementById('editPlayerName').value,role:document.getElementById('editPlayerRole').value}).then(()=>{alert("Saved!");cancelPlayerEdit();});}
-        function createTournament(){db.collection("tournaments").add({name:document.getElementById('tName').value,type:document.getElementById('tFormatType').value,status:document.getElementById('tFormat').value,slots:document.getElementById('tSlots').value,time:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>alert("Published!"));}
-    </script>
+function openTournamentDetails(id){
+    currentActiveTournamentId=id;switchTab('tournamentDetails');
+    if(tdUnsubscribe)tdUnsubscribe();tdUnsubscribe=db.collection("tournaments").doc(id).onSnapshot(d=>{
+        let t=d.data();document.getElementById('tdName').innerText=t.name;
+        let mHtml="";if(t.fixtures)Object.keys(t.fixtures).forEach(k=>{if(k!=='standings'){mHtml+=`<div style="font-size:12px; color:var(--primary-cyan); font-weight:bold; margin:15px 0 5px;">${k}</div>`;t.fixtures[k].forEach(m=>{mHtml+=`<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:10px; margin-bottom:5px; display:flex; justify-content:space-between; align-items:center;"><span style="color:#fff; font-size:12px; display:flex; align-items:center;">${m.player1?.name||'TBD'} ${getRoleIcon(m.player1?.uid)}</span><strong style="color:var(--primary-cyan); background:rgba(0,210,255,0.1); padding:2px 6px; border-radius:4px; font-size:14px;">${m.myScore!==undefined?m.myScore+'-'+m.oppScore:'VS'}</strong><span style="color:#fff; font-size:12px; display:flex; align-items:center;">${m.player2?.name||'TBD'} ${getRoleIcon(m.player2?.uid)}</span></div>`;});}});
+        document.getElementById('tdMatches').innerHTML=mHtml||"<p style='color:var(--text-dim);font-size:12px;'>No matches.</p>";switchTdTab('tdMatches', document.getElementById('tabBtnMatches'));
+    });
+}
+
+function loadMyMatches(){
+    let u=auth.currentUser;if(!u)return;
+    db.collection("tournaments").where("status","==","Live").get().then(s=>{
+        let h="",c=0;s.forEach(d=>{let t=d.data();if(t.fixtures)Object.values(t.fixtures).forEach(arr=>{if(Array.isArray(arr))arr.forEach(m=>{if(m.player1?.uid===u.uid||m.player2?.uid===u.uid){c++;h+=`<div style="background:rgba(0,0,0,0.3); padding:12px; border-radius:10px; margin-bottom:10px;"><div style="font-size:10px; color:var(--primary-cyan); margin-bottom:5px;">${t.name}</div><div style="display:flex; justify-content:space-between; align-items:center; color:#fff; font-weight:bold;"><span style="display:flex; align-items:center;">${m.player1.name} ${getRoleIcon(m.player1.uid)}</span><span style="color:var(--danger); font-size:11px; background:rgba(239,68,68,0.1); padding:2px 5px; border-radius:4px;">VS</span><span style="display:flex; align-items:center;">${getRoleIcon(m.player2.uid)} ${m.player2.name}</span></div></div>`;}})})});
+        document.getElementById('myMatchesList').innerHTML=h||"<p style='text-align:center;font-size:12px;color:var(--text-dim);'>No matches.</p>";document.getElementById('myMatchCountText').innerText=c+" Upcoming";
+    });
+}
+
+db.collection("leaderboard").orderBy("points","desc").onSnapshot(s=>{
+    fullLeaderboardData=[];let h="";let r=1;
+    s.forEach(d=>{let p=d.data();p.uid=d.id;fullLeaderboardData.push(p);h+=`<div class="leaderboard-row" style="display:flex;align-items:center;padding:10px;background:var(--card-bg);border-radius:10px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.05);"><span class="rank" style="color:var(--gold);font-weight:bold;font-size:14px;width:25px;text-align:center;">#${r}</span><span style="color:#fff; font-size:13px; font-weight:bold; flex:1; margin-left:10px; display:flex; align-items:center;">${p.name} ${getRoleIcon(p.uid)}</span><span style="color:var(--primary-cyan); font-weight:bold; font-size:13px; font-family:var(--font-display);">${p.points} Pts</span></div>`;r++;});
+    document.getElementById('leaderboardList').innerHTML=h;document.getElementById('homeLeaderboardList').innerHTML=h;
+});
+
+function renderAdminPlayers(list){document.getElementById('adminPlayerList').innerHTML=list.map(p=>`<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(255,255,255,0.05);" onclick="openPlayerEdit('${p.uid}')"><span style="color:#fff; font-size:12px; display:flex; align-items:center;">${p.name} ${getRoleIcon(p.uid)}</span><i class='bx bx-edit' style="color:var(--primary-cyan);"></i></div>`).join('');}
+function filterAdminPlayers(){renderAdminPlayers(allUsersData.filter(p=>p.name.toLowerCase().includes(document.getElementById('adminPlayerSearch').value.toLowerCase())));}
+function openPlayerEdit(uid){let p=allUsersData.find(x=>x.uid===uid);if(!p)return;document.getElementById('editPlayerUid').value=uid;document.getElementById('editPlayerName').value=p.name;document.getElementById('editPlayerRole').value=p.role||"user";document.getElementById('adminEditPlayerForm').style.display='block';}
+function cancelPlayerEdit(){document.getElementById('adminEditPlayerForm').style.display='none';}
+function savePlayerEdit(){db.collection("users").doc(document.getElementById('editPlayerUid').value).update({name:document.getElementById('editPlayerName').value,role:document.getElementById('editPlayerRole').value}).then(()=>{alert("Saved!");cancelPlayerEdit();});}
+function createTournament(){db.collection("tournaments").add({name:document.getElementById('tName').value,type:document.getElementById('tFormatType').value,status:document.getElementById('tFormat').value,slots:document.getElementById('tSlots').value,time:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>alert("Published!"));}
+function switchTourneyPlayerTab(t){tourneyPlayerFilterTab=t; renderTourneyRegisteredPlayers();}
+function filterTourneyRegisteredPlayers(){renderTourneyRegisteredPlayers();}
+function switchTdTab(t,btn){switchTabBox(t,btn);}
+</script>
 </body>
 </html>
