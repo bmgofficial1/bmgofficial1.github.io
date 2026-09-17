@@ -571,28 +571,11 @@
     </div>
 
     <!-- 1. HOME PAGE -->
-    <div id="home" class="page-section active">
-        <!-- PREMIUM HERO SLIDER - FULL WIDTH FADE EFFECT -->
-        <div class="hero-banner-slider">
-            <div class="hero-slide active">
-                <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
-                <div class="hero-overlay"></div>
-                <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--primary-blue); background: rgba(0,180,252,0.12); border-color: rgba(0,180,252,0.25);">SEASON 1</span>
-                    <h1 class="hero-title" style="color: var(--cream-white);">NEW ERA<br><span style="color:var(--primary-blue)">OF LEGENDS</span></h1>
-                    <button class="ios-btn hero-btn" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class='bx bx-chevron-right'></i></button>
-                </div>
-            </div>
-            <div class="hero-slide">
-                <img src="https://i.postimg.cc/dQZBQjm5/470dbbfa-5c3d-4928-938d-cdbd48c7a676.png" class="hero-img">
-                <div class="hero-overlay"></div>
-                <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--gold); background: rgba(250,204,21,0.1); border-color: rgba(250,204,21,0.2);">ELITE</span>
-                    <h1 class="hero-title" style="color: var(--cream-white);">BECOME<br><span style="color:var(--gold)">CHAMPION</span></h1>
-                    <button class="ios-btn hero-btn" onclick="switchTab('leaderboard')">RANKINGS <i class='bx bx-chevron-right'></i></button>
-                </div>
-            </div>
-            <div class="hero-dots" id="heroDots"><span class="dot active"></span><span class="dot"></span></div>
+    <div id="home" class="page-section active" style="padding-top: 0;">
+        
+        <!-- DYNAMIC HERO SLIDER - FULL WIDTH FADE EFFECT -->
+        <div class="hero-banner-slider" id="dynamicHeroSlider">
+            <p style="text-align:center; padding: 60px 0; color:var(--text-dim); font-size:11px;">Loading Banners...</p>
         </div>
 
         <!-- QUICK NAV GRID WITH RANKING ICON -->
@@ -748,6 +731,31 @@
                 <p style='color:var(--text-dim); font-size:10.5px; text-align:center; padding:12px;'>Loading players...</p>
             </div>
         </div>
+        
+        <!-- NEW SYSTEM: DYNAMIC BANNER UPLOAD -->
+        <div class="card main-admin-only" style="border: 1px solid rgba(0, 180, 252, 0.3);">
+            <h3 style="color: var(--primary-blue); font-family: var(--font-display); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-image-add'></i> Manage Home Banners</h3>
+            <input type="text" id="banBadge" placeholder="Badge Text (e.g. SEASON 1)" style="margin-top:10px;">
+            <select id="banBadgeType">
+                <option value="blue">Blue Badge</option>
+                <option value="gold">Gold Badge</option>
+            </select>
+            <input type="text" id="banTitle1" placeholder="Title Line 1 (White Text)">
+            <input type="text" id="banTitle2" placeholder="Title Line 2 (Colored Highlight Text)">
+            <input type="text" id="banBtnText" placeholder="Button Text (e.g. JOIN EVENT)">
+            <select id="banBtnLink">
+                <option value="tournamentsTab">Tournaments Tab</option>
+                <option value="leaderboard">Rankings Tab</option>
+                <option value="myMatchesTab">My Matches Tab</option>
+            </select>
+            <label style="font-size:9.5px; color:var(--text-muted); margin-top:6px; display:block;">Banner Background Image (Landscape):</label>
+            <input type="file" id="banImageFile" accept="image/*" style="padding:8px;">
+            <button id="btnCreateBanner" class="ios-btn submit-btn" style="margin-top:12px;" onclick="uploadBanner()">Upload Banner</button>
+            
+            <div id="adminBannersList" style="margin-top: 15px; border-top: 1px dashed var(--card-border); padding-top: 10px;">
+                <!-- list to delete banners -->
+            </div>
+        </div>
 
         <div class="card main-admin-only" style="border: 1px solid var(--card-border-active);">
             <h3 style="color: var(--primary-blue); font-family: var(--font-display); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-calendar-plus'></i> Create Event</h3>
@@ -803,6 +811,7 @@
         let currentDrawIndex = 0; 
         let pendingDrawTid = null;
         let tdUnsubscribe = null;
+        let heroSliderInterval = null;
 
         const firebaseConfig = {
             apiKey: "AIzaSyDsnRIuo614UKEoNwBJxSdQvkJzUHL-sE0",
@@ -1025,16 +1034,6 @@
 
         function toggleAuth(type) { document.getElementById('loginBox').style.display = type === 'signup' ? 'none' : 'block'; document.getElementById('signupBox').style.display = type === 'signup' ? 'block' : 'none'; }
 
-        /* --- HERO SLIDER JS --- */
-        setInterval(() => {
-            const slides = document.querySelectorAll('.hero-slide'); const dots = document.querySelectorAll('#heroDots .dot');
-            if(slides.length === 0) return; let activeIdx = 0;
-            slides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
-            slides[activeIdx].classList.remove('active'); if(dots[activeIdx]) dots[activeIdx].classList.remove('active');
-            let nextIdx = (activeIdx + 1) % slides.length;
-            slides[nextIdx].classList.add('active'); if(dots[nextIdx]) dots[nextIdx].classList.add('active');
-        }, 4000);
-
         function compressImage(file) {
             return new Promise((resolve) => {
                 const reader = new FileReader(); reader.readAsDataURL(file);
@@ -1105,6 +1104,141 @@
             }
         });
 
+        /* --- DYNAMIC BANNER SYSTEM (NEW) --- */
+        function startHeroSlider() {
+            if(heroSliderInterval) clearInterval(heroSliderInterval);
+            heroSliderInterval = setInterval(() => {
+                const slides = document.querySelectorAll('#dynamicHeroSlider .hero-slide');
+                const dots = document.querySelectorAll('#heroDots .dot');
+                if(slides.length <= 1) return;
+                let activeIdx = 0;
+                slides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
+                slides[activeIdx].classList.remove('active');
+                if(dots[activeIdx]) dots[activeIdx].classList.remove('active');
+                let nextIdx = (activeIdx + 1) % slides.length;
+                slides[nextIdx].classList.add('active');
+                if(dots[nextIdx]) dots[nextIdx].classList.add('active');
+            }, 4000);
+        }
+
+        async function uploadBanner() {
+            const badge = document.getElementById('banBadge').value;
+            const badgeType = document.getElementById('banBadgeType').value;
+            const title1 = document.getElementById('banTitle1').value;
+            const title2 = document.getElementById('banTitle2').value;
+            const btnText = document.getElementById('banBtnText').value;
+            const btnLink = document.getElementById('banBtnLink').value;
+            const fileInput = document.getElementById('banImageFile');
+            
+            if(fileInput.files.length === 0 || !title1 || !btnText) return alert("Title Line 1, Button Text and Image are required!");
+            
+            const btn = document.getElementById('btnCreateBanner');
+            btn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Uploading...";
+            btn.disabled = true;
+            
+            try {
+                const compressed = await compressImage(fileInput.files[0]);
+                const imgUrl = await uploadToImgBB(compressed);
+                
+                await db.collection("banners").add({
+                    badge: badge,
+                    badgeType: badgeType,
+                    title1: title1,
+                    title2: title2,
+                    btnText: btnText,
+                    btnLink: btnLink,
+                    image: imgUrl,
+                    time: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                alert("Banner Added Successfully!");
+                document.getElementById('banBadge').value = '';
+                document.getElementById('banTitle1').value = '';
+                document.getElementById('banTitle2').value = '';
+                document.getElementById('banBtnText').value = '';
+                fileInput.value = '';
+            } catch(e) {
+                alert("Error: " + e.message);
+            } finally {
+                btn.innerHTML = "Upload Banner";
+                btn.disabled = false;
+            }
+        }
+
+        db.collection("banners").orderBy("time", "desc").limit(3).onSnapshot(snap => {
+            const slider = document.getElementById('dynamicHeroSlider');
+            if(!slider) return;
+            
+            let slidesHtml = '';
+            let dotsHtml = '<div class="hero-dots" id="heroDots">';
+            let idx = 0;
+            
+            if(snap.empty) {
+                // Fallback default banner
+                slidesHtml = `
+                <div class="hero-slide active">
+                    <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
+                    <div class="hero-overlay"></div>
+                    <div class="hero-content">
+                        <span class="hero-badge" style="color: var(--primary-blue); background: rgba(0,180,252,0.12); border-color: rgba(0,180,252,0.25);">WELCOME</span>
+                        <h1 class="hero-title" style="color: var(--cream-white);">BMG ESPORTS<br><span style="color:var(--primary-blue)">COMMUNITY</span></h1>
+                        <button class="ios-btn hero-btn" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class='bx bx-chevron-right'></i></button>
+                    </div>
+                </div>`;
+            } else {
+                snap.forEach(doc => {
+                    const b = doc.data();
+                    const isActive = idx === 0 ? 'active' : '';
+                    
+                    let badgeStyle = '';
+                    let title2Color = '';
+                    
+                    if(b.badgeType === 'gold') {
+                        badgeStyle = 'color: var(--gold); background: rgba(250,204,21,0.1); border-color: rgba(250,204,21,0.2);';
+                        title2Color = 'color: var(--gold);';
+                    } else {
+                        badgeStyle = 'color: var(--primary-blue); background: rgba(0,180,252,0.12); border-color: rgba(0,180,252,0.25);';
+                        title2Color = 'color: var(--primary-blue);';
+                    }
+
+                    slidesHtml += `
+                    <div class="hero-slide ${isActive}">
+                        <img src="${b.image}" class="hero-img">
+                        <div class="hero-overlay"></div>
+                        <div class="hero-content">
+                            ${b.badge ? `<span class="hero-badge" style="${badgeStyle}">${b.badge}</span>` : ''}
+                            <h1 class="hero-title" style="color: var(--cream-white);">${b.title1}<br><span style="${title2Color}">${b.title2 || ''}</span></h1>
+                            <button class="ios-btn hero-btn" onclick="switchTab('${b.btnLink}')">${b.btnText} <i class='bx bx-chevron-right'></i></button>
+                        </div>
+                    </div>`;
+                    
+                    dotsHtml += `<span class="dot ${isActive}"></span>`;
+                    idx++;
+                });
+                dotsHtml += '</div>';
+            }
+            
+            slider.innerHTML = slidesHtml + (snap.empty || snap.docs.length <= 1 ? '' : dotsHtml);
+            startHeroSlider();
+            
+            const adminList = document.getElementById('adminBannersList');
+            if(adminList) {
+                adminList.innerHTML = '<h4 style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">Current Active Banners</h4>';
+                snap.forEach(doc => {
+                    const b = doc.data();
+                    adminList.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; margin-bottom:6px; border:1px solid rgba(255,255,255,0.05);">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <img src="${b.image}" style="width:40px; height:24px; object-fit:cover; border-radius:4px; border: 1px solid rgba(255,255,255,0.1);">
+                            <span style="font-size:11px; color:white; font-weight:600;">${b.title1}</span>
+                        </div>
+                        <button onclick="if(confirm('Delete banner?')) db.collection('banners').doc('${doc.id}').delete()" style="background:transparent; border:none; color:var(--danger); font-size:16px; cursor:pointer;"><i class='bx bx-trash'></i></button>
+                    </div>`;
+                });
+                if(snap.empty) adminList.innerHTML += '<p style="font-size:10px; color:var(--text-dim);">No custom banners added.</p>';
+            }
+        });
+
+        /* --- PLAYER STATS AND UI MANAGEMENT --- */
         function loadPlayerStats() {
             const user = auth.currentUser; 
             if (!user) return;
