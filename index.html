@@ -18,14 +18,14 @@
 
     <style>
         :root {
-            /* BMG OFFICIAL LOGO COLOR THEME (ELECTRIC BLUE & CARBON BLACK) */
-            --bg-main: #070a12; 
-            --card-bg: #0f1422; 
-            --card-bg-soft: #171e31;
-            --card-border: rgba(0, 132, 255, 0.18);
+            /* REFINED CARBON DARK THEME (Less overpowering blue) */
+            --bg-main: #0B0E14; 
+            --card-bg: #12161F; 
+            --card-bg-soft: #1A1F2B;
+            --card-border: rgba(0, 132, 255, 0.15);
             --card-border-active: rgba(0, 132, 255, 0.4);
             
-            --primary-blue: #0084ff; /* Exact BMG Logo Electric Blue */
+            --primary-blue: #0084ff; 
             --primary-blue-light: #38a2ff;
             --primary-blue-gradient: linear-gradient(135deg, #0055ff 0%, #0084ff 100%);
             
@@ -50,7 +50,7 @@
         
         body { 
             background-color: var(--bg-main); 
-            background-image: radial-gradient(circle at 50% 0%, rgba(0, 132, 255, 0.08) 0%, transparent 65%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 132, 255, 0.05) 0%, transparent 60%);
             background-attachment: fixed;
             color: var(--text-main); 
             padding-bottom: calc(85px + env(safe-area-inset-bottom)); 
@@ -68,18 +68,18 @@
         body.is-admin .admin-controls { display: flex !important; }
         body:not(.is-main-admin) .main-admin-only { display: none !important; }
 
-        /* PRELOADER */
+        /* PRELOADER - ENLARGED LOGO */
         #preloader { position: fixed; inset: 0; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-main); transition: opacity 0.3s ease, visibility 0.3s ease; }
         #preloader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-        .preloader-ring-wrap { position: relative; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .preloader-ring-wrap { position: relative; width: 85px; height: 85px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
         .preloader-ring { position: absolute; inset: 0; border-radius: 50%; border: 3px solid rgba(0,132,255,0.15); border-top-color: var(--primary-blue); animation: preloaderSpin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
-        .preloader-logo { width: 32px; height: 32px; object-fit: contain; }
+        .preloader-logo { width: 45px; height: 45px; object-fit: contain; }
         .preloader-title { font-family: var(--font-display); font-size: 15px; letter-spacing: 2px; font-weight: 800; color: var(--cream-white); }
         .preloader-title span { color: var(--primary-blue); }
         @keyframes preloaderSpin { to { transform: rotate(360deg); } }
 
-        /* HEADER - LOGO CENTERED & SLEEK */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(7, 10, 18, 0.95); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--card-border); box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
+        /* HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: rgba(11, 14, 20, 0.95); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--card-border); box-shadow: 0 4px 20px rgba(0,0,0,0.6); }
         .header-brand { display: flex; align-items: center; justify-content: center; position: absolute; left: 50%; transform: translateX(-50%); gap: 8px;}
         .header-mark { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(0,132,255,0.25), transparent); border: 1px solid rgba(0,132,255,0.4); color: var(--primary-blue); font-size: 15px; }
         .header h2 { font-family: var(--font-display); font-size: 16px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0; color: var(--cream-white);}
@@ -110,12 +110,15 @@
         /* SIDE MENU */
         .side-menu-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); z-index: 999990; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(5px); }
         .side-menu-overlay.open { display: block; opacity: 1; }
-        .side-menu { position: fixed; top: 0; left: -280px; width: 270px; height: 100%; background: rgba(7, 10, 18, 0.98); backdrop-filter: blur(15px); z-index: 999999; transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); padding: 20px 16px; border-right: 1px solid var(--card-border); overflow-y: auto; display: flex; flex-direction: column; box-shadow: 5px 0 25px rgba(0,0,0,0.6); }
+        .side-menu { position: fixed; top: 0; left: -280px; width: 270px; height: 100%; background: rgba(11, 14, 20, 0.98); backdrop-filter: blur(15px); z-index: 999999; transition: left 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); padding: 20px 16px; border-right: 1px solid var(--card-border); overflow-y: auto; display: flex; flex-direction: column; box-shadow: 5px 0 25px rgba(0,0,0,0.6); }
         .side-menu.open { left: 0; }
         .sm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .sm-header h3 { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--cream-white); letter-spacing: 1px; margin: 0; }
         .sm-close { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); width: 32px; height: 32px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 22px; }
         .sm-close:active { transform: scale(0.9); }
+        
+        @keyframes glowLogo { 0% { filter: drop-shadow(0 4px 10px rgba(0, 132, 255, 0.3)); } 50% { filter: drop-shadow(0 4px 20px rgba(0, 132, 255, 0.7)); } 100% { filter: drop-shadow(0 4px 10px rgba(0, 132, 255, 0.3)); } }
+        
         .sm-group-title { font-size: 10px; font-weight: 700; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin: 10px 0 6px 5px; }
         .sm-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; font-size: 13.5px; font-weight: 600; color: #e2e8f0; border-radius: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 5px; }
         .sm-item:hover { background: rgba(255,255,255,0.05); color: var(--cream-white);}
@@ -127,7 +130,7 @@
         /* MODALS */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 999990; display: none; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
         .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
-        .modal-card { background: rgba(7, 10, 18, 0.98); border: 1px solid var(--card-border-active); border-radius: 20px; padding: 20px; width: 90%; max-width: 340px; position: relative; box-shadow: 0 20px 40px rgba(0,132,255,0.2); }
+        .modal-card { background: rgba(11, 14, 20, 0.98); border: 1px solid var(--card-border-active); border-radius: 20px; padding: 20px; width: 90%; max-width: 340px; position: relative; box-shadow: 0 20px 40px rgba(0,132,255,0.2); }
         .modal-close { position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); font-size: 22px; width: 32px; height: 32px; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
 
         /* DRAW CEREMONY */
@@ -146,7 +149,7 @@
 
         /* PUBLIC PROFILE SYSTEM */
         #publicProfileModal { background: var(--bg-main); z-index: 999999; flex-direction: column; justify-content: flex-start; overflow-y: auto; overflow-x: hidden; }
-        .pub-header { display: flex; align-items: center; padding: 12px 16px; width: 100%; background: rgba(7, 10, 18, 0.95); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
+        .pub-header { display: flex; align-items: center; padding: 12px 16px; width: 100%; background: rgba(11, 14, 20, 0.95); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--card-border); }
         .pub-back-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); width: 34px; height: 34px; border-radius: 10px; color: var(--cream-white); cursor: pointer; display: flex; justify-content: center; align-items: center; font-size: 22px; transition: 0.2s;}
         .pub-title { flex: 1; text-align: center; font-family: var(--font-display); font-size: 13px; letter-spacing: 1px; margin-right: 34px; font-weight: 800; color: var(--cream-white); text-transform: uppercase;}
         
@@ -207,7 +210,7 @@
         .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.5s ease; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; pointer-events: auto;}
         .hero-img { position: absolute; right: 0; top: 0; height: 100%; width: 100%; object-fit: cover; object-position: right center; z-index: 1; pointer-events: none;}
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(7,10,18,0.95) 15%, rgba(7,10,18,0.6) 60%, transparent 100%); z-index: 2; pointer-events: none;}
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, rgba(11,14,20,0.95) 15%, rgba(11,14,20,0.6) 60%, transparent 100%); z-index: 2; pointer-events: none;}
         .hero-content { z-index: 3; width: 75%; position: relative; color: var(--cream-white);}
         .hero-badge { font-size: 8.5px; font-weight: 700; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-bottom: 10px; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.1);}
         .hero-title { font-family: var(--font-display); font-size: 20px; font-weight: 900; line-height: 1.15; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 4px 12px rgba(0,0,0,0.8); color: var(--cream-white);}
@@ -295,7 +298,7 @@
         /* FIXED SOLID BOTTOM NAV */
         .bottom-nav { 
             position: fixed; bottom: 0; left: 0; right: 0; 
-            background: rgba(7, 10, 18, 0.96); 
+            background: rgba(11, 14, 20, 0.96); 
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
             display: flex; justify-content: space-around; align-items: center; 
             padding: 10px 8px calc(10px + env(safe-area-inset-bottom)); 
@@ -488,21 +491,27 @@
             <button class="sm-close" onclick="closeSideMenu()"><i class='bx bx-x'></i></button>
         </div>
         
-        <div id="smLoginSection">
+        <div id="smLoginSection" style="margin-bottom:15px;">
             <div class="sm-item highlight" onclick="switchMenuTab('authPage')"><i class='bx bx-log-in-circle'></i> LOGIN / SIGN UP</div>
         </div>
-        <div id="smProfileSection" style="display:none; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:15px; margin-bottom:15px;">
+        <div id="smProfileSection" style="display:none; margin-bottom:15px;">
             <div class="sm-item" onclick="switchMenuTab('profile')" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 10px 14px;">
                 <img id="smAvatar" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" style="width:30px; height:30px; border-radius:50%; object-fit:cover; margin-left:-4px; border:2px solid var(--primary-blue);">
                 <span id="smName" style="color:var(--cream-white); font-weight:600;">Player Name</span>
             </div>
         </div>
 
+        <!-- CENTERED LOGO ADDED HERE -->
+        <div style="text-align: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; align-items: center;">
+            <img src="https://i.postimg.cc/QCzpgZd6/file-00000000fc488211893dcf22aac1c4cb.png" alt="BMG Logo" style="width: 75px; animation: glowLogo 3s infinite;">
+            <div style="font-family: var(--font-display); font-size: 11px; font-weight: 800; color: var(--text-muted); margin-top: 10px; letter-spacing: 1px;">BMG <span style="color:var(--primary-blue);">PRESENTS</span></div>
+        </div>
+
         <div class="sm-group-title">Navigate</div>
         <div class="sm-item" onclick="switchMenuTab('home')"><i class='bx bx-home-alt-2'></i> Home</div>
         <div class="sm-item" onclick="switchMenuTab('tournamentsTab')"><i class='bx bx-trophy'></i> Tournaments</div>
         <div class="sm-item highlight" onclick="switchMenuTab('myMatchesTab')"><i class='bx bx-joystick'></i> My Matches</div>
-        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class='bx bx-bar-chart-alt-2'></i> Rankings</div>
+        <div class="sm-item" onclick="switchMenuTab('leaderboard')"><i class='bx bx-bar-chart-square'></i> Rankings</div>
         <div class="sm-item" onclick="switchMenuTab('profile')"><i class='bx bx-user'></i> Profile</div>
     </div>
 
@@ -552,7 +561,7 @@
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--primary-blue); background: rgba(0,132,255,0.15); border-color: rgba(0,132,255,0.3);">SEASON 1</span>
+                    <span class="hero-badge" style="color: var(--primary-blue); background: rgba(0,132,255,0.12); border-color: rgba(0,132,255,0.25);">SEASON 1</span>
                     <h1 class="hero-title" style="color: var(--cream-white);">NEW ERA<br><span style="color:var(--primary-blue)">OF LEGENDS</span></h1>
                     <button class="ios-btn hero-btn" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class='bx bx-chevron-right'></i></button>
                 </div>
@@ -569,7 +578,7 @@
             <div class="hero-dots" id="heroDots"><span class="dot active"></span><span class="dot"></span></div>
         </div>
 
-        <!-- QUICK NAV GRID WITH LOGO COLOR ICONS & RANKING ICON -->
+        <!-- QUICK NAV GRID WITH RANKING ICON -->
         <div class="quick-nav-grid">
             <div class="qn-item" onclick="switchTab('tournamentsTab')">
                 <i class='bx bx-joystick'></i><span>Live Matches</span>
