@@ -18,16 +18,16 @@
 
     <style>
         :root {
-            /* BMG OFFICIAL LOGO COLOR THEME (ELECTRIC AZURE BLUE & CARBON BLACK) */
+            /* BMG OFFICIAL LOGO COLOR THEME (ELECTRIC BLUE & CARBON BLACK) */
             --bg-main: #070a12; 
             --card-bg: #0f1422; 
             --card-bg-soft: #171e31;
-            --card-border: rgba(0, 132, 255, 0.15);
-            --card-border-active: rgba(0, 140, 255, 0.4);
+            --card-border: rgba(0, 132, 255, 0.18);
+            --card-border-active: rgba(0, 132, 255, 0.4);
             
             --primary-blue: #0084ff; /* Exact BMG Logo Electric Blue */
             --primary-blue-light: #38a2ff;
-            --primary-blue-gradient: linear-gradient(135deg, #0066ff 0%, #0099ff 100%);
+            --primary-blue-gradient: linear-gradient(135deg, #0055ff 0%, #0084ff 100%);
             
             --gold: #facc15;
             --accent: #22c55e;
@@ -50,7 +50,7 @@
         
         body { 
             background-color: var(--bg-main); 
-            background-image: radial-gradient(circle at 50% 0%, rgba(0, 132, 255, 0.1) 0%, transparent 65%);
+            background-image: radial-gradient(circle at 50% 0%, rgba(0, 132, 255, 0.08) 0%, transparent 65%);
             background-attachment: fixed;
             color: var(--text-main); 
             padding-bottom: calc(85px + env(safe-area-inset-bottom)); 
@@ -93,7 +93,7 @@
         .quick-nav-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 24px; padding: 0 14px; }
         .qn-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px 6px; text-align: center; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; box-shadow: var(--shadow-soft); transition: 0.2s; }
         .qn-item:active { transform: scale(0.95); border-color: var(--primary-blue); background: rgba(0, 132, 255, 0.05); }
-        .qn-item i { font-size: 26px; color: var(--primary-blue); text-shadow: 0 0 12px rgba(0, 132, 255, 0.45); }
+        .qn-item i { font-size: 26px; color: var(--primary-blue); text-shadow: 0 0 12px rgba(0, 132, 255, 0.5); }
         .qn-item span { font-size: 10.5px; font-weight: 600; color: var(--text-main); line-height: 1.1; }
 
         /* BUTTONS GLOBALS */
@@ -389,7 +389,7 @@
 
             <div id="pubForm" class="pub-content pub-card"></div>
             <div id="pubTrophy" class="pub-content pub-card">
-                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--primary-blue);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
+                <div style="display:flex; justify-content:center; align-items:center; padding:30px; flex-direction:column; gap:10px;"><i class='bx bx-trophy' style="font-size:36px; color:var(--text-dim);"></i><p style="color:var(--text-muted); font-size:12px;">No trophies yet.</p></div>
             </div>
         </div>
     </div>
@@ -552,7 +552,7 @@
                 <img src="https://i.postimg.cc/wThQLxGC/14a2ed24-d44f-40ab-ab39-f005c7cc328e-(1).png" class="hero-img">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <span class="hero-badge" style="color: var(--primary-blue); background: rgba(0,132,255,0.12); border-color: rgba(0,132,255,0.25);">SEASON 1</span>
+                    <span class="hero-badge" style="color: var(--primary-blue); background: rgba(0,132,255,0.15); border-color: rgba(0,132,255,0.3);">SEASON 1</span>
                     <h1 class="hero-title" style="color: var(--cream-white);">NEW ERA<br><span style="color:var(--primary-blue)">OF LEGENDS</span></h1>
                     <button class="ios-btn hero-btn" onclick="switchTab('tournamentsTab')">JOIN EVENT <i class='bx bx-chevron-right'></i></button>
                 </div>
@@ -581,7 +581,7 @@
                 <i class='bx bx-trophy'></i><span>My Matches</span>
             </div>
             <div class="qn-item" onclick="switchTab('leaderboard')">
-                <i class='bx bx-bar-chart-alt-2'></i><span>Rankings</span>
+                <i class='bx bx-bar-chart-square'></i><span>Rankings</span>
             </div>
         </div>
 
@@ -757,7 +757,7 @@
         <div class="nav-item active" onclick="switchTab('home', this)"><i class='bx bx-home-alt-2'></i><span>Home</span></div>
         <div class="nav-item" onclick="switchTab('tournamentsTab', this)"><i class='bx bx-trophy'></i><span>Events</span></div>
         <div class="nav-item" onclick="switchTab('myMatchesTab', this)"><i class='bx bx-joystick'></i><span>Matches</span></div>
-        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class='bx bx-bar-chart-alt-2'></i><span>Ranking</span></div>
+        <div class="nav-item" onclick="switchTab('leaderboard', this)"><i class='bx bx-bar-chart-square'></i><span>Ranking</span></div>
         <div class="nav-item" onclick="switchTab('profile', this)"><i class='bx bx-user'></i><span>Profile</span></div>
         <div class="nav-item nav-admin" id="navAdmin" onclick="switchTab('admin', this)"><i class='bx bx-cog'></i><span>Admin</span></div>
     </div>
