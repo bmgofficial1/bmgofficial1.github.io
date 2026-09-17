@@ -667,7 +667,7 @@
             </div>
         </div>
 
-        <div class="card main-admin-only" style="border: 1px solid rgba(34,197,94,0.3); margin-bottom: 16px;">
+        <div class="card admin-controls" style="border: 1px solid rgba(34,197,94,0.3); flex-direction:column; margin-bottom: 16px;">
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <h3 style="color: var(--accent); font-size: 13.5px; font-family: var(--font-display); font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-user-pin'></i> Player Management</h3>
                 <div style="text-align:right;">
@@ -686,8 +686,8 @@
                 <input type="text" id="editPlayerDevice" placeholder="Device Model">
                 <input type="url" id="editPlayerFb" placeholder="Facebook Link">
                 <input type="text" id="editPlayerPhone" placeholder="Phone Number (Optional)">
-                <label style="font-size:10.5px; color:var(--text-dim); display:block; margin:6px 0 4px;">Role:</label>
-                <select id="editPlayerRole" style="margin-bottom:10px;">
+                <label class="main-admin-only" style="font-size:10.5px; color:var(--text-dim); display:block; margin:6px 0 4px;">Role:</label>
+                <select class="main-admin-only" id="editPlayerRole" style="margin-bottom:10px;">
                     <option value="user">Normal Player</option>
                     <option value="moderator">Moderator</option>
                     <option value="admin">Admin</option>
@@ -1310,7 +1310,7 @@
                     <div class="admin-controls admin-controls-card main-admin-only" style="margin-top:0; padding:0;">
                         <button style="background:var(--gold); color:#000;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bx-group'></i> Pot & P</button>
                         <button style="background:var(--primary-blue); color:#fff;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bx-cog'></i> Draw Logic</button>
-                        <button style="flex:1 1 100%; background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2);" onclick="if(confirm('Delete tournament completely?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete Event</button>
+                        <button class="main-admin-only" style="flex:1 1 100%; background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2);" onclick="if(confirm('Delete tournament completely?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete Event</button>
                     </div>
                 </div>`;
                 list1.innerHTML += createCard(actionBtnHtml.replace('all-', 'home-')); list2.innerHTML += createCard(actionBtnHtml);
