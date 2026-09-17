@@ -747,6 +747,7 @@
                 <option value="tournamentsTab">Tournaments Tab</option>
                 <option value="leaderboard">Rankings Tab</option>
                 <option value="myMatchesTab">My Matches Tab</option>
+                <option value="authPage">Login / Sign Up Page</option>
             </select>
             <label style="font-size:9.5px; color:var(--text-muted); margin-top:6px; display:block;">Banner Background Image (Landscape):</label>
             <input type="file" id="banImageFile" accept="image/*" style="padding:8px;">
@@ -1109,7 +1110,7 @@
             if(heroSliderInterval) clearInterval(heroSliderInterval);
             heroSliderInterval = setInterval(() => {
                 const slides = document.querySelectorAll('#dynamicHeroSlider .hero-slide');
-                const dots = document.querySelectorAll('#heroDots .dot');
+                const dots = document.querySelectorAll('#dynamicHeroSlider .dot');
                 if(slides.length <= 1) return;
                 let activeIdx = 0;
                 slides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
@@ -1169,7 +1170,7 @@
             if(!slider) return;
             
             let slidesHtml = '';
-            let dotsHtml = '<div class="hero-dots" id="heroDots">';
+            let dotsHtml = '<div class="hero-dots">';
             let idx = 0;
             
             if(snap.empty) {
