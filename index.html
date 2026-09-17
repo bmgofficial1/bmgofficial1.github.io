@@ -735,14 +735,14 @@
         <!-- NEW SYSTEM: DYNAMIC BANNER UPLOAD -->
         <div class="card main-admin-only" style="border: 1px solid rgba(0, 180, 252, 0.3);">
             <h3 style="color: var(--primary-blue); font-family: var(--font-display); font-size: 14px; font-weight:800; display:flex; align-items:center; gap:6px;"><i class='bx bx-image-add'></i> Manage Home Banners</h3>
-            <input type="text" id="banBadge" placeholder="Badge Text (e.g. SEASON 1)" style="margin-top:10px;">
+            <input type="text" id="banBadge" placeholder="Badge Text (Optional)" style="margin-top:10px;">
             <select id="banBadgeType">
                 <option value="blue">Blue Badge</option>
                 <option value="gold">Gold Badge</option>
             </select>
-            <input type="text" id="banTitle1" placeholder="Title Line 1 (White Text)">
-            <input type="text" id="banTitle2" placeholder="Title Line 2 (Colored Highlight Text)">
-            <input type="text" id="banBtnText" placeholder="Button Text (e.g. JOIN EVENT)">
+            <input type="text" id="banTitle1" placeholder="Title Line 1 (Optional)">
+            <input type="text" id="banTitle2" placeholder="Title Line 2 (Colored, Optional)">
+            <input type="text" id="banBtnText" placeholder="Button Text (Optional)">
             <select id="banBtnLink">
                 <option value="tournamentsTab">Tournaments Tab</option>
                 <option value="leaderboard">Rankings Tab</option>
@@ -1107,18 +1107,25 @@
 
         /* --- DYNAMIC BANNER SYSTEM (NEW) --- */
         function startHeroSlider() {
-            if(heroSliderInterval) clearInterval(heroSliderInterval);
-            heroSliderInterval = setInterval(() => {
-                const slides = document.querySelectorAll('#dynamicHeroSlider .hero-slide');
-                const dots = document.querySelectorAll('#dynamicHeroSlider .dot');
-                if(slides.length <= 1) return;
+            if(window.heroSliderInterval) clearInterval(window.heroSliderInterval);
+            const slides = document.querySelectorAll('#dynamicHeroSlider .hero-slide');
+            if(slides.length <= 1) return;
+            
+            window.heroSliderInterval = setInterval(() => {
+                const currentSlides = document.querySelectorAll('#dynamicHeroSlider .hero-slide');
+                const currentDots = document.querySelectorAll('.hero-dots .dot');
+                if(currentSlides.length <= 1) return;
+                
                 let activeIdx = 0;
-                slides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
-                slides[activeIdx].classList.remove('active');
-                if(dots[activeIdx]) dots[activeIdx].classList.remove('active');
-                let nextIdx = (activeIdx + 1) % slides.length;
-                slides[nextIdx].classList.add('active');
-                if(dots[nextIdx]) dots[nextIdx].classList.add('active');
+                currentSlides.forEach((slide, idx) => { if(slide.classList.contains('active')) activeIdx = idx; });
+                
+                currentSlides[activeIdx].classList.remove('active');
+                if(currentDots[activeIdx]) currentDots[activeIdx].classList.remove('active');
+                
+                let nextIdx = (activeIdx + 1) % currentSlides.length;
+                
+                currentSlides[nextIdx].classList.add('active');
+                if(currentDots[nextIdx]) currentDots[nextIdx].classList.add('active');
             }, 4000);
         }
 
@@ -1131,7 +1138,7 @@
             const btnLink = document.getElementById('banBtnLink').value;
             const fileInput = document.getElementById('banImageFile');
             
-            if(fileInput.files.length === 0 || !title1 || !btnText) return alert("Title Line 1, Button Text and Image are required!");
+            if(fileInput.files.length === 0) return alert("Banner Image is required!");
             
             const btn = document.getElementById('btnCreateBanner');
             btn.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Uploading...";
@@ -1142,12 +1149,12 @@
                 const imgUrl = await uploadToImgBB(compressed);
                 
                 await db.collection("banners").add({
-                    badge: badge,
-                    badgeType: badgeType,
-                    title1: title1,
-                    title2: title2,
-                    btnText: btnText,
-                    btnLink: btnLink,
+                    badge: badge || "",
+                    badgeType: badgeType || "blue",
+                    title1: title1 || "",
+                    title2: title2 || "",
+                    btnText: btnText || "",
+                    btnLink: btnLink || "home",
                     image: imgUrl,
                     time: firebase.firestore.FieldValue.serverTimestamp()
                 });
@@ -1201,15 +1208,21 @@
                         title2Color = 'color: var(--primary-blue);';
                     }
 
+                    let textOverlay = '';
+                    if(b.badge || b.title1 || b.title2 || b.btnText) {
+                        textOverlay = `
+                        <div class="hero-content">
+                            ${b.badge ? `<span class="hero-badge" style="${badgeStyle}">${b.badge}</span>` : ''}
+                            ${(b.title1 || b.title2) ? `<h1 class="hero-title" style="color: var(--cream-white);">${b.title1 || ''}<br><span style="${title2Color}">${b.title2 || ''}</span></h1>` : ''}
+                            ${b.btnText ? `<button class="ios-btn hero-btn" onclick="switchTab('${b.btnLink}')">${b.btnText} <i class='bx bx-chevron-right'></i></button>` : ''}
+                        </div>`;
+                    }
+
                     slidesHtml += `
                     <div class="hero-slide ${isActive}">
                         <img src="${b.image}" class="hero-img">
                         <div class="hero-overlay"></div>
-                        <div class="hero-content">
-                            ${b.badge ? `<span class="hero-badge" style="${badgeStyle}">${b.badge}</span>` : ''}
-                            <h1 class="hero-title" style="color: var(--cream-white);">${b.title1}<br><span style="${title2Color}">${b.title2 || ''}</span></h1>
-                            <button class="ios-btn hero-btn" onclick="switchTab('${b.btnLink}')">${b.btnText} <i class='bx bx-chevron-right'></i></button>
-                        </div>
+                        ${textOverlay}
                     </div>`;
                     
                     dotsHtml += `<span class="dot ${isActive}"></span>`;
@@ -1219,7 +1232,11 @@
             }
             
             slider.innerHTML = slidesHtml + (snap.empty || snap.docs.length <= 1 ? '' : dotsHtml);
-            startHeroSlider();
+            
+            // Allow DOM to update then start slider
+            setTimeout(() => {
+                startHeroSlider();
+            }, 100);
             
             const adminList = document.getElementById('adminBannersList');
             if(adminList) {
@@ -1230,7 +1247,7 @@
                     <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; margin-bottom:6px; border:1px solid rgba(255,255,255,0.05);">
                         <div style="display:flex; align-items:center; gap:8px;">
                             <img src="${b.image}" style="width:40px; height:24px; object-fit:cover; border-radius:4px; border: 1px solid rgba(255,255,255,0.1);">
-                            <span style="font-size:11px; color:white; font-weight:600;">${b.title1}</span>
+                            <span style="font-size:11px; color:white; font-weight:600;">${b.title1 || 'No Title'}</span>
                         </div>
                         <button onclick="if(confirm('Delete banner?')) db.collection('banners').doc('${doc.id}').delete()" style="background:transparent; border:none; color:var(--danger); font-size:16px; cursor:pointer;"><i class='bx bx-trash'></i></button>
                     </div>`;
