@@ -255,7 +255,7 @@
         #allTournamentsList { padding: 0 14px; }
         #allTournamentsList .t-card { min-width: 100%; margin-bottom: 18px; }
         
-        .t-reg-btn, .submit-btn { width: 100%; border-radius: 8px; font-size: 12.5px; padding: 12px 14px; }
+        .t-reg-btn, .submit-btn { width: 100%; border-radius: 8px; font-size: 11.5px; padding: 10px 14px; }
         
         .admin-controls-card { display: flex; gap: 8px; padding: 0 0 10px; flex-wrap: wrap; }
         .admin-controls-card button { flex:1 1 45%; border:none; padding:10px; border-radius:8px; font-weight:700; cursor:pointer; font-size:10.5px; display:flex; align-items:center; justify-content:center; gap:4px; transition: 0.2s;}
@@ -1571,42 +1571,42 @@
                 
                 const createCard = (btnHtml) => `
                 <div class="t-card" style="border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; background: #0b101d; display:flex; flex-direction:column; overflow:hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); padding: 0;">
-                    <!-- Full Width Banner Image -->
-                    <div style="position:relative; width: 100%; height: 140px;">
-                        <img src="${t.image}" alt="Banner" style="width:100%; height:100%; object-fit:cover; border-bottom: 2px solid var(--primary-blue);">
-                        <div style="position:absolute; top:12px; left:12px; background:rgba(0,0,0,0.8); backdrop-filter:blur(4px); padding:4px 8px; border-radius:6px; font-size:10px; font-weight:800; color:var(--cream-white); border:1px solid rgba(255,255,255,0.15); display:flex; align-items:center; gap:4px;">
+                    <!-- Banner Image - Height komano hoyeche (110px) -->
+                    <div style="position:relative; width: 100%; height: 110px;">
+                        <img src="${t.image}" alt="Banner" style="width:100%; height:100%; object-fit:cover; border-bottom: 2px solid rgba(0,180,252,0.4);">
+                        <div style="position:absolute; top:10px; left:10px; background:rgba(0,0,0,0.7); backdrop-filter:blur(4px); padding:4px 8px; border-radius:6px; font-size:9px; font-weight:800; color:var(--cream-white); border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; gap:4px;">
                             <i class='bx bxs-circle' style='font-size:8px; ${t.status === 'Live' ? 'color:var(--danger);' : 'color:var(--text-muted);'}'></i> ${t.status === 'Live' ? 'LIVE' : 'UPCOMING'}
                         </div>
                     </div>
                     
-                    <!-- Content Area -->
-                    <div style="padding: 16px 14px;">
-                        <div style="font-size:10px; color:var(--primary-blue-light); font-weight:800; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.5px;">${t.prize || 'TBA'} PRIZE POOL</div>
-                        <h3 style="font-family: var(--font-display); font-size:16.5px; font-weight:900; color:var(--cream-white); text-transform:uppercase; margin:0 0 14px 0; line-height:1.2;">${t.name}</h3>
+                    <!-- Content Area - Padding & Margins komano hoyeche -->
+                    <div style="padding: 12px 14px;">
+                        <div style="font-size:9.5px; color:var(--primary-blue-light); font-weight:800; margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px;">${t.prize || 'TBA'} PRIZE POOL</div>
+                        <h3 style="font-family: var(--font-display); font-size:15px; font-weight:900; color:var(--cream-white); text-transform:uppercase; margin:0 0 10px 0; line-height:1.2;">${t.name}</h3>
                         
-                        <!-- Stats Grid (Slots | Entry Fee | Format) -->
-                        <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid rgba(255,255,255,0.08); border-bottom: 1px solid rgba(255,255,255,0.08); padding: 12px 0; margin-bottom: 16px;">
-                            <div style="text-align:center; flex:1; border-right: 1px solid rgba(255,255,255,0.08);">
-                                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; text-transform:uppercase; font-weight:700;">Slots</div>
-                                <div style="font-size:13px; color:var(--cream-white); font-weight:800;">${t.slots || 'Unlimited'}</div>
+                        <!-- Stats Grid - Tighter spacing -->
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); padding: 8px 0; margin-bottom: 12px;">
+                            <div style="text-align:center; flex:1; border-right: 1px solid rgba(255,255,255,0.05);">
+                                <div style="font-size:8.5px; color:var(--text-muted); margin-bottom:2px; text-transform:uppercase; font-weight:700;">Slots</div>
+                                <div style="font-size:11.5px; color:var(--cream-white); font-weight:800;">${t.slots || 'Unlimited'}</div>
                             </div>
-                            <div style="text-align:center; flex:1; border-right: 1px solid rgba(255,255,255,0.08);">
-                                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; text-transform:uppercase; font-weight:700;">Entry Fee</div>
-                                <div style="font-size:13px; color:var(--cream-white); font-weight:800;">FREE</div>
+                            <div style="text-align:center; flex:1; border-right: 1px solid rgba(255,255,255,0.05);">
+                                <div style="font-size:8.5px; color:var(--text-muted); margin-bottom:2px; text-transform:uppercase; font-weight:700;">Entry Fee</div>
+                                <div style="font-size:11.5px; color:var(--cream-white); font-weight:800;">FREE</div>
                             </div>
                             <div style="text-align:center; flex:1;">
-                                <div style="font-size:9px; color:var(--text-muted); margin-bottom:4px; text-transform:uppercase; font-weight:700;">Format</div>
-                                <div style="font-size:13px; color:var(--cream-white); font-weight:800;">${tFormat}</div>
+                                <div style="font-size:8.5px; color:var(--text-muted); margin-bottom:2px; text-transform:uppercase; font-weight:700;">Format</div>
+                                <div style="font-size:11.5px; color:var(--primary-blue); font-weight:800;">${tFormat}</div>
                             </div>
                         </div>
 
-                        <!-- Full Width Button Area -->
+                        <!-- Button Area -->
                         <div style="width:100%;">
                             ${btnHtml}
                         </div>
 
                         <!-- Admin Controls -->
-                        <div class="admin-controls admin-controls-card main-admin-only" style="margin-top:14px; padding:0;">
+                        <div class="admin-controls admin-controls-card main-admin-only" style="margin-top:10px; padding:0;">
                             <button style="background:var(--gold); color:#000;" onclick="openManageTPlayers('${doc.id}', '${t.slots || 'Unlimited'}')"><i class='bx bx-group'></i> Pot & P</button>
                             <button style="background:var(--primary-blue); color:#fff;" onclick="generateFixturesAnimated('${doc.id}', '${tFormat}')"><i class='bx bx-cog'></i> Draw Logic</button>
                             <button class="main-admin-only" style="flex:1 1 100%; background:rgba(239,68,68,0.1); color:var(--danger); border:1px solid rgba(239,68,68,0.2);" onclick="if(confirm('Delete tournament completely?')) db.collection('tournaments').doc('${doc.id}').delete()"><i class='bx bx-trash'></i> Delete Event</button>
