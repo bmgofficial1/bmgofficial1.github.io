@@ -25,7 +25,7 @@
             --card-border: rgba(0, 180, 252, 0.18);
             --card-border-active: rgba(0, 180, 252, 0.4);
             
-            --primary-blue: #00b4fc; 
+            --primary-blue: #00b4fc; /* Bright Electric Blue */
             --primary-blue-light: #5cd6ff;
             --primary-blue-gradient: linear-gradient(135deg, #0077ff 0%, #00b4fc 100%);
             
@@ -205,19 +205,19 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         .section-title { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--cream-white); letter-spacing: 0.5px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; text-transform: uppercase; padding: 0 14px;}
 
-        /* PREMIUM HERO SLIDER - FULL WIDTH FADE & ZOOM EFFECT */
+        /* PREMIUM HERO SLIDER - ZOOM ANIMATION & FULL WIDTH */
         .hero-banner-slider { 
             position: relative; 
             width: 100%; 
-            height: 155px; /* SHORTER HEIGHT AS REQUESTED */
+            height: 195px; 
             overflow: hidden; 
-            margin: 0 0 20px 0; 
+            margin: 0 0 24px 0; 
             background: transparent; 
             border: none; 
             box-shadow: none; 
             border-radius: 0; 
         }
-        .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 16px 20px; opacity: 0; transition: opacity 0.5s ease; z-index: 1; }
+        .hero-slide { position: absolute; inset: 0; display: flex; align-items: center; padding: 20px 20px; opacity: 0; transition: opacity 0.5s ease; z-index: 1; }
         .hero-slide.active { opacity: 1; z-index: 2; pointer-events: auto;}
         
         @keyframes slowZoomIn { 0% { transform: scale(1.0); } 100% { transform: scale(1.15); } }
@@ -239,18 +239,18 @@
             pointer-events: none;
         }
         .hero-content { z-index: 3; width: 75%; position: relative; color: var(--cream-white);}
-        .hero-badge { font-size: 8.5px; font-weight: 700; padding: 3px 6px; border-radius: 6px; display: inline-block; margin-bottom: 6px; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); }
-        .hero-title { font-family: var(--font-display); font-size: 18px; font-weight: 900; line-height: 1.15; margin-bottom: 8px; text-transform: uppercase; text-shadow: 0 4px 12px rgba(0,0,0,0.9); }
+        .hero-badge { font-size: 8.5px; font-weight: 700; padding: 4px 8px; border-radius: 6px; display: inline-block; margin-bottom: 10px; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.15); }
+        .hero-title { font-family: var(--font-display); font-size: 20px; font-weight: 900; line-height: 1.15; margin-bottom: 10px; text-transform: uppercase; text-shadow: 0 4px 12px rgba(0,0,0,0.9); }
         
-        .hero-btn { border-radius: 6px; padding: 6px 12px; font-size: 9.5px; letter-spacing: 0.5px; border: 1px solid rgba(0,180,252,0.4); }
-        .hero-dots { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 4; }
+        .hero-btn { border-radius: 8px; padding: 8px 14px; font-size: 10.5px; letter-spacing: 0.5px; border: 1px solid rgba(0,180,252,0.4); }
+        .hero-dots { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 4; }
         .hero-dots .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: 0.3s; }
         .hero-dots .dot.active { width: 16px; border-radius: 3px; background: var(--primary-blue); }
 
-        /* TOURNAMENT SLIDER & COMPACT CARDS */
+        /* TOURNAMENT SLIDER & COMPACT CARDS (ADJUSTED FOR WIDTH & LESS HEIGHT) */
         .t-slider { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 14px; padding-bottom: 10px; scrollbar-width: none; padding-left: 14px; padding-right: 14px; }
         .t-slider::-webkit-scrollbar { display: none; }
-        .t-slider .t-card { min-width: 90vw; scroll-snap-align: center; } 
+        .t-slider .t-card { min-width: 90vw; scroll-snap-align: center; } /* Wider on home screen */
         
         #allTournamentsList { padding: 0 14px; }
         #allTournamentsList .t-card { min-width: 100%; margin-bottom: 18px; }
@@ -602,7 +602,7 @@
         
         <!-- DYNAMIC HERO SLIDER - FULL WIDTH FADE EFFECT & ZOOM -->
         <div class="hero-banner-slider" id="dynamicHeroSlider">
-            <p style="text-align:center; padding: 50px 0; color:var(--text-dim); font-size:11px;">Loading Banners...</p>
+            <p style="text-align:center; padding: 60px 0; color:var(--text-dim); font-size:11px;">Loading Banners...</p>
         </div>
 
         <!-- QUICK NAV GRID WITH RANKING ICON -->
@@ -1333,7 +1333,7 @@
                             textOverlay = `
                             <div class="hero-content">
                                 ${b.badge ? `<span class="hero-badge" style="${badgeStyle}">${b.badge}</span>` : ''}
-                                ${(b.title1 || b.title2) ? `<h1 class="hero-title" style="${title1Style}">${b.title1 || ''}${b.title1 && b.title2 ? '<br>' : ''}<span style="${title2Style}">${b.title2 || ''}</span></h1>` : ''}
+                                ${(b.title1 || b.title2) ? `<h1 class="hero-title" style="${title1Style}">${b.title1 || ''}<br><span style="${title2Style}">${b.title2 || ''}</span></h1>` : ''}
                                 ${b.btnText ? `<button class="ios-btn hero-btn" style="${btnStyle}" onclick="switchTab('${b.btnLink}')">${b.btnText} <i class='bx bx-chevron-right'></i></button>` : ''}
                             </div>`;
                         }
@@ -1352,28 +1352,27 @@
                 }
                 
                 slider.innerHTML = slidesHtml + (snap.empty || snap.docs.length <= 1 ? '' : dotsHtml);
-                
-                // Allow DOM to update then start slider
-                setTimeout(() => {
-                    startHeroSlider();
-                }, 100);
+                setTimeout(() => { startHeroSlider(); }, 100);
                 
                 // Admin Panel Rendering
                 const adminList = document.getElementById('adminBannersList');
                 if(adminList) {
-                    adminList.innerHTML = '<h4 style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">Current Active Banners</h4>';
+                    adminList.innerHTML = '<h4 style="color:var(--text-muted); font-size:11px; margin-bottom:8px;">Current Banners (Max: '+globalBannerLimit+')</h4>';
                     snap.forEach(doc => {
                         const b = doc.data();
                         adminList.innerHTML += `
                         <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.3); padding:8px; border-radius:8px; margin-bottom:6px; border:1px solid rgba(255,255,255,0.05);">
                             <div style="display:flex; align-items:center; gap:8px;">
                                 <img src="${b.image}" style="width:40px; height:24px; object-fit:cover; border-radius:4px; border: 1px solid rgba(255,255,255,0.1);">
-                                <span style="font-size:11px; color:white; font-weight:600;">${b.title1 || 'No Title'}</span>
+                                <span style="font-size:11px; color:white; font-weight:600;">${b.title1 || 'Image Only'}</span>
                             </div>
-                            <button onclick="if(confirm('Delete banner?')) db.collection('banners').doc('${doc.id}').delete()" style="background:transparent; border:none; color:var(--danger); font-size:16px; cursor:pointer;"><i class='bx bx-trash'></i></button>
+                            <div style="display:flex; gap:10px;">
+                                <button onclick="openEditBanner('${doc.id}')" style="background:transparent; border:none; color:var(--primary-blue); font-size:16px; cursor:pointer;"><i class='bx bx-edit'></i></button>
+                                <button onclick="if(confirm('Delete banner?')) db.collection('banners').doc('${doc.id}').delete()" style="background:transparent; border:none; color:var(--danger); font-size:16px; cursor:pointer;"><i class='bx bx-trash'></i></button>
+                            </div>
                         </div>`;
                     });
-                    if(snap.empty) adminList.innerHTML += '<p style="font-size:10px; color:var(--text-dim);">No custom banners added.</p>';
+                    if(snap.empty) adminList.innerHTML += '<p style="font-size:10px; color:var(--text-dim);">No banners available.</p>';
                 }
             });
         }
